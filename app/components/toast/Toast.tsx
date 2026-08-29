@@ -12,7 +12,7 @@ export default function Toast({
   onClose,
 }: ToastProps) {
   return (
-    <div className="flex items-center w-full max-w-xs p-4 mb-4 bg-white rounded-lg shadow-sm">
+    <div className="flex items-center w-full max-w-toast p-4 mb-4 bg-white rounded-lg shadow-sm">
       <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg">
         <Icon
           src={iconPath}

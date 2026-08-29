@@ -63,7 +63,7 @@ const SessionTimeoutWarning = ({
       className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 bg-black/30"
       data-modal={SESSION_TIMEOUT_WARNING_MODAL.ID}
     >
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl border border-light-blue">
+      <div className="bg-white rounded-lg p-6 max-w-form w-full mx-4 shadow-xl border border-light-blue">
         <div className="text-center">
           <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 mb-4">
             <Icon

@@ -138,16 +138,18 @@
    * `var(--container-md)`). The spacing scale above deliberately reuses
    * Tailwind's own `sm`/`md`/`lg`/`xl` names for padding and gaps
    * (Stitch's `theme.extend.spacing`), which silently shadows
-   * `max-w-sm|md|lg|xl` everywhere in the app — including the two other
-   * pre-existing `max-w-md`/`max-w-xs` usages outside this module
-   * (`app/components/session/warning/SessionTimeoutWarning.tsx`,
-   * `app/components/toast/Toast.tsx`), left alone here since they are out
-   * of scope for this batch. `--container-form` is a deliberately
-   * non-colliding name for the one thing this module actually needs a
-   * fixed max-width for: the centered form card on every access screen —
-   * use `max-w-form`, never `max-w-md`, for that.
+   * `max-w-sm|md|lg|xl` everywhere in the app. `--container-form` and
+   * `--container-toast` are deliberately non-colliding names for the two
+   * fixed max-widths the app needs: the centered form card on every access
+   * screen, and the toast/modal width that `SessionTimeoutWarning.tsx` and
+   * `Toast.tsx` used to reach through the now-broken `max-w-md`/`max-w-xs`
+   * (fixed alongside this module — same collision, same root cause).
+   * `--container-form` (28rem) is Tailwind's own default for `max-w-md`;
+   * `--container-toast` (20rem) is its default for `max-w-xs`. Use
+   * `max-w-form`/`max-w-toast`, never `max-w-md`/`max-w-xs`, for these.
    */
   --container-form: 28rem;
+  --container-toast: 20rem;
 
   /* Shake, for a rejected-attempt banner (login "Acceso Denegado", etc.) */
   --animate-shake: shake 0.5s ease-in-out;
