@@ -1,5 +1,5 @@
 begin;
-select plan(27);
+select plan(33);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -367,6 +367,76 @@ select lives_ok(
        'aaaaaaaa-0000-0000-0000-000000000002',
        '2026-09-05 10:00:00+00', '2026-09-05 12:00:00+00') $$,
   'category_availability no revienta sobre una franja totalmente agotada'
+);
+
+-- ============================ C15: categoria sin fila de stock ============================
+
+-- Una categoria por cantidad recien creada, antes de registrar existencias,
+-- no tiene fila en equipment_stock. La funcion existe para informar: debe
+-- devolver una fila con ceros, no ninguna fila.
+insert into equipment_categories
+  (id, name, tracking_mode, is_reservable, has_motor, usage_metric,
+   default_duration_minutes, created_by, updated_by)
+values ('aaaaaaaa-0000-0000-0000-000000000003', 'Tabla SUP', 'by_quantity', true, false, null, 60,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+-- Adrede: ninguna fila en equipment_stock para esta categoria.
+
+select is(
+  (select count(*)::int from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000003',
+     '2026-09-05 10:00:00+00', '2026-09-05 12:00:00+00')),
+  1,
+  'una categoria sin fila de stock igual devuelve exactamente una fila'
+);
+select is(
+  (select usable from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000003',
+     '2026-09-05 10:00:00+00', '2026-09-05 12:00:00+00')),
+  0,
+  'sin fila de stock, usable es 0'
+);
+select is(
+  (select committed from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000003',
+     '2026-09-05 10:00:00+00', '2026-09-05 12:00:00+00')),
+  0,
+  'sin fila de stock, committed es 0'
+);
+select is(
+  (select free from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000003',
+     '2026-09-05 10:00:00+00', '2026-09-05 12:00:00+00')),
+  0,
+  'sin fila de stock, free es 0'
+);
+
+-- ============================ C16: doble despacho sobre la misma unidad ============================
+
+-- La operacion se reacomoda sobre la marcha: puede haber dos reservas
+-- despachadas encima de la misma unidad al mismo tiempo. JET-01 ya tiene a
+-- dddddddd-...-0001 despachada 10:00-12:00; se agrega una segunda que
+-- termina antes, para probar que gana la que termina despues.
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, dispatched_at,
+   created_by, updated_by)
+values ('dddddddd-0000-0000-0000-000000000012', 'Luis', 1, 'rental',
+        '2026-09-05 10:15:00+00', 30, 'dispatched', now(),
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+insert into reservation_items (reservation_id, unit_id, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-000000000012', 'bbbbbbbb-0000-0000-0000-000000000001',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+select is(
+  (select reservation_id from unit_current_state
+   where id = 'bbbbbbbb-0000-0000-0000-000000000001'),
+  'dddddddd-0000-0000-0000-000000000001'::uuid,
+  'con dos despachos encima, gana la reserva que termina despues'
+);
+select ok(
+  (select returns_at from unit_current_state
+   where id = 'bbbbbbbb-0000-0000-0000-000000000001')
+  = '2026-09-05 12:00:00+00'::timestamptz,
+  'returns_at refleja el fin mas tardio de los despachos activos, no el mas cercano'
 );
 
 select * from finish();
