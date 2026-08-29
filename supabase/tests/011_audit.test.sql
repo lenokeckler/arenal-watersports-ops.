@@ -1,5 +1,5 @@
 begin;
-select plan(17);
+select plan(18);
 
 -- La firma la pone la base desde auth.uid() y no la aplicacion: no se puede
 -- olvidar en un camino de escritura ni falsificar desde el cliente. Hay seis
@@ -227,6 +227,29 @@ select is(
 select ok(
   (select resolved_at is not null from deposits where id = 'eeeeeeee-0000-0000-0000-000000000001'),
   'deposits: resolved_at se estampa al resolver'
+);
+
+-- El insert tambien puede nacer resuelto (deposits_resolution_shape lo
+-- permite: status <> 'held' con resolved_at y resolved_by presentes), asi
+-- que resolved_by se firma ahi tambien. Sin esto, un cliente con permiso de
+-- insertar podria crear un deposito ya resuelto y atribuirle la resolucion
+-- a cualquier worker -- la firma falsificada en un camino que la actualizacion
+-- por si sola no cubre.
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
+
+-- El admin inserta el deposito ya resuelto, pero el cliente miente diciendo
+-- que fue Ismael quien lo resolvio.
+insert into deposits (id, reservation_id, amount, currency, status, resolved_by, resolved_at, created_by)
+values ('eeeeeeee-0000-0000-0000-000000000003', 'dddddddd-0000-0000-0000-000000000001',
+        80, 'USD', 'returned', '22222222-2222-2222-2222-222222222222', now(),
+        '22222222-2222-2222-2222-222222222222');
+
+select is(
+  (select resolved_by from deposits where id = 'eeeeeeee-0000-0000-0000-000000000003'),
+  '11111111-1111-1111-1111-111111111111'::uuid,
+  'deposits: un insert que nace resuelto tambien firma resolved_by con auth.uid(), no con lo que mande el cliente'
 );
 
 select * from finish();
