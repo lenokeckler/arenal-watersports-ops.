@@ -1,5 +1,5 @@
 begin;
-select plan(27);
+select plan(29);
 
 -- ============================================================
 -- Fixtures
@@ -180,16 +180,45 @@ select is(
 );
 
 -- ============================================================
--- La purga corre impersonando a `authenticated`, a quien la tarea 13 le
--- revoco DELETE en todo el esquema. Si la funcion no fuera security definer
--- propiedad del rol de la base, esta llamada reventaria por permisos.
+-- Control de acceso a la purga en si. purge_expired_history es security
+-- definer: si cualquiera pudiera invocarla, correria igual con los
+-- privilegios de postgres. authenticated y anon tienen EXECUTE revocado
+-- explicitamente (20260828001450) y deben quedar afuera con 42501 --
+-- insufficient_privilege -- antes de que la funcion llegue a ejecutar una
+-- sola linea.
 -- ============================================================
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 
+select throws_ok(
+  $$ select purge_expired_history() $$,
+  '42501',
+  null,
+  'authenticated no puede ni siquiera invocar la purga'
+);
+
+reset role;
+
+set local role anon;
+
+select throws_ok(
+  $$ select purge_expired_history() $$,
+  '42501',
+  null,
+  'anon, sin autenticar, tampoco puede invocar la purga'
+);
+
+reset role;
+
+-- service_role si conserva EXECUTE: la purga real (la que produce todos los
+-- efectos verificados abajo) corre bajo esa identidad, para probar que
+-- revocarle el permiso a authenticated/anon no rompio a quien si debe poder
+-- llamarla.
+set local role service_role;
+
 select lives_ok(
   $$ select purge_expired_history() $$,
-  'la purga corre como authenticated pese a que ese rol no tiene DELETE'
+  'service_role si puede invocar la purga y esta corre sin error'
 );
 
 reset role;
