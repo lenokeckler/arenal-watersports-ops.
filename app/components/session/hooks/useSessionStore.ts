@@ -1,5 +1,8 @@
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/app/store/hooks";
 import { STORE_SLICES } from "@/app/constants";
 import { sessionActions } from "@/app/store";
 

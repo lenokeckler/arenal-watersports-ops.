@@ -244,9 +244,7 @@ Never manually write a union type for a constant's values. Always derive it with
 
 ```ts
 export type BrowserEventType =
-  | "click"
-  | "scroll"
-  | "mousedown";
+  "click" | "scroll" | "mousedown";
 ```
 
 **Correct:**
@@ -270,12 +268,12 @@ When centralizing numeric literals (timeouts, sizes, limits, status codes, index
 
 ### Placement
 
-| Kind of numbers | Where to put them |
-| --- | --- |
-| General / cross-cutting numerics | `app/constants/numbers/<Domain>.constants.ts` |
-| Time durations in ms | `app/constants/milliseconds/` **or** a nested group under a time domain object |
-| Domain-owned sizes / tokens | Domain folder that already owns the concept (e.g. `app/constants/images/ImageSizes.constants.ts`, `app/constants/z-index/`) |
-| Feature-only values reused in one feature area | Prefer the matching domain folder under `app/constants/`; avoid scattering one-off files |
+| Kind of numbers                                | Where to put them                                                                                                           |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| General / cross-cutting numerics               | `app/constants/numbers/<Domain>.constants.ts`                                                                               |
+| Time durations in ms                           | `app/constants/milliseconds/` **or** a nested group under a time domain object                                              |
+| Domain-owned sizes / tokens                    | Domain folder that already owns the concept (e.g. `app/constants/images/ImageSizes.constants.ts`, `app/constants/z-index/`) |
+| Feature-only values reused in one feature area | Prefer the matching domain folder under `app/constants/`; avoid scattering one-off files                                    |
 
 Do **not** create a single `NUMBERS` / `MAGIC` object for the whole app. Prefer one exported object (or a few) per semantic domain.
 
@@ -384,7 +382,11 @@ export const NUMBERS = {
 **Correct:**
 
 ```ts
-import { HTTP_STATUS, IMAGE_SIZES, TIMEOUT_MS } from "@/app/constants";
+import {
+  HTTP_STATUS,
+  IMAGE_SIZES,
+  TIMEOUT_MS,
+} from "@/app/constants";
 
 const avatarSize = IMAGE_SIZES.ICON.MEDIUM;
 const debounceMs = TIMEOUT_MS.DEBOUNCE.SEARCH;

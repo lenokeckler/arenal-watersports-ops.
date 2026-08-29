@@ -48,7 +48,10 @@ export interface MyFeatureState {
 `app/components/my-feature/store/myFeatureSlice.ts`:
 
 ```ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { STORE_SLICES } from "@/app/constants";
 import { MyFeatureState } from "./MyFeatureState.interface";
 
@@ -65,10 +68,16 @@ const myFeatureSlice = createSlice({
     setFoo: (state, action: PayloadAction<string>) => {
       state.foo = action.payload;
     },
-    setIsModalOpen: (state, action: PayloadAction<boolean | null>) => {
+    setIsModalOpen: (
+      state,
+      action: PayloadAction<boolean | null>
+    ) => {
       state.isModalOpen = action.payload;
     },
-    setError: (state, action: PayloadAction<string | null>) => {
+    setError: (
+      state,
+      action: PayloadAction<string | null>
+    ) => {
       state.error = action.payload;
     },
   },
@@ -108,18 +117,20 @@ Always import from `@/app/store`, never directly from the slice file:
 import { useDispatch, useSelector } from "react-redux";
 import { myFeatureActions, RootState } from "@/app/store";
 
-const { foo } = useSelector((state: RootState) => state.myFeature);
+const { foo } = useSelector(
+  (state: RootState) => state.myFeature
+);
 const dispatch = useDispatch();
 dispatch(myFeatureActions.setFoo("bar"));
 ```
 
 ## Naming conventions
 
-| Thing | Convention | Example |
-|---|---|---|
-| `STORE_SLICES` key | `SCREAMING_SNAKE_CASE` | `MY_FEATURE` |
-| Slice name (string value) | `camelCase` | `"myFeature"` |
-| Slice file | `camelCaseSlice.ts` | `myFeatureSlice.ts` |
-| State interface file | `PascalCaseState.interface.ts` | `MyFeatureState.interface.ts` |
-| Exported actions object | `<feature>Actions` | `myFeatureActions` |
-| Reducer action names | `set<Field>` | `setFoo`, `setIsModalOpen` |
+| Thing                     | Convention                     | Example                       |
+| ------------------------- | ------------------------------ | ----------------------------- |
+| `STORE_SLICES` key        | `SCREAMING_SNAKE_CASE`         | `MY_FEATURE`                  |
+| Slice name (string value) | `camelCase`                    | `"myFeature"`                 |
+| Slice file                | `camelCaseSlice.ts`            | `myFeatureSlice.ts`           |
+| State interface file      | `PascalCaseState.interface.ts` | `MyFeatureState.interface.ts` |
+| Exported actions object   | `<feature>Actions`             | `myFeatureActions`            |
+| Reducer action names      | `set<Field>`                   | `setFoo`, `setIsModalOpen`    |

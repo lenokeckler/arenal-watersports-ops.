@@ -46,3 +46,7 @@ mcp_stitch/
 
 # Word/Excel originales quedan, pero no los temporales de Office
 ~$*
+.vscode/mcp.json
+
+# La plantilla si se versiona (no lleva valores)
+!.env.example

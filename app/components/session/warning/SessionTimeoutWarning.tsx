@@ -30,7 +30,7 @@ const SessionTimeoutWarning = ({
     description,
     minute,
     logout,
-    keep_session,
+    keepSession,
   } = useSessionData();
 
   const [countdown, setCountdown] = useState(
@@ -123,7 +123,7 @@ const SessionTimeoutWarning = ({
               hover:text-white 
               hover:border-light-blue"
             >
-              {keep_session}
+              {keepSession}
             </Button>
           </div>
         </div>

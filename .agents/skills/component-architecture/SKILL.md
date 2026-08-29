@@ -103,7 +103,7 @@ Lightweight exception: pure presentational tweaks with no behavior change (e.g. 
 
 ### Workflow (Specify → Plan → Tasks → Implement → Validate)
 
-1. **Specify** — Write / update `specs/SPEC.md` inside the feature folder (intent, scope, requirements, edge cases, acceptance criteria). Prefer *what* and *why*; avoid locking premature implementation detail unless it is a hard constraint (e.g. must use existing `Modal` + Redux).
+1. **Specify** — Write / update `specs/SPEC.md` inside the feature folder (intent, scope, requirements, edge cases, acceptance criteria). Prefer _what_ and _why_; avoid locking premature implementation detail unless it is a hard constraint (e.g. must use existing `Modal` + Redux).
 2. **Plan** — Derive a short technical plan from the spec + project skills (`component-standards`, `constants-standards`, `redux-store-architecture`, etc.): files to touch, reuse targets, data/store shape. Optional `specs/plan.md` for larger work.
 3. **Tasks** — Break the plan into small, ordered implementation units. Optional `specs/tasks.md`.
 4. **Implement** — Build task-by-task inside the feature folder (presentation `.tsx` + `use*ViewModel.ts`), following this skill and the rest of the catalog.
@@ -115,25 +115,32 @@ Lightweight exception: pure presentational tweaks with no behavior change (e.g. 
 # <Feature / change name>
 
 ## Intent
+
 Who is this for and what outcome should they get?
 
 ## In scope
+
 - …
 
 ## Out of scope
+
 - …
 
 ## Requirements
+
 - …
 
 ## Edge cases & errors
+
 - …
 
 ## Constraints
+
 - Reuse existing components / constants / store patterns: …
 - Skills that apply: component-standards, constants-standards, …
 
 ## Acceptance criteria
+
 - [ ] …
 - [ ] …
 ```
@@ -150,29 +157,29 @@ Every non-trivial feature must be designed with **SOLID** principles and establi
 
 ### SOLID mapped to this codebase
 
-| Principle | Apply as |
-| --- | --- |
-| **S — Single Responsibility** | One feature folder, one primary concern. `.tsx` renders; `use*ViewModel` orchestrates UI state; dedicated hooks for fetch/validate; Redux slice for shared state. Do not build god components or god ViewModels. |
-| **O — Open/Closed** | Extend via props, composition, variants, and new hooks/modules — not by copy-pasting or rewriting shared bases (`Button`, `Modal`, `FormField`). Prefer opening extension points over editing unrelated features. |
-| **L — Liskov Substitution** | Shared components and hooks must honor their contracts. Do not overload a primitive with incompatible behavior (e.g. a `Button` that secretly navigates and submits and fetches). Specialize in the feature layer instead. |
-| **I — Interface Segregation** | Keep props and ViewModel return shapes focused. Prefer small interfaces (`Props`, `ViewModel`) over dumping every flag into one bag. Split hooks when consumers only need a subset (fetch vs validate vs modal). |
-| **D — Dependency Inversion** | Depend on abstractions already used in the project: constants, typed models, mutation types, Redux selectors/actions, shared components. ViewModels should not hard-wire low-level transport details throughout JSX; call shared APIs/hooks/mutations. |
+| Principle                     | Apply as                                                                                                                                                                                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **S — Single Responsibility** | One feature folder, one primary concern. `.tsx` renders; `use*ViewModel` orchestrates UI state; dedicated hooks for fetch/validate; Redux slice for shared state. Do not build god components or god ViewModels.                                       |
+| **O — Open/Closed**           | Extend via props, composition, variants, and new hooks/modules — not by copy-pasting or rewriting shared bases (`Button`, `Modal`, `FormField`). Prefer opening extension points over editing unrelated features.                                      |
+| **L — Liskov Substitution**   | Shared components and hooks must honor their contracts. Do not overload a primitive with incompatible behavior (e.g. a `Button` that secretly navigates and submits and fetches). Specialize in the feature layer instead.                             |
+| **I — Interface Segregation** | Keep props and ViewModel return shapes focused. Prefer small interfaces (`Props`, `ViewModel`) over dumping every flag into one bag. Split hooks when consumers only need a subset (fetch vs validate vs modal).                                       |
+| **D — Dependency Inversion**  | Depend on abstractions already used in the project: constants, typed models, mutation types, Redux selectors/actions, shared components. ViewModels should not hard-wire low-level transport details throughout JSX; call shared APIs/hooks/mutations. |
 
 ### Preferred design patterns (use when they fit)
 
-| Pattern | When to use in MediXenter |
-| --- | --- |
-| **ViewModel / Presentation** | Default for any component with logic (§4) |
-| **Composition** | Build screens from shared primitives + **local feature minis** (§5); avoid inheritance hierarchies and monolith returns |
-| **Facade** | `use*Facade` / thin ViewModel that coordinates several feature hooks (fetch + validate + modal) |
-| **Container / Inner** | `Feature.tsx` (load/gate) + `FeatureInner.tsx` (composed body of minis) when loading/auth branches clutter presentation |
-| **Factory** | Config-driven UI via existing `FieldFactory` / field configs — do not invent a second factory system |
-| **Adapter** | Map API/DTO shapes into view models/interfaces in hooks or utils — keep raw payloads out of JSX |
-| **Observer / Store** | Shared cross-component state via Redux (`redux-store-architecture`), not prop-drilling or ad-hoc events |
-| **Strategy** | Swap behaviors through props/variants/constants (button variants, table column renderers) instead of `switch`-heavy JSX |
-| **Decorator** | Wrap a component/hook to add cross-cutting behavior without changing its core (providers, `PrivateRoute`, loading/error shells, permission gates). Prefer composition wrappers over inheritance; do not bury extra behavior inside the decorated feature’s ViewModel |
-| **State** | Model mutually exclusive UI modes as an explicit state (union / const map / small state handlers) — e.g. `idle \| loading \| error \| ready`, wizard steps, modal phases — instead of many overlapping booleans. Transition in the ViewModel; render by state in minis |
-| **Template method (light)** | Shared shells like `PageTemplate`, `AuthTemplate`, `MultiStepForm` — fill slots via children/props |
+| Pattern                      | When to use in MediXenter                                                                                                                                                                                                                                              |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ViewModel / Presentation** | Default for any component with logic (§4)                                                                                                                                                                                                                              |
+| **Composition**              | Build screens from shared primitives + **local feature minis** (§5); avoid inheritance hierarchies and monolith returns                                                                                                                                                |
+| **Facade**                   | `use*Facade` / thin ViewModel that coordinates several feature hooks (fetch + validate + modal)                                                                                                                                                                        |
+| **Container / Inner**        | `Feature.tsx` (load/gate) + `FeatureInner.tsx` (composed body of minis) when loading/auth branches clutter presentation                                                                                                                                                |
+| **Factory**                  | Config-driven UI via existing `FieldFactory` / field configs — do not invent a second factory system                                                                                                                                                                   |
+| **Adapter**                  | Map API/DTO shapes into view models/interfaces in hooks or utils — keep raw payloads out of JSX                                                                                                                                                                        |
+| **Observer / Store**         | Shared cross-component state via Redux (`redux-store-architecture`), not prop-drilling or ad-hoc events                                                                                                                                                                |
+| **Strategy**                 | Swap behaviors through props/variants/constants (button variants, table column renderers) instead of `switch`-heavy JSX                                                                                                                                                |
+| **Decorator**                | Wrap a component/hook to add cross-cutting behavior without changing its core (providers, `PrivateRoute`, loading/error shells, permission gates). Prefer composition wrappers over inheritance; do not bury extra behavior inside the decorated feature’s ViewModel   |
+| **State**                    | Model mutually exclusive UI modes as an explicit state (union / const map / small state handlers) — e.g. `idle \| loading \| error \| ready`, wizard steps, modal phases — instead of many overlapping booleans. Transition in the ViewModel; render by state in minis |
+| **Template method (light)**  | Shared shells like `PageTemplate`, `AuthTemplate`, `MultiStepForm` — fill slots via children/props                                                                                                                                                                     |
 
 ### Anti-patterns (forbidden defaults)
 
@@ -195,10 +202,10 @@ If you cannot name the responsibilities and pattern, the design is not ready to 
 
 ## 4. Presentation vs Logic
 
-| File | Role |
-| --- | --- |
-| `ComponentName.tsx` | **Presentation only** — JSX structure, composition, binding ViewModel outputs to UI |
-| `hooks/useComponentNameViewModel.ts` | **Logic** — state, effects, handlers, derived data, API/orchestration |
+| File                                 | Role                                                                                |
+| ------------------------------------ | ----------------------------------------------------------------------------------- |
+| `ComponentName.tsx`                  | **Presentation only** — JSX structure, composition, binding ViewModel outputs to UI |
+| `hooks/useComponentNameViewModel.ts` | **Logic** — state, effects, handlers, derived data, API/orchestration               |
 
 `.tsx` files must not own business logic, state orchestration, derived values, effects, or non-trivial handlers.
 
@@ -218,12 +225,12 @@ The primary `.tsx` return must stay **short and scannable** — a composition ou
 
 ### Where to put minis
 
-| Situation | Placement |
-| --- | --- |
-| One or two extractions regions | Colocate next to the parent: `FeatureNameHeader.tsx`, `FeatureNameModals.tsx` |
-| Several feature-only pieces | `app/components/<feature>/components/*.tsx` |
-| Modal steps / multi-step panels | `modals/` (existing project pattern) |
-| Already a shared primitive | Reuse from `component-standards` — do **not** invent a local duplicate of `Button`, `Modal`, `Section`, etc. |
+| Situation                       | Placement                                                                                                    |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| One or two extractions regions  | Colocate next to the parent: `FeatureNameHeader.tsx`, `FeatureNameModals.tsx`                                |
+| Several feature-only pieces     | `app/components/<feature>/components/*.tsx`                                                                  |
+| Modal steps / multi-step panels | `modals/` (existing project pattern)                                                                         |
+| Already a shared primitive      | Reuse from `component-standards` — do **not** invent a local duplicate of `Button`, `Modal`, `Section`, etc. |
 
 Local minis are **feature-private** presentation. Promote to shared `app/components/` only when a second feature needs the same UI (reuse rule).
 
@@ -355,7 +362,12 @@ const PatientForm = ({ patients_section }: Props) => {
   };
 
   if (isLoading) return <Spinner />;
-  return <PatientList patients={patients} onDelete={handleDelete} />;
+  return (
+    <PatientList
+      patients={patients}
+      onDelete={handleDelete}
+    />
+  );
 };
 ```
 
@@ -370,7 +382,12 @@ const PatientForm = ({ patients_section }: Props) => {
     usePatientFormViewModel({ patients_section });
 
   if (isLoading) return <Spinner />;
-  return <PatientList patients={patients} onDelete={handleDelete} />;
+  return (
+    <PatientList
+      patients={patients}
+      onDelete={handleDelete}
+    />
+  );
 };
 ```
 
