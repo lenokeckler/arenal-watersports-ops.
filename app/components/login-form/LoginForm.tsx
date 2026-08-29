@@ -16,7 +16,6 @@ import {
 import Button from "../button/Button";
 import FormField from "../form-field/FormField";
 import Link from "../link/Link";
-import PasswordRules from "../password-rules/PasswordRules";
 import Spinner from "../spinner/Spinner";
 import Text from "../text/Text";
 import Title from "../title/Title";
@@ -41,6 +40,20 @@ const FIELD_ERROR_CLASS =
  * Login form for `/acceso/ingreso` (US-ACC-001, US-ACC-002). Presentation
  * only — every decision lives in `useLoginFormViewModel`
  * (`component-architecture`).
+ *
+ * Deliberate deviation from US-ACC-001 (ruling A8, module owner): the
+ * criterion "las reglas de la contraseña se muestran desde antes de
+ * escribirla" does not apply here even though it is literally about the
+ * login form's password field. `PasswordRules` was built and shown on this
+ * screen by the previous batch, then removed after the owner saw it
+ * rendered and rejected it, on three grounds — the Stitch design for this
+ * screen never showed it, the rules cannot help someone typing a password
+ * they already have (they matter when a password is *created*), and
+ * showing creation requirements on a sign-in form reads as broken, not
+ * helpful. The checklist still exists (`../password-rules/PasswordRules`)
+ * and is used where the criterion actually applies: first login
+ * (`/acceso/primer-ingreso`) and the voluntary change
+ * (`/acceso/cambio-contrasena`), both in `PasswordChangeForm`.
  */
 const LoginForm = (): JSX.Element => {
   const {
@@ -56,7 +69,7 @@ const LoginForm = (): JSX.Element => {
   } = useLoginFormViewModel();
 
   return (
-    <main className="relative z-10 w-full max-w-md px-margin-mobile">
+    <main className="relative z-10 w-full max-w-form px-margin-mobile">
       <div className="flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface-container/70 p-md shadow-xl backdrop-blur-md sm:p-lg">
         <div className="mb-md flex flex-col items-center text-center">
           <Title
@@ -107,8 +120,6 @@ const LoginForm = (): JSX.Element => {
               disabled={isSubmitting}
               classNameField={`${passwordError ? FIELD_ERROR_CLASS : FIELD_CLASS} !pr-10`}
             />
-
-            <PasswordRules password={password} />
 
             <Link
               href={PATHS.ACCESS.PASSWORD_RECOVERY}

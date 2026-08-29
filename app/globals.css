@@ -14,13 +14,14 @@
  * operating system's light/dark preference, so there is no
  * `prefers-color-scheme` branch here.
  *
- * Fonts: Hanken Grotesk (body/headings) and JetBrains Mono (labels) are
- * self-hosted through `next/font` in `app/layout.tsx`, which sets
- * `--font-hanken-grotesk` / `--font-jetbrains-mono`; this file only points
- * the standard `--font-sans` / `--font-mono` tokens at them, so components
- * keep using the ordinary `font-sans` / `font-mono` utilities. Material
- * Symbols Outlined loads from Google's CDN instead — see the comment in
- * `app/layout.tsx` for why.
+ * Fonts: Hanken Grotesk (body/headings), JetBrains Mono (labels) and
+ * Material Symbols Outlined (icons) are all self-hosted through `next/font`
+ * in `app/layout.tsx`, which sets `--font-hanken-grotesk` /
+ * `--font-jetbrains-mono` / `--font-material-symbols`; this file points the
+ * standard `--font-sans` / `--font-mono` tokens at the first two, so
+ * components keep using the ordinary `font-sans` / `font-mono` utilities,
+ * and defines `.material-symbols-outlined` below for the third — see that
+ * class for why it is not also a `--font-*` theme token.
  */
 @theme {
   /* Material 3 color roles (Stitch tailwind.config -> theme.extend.colors) */
@@ -127,6 +128,27 @@
    * a full pill — nothing to override here.
    */
 
+  /*
+   * Found while verifying the access-module screens in a real browser
+   * (they rendered as an unusable ~24px sliver instead of a card): Tailwind
+   * v4 resolves `max-w-<key>` (and `w-`, `h-`, `min-w-`, `gap-`, …) against
+   * the `--spacing-<key>` namespace when a key of that name exists there,
+   * ahead of its own built-in `--container-<key>` scale (confirmed against
+   * the compiled CSS: `.max-w-md{max-width:var(--spacing-md)}`, not
+   * `var(--container-md)`). The spacing scale above deliberately reuses
+   * Tailwind's own `sm`/`md`/`lg`/`xl` names for padding and gaps
+   * (Stitch's `theme.extend.spacing`), which silently shadows
+   * `max-w-sm|md|lg|xl` everywhere in the app — including the two other
+   * pre-existing `max-w-md`/`max-w-xs` usages outside this module
+   * (`app/components/session/warning/SessionTimeoutWarning.tsx`,
+   * `app/components/toast/Toast.tsx`), left alone here since they are out
+   * of scope for this batch. `--container-form` is a deliberately
+   * non-colliding name for the one thing this module actually needs a
+   * fixed max-width for: the centered form card on every access screen —
+   * use `max-w-form`, never `max-w-md`, for that.
+   */
+  --container-form: 28rem;
+
   /* Shake, for a rejected-attempt banner (login "Acceso Denegado", etc.) */
   --animate-shake: shake 0.5s ease-in-out;
 }
@@ -145,4 +167,31 @@
   80% {
     transform: translateX(0.3125rem);
   }
+}
+
+/**
+ * `MaterialIcon` (app/components/icons/material-icon/) renders an icon by
+ * writing its ligature name as plain text (e.g. "check_circle") and relying
+ * on this class to turn it into a glyph — so this is not decoration, it is
+ * the only thing standing between a rendered icon and visible English text.
+ * A plain `--font-*` theme token is not enough on its own: Google's own
+ * stylesheet for this font (still the reference for these exact properties)
+ * pairs the font-family with `font-feature-settings: "liga"` and a fixed
+ * `font-size`/`line-height`, so this stays a real class instead.
+ */
+.material-symbols-outlined {
+  font-family: var(--font-material-symbols);
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
 }

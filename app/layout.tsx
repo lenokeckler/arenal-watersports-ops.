@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 /**
@@ -21,6 +22,32 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["500"],
 });
 
+/**
+ * Material Symbols Outlined, self-hosted for the same reason as the two
+ * fonts above: a previous version of this file loaded it from Google's CDN
+ * (`fonts.googleapis.com`) instead, and when that stylesheet does not load
+ * — a bad lake-side connection, or a network policy like Cloudflare WARP
+ * blocking it — every icon rendered as its literal ligature name
+ * ("radio_button_unchecked") instead of a glyph. `next/font/google` cannot
+ * load this one directly (it is not in its supported font list — confirmed
+ * against `next/dist/compiled/@next/font/dist/google/font-data.json` and by
+ * the TS2305 compiler error trying it), because it is a variable icon font
+ * outside next/font's normal Google Fonts catalog. `next/font/local` is the
+ * documented way around that: the woff2 below is Google's own **static**
+ * instance of the font (weight 400, fill 0, grade 0, optical size 24 — the
+ * same defaults `MaterialIcon` already rendered through the old CDN link,
+ * since nothing in this codebase sets a variable-axis
+ * `font-variation-settings`), not the ~4 MB variable version, which would
+ * only add masters this app never uses. See `.material-symbols-outlined`
+ * in `app/globals.css` for where the resulting `--font-material-symbols`
+ * variable is consumed.
+ */
+const materialSymbolsOutlined = localFont({
+  display: "block",
+  src: "./fonts/MaterialSymbolsOutlined-static.woff2",
+  variable: "--font-material-symbols",
+});
+
 export const metadata: Metadata = {
   title: "Arenal Water Sports — Operaciones",
   description:
@@ -39,22 +66,8 @@ const RootLayout = ({
   children: React.ReactNode;
 }>): React.JSX.Element => (
   <html lang="es">
-    <head>
-      {/*
-        Material Symbols Outlined stays on Google's CDN instead of
-        next/font: it is a single variable icon font keyed by ligature
-        name (see MaterialIcon) across FILL/weight/grade/optical-size
-        axes, and next/font's self-hosting pipeline does not carry those
-        axes the way a plain text webfont works. The two text fonts above
-        are self-hosted; this is the one deliberate exception.
-      */}
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
-      />
-    </head>
     <body
-      className={`${hankenGrotesk.variable} ${jetbrainsMono.variable} bg-background text-on-background antialiased`}
+      className={`${hankenGrotesk.variable} ${jetbrainsMono.variable} ${materialSymbolsOutlined.variable} bg-background text-on-background antialiased`}
     >
       {children}
     </body>
