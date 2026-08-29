@@ -11,6 +11,7 @@ export const FIELD_IDS = {
   NEW_PASSWORD: "new_password",
   NO_ROBOT: "no_robot",
   PASSWORD: "password",
+  PIN: "pin",
   PHONE: "phone",
   USERNAME: "username",
 } as const;
