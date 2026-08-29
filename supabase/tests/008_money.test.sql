@@ -1,5 +1,5 @@
 begin;
-select plan(18);
+select plan(22);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -83,6 +83,15 @@ select lives_ok(
   'un porcentaje de devolucion valido se acepta'
 );
 
+-- El limite superior es inclusivo: una devolucion del 100% (cancelacion total)
+-- se acepta, no solo valores por debajo.
+select lives_ok(
+  $$ insert into refunds (reservation_id, percentage, amount, currency, reason, created_by)
+     values ('dddddddd-0000-0000-0000-000000000001', 100, 60, 'USD', 'Cancelacion total',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'un porcentaje de devolucion de exactamente 100 se acepta'
+);
+
 -- ============================ deposits ============================
 
 -- El monto de un deposito tiene que ser positivo.
@@ -105,6 +114,23 @@ select is(
   'un deposito nuevo queda en estado held'
 );
 
+-- status = 'held' ES la lista de pendientes de resolver: no hay tabla ni bandera
+-- aparte, asi que el indice parcial que la hace instantanea tiene que existir...
+select has_index(
+  'deposits', 'deposits_pending_idx',
+  'el indice deposits_pending_idx existe'
+);
+
+-- ...y seguir filtrado por status = 'held'. Si alguien le quitara el WHERE (o
+-- lo cambiara), la lista de pendientes dejaria de ser instantanea sin que nada
+-- mas en la suite lo notara.
+select matches(
+  (select indexdef from pg_indexes
+   where schemaname = 'public' and tablename = 'deposits' and indexname = 'deposits_pending_idx'),
+  'WHERE \(status = ''held''::deposit_status\)',
+  'el indice deposits_pending_idx sigue filtrado por status = held'
+);
+
 -- deposits_resolution_shape: un deposito held no puede llevar resolved_at.
 select throws_ok(
   $$ insert into deposits (reservation_id, amount, currency, status, resolved_at, created_by)
@@ -112,6 +138,15 @@ select throws_ok(
              '11111111-1111-1111-1111-111111111111') $$,
   '23514', null,
   'un deposito held no puede llevar resolved_at'
+);
+
+-- deposits_resolution_shape: un deposito held tampoco puede llevar retained_amount.
+select throws_ok(
+  $$ insert into deposits (reservation_id, amount, currency, status, retained_amount, created_by)
+     values ('dddddddd-0000-0000-0000-000000000001', 100, 'USD', 'held', 40,
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23514', null,
+  'un deposito held no puede llevar retained_amount'
 );
 
 -- deposits_resolution_shape: un deposito resuelto exige resolved_at.
