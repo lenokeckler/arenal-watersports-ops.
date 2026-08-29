@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Panel de Administración Financiera - Arenal Water Sports</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "tertiary-container": "#5ec9ff",
+                        "surface": "#0b1326",
+                        "background": "#0b1326",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-high": "#222a3d",
+                        "surface-container-lowest": "#060e20",
+                        "primary-fixed-dim": "#3cddc7",
+                        "secondary-fixed": "#ffdad8",
+                        "primary": "#57f1db",
+                        "inverse-primary": "#006b5f",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "tertiary-fixed": "#c4e7ff",
+                        "surface-container-low": "#131b2e",
+                        "secondary-container": "#881d24",
+                        "inverse-on-surface": "#283044",
+                        "surface-bright": "#31394d",
+                        "surface-tint": "#3cddc7",
+                        "on-secondary": "#670211",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#2d3449",
+                        "on-surface-variant": "#bacac5",
+                        "primary-container": "#2dd4bf",
+                        "on-primary-fixed": "#00201c",
+                        "on-tertiary-fixed": "#001e2c",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "on-secondary-container": "#ff9996",
+                        "on-surface": "#dae2fd",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-variant": "#2d3449",
+                        "surface-dim": "#0b1326",
+                        "tertiary": "#afe0ff",
+                        "on-primary": "#003731",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#3c4a46",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-secondary-fixed": "#410006",
+                        "primary-fixed": "#62fae3",
+                        "surface-container": "#171f33",
+                        "on-tertiary": "#00354a",
+                        "on-background": "#dae2fd",
+                        "secondary": "#ffb3b0",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "outline": "#859490",
+                        "on-primary-container": "#00574d",
+                        "on-tertiary-container": "#005371"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "20px",
+                        "xl": "80px",
+                        "xs": "4px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "margin-desktop": "40px",
+                        "sm": "12px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "title-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-panel-hover:hover {
+            background: rgba(30, 41, 59, 0.85);
+            box-shadow: inset 0 0 0 2px rgba(87, 241, 219, 0.5); /* Primary color glow */
+        }
+
+        .glass-input {
+            background: rgba(11, 19, 38, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-input:focus-within {
+            box-shadow: inset 0 0 0 1px #57f1db; /* Primary glow */
+            border-color: #57f1db;
+        }
+
+        /* Ambient Background */
+        body {
+            background: #020617;
+            background-image: radial-gradient(circle at 15% 50%, rgba(0, 107, 95, 0.15) 0%, transparent 50%),
+                              radial-gradient(circle at 85% 30%, rgba(0, 83, 113, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #dae2fd;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(11, 19, 38, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(87, 241, 219, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(87, 241, 219, 0.6);
+        }
+    </style>
+</head>
+<body class="font-body-base text-body-base bg-background text-on-background h-screen overflow-hidden flex">
+<!-- SideNavBar (from JSON, modified active state for 'Reports') -->
+<aside class="hidden lg:flex flex-col h-full py-md h-screen sticky left-0 top-0 w-64 bg-surface-container dark:bg-surface-container shadow-xl border-r border-white/5 z-50">
+<!-- Header -->
+<div class="px-md pb-lg mb-md border-b border-white/5 flex flex-col items-center">
+<div class="w-16 h-16 rounded-full glass-panel mb-sm overflow-hidden flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" data-icon="water" style="font-size: 32px;">water</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary text-center">Arenal Ops</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mt-xs tracking-widest text-center">Command Center</p>
+</div>
+<!-- Main Navigation -->
+<nav class="flex-1 overflow-y-auto px-sm flex flex-col gap-xs">
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="dashboard">dashboard</span>
+<span class="font-title-md text-title-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="directions_boat">directions_boat</span>
+<span class="font-title-md text-title-md">Fleet</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="calendar_month">calendar_month</span>
+<span class="font-title-md text-title-md">Reservations</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="badge">badge</span>
+<span class="font-title-md text-title-md">Staff</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="inventory_2">inventory_2</span>
+<span class="font-title-md text-title-md">Inventory</span>
+</a>
+</nav>
+<!-- CTA & Footer -->
+<div class="mt-auto px-md pt-md border-t border-white/5 flex flex-col gap-sm">
+<button class="w-full bg-primary text-on-primary font-button text-button py-sm rounded-lg uppercase tracking-wide hover:brightness-110 transition-all active:scale-95 shadow-[0_0_15px_rgba(87,241,219,0.3)]">
+                New Booking
+            </button>
+<div class="flex flex-col mt-sm gap-xs">
+<!-- ACTIVE NAV ITEM (Reports) -->
+<a class="flex items-center gap-sm bg-primary-container/20 text-primary border-l-4 border-primary px-md py-sm rounded-r-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" data-weight="fill" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-title-md text-title-md font-bold">Reports</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform text-error" data-icon="logout">logout</span>
+<span class="font-title-md text-title-md">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+<!-- TopNavBar (from JSON, acting as contextual header) -->
+<header class="w-full sticky top-0 z-40 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-sm flex justify-between items-center px-margin-desktop h-20">
+<div class="flex items-center gap-md">
+<!-- Mobile Menu Trigger (hidden on desktop) -->
+<button class="lg:hidden text-primary hover:bg-white/5 p-2 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary tracking-tight">
+                    Financial Reports
+                </div>
+</div>
+<!-- Contextual Actions -->
+<div class="flex items-center gap-sm">
+<!-- Date Filter -->
+<div class="hidden md:flex items-center glass-input rounded-full px-sm py-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2" data-icon="calendar_today">calendar_today</span>
+<select class="bg-transparent border-none text-on-surface font-body-base text-body-base focus:ring-0 cursor-pointer appearance-none outline-none">
+<option class="bg-surface-container text-on-surface">Last 30 Days</option>
+<option class="bg-surface-container text-on-surface">This Week</option>
+<option class="bg-surface-container text-on-surface">This Month</option>
+<option class="bg-surface-container text-on-surface">Custom Range...</option>
+</select>
+<span class="material-symbols-outlined text-on-surface-variant text-sm ml-2">expand_more</span>
+</div>
+<button class="flex items-center gap-2 bg-transparent border border-primary text-primary font-button text-button px-md py-sm rounded-full uppercase tracking-wide hover:bg-primary/10 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+<span class="hidden md:inline">Exportar Reportes</span>
+</button>
+<div class="h-8 w-px bg-white/10 mx-2"></div>
+<button class="text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-white/10 ml-2 overflow-hidden cursor-pointer hover:border-primary/50 transition-colors">
+<img class="w-full h-full object-cover" data-alt="A close up, professional headshot of a marine operations administrator in a sleek navy polo shirt, set against a blurred background of a modern harbor control room with teal glowing monitors. The lighting is dramatic but clean, emphasizing a serious, focused expression. The overall tone is high-tech, professional, and reliable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvwC94HTC1nQJVlQzncAWlI4vkDFPcqi2dxCb1tWFuqY1L26fQG_iMKAmcIkIG4DoLiz7Y9td8dw3uo2SPSCKm1Ox0ZIb4FtfAerJwbdNPmnZ9TeTMw2yTVXKoK7wmu7Ur2oPl_dhpHX_0zMF7R3458ddd2Tf6kJwTpIZMYAD_Byd_1lRBRj2N584nz80k4M5_lTrs8ssMP-a_KSYqhdhIVy8vcrXFT_dvWy8ThTUQSS7RHQAQy6Ueqg"/>
+</div>
+</div>
+</header>
+<!-- Canvas Zone (Dashboard Content) -->
+<div class="flex-1 overflow-y-auto p-margin-desktop md:p-margin-desktop p-margin-mobile">
+<div class="max-w-[1440px] mx-auto flex flex-col gap-gutter">
+<!-- Bento Grid Top Row: KPI Cards -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Total Revenue USD -->
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-colors"></div>
+<div class="flex justify-between items-start mb-sm relative z-10">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Ingresos Totales (USD)</span>
+<span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-display-lg text-display-lg text-on-surface">$45,230</h3>
+<div class="flex items-center gap-2 mt-xs">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="trending_up">trending_up</span>
+<span class="text-primary font-body-base text-body-base">+12.5% vs last month</span>
+</div>
+</div>
+</div>
+<!-- Total Revenue CRC -->
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary-container/10 rounded-full blur-2xl group-hover:bg-tertiary-container/20 transition-colors"></div>
+<div class="flex justify-between items-start mb-sm relative z-10">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Ingresos Totales (CRC)</span>
+<span class="material-symbols-outlined text-tertiary-container" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-display-lg text-display-lg text-on-surface">₡23.5M</h3>
+<div class="flex items-center gap-2 mt-xs">
+<span class="material-symbols-outlined text-tertiary-container text-sm" data-icon="trending_up">trending_up</span>
+<span class="text-tertiary-container font-body-base text-body-base">+8.2% vs last month</span>
+</div>
+</div>
+</div>
+<!-- Pending Deposits -->
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between relative overflow-hidden group border-l-4 border-l-secondary-container">
+<div class="flex justify-between items-start mb-sm relative z-10">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Depósitos Pendientes</span>
+<span class="material-symbols-outlined text-secondary-container" data-icon="pending_actions">pending_actions</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">14 Activos</h3>
+<p class="text-on-surface-variant font-body-base text-body-base mt-xs">Total: $4,200 en retención</p>
+</div>
+</div>
+<!-- Retained/Issues -->
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between relative overflow-hidden group border-l-4 border-l-error">
+<div class="flex justify-between items-start mb-sm relative z-10">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Depósitos Retenidos</span>
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">2 Incidentes</h3>
+<p class="text-on-surface-variant font-body-base text-body-base mt-xs">Requieren revisión manual</p>
+</div>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Daily Revenue Line Chart (Span 2) -->
+<div class="glass-panel rounded-xl p-md lg:col-span-2 flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-title-md text-title-md text-on-surface">Ingresos Diarios (Comparativo)</h2>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-primary/20 text-primary font-label-mono text-label-mono border border-primary/30">USD</span>
+<span class="px-3 py-1 rounded-full bg-tertiary-container/20 text-tertiary-container font-label-mono text-label-mono border border-tertiary-container/30">CRC</span>
+</div>
+</div>
+<div class="flex-1 relative w-full h-full">
+<canvas id="dailyRevenueChart"></canvas>
+</div>
+</div>
+<!-- Currency Split Doughnut Chart -->
+<div class="glass-panel rounded-xl p-md flex flex-col h-[400px]">
+<h2 class="font-title-md text-title-md text-on-surface mb-md">Desglose por Moneda</h2>
+<div class="flex-1 relative w-full h-full flex items-center justify-center">
+<canvas id="currencySplitChart"></canvas>
+</div>
+<div class="mt-4 flex justify-center gap-md font-label-mono text-label-mono">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="text-on-surface">USD (65%)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-tertiary-container"></div>
+<span class="text-on-surface">CRC (35%)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Data Table for Deposits -->
+<section class="glass-panel rounded-xl flex flex-col overflow-hidden mb-xl">
+<div class="p-md border-b border-white/10 flex justify-between items-center bg-surface-container-low/50">
+<h2 class="font-title-md text-title-md text-on-surface">Gestión de Depósitos de Garantía</h2>
+<div class="flex gap-sm">
+<button class="glass-input px-3 py-1 rounded-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span> Filtros
+                            </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/5 bg-surface-container/30 font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">
+<th class="p-4 font-medium">Reserva ID</th>
+<th class="p-4 font-medium">Cliente</th>
+<th class="p-4 font-medium">Equipo</th>
+<th class="p-4 font-medium">Monto</th>
+<th class="p-4 font-medium">Estado</th>
+<th class="p-4 font-medium text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="font-body-base text-body-base">
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="p-4 font-label-mono text-primary">#RES-0921</td>
+<td class="p-4 text-on-surface">Michael Scott</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-surface-container border border-white/10">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="directions_boat">directions_boat</span>
+<span class="text-sm">Jet Ski XT</span>
+</div>
+</td>
+<td class="p-4 text-on-surface font-label-mono">$300.00</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary-container/20 text-secondary-fixed-dim text-xs font-bold border border-secondary-container/50">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span> Pendiente
+                                        </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="p-4 font-label-mono text-primary">#RES-0918</td>
+<td class="p-4 text-on-surface">Dwight Schrute</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-surface-container border border-white/10">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="rowing">rowing</span>
+<span class="text-sm">Kayak Doble</span>
+</div>
+</td>
+<td class="p-4 text-on-surface font-label-mono">₡50,000</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-error-container/20 text-error text-xs font-bold border border-error-container/50">
+<span class="w-2 h-2 rounded-full bg-error"></span> Retenido
+                                        </span>
+</td>
+<td class="p-4 text-right">
+<button class="bg-error-container text-on-error-container font-button text-xs px-3 py-1 rounded hover:brightness-110 transition-all uppercase">
+                                            Revisar Daños
+                                        </button>
+</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="p-4 font-label-mono text-primary">#RES-0915</td>
+<td class="p-4 text-on-surface">Jim Halpert</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-surface-container border border-white/10">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="sailing">sailing</span>
+<span class="text-sm">Hobie Cat</span>
+</div>
+</td>
+<td class="p-4 text-on-surface font-label-mono">$500.00</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary-container/20 text-primary text-xs font-bold border border-primary-container/50">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Liberado
+                                        </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+</main>
+<script>
+        // Chart.js Configuration
+        Chart.defaults.color = '#bacac5'; // on-surface-variant
+        Chart.defaults.font.family = "'JetBrains Mono', monospace";
+        
+        // 1. Daily Revenue Chart
+        const ctxDaily = document.getElementById('dailyRevenueChart').getContext('2d');
+        
+        // Create gradients for lines
+        const gradientUSD = ctxDaily.createLinearGradient(0, 0, 0, 400);
+        gradientUSD.addColorStop(0, 'rgba(87, 241, 219, 0.5)'); // primary
+        gradientUSD.addColorStop(1, 'rgba(87, 241, 219, 0.0)');
+        
+        const gradientCRC = ctxDaily.createLinearGradient(0, 0, 0, 400);
+        gradientCRC.addColorStop(0, 'rgba(94, 201, 255, 0.3)'); // tertiary-container
+        gradientCRC.addColorStop(1, 'rgba(94, 201, 255, 0.0)');
+
+        new Chart(ctxDaily, {
+            type: 'line',
+            data: {
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'],
+                datasets: [
+                    {
+                        label: 'USD Revenue',
+                        data: [1200, 1900, 1500, 2200, 1800, 2800, 2400, 3100, 2900, 3500, 3200, 4100, 3800, 4500],
+                        borderColor: '#57f1db', // primary
+                        backgroundColor: gradientUSD,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#0b1326',
+                        pointBorderColor: '#57f1db',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'CRC Revenue (Eq USD)',
+                        data: [800, 1100, 900, 1400, 1200, 1600, 1300, 1800, 1500, 2100, 1900, 2400, 2200, 2700],
+                        borderColor: '#5ec9ff', // tertiary-container
+                        backgroundColor: gradientCRC,
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointBackgroundColor: '#0b1326',
+                        pointBorderColor: '#5ec9ff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(11, 19, 38, 0.9)',
+                        titleColor: '#dae2fd',
+                        bodyColor: '#bacac5',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) { label += ': '; }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                        ticks: { font: { size: 10 } }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                        ticks: { 
+                            font: { size: 10 },
+                            callback: function(value) { return '$' + value; }
+                        }
+                    }
+                },
+                interaction: { mode: 'index', intersect: false }
+            }
+        });
+
+        // 2. Currency Split Chart
+        const ctxSplit = document.getElementById('currencySplitChart').getContext('2d');
+        new Chart(ctxSplit, {
+            type: 'doughnut',
+            data: {
+                labels: ['USD', 'CRC'],
+                datasets: [{
+                    data: [65, 35],
+                    backgroundColor: [
+                        '#57f1db', // primary
+                        '#5ec9ff'  // tertiary-container
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(11, 19, 38, 0.9)',
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body></html>

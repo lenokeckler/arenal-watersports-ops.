@@ -1,0 +1,373 @@
+<!DOCTYPE html><html class="dark" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Arenal Ops - Gestión de Flota</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#57f1db",
+                    "on-tertiary-fixed-variant": "#004c69",
+                    "inverse-surface": "#dae2fd",
+                    "surface-container-highest": "#2d3449",
+                    "on-tertiary-fixed": "#001e2c",
+                    "outline": "#859490",
+                    "tertiary-fixed-dim": "#7bd0ff",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006b5f",
+                    "on-secondary": "#670211",
+                    "surface-container": "#171f33",
+                    "outline-variant": "#3c4a46",
+                    "tertiary": "#afe0ff",
+                    "error": "#ffb4ab",
+                    "on-background": "#dae2fd",
+                    "tertiary-fixed": "#c4e7ff",
+                    "secondary": "#ffb3b0",
+                    "on-primary-fixed": "#00201c",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed": "#410006",
+                    "on-surface-variant": "#bacac5",
+                    "surface-container-high": "#222a3d",
+                    "on-primary-container": "#00574d",
+                    "surface-container-low": "#131b2e",
+                    "surface-variant": "#2d3449",
+                    "surface-bright": "#31394d",
+                    "on-primary": "#003731",
+                    "on-secondary-container": "#ff9996",
+                    "surface-dim": "#0b1326",
+                    "inverse-on-surface": "#283044",
+                    "on-tertiary": "#00354a",
+                    "secondary-container": "#881d24",
+                    "primary-container": "#2dd4bf",
+                    "primary-fixed": "#62fae3",
+                    "on-tertiary-container": "#005371",
+                    "surface": "#0b1326",
+                    "surface-tint": "#3cddc7",
+                    "background": "#0b1326",
+                    "on-primary-fixed-variant": "#005047",
+                    "tertiary-container": "#5ec9ff",
+                    "secondary-fixed-dim": "#ffb3b0",
+                    "surface-container-lowest": "#060e20",
+                    "primary-fixed-dim": "#3cddc7",
+                    "error-container": "#93000a",
+                    "secondary-fixed": "#ffdad8",
+                    "on-surface": "#dae2fd",
+                    "on-secondary-fixed-variant": "#881d24"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "lg": "48px",
+                    "md": "24px",
+                    "xl": "80px",
+                    "margin-desktop": "40px",
+                    "sm": "12px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "button": [
+                            "Hanken Grotesk"
+                    ],
+                    "body-base": [
+                            "Hanken Grotesk"
+                    ],
+                    "title-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-mono": [
+                            "JetBrains Mono"
+                    ],
+                    "display-lg": [
+                            "Hanken Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "button": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-base": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "title-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-mono": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020617;
+            background-image: radial-gradient(circle at top right, rgba(87, 241, 219, 0.1), transparent 50%),
+                              radial-gradient(circle at bottom left, rgba(255, 179, 176, 0.05), transparent 50%);
+            background-attachment: fixed;
+        }
+        
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-panel {
+            background-color: rgba(11, 19, 38, 0.85); /* surface color with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .interactive-glow:hover {
+            box-shadow: inset 0 0 0 2px theme('colors.primary');
+            background-color: rgba(30, 41, 59, 0.9);
+        }
+        
+        .status-libre { color: theme('colors.primary'); border-color: theme('colors.primary'); }
+        .status-vencido { color: theme('colors.error'); border-color: theme('colors.error'); }
+        .status-mantenimiento { color: theme('colors.tertiary'); border-color: theme('colors.tertiary'); }
+        
+        .bg-status-libre { background-color: theme('colors.primary'); }
+        .bg-status-vencido { background-color: theme('colors.error'); }
+        .bg-status-mantenimiento { background-color: theme('colors.tertiary'); }
+        
+        /* Hide scrollbar for cleaner UI */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        * {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background min-h-screen pb-[90px] font-body-base relative overflow-x-hidden">
+<!-- Background decorative elements -->
+<div class="fixed inset-0 z-[-1] pointer-events-none">
+<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[80px]"></div>
+</div>
+<!-- TopAppBar -->
+<header class="bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl docked full-width top-0 sticky border-b border-white/10 dark:border-white/5 shadow-sm flex justify-between items-center px-margin-mobile py-sm w-full z-50">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-outline/30 flex items-center justify-center text-primary font-bold">
+                AO
+            </div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface dark:text-on-surface">Arenal Ops</h1>
+</div>
+<button class="w-10 h-10 rounded-full hover:bg-primary/10 transition-colors flex items-center justify-center text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-margin-mobile pt-md flex flex-col gap-md">
+<!-- Filters / Categories -->
+<div class="flex gap-sm overflow-x-auto pb-2 snap-x">
+<button class="snap-start shrink-0 px-4 py-2 rounded-full bg-primary/20 text-primary border border-primary/30 font-label-mono text-label-mono uppercase tracking-wider">
+                Todos
+            </button>
+<button class="snap-start shrink-0 px-4 py-2 rounded-full glass-card text-on-surface-variant hover:text-on-surface font-label-mono text-label-mono uppercase tracking-wider">
+                Jet Skis
+            </button>
+<button class="snap-start shrink-0 px-4 py-2 rounded-full glass-card text-on-surface-variant hover:text-on-surface font-label-mono text-label-mono uppercase tracking-wider">
+                Kayaks
+            </button>
+<button class="snap-start shrink-0 px-4 py-2 rounded-full glass-card text-on-surface-variant hover:text-on-surface font-label-mono text-label-mono uppercase tracking-wider">
+                Paddle
+            </button>
+</div>
+<!-- Fleet List -->
+<div class="flex flex-col gap-md">
+<!-- Unit Card 1: Libre -->
+<div class="glass-card rounded-xl overflow-hidden relative group interactive-glow transition-all duration-300">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern yellow and black jet ski docked on calm, clear blue water. Shot from a slightly elevated angle. High-end, hyper-realistic, bright natural lighting, professional photography aesthetic, conveying speed and readiness. Deep blues and vibrant yellows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxUhwTL_mzQoExgXzDvPpjYr9HlFLvjN0nM__SCA-k0N4DKnK_EdLyCJkHmawRC5o91De1-bZZn5kQTbzOPZZYYY-1EDcipgoQq0EBkgFfMWWsNY7vg41MwAoEHC6YOi7viOAug5pMWa2CFoqwe_hUEYj1lzPyRzYdi641jc1ewM1Hl3gJn7VU6e2v3Tx4Vq4rGIgow56yGWKE1cvdObpPYmWN8bKzp-4yoFYls2k3zWFD0nocad9PpA">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest to-transparent opacity-80"></div>
+<div class="absolute top-sm right-sm bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-full border border-primary/30 flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-status-libre shadow-[0_0_8px_rgba(87,241,219,0.8)]"></div>
+<span class="font-label-mono text-label-mono text-primary uppercase">Libre</span>
+</div>
+<div class="absolute bottom-sm left-sm">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Yamaha EX #01</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant mt-1">95% Combustible</p>
+</div>
+</div>
+<div class="p-sm flex justify-between items-center bg-surface-container-low/50">
+<div class="flex gap-sm">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-outline-variant text-[18px]">timer</span>
+<span class="font-label-mono text-[10px] text-outline mt-1">--:--</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary-fixed uppercase font-button text-button px-6 py-2 rounded-lg hover:bg-primary-fixed transition-colors font-bold shadow-[0_0_15px_rgba(87,241,219,0.3)]">
+                        Iniciar
+                    </button>
+</div>
+</div>
+<!-- Unit Card 2: Vencido -->
+<div class="glass-card rounded-xl overflow-hidden relative group interactive-glow transition-all duration-300">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern red and white jet ski in action on the water, slightly blurred background indicating movement. High-end, hyper-realistic, dramatic lighting, professional photography aesthetic. Deep blues, vibrant reds, and stark whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU7TQ9kX16kXmcxYon-EUTYHL4_eWIXTaD9Q_Kmle6dqK9fnrd4wZyV8a5ZDAUfOci46XCtPXfisXIxb7UIyQBrfFq8NBXmt9oQ-36KoGL3ZqrixqQ2tgUkWcG48iFTYnUeTM_p0Q3b86UTnvlA2g_RTGXP_EUAoy8R5OeznjLORIFXzaugsaLx0oQJTA2R-fJVT4jBSMEh_xxR6AAzo-XjOaDlzZ7QI5cAdY3iWF_eM7jsKPFYJfKrQ">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest to-transparent opacity-80"></div>
+<div class="absolute top-sm right-sm bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-full border border-error/30 flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-status-vencido shadow-[0_0_8px_rgba(255,180,171,0.8)] animate-pulse"></div>
+<span class="font-label-mono text-label-mono text-error uppercase">Vencido</span>
+</div>
+<div class="absolute bottom-sm left-sm">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Sea-Doo Spark #04</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant mt-1">42% Combustible</p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="h-1 w-full bg-surface-variant">
+<div class="h-full bg-error w-full"></div>
+</div>
+<div class="p-sm flex justify-between items-center bg-error/5 border-t border-error/10">
+<div class="flex gap-sm">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-error text-[18px]">timer_off</span>
+<span class="font-label-mono text-[10px] text-error mt-1 font-bold">+05:23</span>
+</div>
+</div>
+<button class="bg-error text-on-error uppercase font-button text-button px-6 py-2 rounded-lg hover:bg-[#ff8a80] transition-colors font-bold shadow-[0_0_15px_rgba(255,180,171,0.3)]">
+                        Finalizar
+                    </button>
+</div>
+</div>
+<!-- Unit Card 3: En Uso -->
+<div class="glass-card rounded-xl overflow-hidden relative group interactive-glow transition-all duration-300">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A modern dark blue and neon green jet ski cutting through gentle waves. Bright sunny day, reflections on the water. High-end, hyper-realistic, professional photography aesthetic. Deep blues, vibrant greens, stark whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADmv8S281vnBApGMJbRZJOEX3CnuuCjJ6ASdljU7otI3Clt7INFt69UYIF6Ath8Ey8Mm74j1pNcbZ170iPdf4RGSM3QWumFHhuT22D-yQrtvjxT8LKv3Msc7WmNfheSMCwDydXA5SVWFPcX40nFUEc56pmP9Dw6Mg6mRQoQ6ucyO6vYpET62liVes4eI91DI82OCRkLEeLARmkLs2AcTuEFskWbOHQYaKjWLt9ejYPNsVpAOatFa7pkA">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest to-transparent opacity-80"></div>
+<div class="absolute top-sm right-sm bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-full border border-tertiary/30 flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_rgba(175,224,255,0.8)]"></div>
+<span class="font-label-mono text-label-mono text-tertiary uppercase">En Uso</span>
+</div>
+<div class="absolute bottom-sm left-sm">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Yamaha EX #02</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant mt-1">78% Combustible</p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="h-1 w-full bg-surface-variant">
+<div class="h-full bg-tertiary w-3/4"></div>
+</div>
+<div class="p-sm flex justify-between items-center bg-surface-container-low/50">
+<div class="flex gap-sm">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-tertiary text-[18px]">timer</span>
+<span class="font-label-mono text-[10px] text-tertiary mt-1">15:42</span>
+</div>
+</div>
+<button class="bg-transparent border border-tertiary text-tertiary uppercase font-button text-button px-6 py-2 rounded-lg hover:bg-tertiary/10 transition-colors font-bold">
+                        Extender
+                    </button>
+</div>
+</div>
+<!-- Unit Card 4: En Mantenimiento -->
+<div class="glass-card rounded-xl overflow-hidden relative opacity-70 grayscale-[30%]">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A jet ski partially disassembled in a high-tech, clean garage setting. Tools visible nearby. Neutral lighting, professional photography aesthetic. Grays, blacks, metallic tones, subtle dark blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUQstrL-dqXo-dX0nCM9_JYlq811K5-aZMRF_3_4Peo87V8gbghNxPlUMY7mO1Ob5YqtLMOX5vHAm2kpnAgC1r4FKuQGKRIfsRRkT7SdsGtfumGlm6JqN-TkLu4ZUMTFXmomCqhQ5EOMWYzhMs3q03p7CA1X8VuTpza3leY_OysCS4wi-Zw25oMFMg90Yyy2SpTq5Lk2ZHObJdKIAUVIr5WHmkOO6vebSrCYO67MVgw4rrUm3FkaZU1g">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest to-transparent opacity-90"></div>
+<div class="absolute top-sm right-sm bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-full border border-outline/30 flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+<span class="font-label-mono text-label-mono text-outline uppercase">Mantenimiento</span>
+</div>
+<div class="absolute bottom-sm left-sm">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold text-outline">Sea-Doo Spark #02</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant mt-1">Revisión de Motor</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface/80 dark:bg-surface-container-low/80 backdrop-blur-md fixed bottom-0 w-full rounded-t-xl z-50 border-t border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] flex justify-around items-center h-[72px] pb-safe px-xs">
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="font-label-mono text-label-mono mt-1">Tablero</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">add_circle</span>
+<span class="font-label-mono text-label-mono mt-1">Nueva</span>
+</a>
+<!-- Active Tab -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1; filter: drop-shadow(0 0 8px rgba(87,241,219,0.5));">sailing</span>
+<span class="font-label-mono text-label-mono mt-1 font-bold">Equipos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">group</span>
+<span class="font-label-mono text-label-mono mt-1">Usuarios</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]">history</span>
+<span class="font-label-mono text-label-mono mt-1">Historial</span>
+</a>
+</nav>
+</body></html>
