@@ -1,26 +1,148 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/**
+ * Arenal Ops design system.
+ *
+ * Extracted once from the Stitch reference
+ * (docs/referencia/stitch/ingreso-al-sistema--movil.html), a Material 3
+ * dark theme, for all 21 screens to share. Tailwind CSS 4 reads design
+ * tokens from CSS via `@theme` instead of `tailwind.config.js`, so any
+ * screen can write `bg-surface`, `text-primary`, `text-headline-lg`, etc.
+ * and get the right value without touching configuration.
+ *
+ * The app has a single, fixed dark theme — it does not follow the
+ * operating system's light/dark preference, so there is no
+ * `prefers-color-scheme` branch here.
+ *
+ * Fonts: Hanken Grotesk (body/headings) and JetBrains Mono (labels) are
+ * self-hosted through `next/font` in `app/layout.tsx`, which sets
+ * `--font-hanken-grotesk` / `--font-jetbrains-mono`; this file only points
+ * the standard `--font-sans` / `--font-mono` tokens at them, so components
+ * keep using the ordinary `font-sans` / `font-mono` utilities. Material
+ * Symbols Outlined loads from Google's CDN instead — see the comment in
+ * `app/layout.tsx` for why.
+ */
+@theme {
+  /* Material 3 color roles (Stitch tailwind.config -> theme.extend.colors) */
+  --color-background: #0b1326;
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-inverse-on-surface: #283044;
+  --color-inverse-primary: #006b5f;
+  --color-inverse-surface: #dae2fd;
+  --color-on-background: #dae2fd;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+  --color-on-primary: #003731;
+  --color-on-primary-container: #00574d;
+  --color-on-primary-fixed: #00201c;
+  --color-on-primary-fixed-variant: #005047;
+  --color-on-secondary: #670211;
+  --color-on-secondary-container: #ff9996;
+  --color-on-secondary-fixed: #410006;
+  --color-on-secondary-fixed-variant: #881d24;
+  --color-on-surface: #dae2fd;
+  --color-on-surface-variant: #bacac5;
+  --color-on-tertiary: #00354a;
+  --color-on-tertiary-container: #005371;
+  --color-on-tertiary-fixed: #001e2c;
+  --color-on-tertiary-fixed-variant: #004c69;
+  --color-outline: #859490;
+  --color-outline-variant: #3c4a46;
+  --color-primary: #57f1db;
+  --color-primary-container: #2dd4bf;
+  --color-primary-fixed: #62fae3;
+  --color-primary-fixed-dim: #3cddc7;
+  --color-secondary: #ffb3b0;
+  --color-secondary-container: #881d24;
+  --color-secondary-fixed: #ffdad8;
+  --color-secondary-fixed-dim: #ffb3b0;
+  --color-surface: #0b1326;
+  --color-surface-bright: #31394d;
+  --color-surface-container: #171f33;
+  --color-surface-container-high: #222a3d;
+  --color-surface-container-highest: #2d3449;
+  --color-surface-container-low: #131b2e;
+  --color-surface-container-lowest: #060e20;
+  --color-surface-dim: #0b1326;
+  --color-surface-tint: #3cddc7;
+  --color-surface-variant: #2d3449;
+  --color-tertiary: #afe0ff;
+  --color-tertiary-container: #5ec9ff;
+  --color-tertiary-fixed: #c4e7ff;
+  --color-tertiary-fixed-dim: #7bd0ff;
+
+  /* Fonts — self-hosted through next/font, see app/layout.tsx */
+  --font-sans: var(--font-hanken-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /*
+   * Type scale (Stitch tailwind.config -> theme.extend.fontSize), so
+   * `text-headline-lg`, `text-title-md`, etc. carry the right size, line
+   * height, tracking and weight together. Tailwind's own `text-xs` …
+   * `text-6xl` scale still works unchanged alongside these.
+   */
+  --text-body-base: 1rem;
+  --text-body-base--line-height: 1.6;
+  --text-body-base--font-weight: 400;
+  --text-button: 0.875rem;
+  --text-button--line-height: 1;
+  --text-button--font-weight: 600;
+  --text-display-lg: 3rem;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+  --text-headline-lg: 2rem;
+  --text-headline-lg--line-height: 1.2;
+  --text-headline-lg--font-weight: 600;
+  --text-headline-lg-mobile: 1.5rem;
+  --text-headline-lg-mobile--line-height: 1.2;
+  --text-headline-lg-mobile--font-weight: 600;
+  --text-label-mono: 0.75rem;
+  --text-label-mono--line-height: 1;
+  --text-label-mono--letter-spacing: 0.05em;
+  --text-label-mono--font-weight: 500;
+  --text-title-md: 1.25rem;
+  --text-title-md--line-height: 1.4;
+  --text-title-md--font-weight: 500;
+
+  /*
+   * Spacing scale (Stitch tailwind.config -> theme.extend.spacing), added
+   * alongside Tailwind's numeric scale: `p-sm`, `gap-md`, `px-margin-mobile`
+   * etc. all resolve from here.
+   */
+  --spacing-base: 0.5rem;
+  --spacing-gutter: 1.25rem;
+  --spacing-lg: 3rem;
+  --spacing-margin-desktop: 2.5rem;
+  --spacing-margin-mobile: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-xl: 5rem;
+  --spacing-xs: 0.25rem;
+
+  /*
+   * Border radius: Stitch's DEFAULT (0.25rem), lg (0.5rem) and xl (0.75rem)
+   * are already Tailwind v4's defaults, and `rounded-full` already renders
+   * a full pill — nothing to override here.
+   */
+
+  /* Shake, for a rejected-attempt banner (login "Acceso Denegado", etc.) */
+  --animate-shake: shake 0.5s ease-in-out;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes shake {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-0.3125rem);
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(0.3125rem);
+  }
 }
