@@ -2087,6 +2087,11 @@ git commit -m "feat(db): stamp the audit signature from auth.uid() instead of tr
 - Consumes: `has_area()`, `has_mark()`, `is_admin()` de la tarea 3.
 - Produces: RLS activo y políticas sobre `workers`, `worker_areas`, `worker_marks`, `password_reset_pins`, `equipment_categories`, `equipment_units`, `equipment_stock`, `equipment_stock_movements`, `unit_condition_photos`, `damage_reports`, `maintenance_records`, `inventory_counts`, `inventory_count_lines`.
 
+Además de lo que sigue, la prueba debe incluir una aserción de que un
+`delete` sobre una tabla operativa es rechazado para el rol `authenticated`.
+Es la única forma de que la regla global de no borrado quede verificada y no
+solo declarada.
+
 - [ ] **Step 1: Escribir las pruebas que fallan**
 
 Crear `supabase/tests/012_rls_identity_catalog.test.sql`:
@@ -2175,6 +2180,14 @@ Expected: FAIL — sin RLS, los `insert` que deberían ser rechazados pasan.
 Crear `supabase/migrations/20260828001200_rls_identity_catalog.sql`:
 
 ```sql
+-- Defensa en profundidad para "ninguna tabla operativa acepta DELETE".
+-- Las politicas de abajo nunca conceden `delete`, pero Postgres evalua los
+-- GRANT antes que las politicas: revocar el privilegio hace que ningun
+-- `for all` descuidado en el futuro pueda reabrir el borrado por accidente.
+revoke delete on all tables in schema public from anon, authenticated;
+alter default privileges in schema public
+  revoke delete on tables from anon, authenticated;
+
 alter table workers                   enable row level security;
 alter table worker_areas              enable row level security;
 alter table worker_marks              enable row level security;
@@ -2222,15 +2235,21 @@ create policy workers_insert on workers
 create policy worker_areas_select on worker_areas
   for select to authenticated
   using (worker_id = auth.uid() or is_admin());
-create policy worker_areas_write on worker_areas
-  for all to authenticated
+create policy worker_areas_insert on worker_areas
+  for insert to authenticated
+  with check (is_admin());
+create policy worker_areas_update on worker_areas
+  for update to authenticated
   using (is_admin()) with check (is_admin());
 
 create policy worker_marks_select on worker_marks
   for select to authenticated
   using (worker_id = auth.uid() or is_admin());
-create policy worker_marks_write on worker_marks
-  for all to authenticated
+create policy worker_marks_insert on worker_marks
+  for insert to authenticated
+  with check (is_admin());
+create policy worker_marks_update on worker_marks
+  for update to authenticated
   using (is_admin()) with check (is_admin());
 
 -- Los PIN solo los toca el servidor con la llave de servicio, que salta RLS.
@@ -2239,23 +2258,31 @@ create policy worker_marks_write on worker_marks
 -- ---------------- Catalogo ----------------
 create policy categories_select on equipment_categories
   for select to authenticated using (true);
-create policy categories_write on equipment_categories
-  for all to authenticated using (is_admin()) with check (is_admin());
+create policy categories_insert on equipment_categories
+  for insert to authenticated
+  with check (is_admin());
+create policy categories_update on equipment_categories
+  for update to authenticated
+  using (is_admin()) with check (is_admin());
 
 -- ---------------- Inventario ----------------
 create policy units_select on equipment_units
   for select to authenticated using (true);
-create policy units_write on equipment_units
-  for all to authenticated
-  using (has_area('operaciones') or is_admin())
+create policy units_insert on equipment_units
+  for insert to authenticated
   with check (has_area('operaciones') or is_admin());
+create policy units_update on equipment_units
+  for update to authenticated
+  using (has_area('operaciones') or is_admin()) with check (has_area('operaciones') or is_admin());
 
 create policy stock_select on equipment_stock
   for select to authenticated using (true);
-create policy stock_write on equipment_stock
-  for all to authenticated
-  using (has_area('operaciones') or is_admin())
+create policy stock_insert on equipment_stock
+  for insert to authenticated
   with check (has_area('operaciones') or is_admin());
+create policy stock_update on equipment_stock
+  for update to authenticated
+  using (has_area('operaciones') or is_admin()) with check (has_area('operaciones') or is_admin());
 
 create policy stock_movements_select on equipment_stock_movements
   for select to authenticated using (true);
@@ -2266,10 +2293,12 @@ create policy stock_movements_insert on equipment_stock_movements
 -- Solo el encargado general reemplaza las fotos de estado. El resto las ve.
 create policy photos_select on unit_condition_photos
   for select to authenticated using (true);
-create policy photos_write on unit_condition_photos
-  for all to authenticated
-  using (has_mark('encargado_general') or is_admin())
+create policy photos_insert on unit_condition_photos
+  for insert to authenticated
   with check (has_mark('encargado_general') or is_admin());
+create policy photos_update on unit_condition_photos
+  for update to authenticated
+  using (has_mark('encargado_general') or is_admin()) with check (has_mark('encargado_general') or is_admin());
 
 create policy damage_select on damage_reports
   for select to authenticated using (true);
@@ -2279,10 +2308,12 @@ create policy damage_insert on damage_reports
 
 create policy maintenance_select on maintenance_records
   for select to authenticated using (true);
-create policy maintenance_write on maintenance_records
-  for all to authenticated
-  using (has_area('operaciones') or is_admin())
+create policy maintenance_insert on maintenance_records
+  for insert to authenticated
   with check (has_area('operaciones') or is_admin());
+create policy maintenance_update on maintenance_records
+  for update to authenticated
+  using (has_area('operaciones') or is_admin()) with check (has_area('operaciones') or is_admin());
 
 create policy counts_select on inventory_counts
   for select to authenticated using (true);
@@ -2444,28 +2475,48 @@ alter table deposits            enable row level security;
 -- al lago y pregunta cuanto vale una hora de jet ski.
 create policy tariffs_select on tariffs
   for select to authenticated using (true);
-create policy tariffs_write on tariffs
-  for all to authenticated using (is_admin()) with check (is_admin());
+create policy tariffs_insert on tariffs
+  for insert to authenticated
+  with check (is_admin());
+create policy tariffs_update on tariffs
+  for update to authenticated
+  using (is_admin()) with check (is_admin());
 
 create policy extras_select on extras
   for select to authenticated using (true);
-create policy extras_write on extras
-  for all to authenticated using (is_admin()) with check (is_admin());
+create policy extras_insert on extras
+  for insert to authenticated
+  with check (is_admin());
+create policy extras_update on extras
+  for update to authenticated
+  using (is_admin()) with check (is_admin());
 
 create policy extra_compat_select on extra_compatibility
   for select to authenticated using (true);
-create policy extra_compat_write on extra_compatibility
-  for all to authenticated using (is_admin()) with check (is_admin());
+create policy extra_compat_insert on extra_compatibility
+  for insert to authenticated
+  with check (is_admin());
+create policy extra_compat_update on extra_compatibility
+  for update to authenticated
+  using (is_admin()) with check (is_admin());
 
 create policy combos_select on combos
   for select to authenticated using (true);
-create policy combos_write on combos
-  for all to authenticated using (is_admin()) with check (is_admin());
+create policy combos_insert on combos
+  for insert to authenticated
+  with check (is_admin());
+create policy combos_update on combos
+  for update to authenticated
+  using (is_admin()) with check (is_admin());
 
 create policy combo_items_select on combo_items
   for select to authenticated using (true);
-create policy combo_items_write on combo_items
-  for all to authenticated using (is_admin()) with check (is_admin());
+create policy combo_items_insert on combo_items
+  for insert to authenticated
+  with check (is_admin());
+create policy combo_items_update on combo_items
+  for update to authenticated
+  using (is_admin()) with check (is_admin());
 
 -- ---------------- Reservas ----------------
 create policy reservations_select on reservations
@@ -2486,18 +2537,22 @@ create policy reservations_update on reservations
 create policy items_select on reservation_items
   for select to authenticated
   using (has_area('reservas') or has_area('operaciones') or is_admin());
-create policy items_write on reservation_items
-  for all to authenticated
-  using (has_area('reservas') or has_area('operaciones') or is_admin())
+create policy items_insert on reservation_items
+  for insert to authenticated
   with check (has_area('reservas') or has_area('operaciones') or is_admin());
+create policy items_update on reservation_items
+  for update to authenticated
+  using (has_area('reservas') or has_area('operaciones') or is_admin()) with check (has_area('reservas') or has_area('operaciones') or is_admin());
 
 create policy guides_select on reservation_guides
   for select to authenticated
   using (has_area('reservas') or has_area('operaciones') or is_admin());
-create policy guides_write on reservation_guides
-  for all to authenticated
-  using (has_area('reservas') or is_admin())
+create policy guides_insert on reservation_guides
+  for insert to authenticated
   with check (has_area('reservas') or is_admin());
+create policy guides_update on reservation_guides
+  for update to authenticated
+  using (has_area('reservas') or is_admin()) with check (has_area('reservas') or is_admin());
 
 -- ---------------- Dinero de un cliente concreto ----------------
 -- Aqui si entra plata de alguien y operaciones no la recibe ni la resuelve.
@@ -2514,10 +2569,12 @@ create policy refunds_insert on refunds
 
 create policy deposits_select on deposits
   for select to authenticated using (has_area('reservas') or is_admin());
-create policy deposits_write on deposits
-  for all to authenticated
-  using (has_area('reservas') or is_admin())
+create policy deposits_insert on deposits
+  for insert to authenticated
   with check (has_area('reservas') or is_admin());
+create policy deposits_update on deposits
+  for update to authenticated
+  using (has_area('reservas') or is_admin()) with check (has_area('reservas') or is_admin());
 ```
 
 - [ ] **Step 4: Aplicar y correr**
