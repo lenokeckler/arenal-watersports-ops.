@@ -10,6 +10,7 @@ Lo que hay que construir. Generado desde los documentos originales en
 | `flujo-del-proyecto.md`   | El flujo completo de la aplicación en orden de uso. Cada viñeta de primer nivel es un epic y cada una de segundo nivel es una historia |
 | `historias-de-usuario.md` | Las 111 historias en 23 epics, cada una con su descripción y sus criterios de aceptación                                               |
 | `product-backlog.md`      | El backlog con dueño y estado por historia                                                                                             |
+| `historias-agregadas.md`  | Historias que salieron de decisiones de diseño y todavía no están en el backlog del curso                                              |
 
 **Los criterios de aceptación son la definición de terminado.** Ninguna pantalla
 se implementa de memoria ni por analogía con el sistema viejo.

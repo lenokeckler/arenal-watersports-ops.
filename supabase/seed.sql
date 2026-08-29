@@ -1,0 +1,102 @@
+-- Datos iniciales de Arenal Water Sports.
+-- Se aplica solo con `supabase db reset` en local; no corre en produccion.
+
+-- La cuenta de administracion. Su correo personal es obligatorio porque es su
+-- unica salida cuando pierde la contrasena.
+insert into auth.users (id, email, encrypted_password, email_confirmed_at)
+values ('00000000-0000-0000-0000-000000000001', 'admin@arenal.local',
+        extensions.crypt('Arenal.2026', extensions.gen_salt('bf')), now())
+on conflict do nothing;
+
+insert into workers (id, username, full_name, personal_email, base_role, must_change_password)
+values ('00000000-0000-0000-0000-000000000001', 'admin', 'Leno',
+        'lenokeckler13@gmail.com', 'administracion', true)
+on conflict do nothing;
+
+-- ---------------- Categorias ----------------
+-- Identificadas una por una: llevan motor, gasolina, uso, golpes y fotos.
+insert into equipment_categories
+  (name, tracking_mode, is_reservable, has_motor, usage_metric, consumes_fuel,
+   has_condition_photos, guide_only, default_duration_minutes,
+   deposit_usd, deposit_crc, created_by, updated_by)
+values
+  ('Jet Ski',     'by_unit', true, true, 'engine_hours', true, true, false, 60,
+   200, 100000, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Lancha',      'by_unit', true, true, 'engine_hours', true, true, true,  60,
+   200, 100000, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Cuadraciclo', 'by_unit', true, true, 'kilometers',   true, true, true,  60,
+   200, 100000, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
+
+-- Llevadas por cantidad y reservables: no tienen historia propia por pieza.
+insert into equipment_categories
+  (name, tracking_mode, is_reservable, default_duration_minutes, created_by, updated_by)
+values
+  ('Kayak doble',      'by_quantity', true, 60,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Kayak individual', 'by_quantity', true, 60,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Paddleboard',      'by_quantity', true, 60,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Tabla de wake',    'by_quantity', true, 60,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
+
+-- Llevadas por cantidad y no reservables: viven en el inventario, se cuentan.
+insert into equipment_categories
+  (name, tracking_mode, is_reservable, alert_min_quantity, alert_expiry_days,
+   created_by, updated_by)
+values
+  ('Chaleco',   'by_quantity', false, 5,    null,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Remo',      'by_quantity', false, 4,    null,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Extintor',  'by_quantity', false, null, 30,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Botiquin',  'by_quantity', false, null, 30,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Parrilla',  'by_quantity', false, null, null,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
+
+-- ---------------- Unidades ----------------
+-- Cuatro jet skis, tal como los tiene la empresa.
+insert into equipment_units (category_id, code, created_by, updated_by)
+select c.id, 'JET-0' || n,
+       '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'
+from equipment_categories c, generate_series(1, 4) n
+where c.name = 'Jet Ski';
+
+-- Las dos lanchas. No admiten los mismos extras, por eso llevan codigo propio.
+insert into equipment_units (category_id, code, created_by, updated_by)
+select c.id, code,
+       '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'
+from equipment_categories c, (values ('PONTOON'), ('BENNINGTON')) as v(code)
+where c.name = 'Lancha';
+
+-- ---------------- Stock ----------------
+-- Seis kayaks dobles y tres individuales, del inventario anterior. El resto
+-- arranca en cero: administracion registra las cantidades reales desde la
+-- aplicacion, que para eso es un CRUD.
+insert into equipment_stock (category_id, quantity_available, updated_by)
+select c.id,
+       case c.name
+         when 'Kayak doble'      then 6
+         when 'Kayak individual' then 3
+         else 0
+       end,
+       '00000000-0000-0000-0000-000000000001'
+from equipment_categories c
+where c.tracking_mode = 'by_quantity';
+
+-- ---------------- Extras ----------------
+insert into extras (name, price_usd, created_by, updated_by)
+values
+  ('Parrilla',    25, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Tubing',      30, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Wakeboard',   35, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Paddleboard', 20, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
+
+-- El pontoon lleva parrilla y paddleboard; el bennington va para wakeboard.
+insert into extra_compatibility (extra_id, unit_id)
+select e.id, u.id
+from extras e, equipment_units u
+where (e.name in ('Parrilla', 'Paddleboard') and u.code = 'PONTOON')
+   or (e.name in ('Wakeboard', 'Tubing')     and u.code = 'BENNINGTON');

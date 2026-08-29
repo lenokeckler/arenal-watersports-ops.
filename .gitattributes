@@ -1,0 +1,12 @@
+# Normaliza los finales de linea en el indice. Sin esto, Git en Windows
+# reporta decenas de archivos como modificados sin ningun cambio de contenido.
+* text=auto eol=lf
+
+# Binarios: no tocar.
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.woff2 binary
+*.docx binary
+*.xlsx binary
