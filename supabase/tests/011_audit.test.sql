@@ -10,13 +10,15 @@ select plan(18);
 -- el rol authenticated no tiene privilegio de insercion sobre auth.users.
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local'),
-  ('22222222-2222-2222-2222-222222222222', 'ismael@arenal.local');
+  ('22222222-2222-2222-2222-222222222222', 'ismael@arenal.local'),
+  ('33333333-3333-3333-3333-333333333333', 'celso@arenal.local');
 
 insert into workers (id, username, full_name, personal_email, base_role)
 values ('11111111-1111-1111-1111-111111111111', 'admin', 'Leno', 'leno@correo.com', 'administracion');
 
 insert into workers (id, username, full_name, base_role)
-values ('22222222-2222-2222-2222-222222222222', 'ismael', 'Ismael', 'operaciones');
+values ('22222222-2222-2222-2222-222222222222', 'ismael', 'Ismael', 'operaciones'),
+       ('33333333-3333-3333-3333-333333333333', 'celso', 'Celso', 'reservas');
 
 -- ============================ camino de siembra ============================
 -- Sin sesion autenticada (aun no se cambia de rol), un valor explicito de
@@ -93,7 +95,14 @@ select is(
 );
 
 -- ============================ forma 2: created_by + created_at solamente ============================
--- Tabla representativa: reservation_charges (todavia autenticado como Ismael).
+-- Tabla representativa: reservation_charges. La tarea 14 exige reservas o
+-- administracion para insertar aqui -- operaciones nunca ve dinero de un
+-- cliente concreto -- asi que la firma se prueba autenticada como reservas
+-- (Celso) en vez de Ismael.
+
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
 
 insert into reservation_charges (reservation_id, kind, amount, currency, payment_method, created_by)
 values ('dddddddd-0000-0000-0000-000000000001', 'tariff', 60, 'USD', 'Efectivo',
@@ -102,7 +111,7 @@ values ('dddddddd-0000-0000-0000-000000000001', 'tariff', 60, 'USD', 'Efectivo',
 select is(
   (select created_by from reservation_charges
    where reservation_id = 'dddddddd-0000-0000-0000-000000000001' and amount = 60),
-  '22222222-2222-2222-2222-222222222222'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'forma created_by+created_at: created_by sale de auth.uid(), no del cliente'
 );
 
@@ -110,7 +119,7 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 
--- El admin intenta apropiarse de un cobro que registro Ismael, actualizandolo.
+-- El admin intenta apropiarse de un cobro que registro Celso, actualizandolo.
 update reservation_charges
 set payment_method = 'SINPE', created_by = '11111111-1111-1111-1111-111111111111'
 where reservation_id = 'dddddddd-0000-0000-0000-000000000001' and amount = 60;
@@ -118,7 +127,7 @@ where reservation_id = 'dddddddd-0000-0000-0000-000000000001' and amount = 60;
 select is(
   (select created_by from reservation_charges
    where reservation_id = 'dddddddd-0000-0000-0000-000000000001' and amount = 60),
-  '22222222-2222-2222-2222-222222222222'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'created_by de una tabla de solo insercion queda congelado aunque se actualice despues'
 );
 
@@ -144,13 +153,14 @@ select is(
 );
 
 -- ============================ forma 4: assigned_by + assigned_at ============================
--- Tabla representativa: reservation_guides. Esta tabla no tiene RLS en la
--- tarea 13, asi que se restaura la sesion de Ismael para seguir midiendo
--- exactamente lo que media antes de esa tarea.
+-- Tabla representativa: reservation_guides. La tarea 14 exige reservas o
+-- administracion para asignar guias -- operaciones lee la asignacion pero no
+-- la hace -- asi que la firma se prueba autenticada como reservas (Celso) en
+-- vez de Ismael.
 
 reset role;
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
+set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
 
 insert into reservation_guides (reservation_id, worker_id, assigned_by)
 values ('dddddddd-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111',
@@ -160,7 +170,7 @@ select is(
   (select assigned_by from reservation_guides
    where reservation_id = 'dddddddd-0000-0000-0000-000000000001'
      and worker_id = '11111111-1111-1111-1111-111111111111'),
-  '22222222-2222-2222-2222-222222222222'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'forma assigned_by+assigned_at: assigned_by sale de auth.uid(), no del cliente'
 );
 
@@ -233,18 +243,21 @@ select ok(
   'deposits: resolved_at no se estampa mientras el deposito sigue held'
 );
 
+-- La tarea 14 exige reservas o administracion para actualizar depositos --
+-- operaciones nunca resuelve dinero de un cliente -- asi que se prueba
+-- autenticado como reservas (Celso) en vez de Ismael.
 reset role;
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
+set local request.jwt.claims to '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}';
 
--- Ismael resuelve el deposito, pero el cliente miente diciendo que fue el admin.
+-- Celso resuelve el deposito, pero el cliente miente diciendo que fue el admin.
 update deposits
 set status = 'returned', resolved_by = '11111111-1111-1111-1111-111111111111', resolved_at = now()
 where id = 'eeeeeeee-0000-0000-0000-000000000001';
 
 select is(
   (select resolved_by from deposits where id = 'eeeeeeee-0000-0000-0000-000000000001'),
-  '22222222-2222-2222-2222-222222222222'::uuid,
+  '33333333-3333-3333-3333-333333333333'::uuid,
   'deposits: resolved_by se estampa con auth.uid() al resolver, no con lo que mande el cliente'
 );
 select ok(
