@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Arenal Ops - Iniciar Sesión</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#00201c",
+                      "on-error-container": "#ffdad6",
+                      "secondary-fixed": "#ffdad8",
+                      "background": "#0b1326",
+                      "primary-fixed": "#62fae3",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#005371",
+                      "on-secondary-fixed": "#410006",
+                      "primary-fixed-dim": "#3cddc7",
+                      "outline-variant": "#3c4a46",
+                      "on-primary-container": "#00574d",
+                      "surface-dim": "#0b1326",
+                      "inverse-on-surface": "#283044",
+                      "on-tertiary": "#00354a",
+                      "on-primary": "#003731",
+                      "on-error": "#690005",
+                      "surface": "#0b1326",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "secondary": "#ffb3b0",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "surface-container-high": "#222a3d",
+                      "primary-container": "#2dd4bf",
+                      "surface-variant": "#2d3449",
+                      "surface-container-low": "#131b2e",
+                      "inverse-primary": "#006b5f",
+                      "tertiary": "#afe0ff",
+                      "surface-container-highest": "#2d3449",
+                      "on-secondary": "#670211",
+                      "surface-bright": "#31394d",
+                      "secondary-container": "#881d24",
+                      "tertiary-container": "#5ec9ff",
+                      "surface-tint": "#3cddc7",
+                      "error-container": "#93000a",
+                      "primary": "#57f1db",
+                      "surface-container": "#171f33",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "outline": "#859490",
+                      "on-surface-variant": "#bacac5",
+                      "on-surface": "#dae2fd",
+                      "on-background": "#dae2fd",
+                      "on-primary-fixed-variant": "#005047",
+                      "on-tertiary-fixed": "#001e2c",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "on-secondary-container": "#ff9996",
+                      "surface-container-lowest": "#060e20",
+                      "inverse-surface": "#dae2fd",
+                      "tertiary-fixed": "#c4e7ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "base": "8px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "xs": "4px",
+                      "sm": "12px",
+                      "lg": "48px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .input-glow:focus {
+            box-shadow: inset 0 0 0 1px #57f1db, 0 0 10px rgba(87, 241, 219, 0.2);
+            border-color: #57f1db;
+            outline: none;
+        }
+        .btn-glow:hover {
+            box-shadow: inset 0 0 0 2px #57f1db, 0 0 15px rgba(87, 241, 219, 0.3);
+            background-color: rgba(87, 241, 219, 0.9);
+        }
+        /* Background decorative elements */
+        .bg-blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(45,212,191,0.3) 0%, rgba(11,19,38,0) 70%);
+            top: -100px;
+            left: -100px;
+        }
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(136,29,36,0.2) 0%, rgba(11,19,38,0) 70%);
+            bottom: -150px;
+            right: -100px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen flex items-center justify-center relative overflow-hidden">
+<!-- Decorative Background Layers -->
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-background/80 to-background z-0"></div>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-md px-margin-mobile md:px-0 relative z-10">
+<!-- Login Container -->
+<div class="glass-panel rounded-xl shadow-xl overflow-hidden flex flex-col p-md sm:p-lg transform transition-all duration-300 hover:shadow-2xl">
+<!-- Header Section -->
+<div class="flex flex-col items-center mb-md text-center">
+<div class="w-32 h-32 mb-sm rounded-full bg-surface-container-low/50 p-2 border border-white/5 shadow-inner overflow-hidden flex items-center justify-center">
+<img alt="Arenal Ops Logo" class="w-full h-full object-contain drop-shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-2pZzdDWw4dyGjDXVeQ0ZDpXHdKvzpO8MDKAuGRLsumRARx6FICPrqWiutZYuuEGTj8ZT6Xt0iCZ6VUEqUe_fOc-FhBQ_hItSWvPTOgtPgGKjY_YUpMPc89ZJGw7dz8FyGlCIkGUlggzdwtZ_r7yT460SI0yt2V9zM4hUOhiXyAkPR_oUqxwOq2UmR61lhCEOMuGD42wL0mRlIk4T2kM5Zztk6ebwU7hx99dUhMkUfN06xqe4GC00q-u2FgKaWzSpg2E"/>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight">
+                    Arenal Ops
+                </h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">
+                    Centro de Mando Operativo
+                </p>
+</div>
+<!-- Error Message State (Hidden by default, shown for demonstration) -->
+<div class="hidden mb-md p-sm rounded-lg bg-error-container/20 border border-error/50 flex items-start space-x-sm" id="error-message">
+<span class="material-symbols-outlined text-error text-[20px] mt-0.5" data-icon="error">error</span>
+<div class="flex-1">
+<p class="font-title-md text-[14px] text-error font-medium">Acceso Denegado</p>
+<p class="font-body-base text-[12px] text-error/80 mt-1">Credenciales incorrectas. Por favor, intente nuevamente.</p>
+</div>
+</div>
+<!-- Login Form -->
+<form class="flex flex-col space-y-md" id="login-form" onsubmit="event.preventDefault(); showError();">
+<!-- Input Group: Username -->
+<div class="flex flex-col space-y-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="username">Usuario / ID Operador</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline-variant" data-icon="person">person</span>
+<input class="w-full bg-surface-container/50 border border-white/10 rounded-lg py-sm pl-[40px] pr-sm text-on-surface placeholder:text-outline-variant font-body-base text-body-base input-glow transition-all duration-200" id="username" name="username" placeholder="Ingrese su ID" required="" type="text"/>
+</div>
+</div>
+<!-- Input Group: Password -->
+<div class="flex flex-col space-y-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase flex justify-between" for="password">
+<span>Contraseña</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline-variant" data-icon="lock">lock</span>
+<input class="w-full bg-surface-container/50 border border-white/10 rounded-lg py-sm pl-[40px] pr-[40px] text-on-surface placeholder:text-outline-variant font-body-base text-body-base input-glow transition-all duration-200" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-sm top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors focus:outline-none" id="toggle-password" type="button">
+<span class="material-symbols-outlined" data-icon="visibility" id="toggle-icon">visibility</span>
+</button>
+</div>
+<div class="flex justify-end pt-xs">
+<a class="font-label-mono text-label-mono text-primary/80 hover:text-primary transition-colors hover:underline underline-offset-4" href="#">¿Olvidó su contraseña?</a>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="mt-sm w-full bg-primary text-on-primary font-button text-button uppercase py-sm px-md rounded-lg shadow-md transition-all duration-200 btn-glow flex items-center justify-center space-x-2 active:scale-95" type="submit">
+<span>Entrar al Sistema</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="login">login</span>
+</button>
+</form>
+<!-- Footer / Meta -->
+<div class="mt-lg pt-sm border-t border-white/5 flex justify-between items-center opacity-60">
+<span class="font-label-mono text-[10px] text-on-surface-variant">v2.4.1 (Estable)</span>
+<span class="font-label-mono text-[10px] text-primary-fixed-dim flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    Sistemas Online
+                </span>
+</div>
+</div>
+</main>
+<script>
+        // Password Visibility Toggle
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        togglePasswordBtn.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            if (type === 'text') {
+                toggleIcon.textContent = 'visibility_off';
+                toggleIcon.setAttribute('data-icon', 'visibility_off');
+            } else {
+                toggleIcon.textContent = 'visibility';
+                toggleIcon.setAttribute('data-icon', 'visibility');
+            }
+        });
+
+        // Simulate Error State for demonstration
+        function showError() {
+            const errorMsg = document.getElementById('error-message');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            
+            // Simple validation check to show error state
+            if(usernameInput.value && passwordInput.value) {
+                errorMsg.classList.remove('hidden');
+                
+                // Add error border to inputs
+                usernameInput.classList.add('border-error/50', 'focus:border-error', 'focus:ring-error/20');
+                passwordInput.classList.add('border-error/50', 'focus:border-error', 'focus:ring-error/20');
+                
+                // Remove standard glow to emphasize error
+                usernameInput.classList.remove('input-glow', 'border-white/10');
+                passwordInput.classList.remove('input-glow', 'border-white/10');
+
+                // Shake animation on the container
+                const container = errorMsg.parentElement;
+                container.classList.add('animate-[shake_0.5s_ease-in-out]');
+                
+                // Clean up animation class
+                setTimeout(() => {
+                    container.classList.remove('animate-[shake_0.5s_ease-in-out]');
+                }, 500);
+            }
+        }
+
+        // Add custom shake animation to tailwind config via script
+        tailwind.config.theme.extend.keyframes = {
+            shake: {
+                '0%, 100%': { transform: 'translateX(0)' },
+                '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+                '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' }
+            }
+        };
+    </script>
+</body></html>

@@ -17,8 +17,10 @@ export const API = {
    * service role key. Each module adds its own routes.
    */
   ROUTES: {
+    LOGIN_ATTEMPT: "/api/acceso/intento",
     PASSWORD_RECOVERY_PIN: "/api/acceso/pin-recuperacion",
     PASSWORD_RECOVERY_VERIFY: "/api/acceso/verificar-pin",
+    WORKDAY: "/api/acceso/jornada",
   },
 } as const;
 

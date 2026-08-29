@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cierre de Reserva - Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#00201c",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#ffdad8",
+                    "background": "#0b1326",
+                    "primary-fixed": "#62fae3",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#005371",
+                    "on-secondary-fixed": "#410006",
+                    "primary-fixed-dim": "#3cddc7",
+                    "outline-variant": "#3c4a46",
+                    "on-primary-container": "#00574d",
+                    "surface-dim": "#0b1326",
+                    "inverse-on-surface": "#283044",
+                    "on-tertiary": "#00354a",
+                    "on-primary": "#003731",
+                    "on-error": "#690005",
+                    "surface": "#0b1326",
+                    "tertiary-fixed-dim": "#7bd0ff",
+                    "secondary": "#ffb3b0",
+                    "on-secondary-fixed-variant": "#881d24",
+                    "surface-container-high": "#222a3d",
+                    "primary-container": "#2dd4bf",
+                    "surface-variant": "#2d3449",
+                    "surface-container-low": "#131b2e",
+                    "inverse-primary": "#006b5f",
+                    "tertiary": "#afe0ff",
+                    "surface-container-highest": "#2d3449",
+                    "on-secondary": "#670211",
+                    "surface-bright": "#31394d",
+                    "secondary-container": "#881d24",
+                    "tertiary-container": "#5ec9ff",
+                    "surface-tint": "#3cddc7",
+                    "error-container": "#93000a",
+                    "primary": "#57f1db",
+                    "surface-container": "#171f33",
+                    "on-tertiary-fixed-variant": "#004c69",
+                    "outline": "#859490",
+                    "on-surface-variant": "#bacac5",
+                    "on-surface": "#dae2fd",
+                    "on-background": "#dae2fd",
+                    "on-primary-fixed-variant": "#005047",
+                    "on-tertiary-fixed": "#001e2c",
+                    "secondary-fixed-dim": "#ffb3b0",
+                    "on-secondary-container": "#ff9996",
+                    "surface-container-lowest": "#060e20",
+                    "inverse-surface": "#dae2fd",
+                    "tertiary-fixed": "#c4e7ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px",
+                    "base": "8px",
+                    "md": "24px",
+                    "xl": "80px",
+                    "xs": "4px",
+                    "sm": "12px",
+                    "lg": "48px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "title-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "button": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "label-mono": ["JetBrains Mono"],
+                    "body-base": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "button": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-base": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020617;
+            background-image: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 100%);
+            color: #dae2fd;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .input-glow:focus {
+            box-shadow: inset 0 0 0 1px #57f1db;
+            border-color: #57f1db;
+            outline: none;
+        }
+        .btn-primary {
+            background-color: #57f1db;
+            color: #003731;
+            text-transform: uppercase;
+        }
+        .btn-primary:hover {
+            box-shadow: inset 0 0 8px rgba(255,255,255,0.4);
+            opacity: 0.9;
+        }
+        .btn-action {
+            background-color: #ffb4ab;
+            color: #690005;
+            text-transform: uppercase;
+        }
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col overflow-x-hidden font-body-base text-body-base">
+<!-- TopAppBar (Transactional - simplified) -->
+<header class="bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl border-b border-white/10 shadow-md flex justify-between items-center px-margin-mobile h-16 w-full docked full-width top-0 sticky z-50">
+<div class="flex items-center gap-4">
+<button class="text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity active:scale-95 duration-150 p-2 rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<h1 class="font-title-md text-title-md-mobile text-on-surface">Cierre de Reserva</h1>
+</div>
+<div class="text-primary font-bold">RES-8492</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 px-margin-mobile py-md flex flex-col gap-md max-w-[800px] mx-auto w-full pb-xl">
+<!-- Header Info -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<span class="font-label-mono text-label-mono text-on-surface-variant">CLIENTE</span>
+<span class="font-button text-button text-primary">Carlos M.</span>
+</div>
+<div class="flex justify-between items-center border-t border-white/5 pt-sm">
+<span class="font-label-mono text-label-mono text-on-surface-variant">DURACIÓN</span>
+<span class="font-button text-button text-on-surface">02:15:00</span>
+</div>
+</div>
+<!-- Equipo Section -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-title-md text-title-md-mobile text-primary">Equipo a Retornar</h2>
+<div class="glass-panel rounded-xl overflow-hidden relative">
+<div class="h-32 w-full bg-surface-container-high relative">
+<div class="bg-cover bg-center w-full h-full opacity-60 mix-blend-luminosity" data-alt="High quality close up photography of a modern, sleek personal watercraft (jet ski) returning to a dock. High contrast, cinematic lighting emphasizing the metallic and plastic textures. Deep navy blue background with vibrant teal accents on the watercraft. Dark atmospheric background with subtle reflections on the water surface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuByOqW0eX-OwlGeTNEfFr_jDoXOSJpVnxOHgvcLOFLEd_1RaLBQF6Pp3UejV_qwt97gMc-UuXzqMhTqvoeL2UobZ125rwTv1Clms-M1BOmXVNmOScIkYqv_FxIPGfIyqT6pIcWG0TTpTzKp6TkyCPYjlIidyERvshucb43a1PTcneaLcp9P_tcP9KkUInef_H2kGs3Lw9oo-mvpn2Eo7xmOIvJJVQZg4AOIRK40-6cosqroFjg2Z1BoQQ')"></div>
+<div class="absolute bottom-0 left-0 w-full p-sm bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end">
+<div>
+<span class="bg-primary/20 text-primary px-2 py-0.5 rounded-full font-label-mono text-[10px] mb-1 inline-block">JET SKI</span>
+<h3 class="font-button text-button text-white">Yamaha EX Sport (JS-04)</h3>
+</div>
+</div>
+</div>
+<div class="p-md flex flex-col gap-md">
+<!-- Registros -->
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant">GASOLINA FINAL (%)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]" data-icon="local_gas_station">local_gas_station</span>
+<input class="w-full bg-surface-container-low border border-white/10 rounded-lg py-2 pl-10 pr-3 text-on-surface input-glow font-label-mono" placeholder="Ej: 45" type="number"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant">HORAS MOTOR</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]" data-icon="timer">timer</span>
+<input class="w-full bg-surface-container-low border border-white/10 rounded-lg py-2 pl-10 pr-3 text-on-surface input-glow font-label-mono" placeholder="Ej: 142.5" type="number"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Reporte Daños (Opcional) -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<h2 class="font-title-md text-title-md-mobile text-error">Reporte de Daños</h2>
+<span class="font-label-mono text-label-mono text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">OPCIONAL</span>
+</div>
+<div class="glass-panel rounded-xl p-md flex flex-col gap-md border-error/20">
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant">TIPO DE INCIDENCIA</label>
+<select class="w-full bg-surface-container-low border border-white/10 rounded-lg py-2 px-3 text-on-surface input-glow font-body-base appearance-none">
+<option value="">Seleccionar tipo...</option>
+<option value="vuelco">Vuelco</option>
+<option value="choque">Choque / Colisión</option>
+<option value="mecanico">Fallo Mecánico</option>
+<option value="otro">Otro</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant">DESCRIPCIÓN</label>
+<textarea class="w-full bg-surface-container-low border border-white/10 rounded-lg py-2 px-3 text-on-surface input-glow font-body-base resize-none" placeholder="Describa el estado del equipo..." rows="3"></textarea>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant">FOTOS EVIDENCIA</label>
+<button class="w-full h-16 border-2 border-dashed border-white/10 rounded-lg flex items-center justify-center gap-2 text-on-surface-variant hover:border-primary/50 hover:text-primary transition-colors bg-surface-container-low/50">
+<span class="material-symbols-outlined" data-icon="add_a_photo">add_a_photo</span>
+<span class="font-button text-button">Añadir Fotos</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Firma -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-title-md text-title-md-mobile text-primary">Firma Operador</h2>
+<div class="glass-panel rounded-xl p-sm flex flex-col gap-sm">
+<div class="h-32 bg-surface-container-low rounded-lg border border-white/5 relative flex items-center justify-center">
+<span class="font-label-mono text-label-mono text-on-surface-variant/30 absolute">Área de firma</span>
+<!-- Simulated signature canvas area -->
+</div>
+<div class="flex justify-between items-center px-2">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Operador: OP-02 (Marcos)</span>
+<button class="text-primary font-button text-button underline text-sm">Limpiar</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action Bar (Sticky) -->
+<div class="fixed bottom-0 left-0 w-full glass-panel border-t-0 p-margin-mobile pb-safe z-50">
+<button class="w-full btn-primary font-button text-button rounded-xl py-4 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(87,241,219,0.2)]">
+<span class="material-symbols-outlined" data-icon="check_circle" data-weight="fill">check_circle</span>
+            Cerrar Salida
+        </button>
+</div>
+</body></html>

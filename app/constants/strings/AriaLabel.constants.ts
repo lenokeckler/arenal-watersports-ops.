@@ -25,4 +25,5 @@ export const ARIA_LABEL = {
   PLAN_FOOTER: "Plan footer",
   PLAN_MONTHLY_PRICE: "Monthly price",
   PLAN_CONTRACT: "Plan contract",
+  TOGGLE_PASSWORD_VISIBILITY: "Mostrar/ocultar contraseña",
 };

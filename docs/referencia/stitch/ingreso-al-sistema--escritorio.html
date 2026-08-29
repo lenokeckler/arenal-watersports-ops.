@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Arenal Ops - Login</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Hanken Grotesk & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#31394d",
+                    "primary-fixed-dim": "#3cddc7",
+                    "on-surface": "#dae2fd",
+                    "on-tertiary-fixed-variant": "#004c69",
+                    "inverse-surface": "#dae2fd",
+                    "surface-variant": "#2d3449",
+                    "on-primary-container": "#00574d",
+                    "surface-dim": "#0b1326",
+                    "surface-container-high": "#222a3d",
+                    "tertiary-fixed": "#c4e7ff",
+                    "tertiary-container": "#5ec9ff",
+                    "inverse-on-surface": "#283044",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed": "#001e2c",
+                    "secondary-fixed-dim": "#ffb3b0",
+                    "inverse-primary": "#006b5f",
+                    "surface": "#0b1326",
+                    "surface-container-highest": "#2d3449",
+                    "primary": "#57f1db",
+                    "on-error-container": "#ffdad6",
+                    "secondary-container": "#881d24",
+                    "secondary": "#ffb3b0",
+                    "background": "#0b1326",
+                    "on-surface-variant": "#bacac5",
+                    "on-tertiary-container": "#005371",
+                    "on-error": "#690005",
+                    "on-background": "#dae2fd",
+                    "secondary-fixed": "#ffdad8",
+                    "tertiary-fixed-dim": "#7bd0ff",
+                    "on-tertiary": "#00354a",
+                    "primary-container": "#2dd4bf",
+                    "on-secondary-container": "#ff9996",
+                    "surface-container-low": "#131b2e",
+                    "outline": "#859490",
+                    "surface-container": "#171f33",
+                    "on-secondary-fixed-variant": "#881d24",
+                    "on-primary-fixed": "#00201c",
+                    "tertiary": "#afe0ff",
+                    "on-primary": "#003731",
+                    "surface-container-lowest": "#060e20",
+                    "on-primary-fixed-variant": "#005047",
+                    "surface-tint": "#3cddc7",
+                    "outline-variant": "#3c4a46",
+                    "on-secondary": "#670211",
+                    "primary-fixed": "#62fae3",
+                    "on-secondary-fixed": "#410006",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "margin-mobile": "16px",
+                    "xl": "80px",
+                    "lg": "48px",
+                    "gutter": "20px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "md": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "title-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-mono": [
+                            "JetBrains Mono"
+                    ],
+                    "body-base": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg-mobile": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "display-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "button": [
+                            "Hanken Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "title-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-mono": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-base": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "button": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020617; /* Deep Navy foundation */
+            background-image: radial-gradient(circle at 50% 50%, rgba(11, 19, 38, 0.8) 0%, rgba(2, 6, 23, 1) 100%);
+        }
+        
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7); /* Level 1 Base */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Input Fields */
+        .glass-input {
+            background-color: rgba(11, 19, 38, 0.6); /* Inset dark */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus-within {
+            border-color: #57f1db; /* Primary Teal */
+            box-shadow: inset 0 0 0 1px #57f1db;
+        }
+
+        /* Primary Button */
+        .btn-primary {
+            background-color: #57f1db;
+            color: #0b1326;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+            background-color: #62fae3; /* Lighter teal on hover */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop text-on-surface antialiased overflow-hidden relative">
+<!-- Atmospheric Background Glows -->
+<div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+<div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[120px]"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] rounded-full bg-tertiary-container/10 blur-[100px]"></div>
+</div>
+<!-- Main Login Container -->
+<main class="w-full max-w-md glass-panel rounded-xl shadow-2xl p-md md:p-lg flex flex-col gap-lg relative z-10">
+<!-- Error Banner (Requested) -->
+<div class="bg-error-container/80 backdrop-blur-md border border-error/50 rounded-lg p-sm flex items-center gap-sm" role="alert">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
+<span class="font-body-base text-body-base text-on-error-container">Acceso Denegado</span>
+</div>
+<!-- Header Section -->
+<header class="flex flex-col items-center text-center gap-sm">
+<!-- Circular Logo -->
+<div class="w-20 h-20 rounded-full bg-surface-container-high border border-white/10 flex items-center justify-center mb-sm shadow-[0_0_20px_rgba(87,241,219,0.1)]">
+<img class="w-12 h-12 object-contain rounded-full" data-alt="A high-tech, minimalist circular logo for a water sports operations command center. The logo features abstract fluid geometric waves interwoven with rigid technical grid lines. The primary colors are deep navy blue and bright neon teal. The style is sleek, professional, and slightly futuristic, emphasizing precision and fluidity. Rendered on a transparent background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCu5bwLenVoH4fos0YpDkmbtLzybNN3MWSH3ADaWQcjbvtBDtnDOUvOoLHfcXLmCXX002uPitGWnklIEyQ2QApHHsb9Y8ZVoaeJjsoV4PA_6kN3o3RyqXsWR7r9dFSm5mrDaIm0mFOkU9ye3bBuLU4fmr3_s1FtUsohyhBnEMye_eDgO8pJMmVl2p2b-iUjZtop5dR0lIOkAuLY4zpEOfWR5D55vCOMfjlIK7zamckEMaQC8N_WoeoYXdvPC662akHmYvFd0GU-inVD"/>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary tracking-tight">
+                Arenal Ops
+            </h1>
+<p class="font-body-base text-body-base text-on-surface-variant">
+                Centro de Mando Operativo
+            </p>
+</header>
+<!-- Login Form -->
+<form class="flex flex-col gap-md" onsubmit="event.preventDefault();">
+<!-- User / Operator ID Field -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="username">Usuario / ID Operador</label>
+<div class="glass-input rounded-lg flex items-center px-sm py-sm group">
+<span class="material-symbols-outlined text-on-surface-variant group-focus-within:text-primary transition-colors mr-sm" style="font-variation-settings: 'FILL' 0;">person</span>
+<input class="w-full bg-transparent border-none text-on-surface font-body-base text-body-base focus:ring-0 p-0 placeholder-on-surface-variant/50" id="username" placeholder="Ingrese su ID" type="text"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="password">Contraseña</label>
+<div class="glass-input rounded-lg flex items-center px-sm py-sm group">
+<span class="material-symbols-outlined text-on-surface-variant group-focus-within:text-primary transition-colors mr-sm" style="font-variation-settings: 'FILL' 0;">lock</span>
+<input class="w-full bg-transparent border-none text-on-surface font-body-base text-body-base focus:ring-0 p-0 placeholder-on-surface-variant/50" id="password" placeholder="••••••••" type="password"/>
+<button aria-label="Mostrar/ocultar contraseña" class="text-on-surface-variant hover:text-on-surface focus:outline-none ml-sm transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" id="visibility-icon" style="font-variation-settings: 'FILL' 0;">visibility</span>
+</button>
+</div>
+</div>
+<!-- Forgot Password Link -->
+<div class="flex justify-end mt-[-8px]">
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors" href="#">¿Olvidó su contraseña?</a>
+</div>
+<!-- Submit Button -->
+<button class="btn-primary w-full py-sm rounded-lg font-button text-button uppercase tracking-widest mt-sm" type="submit">
+                ENTRAR AL SISTEMA
+            </button>
+</form>
+<!-- Footer subtly -->
+<footer class="mt-auto text-center pt-md border-t border-white/5">
+<p class="font-label-mono text-label-mono text-on-surface-variant/50">
+                © 2024 Arenal Ops. Acceso Restringido.
+            </p>
+</footer>
+</main>
+<script>
+        // Simple password toggle logic for the prototype
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const visibilityIcon = document.getElementById('visibility-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                visibilityIcon.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                visibilityIcon.textContent = 'visibility';
+            }
+        }
+    </script>
+</body></html>

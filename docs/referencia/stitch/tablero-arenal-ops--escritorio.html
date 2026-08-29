@@ -1,0 +1,329 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Arenal Ops - Tablero</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#0b1326",
+                        "outline-variant": "#3c4a46",
+                        "secondary-container": "#881d24",
+                        "on-surface-variant": "#bacac5",
+                        "tertiary-container": "#5ec9ff",
+                        "surface-bright": "#31394d",
+                        "on-tertiary-fixed": "#001e2c",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-primary-fixed": "#00201c",
+                        "surface": "#0b1326",
+                        "on-secondary": "#670211",
+                        "secondary": "#ffb3b0",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-container": "#00574d",
+                        "on-background": "#dae2fd",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-low": "#131b2e",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#859490",
+                        "inverse-surface": "#dae2fd",
+                        "primary-fixed": "#62fae3",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "on-secondary-container": "#ff9996",
+                        "on-secondary-fixed": "#410006",
+                        "surface-variant": "#2d3449",
+                        "primary": "#57f1db",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "surface-tint": "#3cddc7",
+                        "primary-container": "#2dd4bf",
+                        "surface-container-lowest": "#060e20",
+                        "primary-fixed-dim": "#3cddc7",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-dim": "#0b1326",
+                        "surface-container-highest": "#2d3449",
+                        "tertiary": "#afe0ff",
+                        "on-primary": "#003731",
+                        "inverse-primary": "#006b5f",
+                        "on-surface": "#dae2fd",
+                        "on-tertiary": "#00354a",
+                        "surface-container": "#171f33",
+                        "on-tertiary-container": "#005371",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "secondary-fixed": "#ffdad8",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "margin-desktop": "40px",
+                        "xs": "4px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "margin-mobile": "16px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background: radial-gradient(circle at 50% -20%, #171f33 0%, #0b1326 100%); min-height: 100vh; }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .glow-hover:hover {
+            box-shadow: inset 0 0 0 1px #57f1db, 0 10px 30px -10px rgba(87, 241, 219, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-surface/70 backdrop-blur-xl bg-surface-container/70 border-r border-white/10 shadow-2xl shadow-black/50 flex flex-col py-md px-sm z-50">
+<!-- Header -->
+<div class="mb-xl px-sm flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">water</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight text-[24px]">Arenal Ops</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider text-[10px]">Operations Center</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 space-y-2">
+<!-- Active: Tablero -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-r-2 border-primary bg-primary/10 transition-transform scale-95 cursor-default" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-base text-body-base">Tablero</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-body-base text-body-base">Nueva Reserva</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">directions_boat</span>
+<span class="font-body-base text-body-base">Equipos</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-base text-body-base">Usuarios</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-base text-body-base">Historial</span>
+</a>
+</div>
+<!-- CTA & Footer -->
+<div class="mt-auto space-y-4 pt-md border-t border-white/5">
+<button class="w-full py-sm rounded-lg border border-primary text-primary font-button text-button uppercase hover:bg-primary hover:text-on-primary transition-all duration-300">
+                Manual de Crisis
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-md px-md py-xs rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-base text-body-base text-sm">Ajustes</span>
+</a>
+<a class="flex items-center gap-md px-md py-xs rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-base text-body-base text-sm">Cerrar Sesión</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Workspace -->
+<div class="flex-1 ml-64 flex flex-col h-screen relative">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-background/40 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-margin-desktop h-20">
+<div class="flex items-center gap-sm">
+<h2 class="font-title-md text-title-md text-on-surface font-semibold tracking-wide">Visión General</h2>
+</div>
+<div class="flex items-center gap-lg">
+<!-- Search -->
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container/50 border border-white/10 rounded-full py-2 pl-xl pr-md text-sm text-on-surface placeholder-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-64" placeholder="Buscar unidades..." type="text">
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-sm">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/50 outline-none">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/50 outline-none">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-white/20 overflow-hidden ml-sm">
+<img class="w-full h-full object-cover" data-alt="A highly realistic close-up portrait of a water sports operator in uniform, subtly lit by blue and teal control room lights against a dark, high-tech background. The mood is professional and focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYjDy8_zbgtLsDGNEoQPPQA-4iue8vTymm_h-Vc3zjou4ESmdEFyby7iAPXkRNXpUgsa2QwILotI2W1JdiJTVyY_PQTAd_FJDdWhxsVA728V92vrPyLkljeVwEJ6cO9jPsEI26F9VwCxtWEVHU5Aj71oV9ovTAME08bQEeO_dnOLNNfrAefIB_CczcG8fWBtcSktnNowHjADk-mr6ckj1uLBWyl0ULM8l7vfbq8T5SUEPDBKCXWmUpmA">
+</div>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<main class="flex-1 mt-20 p-margin-desktop overflow-y-auto pb-32">
+<!-- Inventory Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-lg max-w-[1440px] mx-auto">
+<!-- Card 1: Jet Skis -->
+<div class="glass-card rounded-2xl relative overflow-hidden flex flex-col h-[400px] group glow-hover transition-all duration-300">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A stunning, 3D hyper-realistic render of a high-performance Jet Ski floating on calm, dark waters at night. Studio lighting highlights its sleek geometric lines and carbon fiber details. The overall aesthetic is dark mode, premium, and technological, with subtle teal ambient light reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA1S7wFXaG26wggg_Pq_OgAA4XQPtvW9TKmUTSY_g0dmgMjW3wrfnTPCCdV1g7XW-sGz2Sq4N8Uj1zwg4kSmGFk3Zgw-SfSkq7onWNJVcsrCMf3t_hTh7wS-pbRAd3Atkax99FUSXRoHX78PkeYeSCqlNgMInhEE18MP5DchAxO0HxxtCTgvch8M19ycYaX_sl_xf5m56zonPMaLyRKpZs0e4_24Vp8LabW1R8Fw_vcQWzQrf0PsSTtg">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+</div>
+<!-- Top Actions -->
+<div class="relative z-10 flex justify-between p-md">
+<span class="px-sm py-xs rounded-full bg-primary/10 border border-primary/30 text-primary font-label-mono text-label-mono backdrop-blur-md">PWC-CLASS</span>
+<div class="flex gap-sm">
+<button class="px-md py-xs rounded-lg border border-white/20 text-on-surface font-button text-button hover:bg-white/10 transition-colors backdrop-blur-md">Ajuste</button>
+<button class="px-md py-xs rounded-lg bg-primary text-on-primary-fixed font-button text-button uppercase hover:brightness-110 transition-all shadow-[0_0_15px_rgba(87,241,219,0.3)]">+ Nueva</button>
+</div>
+</div>
+<!-- Bottom Info Panel -->
+<div class="relative z-10 mt-auto bg-surface-container-high/60 backdrop-blur-xl border-t border-white/10 p-md flex flex-col gap-sm">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Jet Skis</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Modelos Yamaha Waverunner</p>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-display-lg text-primary drop-shadow-[0_0_10px_rgba(87,241,219,0.5)]">3</span>
+<span class="font-title-md text-title-md text-on-surface-variant">/ 4 libres</span>
+</div>
+</div>
+<!-- Status Bar -->
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden mt-xs">
+<div class="h-full bg-primary w-[75%] shadow-[0_0_10px_rgba(87,241,219,0.8)]"></div>
+</div>
+</div>
+</div>
+<!-- Card 2: Kayaks -->
+<div class="glass-card rounded-2xl relative overflow-hidden flex flex-col h-[400px] group glow-hover transition-all duration-300">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A cinematic, high-fidelity 3D visualization of sleek tandem sea kayaks resting symmetrically on a dimly lit dock. Deep navy and dark slate tones dominate the scene, punctuated by sharp, premium lighting that emphasizes the aerodynamic shape of the kayaks. Tech-forward and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4gCAIaAaYpMVxYrqfK2TcM7f0LGmWXREhEFY_Yd5zKyRNyk0RKobMmzNvdN6SJZinOBBloPTDurCq7bdkioygNGQlAtACz0z_SD449onHDEV08opNyppLKOcbZlGVN5roGAYThfC1yoOjIbkecoKfFBjnVaxw_M-ez5BXxDcSSCBTXS8e2T-8V729_DRdy6n8KTUvRkymBPNqMiDp6qbCZBQ0DJ603eun2qcx9ctZrrlyQckNjmCX4w">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+</div>
+<div class="relative z-10 flex justify-between p-md">
+<span class="px-sm py-xs rounded-full bg-tertiary/10 border border-tertiary/30 text-tertiary font-label-mono text-label-mono backdrop-blur-md">MANUAL</span>
+<div class="flex gap-sm">
+<button class="px-md py-xs rounded-lg border border-white/20 text-on-surface font-button text-button hover:bg-white/10 transition-colors backdrop-blur-md">Ajuste</button>
+<button class="px-md py-xs rounded-lg bg-primary text-on-primary-fixed font-button text-button uppercase hover:brightness-110 transition-all shadow-[0_0_15px_rgba(87,241,219,0.3)]">+ Nueva</button>
+</div>
+</div>
+<div class="relative z-10 mt-auto bg-surface-container-high/60 backdrop-blur-xl border-t border-white/10 p-md flex flex-col gap-sm">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Kayaks</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Dobles &amp; Individuales</p>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-display-lg text-primary drop-shadow-[0_0_10px_rgba(87,241,219,0.5)]">8</span>
+<span class="font-title-md text-title-md text-on-surface-variant">/ 12 libres</span>
+</div>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden mt-xs">
+<div class="h-full bg-primary w-[66%] shadow-[0_0_10px_rgba(87,241,219,0.8)]"></div>
+</div>
+</div>
+</div>
+<!-- Card 3: Lanchas -->
+<div class="glass-card rounded-2xl relative overflow-hidden flex flex-col h-[400px] group glow-hover transition-all duration-300">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A photorealistic 3D render of a modern, luxury sports speedboat moored in dark, glassy water. The composition is dramatic and wide-angle, bathed in moody midnight blues with striking teal and silver reflections on the hull, conveying power, precision, and high-end operations." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCudPa344Ael_IVBNym--l9SV8migCt1_ApJ0N6hACrTawIatSSaMy_j5-ixqfq6SU564symUHdrhDrQOT4nILrF3TDP8u46doc6E1jDY_1qT6Z4xSeDEjuUwMMDANWoKsTZY3sG3RkOhkMA0M5srAW-jx1TNc3X3x98jfdUAiR5IpICXjWxvF47zBY9_6Vi4f7VlSxr2Z1IdXK1rfoMRmZlT3MQWCKZXNcnfESgBnQg78wMpic8fiP1g">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+</div>
+<div class="relative z-10 flex justify-between p-md">
+<span class="px-sm py-xs rounded-full bg-secondary/10 border border-secondary/30 text-secondary font-label-mono text-label-mono backdrop-blur-md">MOTOR</span>
+<div class="flex gap-sm">
+<button class="px-md py-xs rounded-lg border border-white/20 text-on-surface font-button text-button hover:bg-white/10 transition-colors backdrop-blur-md">Ajuste</button>
+<button class="px-md py-xs rounded-lg bg-primary text-on-primary-fixed font-button text-button uppercase hover:brightness-110 transition-all shadow-[0_0_15px_rgba(87,241,219,0.3)]">+ Nueva</button>
+</div>
+</div>
+<div class="relative z-10 mt-auto bg-surface-container-high/60 backdrop-blur-xl border-t border-white/10 p-md flex flex-col gap-sm">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Lanchas</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">MasterCraft 22ft</p>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-display-lg text-secondary drop-shadow-[0_0_10px_rgba(255,179,176,0.5)]">1</span>
+<span class="font-title-md text-title-md text-on-surface-variant">/ 2 libres</span>
+</div>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden mt-xs">
+<div class="h-full bg-secondary w-[50%] shadow-[0_0_10px_rgba(255,179,176,0.8)]"></div>
+</div>
+</div>
+</div>
+<!-- Card 4: Paddleboards -->
+<div class="glass-card rounded-2xl relative overflow-hidden flex flex-col h-[400px] group glow-hover transition-all duration-300">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="An exquisite, ultra-detailed 3D render of premium carbon-fiber stand-up paddleboards stacked vertically in a sleek, dimly lit storage facility. The environment is industrial yet refined, utilizing dark surface tones and crisp, localized teal spot lighting to highlight the textures of the boards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQi9IOaqOd7AoXOY2TAH585MUEwSLk25kcPaXlXPDVgPzYZHjITXeuhRVZR31aLTzh8BmMbVa6rI5Y8FLyAcIToiXAR-UiJkCht_fEaaRFLf7L-XdA3YaHituvSRDjbwCUVvj0zLqXTPa-j-DRRY4I19nEgPfyOC_0AsFxGFon4PNDEpq_rKdlI3UgtVNQJ54zE-bE2IL-iwxYu7y-A8E6KUqTMWUJrMBXT_wHN5UFh_SPpYq6bGf-tQ">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+</div>
+<div class="relative z-10 flex justify-between p-md">
+<span class="px-sm py-xs rounded-full bg-tertiary/10 border border-tertiary/30 text-tertiary font-label-mono text-label-mono backdrop-blur-md">MANUAL</span>
+<div class="flex gap-sm">
+<button class="px-md py-xs rounded-lg border border-white/20 text-on-surface font-button text-button hover:bg-white/10 transition-colors backdrop-blur-md">Ajuste</button>
+<button class="px-md py-xs rounded-lg bg-primary text-on-primary-fixed font-button text-button uppercase hover:brightness-110 transition-all shadow-[0_0_15px_rgba(87,241,219,0.3)]">+ Nueva</button>
+</div>
+</div>
+<div class="relative z-10 mt-auto bg-surface-container-high/60 backdrop-blur-xl border-t border-white/10 p-md flex flex-col gap-sm">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Paddleboards</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">SUP Carbon Pro</p>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-display-lg text-primary drop-shadow-[0_0_10px_rgba(87,241,219,0.5)]">15</span>
+<span class="font-title-md text-title-md text-on-surface-variant">/ 15 libres</span>
+</div>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden mt-xs">
+<div class="h-full bg-primary w-full shadow-[0_0_10px_rgba(87,241,219,0.8)]"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html><html class="dark" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Trabajadores - Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#0b1326",
+                      "outline-variant": "#3c4a46",
+                      "secondary-container": "#881d24",
+                      "on-surface-variant": "#bacac5",
+                      "tertiary-container": "#5ec9ff",
+                      "surface-bright": "#31394d",
+                      "on-tertiary-fixed": "#001e2c",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed-variant": "#005047",
+                      "on-primary-fixed": "#00201c",
+                      "surface": "#0b1326",
+                      "on-secondary": "#670211",
+                      "secondary": "#ffb3b0",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-container": "#00574d",
+                      "on-background": "#dae2fd",
+                      "inverse-on-surface": "#283044",
+                      "surface-container-low": "#131b2e",
+                      "on-error-container": "#ffdad6",
+                      "outline": "#859490",
+                      "inverse-surface": "#dae2fd",
+                      "primary-fixed": "#62fae3",
+                      "tertiary-fixed": "#c4e7ff",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "on-secondary-container": "#ff9996",
+                      "on-secondary-fixed": "#410006",
+                      "surface-variant": "#2d3449",
+                      "primary": "#57f1db",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "surface-tint": "#3cddc7",
+                      "primary-container": "#2dd4bf",
+                      "surface-container-lowest": "#060e20",
+                      "primary-fixed-dim": "#3cddc7",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "surface-dim": "#0b1326",
+                      "surface-container-highest": "#2d3449",
+                      "tertiary": "#afe0ff",
+                      "on-primary": "#003731",
+                      "inverse-primary": "#006b5f",
+                      "on-surface": "#dae2fd",
+                      "on-tertiary": "#00354a",
+                      "surface-container": "#171f33",
+                      "on-tertiary-container": "#005371",
+                      "on-error": "#690005",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "secondary-fixed": "#ffdad8",
+                      "error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "margin-desktop": "40px",
+                      "xs": "4px",
+                      "lg": "48px",
+                      "xl": "80px",
+                      "margin-mobile": "16px",
+                      "sm": "12px",
+                      "base": "8px",
+                      "md": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020617;
+            background-image: radial-gradient(circle at top right, rgba(23, 31, 51, 0.5), transparent 60%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-panel:hover {
+            background-color: rgba(30, 41, 59, 0.85);
+        }
+        .input-glass {
+            background-color: rgba(11, 19, 38, 0.6);
+            border: 1px solid rgba(133, 148, 144, 0.3);
+            color: #dae2fd;
+        }
+        .input-glass:focus {
+            border-color: #57f1db;
+            box-shadow: inset 0 0 0 1px #57f1db;
+            outline: none;
+        }
+        .input-glass::placeholder {
+            color: rgba(186, 202, 197, 0.6);
+        }
+        .btn-primary {
+            background-color: #57f1db;
+            color: #003731;
+            text-transform: uppercase;
+        }
+        .btn-primary:hover {
+            background-color: #3cddc7;
+            box-shadow: inset 0 0 8px rgba(255,255,255,0.4);
+        }
+        .color-picker {
+            appearance: none;
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .color-picker::-webkit-color-swatch {
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+        
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #57f1db;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #57f1db;
+        }
+    </style>
+</head>
+<body class="text-on-background font-body-base overflow-x-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full py-md px-sm bg-surface/70 backdrop-blur-xl h-screen w-64 fixed left-0 top-0 bg-surface-container/70 backdrop-blur-md border-r border-white/10 shadow-2xl shadow-black/50 z-50">
+<div class="flex items-center gap-3 px-4 mb-xl">
+<div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary font-bold" data-weight="fill">waves</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight text-xl">Arenal Ops</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider text-[10px]">Operations Center</p>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-base text-body-base">Tablero</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-body-base text-body-base">Nueva Reserva</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">directions_boat</span>
+<span class="font-body-base text-body-base">Equipos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-primary/10 hover:bg-white/5 transition-colors duration-200" href="#" style="transform: scale(0.98);">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-body-base text-body-base">Usuarios</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-base text-body-base">Historial</span>
+</a>
+</div>
+<div class="mt-auto pt-6 border-t border-white/10 space-y-2">
+<button class="w-full py-3 mb-4 rounded-lg bg-surface-container-highest text-on-surface border border-white/10 hover:bg-white/10 transition-colors font-button text-button flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+                Manual de Crisis
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-body-base text-body-base text-sm">Ajustes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-error hover:text-error/80 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="font-body-base text-body-base text-sm">Cerrar Sesión</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="hidden md:flex justify-between items-center px-margin-desktop h-20 bg-background/40 backdrop-blur-md fixed top-0 right-0 w-[calc(100%-16rem)] z-40 border-b border-white/5">
+<h2 class="font-title-md text-title-md text-on-surface">Gestión de Personal</h2>
+<div class="flex items-center gap-6">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-full input-glass font-body-base text-sm transition-all focus:ring-2 focus:ring-primary/50" placeholder="Buscar trabajador..." type="text">
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary/30 overflow-hidden cursor-pointer hover:border-primary transition-colors">
+<img alt="Operator Profile" class="w-full h-full object-cover" data-alt="A detailed portrait of a professional marina operations manager wearing a dark navy polo shirt. The background is slightly blurred showing a control room. Dramatic, cinematic lighting typical of a high-end interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnewOK3h0MmYNxsTXUO5Z41j2ri8-pc0NNYIAvaG3wH08RoUDsiOEoc-3zGK1v_zLZqXvNfVeSTqAffk8sKuD1ct7Tr4ynT45_PrlzikzJbJNpGtga2ih6-Yx9-_faHp3HL-LCaQu6834GIOn1MOjQonyEvsSkrJ2JLeXWAO5kmmtl8CflBEKBYGmJOBgrqsUTHvJVsB3RVtKN2N6HocQRg8l8pzc75A7Ob_B5jMgNK1QFGIZqhMY0NQ">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="md:ml-64 pt-24 md:pt-28 px-4 md:px-margin-desktop pb-xl min-h-screen">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Col: New Worker Form (Bento Style) -->
+<div class="lg:col-span-4 space-y-6">
+<div class="glass-panel rounded-xl p-md">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person_add</span>
+<h3 class="font-title-md text-title-md text-on-surface">Nuevo Trabajador</h3>
+</div>
+<form class="space-y-4">
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Nombre Completo</label>
+<input class="w-full px-4 py-3 rounded-lg input-glass font-body-base text-body-base" placeholder="Ej. Juan Pérez" type="text">
+</div>
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Usuario</label>
+<input class="w-full px-4 py-3 rounded-lg input-glass font-body-base text-body-base" placeholder="juan.perez" type="text">
+</div>
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Contraseña</label>
+<div class="relative">
+<input class="w-full px-4 py-3 rounded-lg input-glass font-body-base text-body-base" placeholder="••••••••" type="password">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Rol</label>
+<div class="relative">
+<select class="w-full px-4 py-3 rounded-lg input-glass font-body-base text-body-base appearance-none cursor-pointer bg-surface/50">
+<option class="bg-surface text-on-surface" disabled="" selected="" value="">Seleccionar rol...</option>
+<option class="bg-surface text-on-surface" value="admin">Administrador</option>
+<option class="bg-surface text-on-surface" value="monitor">Monitor</option>
+<option class="bg-surface text-on-surface" value="recepcion">Recepción</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+<span class="font-body-base text-body-base text-on-surface">¿Es Guía/Monitor?</span>
+</div>
+<button class="w-full mt-6 py-3 rounded-lg btn-primary font-button text-button flex items-center justify-center gap-2 transition-all" type="button">
+<span class="material-symbols-outlined">save</span>
+                            Crear Trabajador
+                        </button>
+</form>
+</div>
+</div>
+<!-- Right Col: Workers List -->
+<div class="lg:col-span-8">
+<div class="glass-panel rounded-xl p-md flex flex-col h-full">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">badge</span>
+<h3 class="font-title-md text-title-md text-on-surface">Plantilla Activa</h3>
+</div>
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-mono text-label-mono border border-primary/20">
+                            12 TRABAJADORES
+                        </span>
+</div>
+<div class="space-y-3 overflow-y-auto pr-2 custom-scrollbar" style="max-height: calc(100vh - 280px);">
+<!-- Worker Item: Admin -->
+<div class="glass-panel rounded-lg p-4 flex items-center justify-between group transition-all">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-surface-container-high border-2 border-primary/50 flex items-center justify-center text-xl font-bold text-primary">
+                                        A
+                                    </div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-surface shadow-[0_0_8px_rgba(87,241,219,0.8)]"></div>
+</div>
+<div>
+<h4 class="font-body-base text-body-base font-semibold text-on-surface">Admin Principal</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-mono uppercase bg-primary/20 text-primary border border-primary/30">Administrador</span>
+<span class="text-on-surface-variant text-sm text-[12px]">@admin</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] font-label-mono text-on-surface-variant uppercase">Color</span>
+<input class="color-picker" type="color" value="#57f1db">
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] font-label-mono text-on-surface-variant uppercase">Estado</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-9 h-5 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Worker Item: Standard -->
+<div class="glass-panel rounded-lg p-4 flex items-center justify-between group transition-all border-l-2 border-l-tertiary">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-surface-container-high border-2 border-transparent flex items-center justify-center text-xl font-bold text-on-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a marine operations worker named Felipe. Dark background, moody lighting, wearing a tactical vest or outdoor gear suitable for water sports management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCzcjeYMtdLpy2rmYKXXZJXPatGl71okR1gVaRMiEygI2U63Z4BGVIHTwYbxIjWZE2mQ_4mq6s59ifyF9T2GDnxX4MrIBjb63wiCdS_Ith2wBnoqRKSFe23ziLk7xeI85HtJZTiy4zEg5tSjzzjb346HF7YJ4SCLTdsLjOgNzpa52txxDsaYBWWXbetg_-T9qQbK6SKSiRQg-y-0RdT5G3KVzGN6G1pxj_468c7YUz_2ke3zFMS9ht5Q">
+</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-surface"></div>
+</div>
+<div>
+<h4 class="font-body-base text-body-base font-semibold text-on-surface">FELIPE DE LOS PALOTES</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-mono uppercase bg-tertiary/20 text-tertiary border border-tertiary/30">Monitor</span>
+<span class="text-on-surface-variant text-sm text-[12px]">@felipe.palotes</span>
+<span class="material-symbols-outlined text-[14px] text-tertiary" title="Guía">sailing</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] font-label-mono text-on-surface-variant uppercase">Color</span>
+<input class="color-picker" type="color" value="#afe0ff">
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] font-label-mono text-on-surface-variant uppercase">Estado</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-9 h-5 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Worker Item: Inactive -->
+<div class="glass-panel rounded-lg p-4 flex items-center justify-between group transition-all opacity-60 hover:opacity-100">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-surface-container-high border-2 border-transparent flex items-center justify-center text-xl font-bold text-on-surface-variant grayscale">
+<img class="w-full h-full object-cover" data-alt="A headshot of a female receptionist in a dark professional setting. Moody lighting, tech-forward aesthetic. She is wearing a headset." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlTjvObBX-bGU4L33rUvxVGXFvYHznuALvmL43Dx-ry-EN5icerhirHwGpM8jeStCtoJ9pdDJ1QsKCsJutTiS5S1IPjX4WuIUapDlUeuuep37bFay5XjoCgDqJfwVkzO0cFGYGmOuybPU7sDhPNBza4ZY0NnwDMCR1f0_k7l-B1DZTiUA2C0GFQzch_gGK7-hYCbRq_4LUGB144ydlVCvyFPcB5nyCeI7qrSNIlVJhE_jZ-AzXpyitcQ">
+</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-surface-variant rounded-full border-2 border-surface"></div>
+</div>
+<div>
+<h4 class="font-body-base text-body-base font-semibold text-on-surface-variant">María García</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-mono uppercase bg-surface-variant text-on-surface-variant border border-white/10">Recepción</span>
+<span class="text-on-surface-variant text-sm text-[12px]">@maria.g</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] font-label-mono text-on-surface-variant uppercase">Color</span>
+<input class="color-picker" disabled="" type="color" value="#859490">
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] font-label-mono text-on-surface-variant uppercase">Estado</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox">
+<div class="w-9 h-5 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation (Visible only on small screens) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl border-t border-white/10 z-50 px-2 py-3 pb-safe">
+<div class="flex justify-around items-center">
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">directions_boat</span>
+</a>
+<a class="flex flex-col items-center p-2 text-primary" href="#">
+<div class="bg-primary/20 p-1.5 rounded-full shadow-[0_0_12px_rgba(87,241,219,0.3)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">history</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">menu</span>
+</a>
+</div>
+</nav>
+<style>
+        /* Custom Scrollbar for the list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(25, 33, 50, 0.5);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(133, 148, 144, 0.3);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(87, 241, 219, 0.5);
+        }
+        
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .pb-safe {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+    </style>
+</body></html>

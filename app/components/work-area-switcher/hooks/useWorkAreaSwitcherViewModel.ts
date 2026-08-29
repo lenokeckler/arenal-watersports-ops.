@@ -1,0 +1,104 @@
+"use client";
+
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { PATHS, STORE_SLICES } from "@/app/constants";
+import type { WorkArea } from "@/app/constants";
+// Deep import on purpose — see `useLoginFormViewModel.ts`.
+import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { workAreaActions } from "@/app/store";
+import { useSessionStore } from "@/app/components/session/hooks/useSessionStore";
+import { fetchWorkerAreaState } from "@/app/utils/acceso/workAreas";
+import type { WorkAreaSwitcherViewModel } from "../models/WorkAreaSwitcherViewModel.interface";
+
+/**
+ * Backs the always-visible `WorkAreaSwitcher` (US-ACC-008, US-ACC-011,
+ * section 8 and 9 of the access module design: "el control de cambio de
+ * modo" and logout must be reachable from anywhere without a fresh page
+ * load). Loads the account's own areas once, when a session actually
+ * appears, and keeps them in the shared `workArea` Redux slice so both
+ * this control and `/acceso/modo-de-trabajo` read the same state.
+ */
+export const useWorkAreaSwitcherViewModel =
+  (): WorkAreaSwitcherViewModel => {
+    const router = useRouter();
+    const pathname = usePathname();
+    const dispatch = useAppDispatch();
+    const { hasActiveUser } = useSessionStore();
+    const { activeArea, availableAreas } = useAppSelector(
+      (state) => state[STORE_SLICES.WORK_AREA]
+    );
+
+    useEffect(() => {
+      if (!hasActiveUser) {
+        dispatch(workAreaActions.resetWorkArea());
+        return;
+      }
+
+      const supabase = createBrowserSupabaseClient();
+
+      void supabase.auth.getUser().then(async ({ data: { user } }) => {
+        if (!user) {
+          return;
+        }
+
+        const state = await fetchWorkerAreaState(supabase, user.id);
+
+        dispatch(
+          workAreaActions.setWorkAreaState({
+            activeArea: state.lastWorkArea,
+            availableAreas: state.areas,
+          })
+        );
+      });
+      // Re-runs only when the session itself appears or disappears — a
+      // mode switch updates the slice directly (`handleSelectArea` below)
+      // instead of forcing a refetch.
+       
+    }, [hasActiveUser, dispatch]);
+
+    const handleSelectArea = (area: WorkArea): void => {
+      if (area === activeArea) {
+        return;
+      }
+
+      const supabase = createBrowserSupabaseClient();
+
+      void supabase.auth.getUser().then(async ({ data: { user } }) => {
+        if (!user) {
+          return;
+        }
+
+        const { error } = await supabase
+          .from("workers")
+          .update({ last_work_area: area })
+          .eq("id", user.id);
+
+        if (!error) {
+          dispatch(workAreaActions.setActiveArea(area));
+        }
+      });
+    };
+
+    const handleLogout = (): void => {
+      const supabase = createBrowserSupabaseClient();
+      void supabase.auth
+        .signOut()
+        .finally(() => router.replace(PATHS.ACCESS.LOGIN));
+    };
+
+    return {
+      activeArea,
+      availableAreas,
+      handleLogout,
+      handleSelectArea,
+      isVisible: hasActiveUser,
+      // The work-mode selector already is the full-screen version of this
+      // choice — showing the compact switcher's mode buttons on top of it
+      // would just duplicate the same three cards in miniature.
+      showModeButtons:
+        availableAreas.length > 1 &&
+        pathname !== PATHS.ACCESS.WORK_MODE,
+    };
+  };
