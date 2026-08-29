@@ -11,3 +11,13 @@ export const WORK_AREA = {
 
 export type WorkArea =
   (typeof WORK_AREA)[keyof typeof WORK_AREA];
+
+/**
+ * Etiqueta en español de cada área, para mostrar en pantalla (p. ej. el
+ * perfil del trabajador) el valor del enum tal como lo guarda la base.
+ */
+export const WORK_AREA_LABEL = {
+  [WORK_AREA.ADMINISTRATION]: "Administración",
+  [WORK_AREA.OPERATIONS]: "Operaciones",
+  [WORK_AREA.RESERVATIONS]: "Reservas",
+} as const satisfies Record<WorkArea, string>;

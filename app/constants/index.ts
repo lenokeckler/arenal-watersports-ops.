@@ -96,6 +96,7 @@ export { PASSWORD_RULES } from "./acceso/PasswordRules.constants";
 export { ACCESS_AUTH } from "./acceso/AccessAuth.constants";
 export {
   WORK_AREA,
+  WORK_AREA_LABEL,
   type WorkArea,
 } from "./acceso/WorkArea.constants";
 export {
@@ -103,6 +104,7 @@ export {
   PASSWORD_CHANGE_SCREEN,
   type PasswordChangeMode,
 } from "./acceso/PasswordChangeScreen.constants";
+export { PROFILE_SCREEN } from "./acceso/ProfileScreen.constants";
 export {
   CHANGE_PASSWORD_FAILURE_REASON,
   type ChangePasswordFailureReason,
