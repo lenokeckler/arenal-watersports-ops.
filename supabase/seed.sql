@@ -3,9 +3,40 @@
 
 -- La cuenta de administracion. Su correo personal es obligatorio porque es su
 -- unica salida cuando pierde la contrasena.
-insert into auth.users (id, email, encrypted_password, email_confirmed_at)
-values ('00000000-0000-0000-0000-000000000001', 'admin@arenal.local',
-        extensions.crypt('Arenal.2026', extensions.gen_salt('bf')), now())
+--
+-- GoTrue (el servicio de Auth) exige mas columnas que id/email/password para
+-- poder autenticar: instance_id, aud y role identifican la fila como un
+-- usuario valido de este proyecto; las columnas de token no aceptan NULL al
+-- leerlas de vuelta (fallan con "converting NULL to string"); y necesita una
+-- fila en auth.identities para el proveedor 'email', que es donde resuelve
+-- la identidad al iniciar sesion.
+insert into auth.users (
+  id, instance_id, aud, role, email, encrypted_password, email_confirmed_at,
+  confirmation_token, recovery_token, email_change_token_new, email_change,
+  raw_app_meta_data, raw_user_meta_data, created_at, updated_at
+)
+values (
+  '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000000',
+  'authenticated', 'authenticated', 'admin@arenal.local',
+  extensions.crypt('Arenal.2026', extensions.gen_salt('bf')), now(),
+  '', '', '', '',
+  '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb, now(), now()
+)
+on conflict do nothing;
+
+insert into auth.identities (
+  id, user_id, provider_id, identity_data, provider, last_sign_in_at,
+  created_at, updated_at
+)
+values (
+  gen_random_uuid(), '00000000-0000-0000-0000-000000000001',
+  '00000000-0000-0000-0000-000000000001',
+  jsonb_build_object(
+    'sub', '00000000-0000-0000-0000-000000000001',
+    'email', 'admin@arenal.local'
+  ),
+  'email', now(), now(), now()
+)
 on conflict do nothing;
 
 insert into workers (id, username, full_name, personal_email, base_role, must_change_password)
