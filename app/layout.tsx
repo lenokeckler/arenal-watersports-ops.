@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ReduxProvider } from "@/app/providers";
+import WorkdaySessionProvider from "@/app/components/session/WorkdaySessionProvider";
+import WorkAreaSwitcher from "@/app/components/work-area-switcher/WorkAreaSwitcher";
 
 /**
  * Design-system fonts, self-hosted through `next/font` rather than a
@@ -60,6 +63,14 @@ export const viewport: Viewport = {
   width: "device-width",
 };
 
+/**
+ * `ReduxProvider` and the session/work-mode wiring live here, at the very
+ * root, rather than in a route group layout: `WorkAreaSwitcher` must be
+ * reachable from any screen (US-ACC-008, US-ACC-011) and this module owns
+ * no other shared shell yet for the modules that will build the rest of
+ * the app. Both render nothing/no-op when there is no active session, so
+ * mounting them above the public access screens as well is harmless.
+ */
 const RootLayout = ({
   children,
 }: Readonly<{
@@ -69,7 +80,12 @@ const RootLayout = ({
     <body
       className={`${hankenGrotesk.variable} ${jetbrainsMono.variable} ${materialSymbolsOutlined.variable} bg-background text-on-background antialiased`}
     >
-      {children}
+      <ReduxProvider>
+        <WorkdaySessionProvider>
+          {children}
+          <WorkAreaSwitcher />
+        </WorkdaySessionProvider>
+      </ReduxProvider>
     </body>
   </html>
 );

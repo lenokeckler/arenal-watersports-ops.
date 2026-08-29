@@ -2,7 +2,12 @@
 
 import { useEffect } from "react";
 import { SESSION_CONFIG } from "@/app/constants";
-import { createBrowserSupabaseClient } from "@/app/services";
+// Deep import on purpose — see `useLoginFormViewModel.ts`: the barrel
+// bundles the server client (`next/headers`) together with this one, and
+// that breaks the client build the moment anything actually renders this
+// provider (it previously was not mounted anywhere, so this had never
+// surfaced).
+import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import { useSessionStore } from "@/app/components/session/hooks/useSessionStore";
 import { InactivityTimeoutProvider } from "./InactivityTimeoutContext";
 import SessionForm from "../session-inactivity-form/SessionInactivityForm";
