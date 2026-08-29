@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seleccione su modo de trabajo - Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#222a3d",
+                      "surface-variant": "#2d3449",
+                      "on-tertiary-container": "#005371",
+                      "on-error": "#690005",
+                      "primary-fixed": "#62fae3",
+                      "on-surface": "#dae2fd",
+                      "surface-container-lowest": "#060e20",
+                      "error-container": "#93000a",
+                      "inverse-primary": "#006b5f",
+                      "surface-tint": "#3cddc7",
+                      "secondary-fixed": "#ffdad8",
+                      "outline": "#859490",
+                      "on-secondary-fixed": "#410006",
+                      "primary": "#57f1db",
+                      "primary-fixed-dim": "#3cddc7",
+                      "inverse-on-surface": "#283044",
+                      "inverse-surface": "#dae2fd",
+                      "on-secondary": "#670211",
+                      "error": "#ffb4ab",
+                      "surface-bright": "#31394d",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "surface-container-low": "#131b2e",
+                      "surface-container-highest": "#2d3449",
+                      "surface": "#0b1326",
+                      "secondary": "#ffb3b0",
+                      "on-surface-variant": "#bacac5",
+                      "on-primary": "#003731",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "surface-dim": "#0b1326",
+                      "on-primary-container": "#00574d",
+                      "tertiary-fixed": "#c4e7ff",
+                      "tertiary": "#afe0ff",
+                      "on-tertiary": "#00354a",
+                      "background": "#0b1326",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "on-primary-fixed-variant": "#005047",
+                      "tertiary-container": "#5ec9ff",
+                      "surface-container": "#171f33",
+                      "primary-container": "#2dd4bf",
+                      "outline-variant": "#3c4a46",
+                      "on-secondary-container": "#ff9996",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "on-primary-fixed": "#00201c",
+                      "on-background": "#dae2fd",
+                      "on-tertiary-fixed": "#001e2c",
+                      "secondary-container": "#881d24"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "xl": "80px",
+                      "lg": "48px",
+                      "md": "24px",
+                      "gutter": "20px",
+                      "base": "8px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        /* Ambient background glow */
+        body {
+            background: radial-gradient(circle at 50% -20%, rgba(45, 212, 191, 0.15) 0%, rgba(11, 19, 38, 1) 60%);
+            background-color: #0b1326;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism utility for cards */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(87, 241, 219, 0.5); /* Primary color */
+            box-shadow: inset 0 0 20px rgba(87, 241, 219, 0.1), 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .glass-card:hover .icon-container {
+            color: #57f1db;
+            text-shadow: 0 0 15px rgba(87, 241, 219, 0.5);
+            transform: scale(1.1);
+        }
+
+        .icon-container {
+            transition: all 0.3s ease;
+        }
+
+        /* Subtle animated grid background */
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
+    </style>
+</head>
+<body class="text-on-surface antialiased flex flex-col justify-between items-center py-margin-desktop px-margin-mobile md:px-margin-desktop relative">
+<div class="bg-grid"></div>
+<!-- Header Section -->
+<header class="text-center mt-12 md:mt-20 max-w-3xl z-10 w-full animate-fade-in-up" style="animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px);">
+<!-- Brand Logo Element -->
+<div class="flex justify-center mb-8">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-high border border-white/10 flex items-center justify-center shadow-lg shadow-black/50">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">
+                     anchor
+                 </span>
+</div>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6 tracking-tight">Seleccione su modo de trabajo</h1>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-2xl mx-auto">Su cuenta tiene múltiples áreas habilitadas. Elija el entorno en el que trabajará hoy para acceder a las herramientas correspondientes.</p>
+</header>
+<!-- Main Content: Mode Selection Cards -->
+<main class="w-full max-w-6xl mt-16 md:mt-24 z-10 flex-grow flex flex-col justify-center">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+<!-- Card 1: Operaciones -->
+<a class="glass-card rounded-2xl p-8 flex flex-col h-full cursor-pointer group" href="#operaciones" style="animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; transform: translateY(20px);">
+<div class="mb-6 flex justify-between items-start">
+<div class="icon-container w-16 h-16 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl" data-weight="fill">
+                            waves
+                        </span>
+</div>
+<!-- Indicator of activity -->
+<span class="flex h-3 w-3 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Operaciones</h2>
+<p class="font-body-base text-body-base text-on-surface-variant/80 flex-grow">Control de flota, despacho de equipo y cierre de salidas en tiempo real.</p>
+<div class="mt-8 flex items-center text-primary font-button text-button uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-[-10px] group-hover:translate-x-0">
+                    Ingresar <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</div>
+</a>
+<!-- Card 2: Reservas -->
+<a class="glass-card rounded-2xl p-8 flex flex-col h-full cursor-pointer group" href="#reservas" style="animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; transform: translateY(20px);">
+<div class="mb-6">
+<div class="icon-container w-16 h-16 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl" data-weight="fill">
+                            event_available
+                        </span>
+</div>
+</div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Reservas</h2>
+<p class="font-body-base text-body-base text-on-surface-variant/80 flex-grow">Gestión de agenda, atención al cliente y registro de pagos.</p>
+<div class="mt-8 flex items-center text-primary font-button text-button uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-[-10px] group-hover:translate-x-0">
+                    Ingresar <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</div>
+</a>
+<!-- Card 3: Administración -->
+<a class="glass-card rounded-2xl p-8 flex flex-col h-full cursor-pointer group" href="#administracion" style="animation: fadeInUp 0.8s ease-out 0.6s forwards; opacity: 0; transform: translateY(20px);">
+<div class="mb-6">
+<div class="icon-container w-16 h-16 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl" data-weight="fill">
+                            admin_panel_settings
+                        </span>
+</div>
+</div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Administración</h2>
+<p class="font-body-base text-body-base text-on-surface-variant/80 flex-grow">Control de inventario maestro, configuración de tarifas y gestión de personal.</p>
+<div class="mt-8 flex items-center text-primary font-button text-button uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-[-10px] group-hover:translate-x-0">
+                    Ingresar <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</div>
+</a>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-20 z-10 w-full text-center pb-8 animate-fade-in" style="animation: fadeIn 1s ease-out 1s forwards; opacity: 0;">
+<button class="font-button text-button text-on-surface-variant/60 hover:text-error transition-colors duration-200 uppercase tracking-widest inline-flex items-center group">
+<span class="material-symbols-outlined mr-2 text-lg group-hover:rotate-180 transition-transform duration-500">logout</span>
+            Cerrar sesión
+        </button>
+</footer>
+<style>
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+<script>
+        // Simple ambient particle effect for the background
+        document.addEventListener('DOMContentLoaded', () => {
+            const particleContainer = document.createElement('div');
+            particleContainer.style.position = 'fixed';
+            particleContainer.style.inset = '0';
+            particleContainer.style.pointerEvents = 'none';
+            particleContainer.style.zIndex = '-1';
+            particleContainer.style.overflow = 'hidden';
+            document.body.appendChild(particleContainer);
+
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 4 + 1 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = 'rgba(87, 241, 219, 0.2)';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                
+                // Random float animation
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.animation = `float ${duration}s ${delay}s infinite linear alternate`;
+                
+                particleContainer.appendChild(particle);
+            }
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translateY(0) translateX(0); opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body></html>
