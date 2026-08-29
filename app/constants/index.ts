@@ -86,3 +86,23 @@ export {
 export { OMITTED_PROPS } from "./props/OmittedProps.constants";
 export { MILISECONDS } from "./miliseconds/Miliseconds.constants";
 export { SUPABASE } from "./supabase/Supabase.constants";
+export {
+  ACCESS_ERROR,
+  ACCESS_ERROR_MESSAGE,
+  ACCESS_ERROR_QUERY,
+  type AccessErrorKey,
+} from "./acceso/AccessError.constants";
+export { PASSWORD_RULES } from "./acceso/PasswordRules.constants";
+export { ACCESS_AUTH } from "./acceso/AccessAuth.constants";
+export {
+  WORK_AREA,
+  type WorkArea,
+} from "./acceso/WorkArea.constants";
+export {
+  WORKER_STATUS,
+  type WorkerStatus,
+} from "./acceso/WorkerStatus.constants";
+export {
+  LOGIN_ATTEMPT_OUTCOME,
+  type LoginAttemptOutcome,
+} from "./acceso/LoginAttempt.constants";
