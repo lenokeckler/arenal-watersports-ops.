@@ -837,7 +837,11 @@ left join lateral (
   join reservations r on r.id = ri.reservation_id
   where ri.unit_id = u.id
     and r.status = 'dispatched'
-  order by r.ends_at
+  -- Descendente a proposito: con dos despachos solapados sobre la misma
+  -- unidad, la unidad no esta libre hasta que termina el ULTIMO. Ascendente
+  -- mostraba la hora de regreso del que terminaba primero, y el tablero
+  -- invitaba a volver a entregar equipo que seguia afuera.
+  order by r.ends_at desc
   limit 1
 ) active_trip on true;
 ```
@@ -891,8 +895,13 @@ language sql stable as $$
       and tstzrange(r.starts_at, r.ends_at, '[)')
           && tstzrange(p_starts_at, p_ends_at, '[)')
   )
-  select stock.usable, taken.committed, stock.usable - taken.committed
-  from stock, taken;
+  -- Left join y coalesce a proposito: un cross join con `stock` vacio no
+  -- devuelve una fila con 0, devuelve CERO filas. Una categoria que aun no
+  -- tiene stock registrado debe informar 0 libres, no ausencia de respuesta.
+  select coalesce(stock.usable, 0),
+         taken.committed,
+         coalesce(stock.usable, 0) - taken.committed
+  from taken left join stock on true;
 $$;
 ```
 
