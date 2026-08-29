@@ -106,3 +106,9 @@ export {
   LOGIN_ATTEMPT_OUTCOME,
   type LoginAttemptOutcome,
 } from "./acceso/LoginAttempt.constants";
+export { PASSWORD_RULE_LABEL } from "./acceso/PasswordRuleLabel.constants";
+export { ACCESS_LOGIN_SCREEN } from "./acceso/AccessLoginScreen.constants";
+export {
+  MATERIAL_ICON_NAME,
+  type MaterialIconName,
+} from "@/app/components/icons/material-icon/constants";
