@@ -123,24 +123,34 @@ select is(
 );
 
 -- ============================ forma 3: granted_by + granted_at ============================
--- Tabla representativa: worker_areas.
+-- Tabla representativa: worker_areas. La tarea 13 exige is_admin() para
+-- insertar aqui, asi que la firma se prueba autenticado como administracion
+-- en vez de Ismael -- la falsificacion medida es la misma (quien manda el
+-- insert miente sobre granted_by); solo cambia quien tiene permiso de
+-- intentar la insercion en primer lugar.
 
 reset role;
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
+set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 
 insert into worker_areas (worker_id, area, granted_by)
-values ('22222222-2222-2222-2222-222222222222', 'reservas', '11111111-1111-1111-1111-111111111111');
+values ('22222222-2222-2222-2222-222222222222', 'reservas', '22222222-2222-2222-2222-222222222222');
 
 select is(
   (select granted_by from worker_areas
    where worker_id = '22222222-2222-2222-2222-222222222222' and area = 'reservas'),
-  '22222222-2222-2222-2222-222222222222'::uuid,
+  '11111111-1111-1111-1111-111111111111'::uuid,
   'forma granted_by+granted_at: granted_by sale de auth.uid(), no del cliente'
 );
 
 -- ============================ forma 4: assigned_by + assigned_at ============================
--- Tabla representativa: reservation_guides (sigue autenticado como Ismael).
+-- Tabla representativa: reservation_guides. Esta tabla no tiene RLS en la
+-- tarea 13, asi que se restaura la sesion de Ismael para seguir midiendo
+-- exactamente lo que media antes de esa tarea.
+
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
 insert into reservation_guides (reservation_id, worker_id, assigned_by)
 values ('dddddddd-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111',
@@ -155,21 +165,34 @@ select is(
 );
 
 -- ============================ forma 5: uploaded_by + uploaded_at ============================
--- Tabla representativa: unit_condition_photos (sigue autenticado como Ismael).
+-- Tabla representativa: unit_condition_photos. La tarea 13 exige la marca
+-- encargado_general (o is_admin()) para insertar aqui; Ismael no tiene esa
+-- marca en esta prueba, asi que la firma se prueba autenticado como
+-- administracion. Misma falsificacion, otro actor con permiso de intentarla.
+
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 
 insert into unit_condition_photos (unit_id, angle, storage_path, uploaded_by)
 values ('bbbbbbbb-0000-0000-0000-000000000001', 'right_side', 'fotos/lancha-1-der.webp',
-        '11111111-1111-1111-1111-111111111111');
+        '22222222-2222-2222-2222-222222222222');
 
 select is(
   (select uploaded_by from unit_condition_photos
    where unit_id = 'bbbbbbbb-0000-0000-0000-000000000001' and angle = 'right_side'),
-  '22222222-2222-2222-2222-222222222222'::uuid,
+  '11111111-1111-1111-1111-111111111111'::uuid,
   'forma uploaded_by+uploaded_at: uploaded_by sale de auth.uid(), no del cliente'
 );
 
 -- ============================ forma 6: updated_by + updated_at solamente ============================
--- Tabla representativa: equipment_stock (sigue autenticado como Ismael).
+-- Tabla representativa: equipment_stock. Ismael tiene el area operaciones
+-- desde su propia alta, asi que la tarea 13 lo admite aqui sin cambios; se
+-- restaura su sesion para seguir midiendo lo mismo que antes de esa tarea.
+
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
 insert into equipment_stock (category_id, updated_by)
 values ('aaaaaaaa-0000-0000-0000-000000000002', '11111111-1111-1111-1111-111111111111');
