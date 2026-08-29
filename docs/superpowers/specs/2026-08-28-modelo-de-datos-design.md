@@ -464,19 +464,24 @@ create table maintenance_records (
   updated_by    uuid references workers (id),
   updated_at    timestamptz not null default now(),
 
-  -- El trabajo que hace el personal no lleva costo: ya se le paga su salario.
-  -- Solo el trabajo externo se paga y solo ese entra al reporte de gasto.
-  constraint maintenance_cost_only_when_external
-    check (
-      (is_external and cost_amount is not null and cost_currency is not null)
-      or (not is_external and cost_amount is null and cost_currency is null)
-    )
+  -- El costo es independiente de quien hizo el trabajo. El personal no cobra
+  -- mano de obra porque ya se le paga el salario, pero una defensa nueva o una
+  -- pieza de repuesto si cuestan aunque las instale operaciones.
+  constraint maintenance_cost_is_complete
+    check ((cost_amount is null) = (cost_currency is null)),
+  constraint maintenance_cost_positive
+    check (cost_amount is null or cost_amount > 0)
 );
 ```
 
-Todo trabajo se registra —montar defensas y arreglar cascos también, porque es
-historial de la máquina— pero el reporte _"cuánto se ha gastado en mantener cada
-máquina"_ suma únicamente los externos.
+Todo trabajo se registra, lo haga el personal o un taller. `is_external` dice
+**quién** lo hizo y `cost_amount` dice **cuánto costó**, y son dos cosas
+independientes: montar una defensa nueva la hace operaciones y no se paga mano de
+obra, pero la defensa se compró y ese monto es gasto real de esa máquina.
+
+El reporte _"cuánto se ha gastado en mantener cada máquina"_ suma todos los
+costos registrados, sin importar quién ejecutó el trabajo. `is_external` sirve
+para desglosar cuánto se va en talleres frente a cuánto en repuestos.
 
 ### 4.4 Conteos de inventario
 
@@ -777,6 +782,21 @@ create table deposits (
 );
 
 create index deposits_pending_idx on deposits (created_at) where status = 'held';
+
+-- Un deposito pasa de 'held' a uno de los tres estados finales y ahi se queda.
+-- Nunca vuelve a quedar abierto ni cambia de resolucion.
+create function freeze_resolved_deposit() returns trigger
+language plpgsql as $$
+begin
+  if old.status <> 'held' and new.status is distinct from old.status then
+    raise exception 'Un deposito ya resuelto no cambia de estado';
+  end if;
+  return new;
+end $$;
+
+create trigger deposits_freeze_resolution
+  before update on deposits
+  for each row execute function freeze_resolved_deposit();
 ```
 
 `status = 'held'` **es** la lista de pendientes de resolver. No hace falta otra
@@ -907,15 +927,33 @@ RLS activo en **todas** las tablas, sin excepción. El patrón general:
 | Grupo de tablas                                       | Lectura                                                          | Escritura                                                                                         |
 | ----------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `workers`, `worker_areas`, `worker_marks`             | La propia fila, o cualquiera si `is_admin()`                     | `is_admin()`. Excepción: reservas con marca `registro_guias_externos` inserta guías externos      |
-| Catálogo, tarifas, extras, combos                     | Cualquier trabajador activo                                      | `is_admin()`                                                                                      |
+| Catálogo, tarifas, extras, combos                     | Cualquier trabajador activo, operaciones incluida                | `is_admin()`                                                                                      |
 | Unidades, stock, fotos, daños, mantenimiento, conteos | Cualquier trabajador activo                                      | `has_area('operaciones')` o `is_admin()`. Las fotos exigen además `has_mark('encargado_general')` |
 | Reservas, ítems, guías                                | `has_area('reservas')`, `has_area('operaciones')` o `is_admin()` | Crear y modificar: `has_area('reservas')`. Despachar y cerrar: `has_area('operaciones')`          |
-| Cobros, devoluciones, depósitos                       | `has_area('reservas')` o `is_admin()`                            | `has_area('reservas')`                                                                            |
+| Cobros, devoluciones, depósitos                       | `has_area('reservas')` o `is_admin()` — operaciones nunca        | `has_area('reservas')`                                                                            |
 
-**Operaciones no ve dinero.** Eso no se implementa escondiendo una pantalla: se
-implementa no dándole `SELECT` sobre `reservation_charges`, `refunds`,
-`deposits` ni `tariffs`. Aunque alguien llame la API directamente, la base
-devuelve vacío.
+**La línea está entre el precio de lista y el movimiento de dinero**, y no entre
+"dinero sí" y "dinero no".
+
+Operaciones **sí ve precios**: las tarifas, los precios de los extras y el precio
+de paquete de los combos. La razón es de operación, no de sistema — la persona
+que está en el muelle se topa con gente que baja al lago y pregunta cuánto vale
+una hora de jet ski, y hoy tiene que subir a preguntar. Es información de
+catálogo, la misma que está en la lista de precios pegada en la oficina.
+
+Operaciones **no ve movimientos de dinero**: ni cobros, ni devoluciones, ni
+depósitos. Ahí sí entra plata de un cliente concreto y operaciones no la recibe
+ni la resuelve.
+
+Eso no se implementa escondiendo una pantalla: se implementa no dándole `SELECT`
+sobre `reservation_charges`, `refunds` ni `deposits`. Aunque alguien llame la API
+directamente, la base devuelve vacío.
+
+> **Nota de alcance.** La pantalla de consulta de precios para operaciones **no
+> está en las 111 historias**: sale de una decisión tomada durante este diseño.
+> El esquema ya la soporta sin cambios, pero la historia hay que agregarla al
+> backlog antes de construirla. Queda anotada como `US-TAB-010 — Consulta de
+precios desde operaciones`, en el módulo Tablero y Navegación.
 
 Ejemplo del caso más delicado, la creación de guías externos por parte de
 reservas:
@@ -981,6 +1019,8 @@ Las que el documento no cerraba y quedan fijadas aquí:
 1. **Autenticación con correo sintético** `<username>@arenal.local` sobre Supabase Auth, en vez de autenticación propia. Se conserva el manejo de contraseñas y sesiones de Supabase; lo que él no trae vive en tablas nuestras.
 2. **`tracking_mode` híbrido por categoría.** El criterio es si hace falta la historia de la pieza, no si la categoría es reservable. Corrige la única línea del documento que se contradecía con su propia lista.
 3. **Compatibilidad de extras por unidad**, no por categoría, porque las dos lanchas no admiten lo mismo.
-4. **Costo de mantenimiento solo en trabajo externo**, con restricción en la base. El trabajo del personal se registra sin monto.
+4. **Costo de mantenimiento independiente de quién hizo el trabajo.** Se registra todo trabajo, y el costo va aparte: una pieza comprada cuesta aunque la instale el personal.
 5. **Tarifas sin versionado histórico**, porque la reserva guarda su propia fotografía del monto acordado.
 6. **`ocupado` como vista y no como columna**, y la disponibilidad como función y no como tabla.
+7. **Operaciones ve precios pero no movimientos de dinero.** Las tarifas y los precios de extras y combos son catálogo y los lee cualquier trabajador; los cobros, las devoluciones y los depósitos son de reservas y administración.
+8. **Un depósito resuelto no se reabre.** Pasa de `held` a uno de los tres estados finales y ahí se queda, garantizado por disparador.
