@@ -4,3 +4,4 @@ export type {
   NullableRef,
   NullableUndefined,
 } from "./Nullable";
+export type { Database } from "./Database";
