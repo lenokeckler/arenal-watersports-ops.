@@ -99,6 +99,15 @@ export {
   type WorkArea,
 } from "./acceso/WorkArea.constants";
 export {
+  PASSWORD_CHANGE_MODE,
+  PASSWORD_CHANGE_SCREEN,
+  type PasswordChangeMode,
+} from "./acceso/PasswordChangeScreen.constants";
+export {
+  CHANGE_PASSWORD_FAILURE_REASON,
+  type ChangePasswordFailureReason,
+} from "./acceso/ChangePassword.constants";
+export {
   WORKER_STATUS,
   type WorkerStatus,
 } from "./acceso/WorkerStatus.constants";

@@ -1,3 +1,4 @@
+export { default as AccessScreenShell } from "./access-screen-shell/AccessScreenShell";
 export { default as Button } from "./button/Button";
 export { default as FieldFactory } from "./field-factory/FieldFactory";
 export { default as FormField } from "./form-field/FormField";
