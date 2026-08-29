@@ -7,6 +7,7 @@ export const ACCESS_LOGIN_SCREEN = {
   APP_NAME: "Arenal Ops",
   APP_SUBTITLE: "Centro de Mando Operativo",
   BANNER_TITLE: "Acceso Denegado",
+  FOOTER: "© Arenal Ops. Acceso Restringido.",
   FORGOT_PASSWORD: "¿Olvidó su contraseña?",
   PASSWORD_LABEL: "Contraseña",
   PASSWORD_PLACEHOLDER: "••••••••",
