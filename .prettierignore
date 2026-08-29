@@ -53,3 +53,5 @@ yarn.lock
 # Generated files
 *.min.js
 *.min.css 
+# Referencia historica y documentos generados
+docs/referencia/

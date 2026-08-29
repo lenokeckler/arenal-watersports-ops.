@@ -3,8 +3,7 @@ import { STRING, DATE } from "@/app/constants";
 export const formatDateString = (
   dateString: string,
   toFormat:
-    | typeof DATE.YEAR_MONTH_DAY
-    | typeof DATE.DAY_MONTH_YEAR
+    typeof DATE.YEAR_MONTH_DAY | typeof DATE.DAY_MONTH_YEAR
 ): string => {
   if (!dateString) {
     return STRING.Empty;

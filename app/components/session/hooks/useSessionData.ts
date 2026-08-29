@@ -1,22 +1,10 @@
-import { useRemoteConfig } from "@/app/components/remote-config-loader/context";
+import { SESSION_TIMEOUT_WARNING_MODAL } from "@/app/constants";
 import { SessionData } from "../models/SessionData.interface";
 
-export const useSessionData = (): SessionData => {
-  const { data, setLanguage, language } = useRemoteConfig();
-  return {
-    title:
-      data?.subscriptor_module?.logout_inactivity?.title,
-    description:
-      data?.subscriptor_module?.logout_inactivity
-        ?.description,
-    minute:
-      data?.subscriptor_module?.logout_inactivity?.minute,
-    logout:
-      data?.subscriptor_module?.logout_inactivity?.logout,
-    keep_session:
-      data?.subscriptor_module?.logout_inactivity
-        ?.keep_session,
-    setLanguage,
-    language,
-  };
-};
+export const useSessionData = (): SessionData => ({
+  description: SESSION_TIMEOUT_WARNING_MODAL.DESCRIPTION,
+  keepSession: SESSION_TIMEOUT_WARNING_MODAL.CANCEL_TEXT,
+  logout: SESSION_TIMEOUT_WARNING_MODAL.CONFIRM_TEXT,
+  minute: SESSION_TIMEOUT_WARNING_MODAL.MINUTES_TEXT,
+  title: SESSION_TIMEOUT_WARNING_MODAL.TITLE,
+});

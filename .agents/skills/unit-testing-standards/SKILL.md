@@ -13,13 +13,13 @@ There is currently no test runner checked into the repo. When introducing tests,
 
 ## 1. Tooling
 
-| Layer | Package |
-| --- | --- |
-| Runner | Vitest |
-| Component render | `@testing-library/react` |
-| Interactions | `@testing-library/user-event` |
-| DOM matchers | `@testing-library/jest-dom` |
-| Next.js | `vitest` + React Testing Library (jsdom). Prefer Testing Library queries over enzyme-style shallow APIs. |
+| Layer            | Package                                                                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------------------- |
+| Runner           | Vitest                                                                                                   |
+| Component render | `@testing-library/react`                                                                                 |
+| Interactions     | `@testing-library/user-event`                                                                            |
+| DOM matchers     | `@testing-library/jest-dom`                                                                              |
+| Next.js          | `vitest` + React Testing Library (jsdom). Prefer Testing Library queries over enzyme-style shallow APIs. |
 
 Suggested scripts (add when tooling is installed):
 
@@ -50,10 +50,10 @@ app/components/<feature-name>/
     SPEC.md                       ← acceptance criteria to map into tests
 ```
 
-| File | Role |
-| --- | --- |
-| `*.page.ts` | Page Object — locators + user actions + small query helpers |
-| `*.test.tsx` | Component tests — arrange/act/assert via the Page Object |
+| File           | Role                                                                          |
+| -------------- | ----------------------------------------------------------------------------- |
+| `*.page.ts`    | Page Object — locators + user actions + small query helpers                   |
+| `*.test.tsx`   | Component tests — arrange/act/assert via the Page Object                      |
 | `use*.test.ts` | ViewModel/unit tests — call the hook (e.g. `renderHook`) directly; no DOM POM |
 
 Do **not** create a global `tests/page-objects/` dumping ground for feature-specific UI. Shared test helpers (providers, renderWithStore) may live under `app/test-utils/` once introduced.
@@ -83,8 +83,13 @@ A Page Object:
 it("submits the form", async () => {
   const user = userEvent.setup();
   render(<PatientForm {...props} />);
-  await user.type(screen.getByLabelText("Email"), "a@b.com");
-  await user.click(screen.getByRole("button", { name: "Save" }));
+  await user.type(
+    screen.getByLabelText("Email"),
+    "a@b.com"
+  );
+  await user.click(
+    screen.getByRole("button", { name: "Save" })
+  );
   expect(screen.getByText("Saved")).toBeInTheDocument();
 });
 ```
@@ -141,7 +146,9 @@ describe("PatientForm", () => {
     await patientFormPage.fillEmail("a@b.com");
     await patientFormPage.submit();
 
-    expect(patientFormPage.getSuccessMessage()).toBeInTheDocument();
+    expect(
+      patientFormPage.getSuccessMessage()
+    ).toBeInTheDocument();
   });
 });
 ```
@@ -150,12 +157,12 @@ One Page Object per **screen/feature UI** under test. Child widgets can have the
 
 ## 4. What to unit test
 
-| Target | How | POM? |
-| --- | --- | --- |
-| Feature UI (`.tsx`) | Render + interact via Page Object | **Yes** |
-| ViewModel hooks | `renderHook` / direct calls; mock APIs/store | No |
-| Pure utils / mappers | Direct function tests | No |
-| Redux slice reducers | Feed actions → assert state | No |
+| Target               | How                                          | POM?    |
+| -------------------- | -------------------------------------------- | ------- |
+| Feature UI (`.tsx`)  | Render + interact via Page Object            | **Yes** |
+| ViewModel hooks      | `renderHook` / direct calls; mock APIs/store | No      |
+| Pure utils / mappers | Direct function tests                        | No      |
+| Redux slice reducers | Feed actions → assert state                  | No      |
 
 Prefer testing behavior tied to `specs/SPEC.md` acceptance criteria. Do not snapshot huge DOM trees as a substitute for behavior tests.
 
