@@ -1,5 +1,5 @@
 begin;
-select plan(19);
+select plan(21);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -94,9 +94,29 @@ select throws_ok(
   'la pareja extra-unidad no se repite'
 );
 
+-- El nombre de un extra es unico en toda la empresa.
+select throws_ok(
+  $$ insert into extras (name, price_usd, created_by, updated_by)
+     values ('Parrilla', 30,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23505', null,
+  'el nombre de un extra no se repite'
+);
+
 insert into combos (id, name, package_price_usd, created_by, updated_by)
 values ('dddddddd-0000-0000-0000-000000000001', 'Paquete pontoon', 150,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+-- El nombre de un combo es unico en toda la empresa.
+select throws_ok(
+  $$ insert into combos (name, package_price_usd, created_by, updated_by)
+     values ('Paquete pontoon', 175,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23505', null,
+  'el nombre de un combo no se repite'
+);
 
 -- Camino feliz de combo_items: cantidad positiva.
 select lives_ok(
