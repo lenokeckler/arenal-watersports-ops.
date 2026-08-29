@@ -50,3 +50,10 @@ mcp_stitch/
 
 # La plantilla si se versiona (no lleva valores)
 !.env.example
+
+# Espacio de trabajo de ejecucion por subagentes
+.superpowers/
+
+# Supabase local
+supabase/.branches
+supabase/.temp

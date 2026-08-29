@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { SUPABASE } from "@/app/constants";
+import type { Database } from "@/app/types";
 
 /**
  * Supabase client for Server Components, Route Handlers and Server Actions.
@@ -9,7 +10,7 @@ import { SUPABASE } from "@/app/constants";
 export const createClient = async () => {
   const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     SUPABASE.URL,
     SUPABASE.ANON_KEY,
     {
