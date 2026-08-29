@@ -1,5 +1,5 @@
 begin;
-select plan(20);
+select plan(25);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -160,6 +160,30 @@ select throws_ok(
   'una reserva no puede apuntarse a si misma como padre'
 );
 
+-- Al partir una reserva, la hija no puede llevar cobro propio: el cobro se
+-- queda entero en la original, a nombre del mismo cliente.
+select throws_ok(
+  $$ insert into reservations
+       (customer_name, people_count, type, starts_at, duration_minutes,
+        parent_reservation_id, agreed_amount_usd, created_by, updated_by)
+     values ('Hija con cobro', 1, 'rental', '2026-09-10 09:00:00+00', 60,
+             'dddddddd-0000-0000-0000-000000000001', 50,
+             '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
+  '23514', null,
+  'una reserva hija no puede llevar cobro propio'
+);
+
+-- Camino feliz: la hija nace sin cobro propio en las cuatro columnas.
+select lives_ok(
+  $$ insert into reservations
+       (customer_name, people_count, type, starts_at, duration_minutes,
+        parent_reservation_id, created_by, updated_by)
+     values ('Hija sin cobro', 1, 'rental', '2026-09-10 09:00:00+00', 60,
+             'dddddddd-0000-0000-0000-000000000001',
+             '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
+  'una reserva hija sin cobro propio se inserta bien'
+);
+
 -- Un item es una unidad concreta o una categoria con cantidad, nunca las dos.
 select throws_ok(
   $$ insert into reservation_items
@@ -216,6 +240,33 @@ select throws_ok(
              '11111111-1111-1111-1111-111111111111') $$,
   '23514', null,
   'la cantidad de un item por categoria exige un valor positivo'
+);
+
+-- Camino feliz: asignar un guia a una reserva.
+select lives_ok(
+  $$ insert into reservation_guides (reservation_id, worker_id, assigned_by)
+     values ('dddddddd-0000-0000-0000-000000000001',
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'asignar un guia a una reserva es valido'
+);
+
+-- assigned_at se llena solo, con el momento de la asignacion.
+select ok(
+  (select assigned_at is not null from reservation_guides
+     where reservation_id = 'dddddddd-0000-0000-0000-000000000001'
+       and worker_id = '11111111-1111-1111-1111-111111111111'),
+  'assigned_at se llena con el default'
+);
+
+-- El mismo guia no se asigna dos veces a la misma reserva.
+select throws_ok(
+  $$ insert into reservation_guides (reservation_id, worker_id, assigned_by)
+     values ('dddddddd-0000-0000-0000-000000000001',
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23505', null,
+  'un guia no se asigna dos veces a la misma reserva'
 );
 
 -- Cancelar exige motivo: sirve para revisar por que se cae la gente.
