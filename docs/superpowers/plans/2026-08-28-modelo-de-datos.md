@@ -1230,8 +1230,12 @@ create table reservations (
   duration_minutes      integer not null check (duration_minutes > 0),
   -- Columna generada: ninguna consulta de disponibilidad la recalcula y
   -- ningun camino de escritura puede dejarla inconsistente.
+  -- timestamptz + interval es STABLE, no IMMUTABLE, y Postgres rechaza una
+  -- expresion no inmutable en una columna generada. Pasar por UTC en ambos
+  -- lados si es inmutable y da el mismo instante.
   ends_at               timestamptz generated always as
-                          (starts_at + make_interval(mins => duration_minutes)) stored,
+                          ((starts_at at time zone 'UTC'
+                              + make_interval(mins => duration_minutes)) at time zone 'UTC') stored,
 
   status                reservation_status not null default 'scheduled',
   -- Al partir una reserva, la hija guarda de cual salio y nace sin cobro propio.
