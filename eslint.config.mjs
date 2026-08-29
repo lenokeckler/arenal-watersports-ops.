@@ -9,6 +9,7 @@ const eslintConfig = [
       ".next/**",
       "dist/**",
       "coverage/**",
+      "docs/**",
       "functions/lib/**",
       "functions/.eslintrc.js",
     ],

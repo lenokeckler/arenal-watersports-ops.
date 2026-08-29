@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Arenal Water Sports — Operaciones
 
-## Getting Started
+Sistema interno de operaciones para Arenal Water Sports, un operador de alquiler
+de equipo acuático y tours en el Lago Arenal. Reemplaza el agendado en Google
+Calendar y la coordinación por WhatsApp por un solo lugar donde la información
+vive y se consulta.
 
-First, run the development server:
+No es la página pública de la empresa. Los usuarios son los trabajadores, el
+cliente final nunca entra, y por eso la aplicación se piensa primero para el
+celular.
+
+## Stack
+
+| Capa              | Tecnología                         |
+| ----------------- | ---------------------------------- |
+| Framework         | Next.js 16 (App Router) + React 19 |
+| Lenguaje          | TypeScript                         |
+| Estado compartido | Redux Toolkit                      |
+| Estilos           | Tailwind CSS 4                     |
+| Backend           | Supabase                           |
+| Diseño            | Google Stitch, vía servidor MCP    |
+
+La base del proyecto viene de la plantilla del curso
+(`Web_practice/BaseProyectos`): se conservan su arquitectura, sus convenciones y
+su catálogo de skills. Lo que se removió fue el contenido específico del producto
+de ejemplo y toda la capa de Firebase, sustituida por Supabase.
+
+## Arrancar
 
 ```bash
+npm install
+cp .env.example .env.local     # y llenar las llaves de Supabase
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La aplicación queda en http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para el servidor MCP de Stitch, copiar `.mcp.json.example` a `.mcp.json` y poner
+la API key. Ese archivo está en `.gitignore` porque lleva credenciales.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Comandos
 
-## Learn More
+```bash
+npm run dev          # desarrollo con Turbopack
+npm run build        # build de producción
+npm run lint         # ESLint
+npm run typecheck    # tsc --noEmit
+npm run format       # Prettier
+```
 
-To learn more about Next.js, take a look at the following resources:
+Antes de mezclar una rama de tarea, los cuatro últimos deben pasar.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estructura
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+  components/     componentes reutilizables (Button, FormField, Toast, Session…)
+  constants/      strings, números y rutas — nada de literales sueltos
+  features/       una carpeta por funcionalidad
+  services/       acceso a Supabase (cliente de navegador y de servidor)
+  store/          Redux Toolkit
+  types/          tipos compartidos (Nullable, Optional…)
+  utils/          helpers puros y hooks genéricos
+docs/
+  proyecto/       flujo, 111 historias de usuario y product backlog
+  referencia/     material histórico de consulta, no es código del proyecto
+.agents/skills/   estándares del stack (cross-IDE)
+.claude/skills/   estándares de ingeniería y pipeline de subagentes
+.claude/agents/   subagentes especializados
+```
 
-## Deploy on Vercel
+## Cómo se trabaja
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`AGENTS.md` es el contrato: qué estándares aplican, en qué orden y con qué
+precedencia. Cualquier agente de IA lo lee primero.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Los requisitos son vinculantes y viven en `docs/proyecto/`. Una pantalla no se
+implementa de memoria: se abre la historia, se cumplen sus criterios de
+aceptación y se dice cuáles cierra el cambio.
+
+### Ramas
+
+```
+main                     tronco
+ └── develop             rama de trabajo
+      └── feat/…         una rama por tarea, se borra al mezclar
+```
+
+Nunca se commitea directo a `main` ni a `develop`.

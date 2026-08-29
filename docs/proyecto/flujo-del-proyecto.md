@@ -1,0 +1,700 @@
+<!-- Generado desde Flujo_Proyecto_Ordenado (1).docx. El .docx en docs_proyecto/ sigue siendo el original. -->
+
+# Flujo del Proyecto
+
+Sistema interno de operaciones para Arenal Water Sports. Este documento describe el flujo completo de la aplicación en orden de uso, desde el ingreso al sistema hasta el trabajo diario de cada rol. Es el insumo directo para armar las historias de usuario y el Product Backlog: cada viñeta de primer nivel es un epic y cada viñeta de segundo nivel es una historia de usuario. La aplicación reemplaza el agendado en Google Calendar y la coordinación por WhatsApp por un lugar único donde la información vive y se consulta. No es la página pública de la empresa: el cliente final no entra aquí, los usuarios son los trabajadores, y por eso la aplicación se piensa primero para el celular.
+
+## Actores del sistema
+
+Tres roles cubren la operación. El guía no es un rol aparte y las áreas adicionales permiten que una misma persona trabaje en más de un lado.
+
+- Roles del sistema
+  - Administración
+    - Configura el equipo disponible, define las tarifas, da de alta y de baja a los trabajadores y decide qué se lleva en el inventario.
+    - Su acceso completo es sobre el área de administración. Para trabajar además en reservas o en operaciones necesita que esas áreas se le habiliten, igual que cualquier otra cuenta.
+    - Es la única cuenta que puede habilitar áreas, poner marcas y crear cuentas de planta.
+  - Reservas
+    - Trabaja desde la oficina y es quien atiende al cliente.
+    - Agenda, consulta el calendario, cobra, modifica y cancela.
+  - Operaciones
+    - Es quien está en la playa.
+    - Despacha equipo, cierra reservas y registra gasolina, horas de motor, daños y mantenimiento.
+  - Guía
+    - No es un rol separado sino una marca sobre la cuenta de un trabajador.
+    - La misma persona puede estar en operaciones y salir de guía en un tour.
+  - Encargado general
+    - Tampoco es un rol separado, sino otra marca sobre la cuenta de una persona de operaciones.
+    - Es quien puede subir y reemplazar las fotos de estado de las máquinas.
+  - Registro de guías externos
+    - Tercera marca, esta vez sobre una cuenta de reservas.
+    - Habilita a esa persona para crear cuentas temporales de guía externo.
+    - Sin la marca, reservas no puede crear ninguna cuenta: es administración quien decide a quién se lo permite.
+  - Guía externo
+    - Persona contratada por fuera que acompaña un tour y hace el mismo trabajo de operaciones.
+    - Tiene una cuenta temporal con rol de operaciones y marca de guía, así que ve y hace lo mismo que el resto de operaciones.
+    - Se registra por nombre y cédula, con fecha de caducidad obligatoria.
+    - Cumplida esa fecha la cuenta queda inhabilitada y no entra más al sistema.
+- Áreas adicionales sobre una cuenta
+  - Administración habilita áreas adicionales sobre la cuenta de cualquier trabajador
+    - Se habilitan áreas completas, no permisos sueltos.
+    - Sirve para quien unos días atiende reservas y otros días despacha en la playa.
+    - Quien queda con más de un área escoge el modo con el que va a trabajar al entrar.
+    - El área se puede quitar en cualquier momento.
+
+## Módulo Acceso y Sesión
+
+Rol: todos los trabajadores. Es la puerta de entrada al sistema. Cada persona entra con su propio usuario, y lo que ve y lo que puede hacer después depende de su rol y del modo con el que trabaje.
+
+- Ingreso al sistema
+  - Como trabajador ingreso al sistema con mi usuario y contraseña
+    - Ingreso por nombre de usuario y contraseña.
+    - Ojito para ver u ocultar la contraseña.
+    - Las reglas de la contraseña se muestran desde antes de escribirla, no después de fallar.
+    - Los errores se muestran en mensajes rojos junto al campo que los provoca.
+    - Autenticación resuelta con Supabase.
+  - Como trabajador recibo un mensaje claro cuando no logro entrar
+    - Usuario no registrado.
+    - Contraseña incorrecta.
+    - Cuenta bloqueada por intentos fallidos.
+    - Cuenta bloqueada por administración.
+    - Sesión cerrada por inactividad.
+    - El mensaje nunca revela cuáles nombres de usuario existen en el sistema.
+  - Como trabajador cambio mi contraseña la primera vez que ingreso
+    - El sistema verifica si es el primer ingreso de esa cuenta.
+    - Se confirma la contraseña temporal, se escribe la nueva y se repite.
+    - No se avanza a ninguna pantalla del sistema hasta completarlo.
+    - La contraseña nueva cumple los requisitos de seguridad.
+  - Como trabajador cambio mi contraseña cuando yo quiera
+    - Se confirma la actual, se escribe la nueva y se repite.
+    - La contraseña nueva cumple los requisitos de seguridad.
+  - Como trabajador registro mi correo personal en mi cuenta
+    - La empresa no da correo propio, así que cada trabajador registra el suyo.
+    - Es el correo al que llega el enlace de recuperación.
+  - Como trabajador recupero mi contraseña con el PIN que llega a mi correo
+    - El sistema envía un PIN al correo personal registrado en la cuenta.
+    - Se escribe el PIN en pantalla, después la contraseña nueva, y se repite.
+    - El PIN es de un solo uso y vence a los pocos minutos.
+    - Si la cuenta no tiene correo registrado, administración genera una contraseña temporal.
+    - No hay inicio de sesión con Google ni con ningún otro proveedor: el ingreso es siempre por usuario y contraseña.
+  - Como administración recupero mi contraseña sin depender de nadie
+    - Aplica cuando olvido la clave y cuando paso de diez intentos de ingreso.
+    - La cuenta de administración no se bloquea: pasados los diez intentos el sistema ofrece el proceso de recuperación.
+    - El PIN llega al correo personal de la cuenta de administración, que por eso es obligatorio.
+    - Al terminar el cambio, el contador de intentos vuelve a cero.
+    - Es la única salida de la cuenta de administración, porque no hay otra cuenta que la desbloquee.
+  - Como trabajador cierro sesión desde cualquier pantalla
+    - El sistema descarta el token y devuelve al login.
+  - Validaciones del ingreso
+    - La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo.
+    - La cuenta de un trabajador se bloquea al llegar a diez intentos fallidos seguidos, y solo administración la desbloquea.
+    - La cuenta de administración no se bloquea: pasados los diez intentos entra al proceso de recuperación.
+    - El correo personal es obligatorio en la cuenta de administración y opcional en las demás.
+    - Nadie digita la contraseña de otro usuario: administración solo genera temporales de un solo uso.
+    - El nombre de usuario es único en todo el sistema.
+- Sesión y modo de trabajo
+  - Como trabajador mantengo la sesión abierta durante toda la jornada
+    - De 7:00 a. m. a 7:00 p. m. la sesión no caduca por inactividad.
+    - Quien entra a las 9:00 a. m. sigue dentro hasta las 7:00 p. m. sin volver a escribir su contraseña.
+    - La razón es que el trabajo es de campo y escribir una contraseña con las manos mojadas frena la operación.
+  - Como trabajador se me cierra la sesión por inactividad fuera del horario de trabajo
+    - De 7:00 p. m. a 7:00 a. m. aplican treinta minutos sin actividad.
+    - El contador corre desde la última acción en pantalla y cada acción lo reinicia.
+    - No hay aviso previo: la sesión se cierra y el mensaje de inactividad aparece en el login.
+    - Al llegar las 7:00 p. m. el sistema evalúa cuánto lleva la persona sin actividad, y si ya pasó de treinta minutos cierra la sesión de una.
+    - Quien esté trabajando de noche sigue dentro mientras siga usando la aplicación.
+    - La franja horaria se evalúa en el servidor y no con el reloj del dispositivo.
+  - Como trabajador con más de un área escojo el modo con el que voy a trabajar
+    - La pantalla aparece solo si administración le habilitó más de un área a esa cuenta.
+    - Se presenta un cuadro grande por área: Operaciones, Reservas o Administración.
+    - Dentro del modo la aplicación se comporta como si la cuenta solo tuviera esa área, para no mezclar pantallas.
+    - Se puede cambiar de modo sin cerrar sesión, desde un control visible en la aplicación.
+    - La aplicación recuerda el último modo usado y entra directo en ese.
+    - Quien tiene una sola área entra directo a su módulo y nunca ve esta pantalla.
+
+## Módulo Tablero y Navegación
+
+Rol: todos los trabajadores. Es lo que ve cualquier persona apenas entra, sin importar su rol. El contenido cambia según el rol y el modo activo, pero la forma de moverse es la misma para todos.
+
+- Tablero de equipo
+  - Como trabajador veo el tablero como pantalla de entrada
+    - Se muestra una tarjeta por cada categoría reservable del inventario.
+    - Cada tarjeta indica cuántas unidades libres hay sobre el total.
+    - Es la vista que responde de un vistazo qué hay disponible en este momento, y desde donde se escoge el equipo para una reserva.
+    - Los chalecos, los remos y los extintores no salen aquí: viven en el inventario, que es otra pantalla y sirve para contar, no para agendar.
+  - Como trabajador entro a una categoría y veo el estado de cada unidad
+    - Estado de cada unidad: disponible, ocupada, en mantenimiento o dañada.
+    - Cuando la unidad está ocupada se muestra la hora a la que regresa, a qué reserva pertenece y quién la lleva.
+    - Desde ahí se abre el detalle de la reserva.
+    - El estado ocupada lo calcula el sistema a partir de los despachos, no se digita.
+    - Reservas consulta esta pantalla para contestarle al cliente, pero no despacha desde aquí: despachar es de operaciones.
+  - Como trabajador veo el tablero actualizarse solo cuando un compañero despacha o cierra una reserva
+    - La información se actualiza en todos los dispositivos sin refrescar la pantalla.
+    - Si alguien despacha un jet ski desde su teléfono, el resto del equipo lo ve en ese mismo momento.
+- Navegación y uso en campo
+  - Como trabajador me muevo por la aplicación desde la navegación fija de la parte de abajo
+    - Da acceso al tablero, al calendario, al inventario y al historial.
+    - Las opciones que se muestran dependen del rol y del modo activo.
+  - Como trabajador uso la aplicación desde el celular con una sola mano
+    - Los botones son grandes y están separados entre sí.
+    - Está pensada para usarse de pie, en la playa o en el muelle, y con las manos mojadas.
+    - Toda la interfaz está en español.
+  - Como trabajador abro la aplicación con señal mala y carga rápido
+    - La aplicación se abre y se cierra decenas de veces al día, así que el arranque rápido pesa más que casi cualquier otra cosa.
+    - Trabajar sin conexión y sincronizar después queda fuera de esta versión.
+- Visibilidad y restricción por rol
+  - Como trabajador veo solo las opciones que me corresponden por mi rol y por mi modo
+    - Lo que no corresponde no se muestra en pantalla.
+    - La restricción no se queda en esconder botones: aunque se intente por otro camino, el servidor rechaza la operación.
+  - Como trabajador consulto los listados en tablas con filtros y paginación
+    - Aplica al historial, al inventario y a la lista de trabajadores.
+    - La paginación se resuelve en el servidor y trae solamente la página que se está viendo.
+- Historial de reservas
+  - Como trabajador consulto el historial de reservas cerradas
+    - Toda reserva cerrada pasa al historial, y a partir de ahí se construyen las estadísticas.
+    - Se muestra el nombre a que iba la reserva, la fecha, el equipo, el guía y quién la atendió.
+    - Filtros por fecha, por tipo de reserva y por equipo.
+    - El detalle de cada registro indica quién lo creó y quién lo modificó de último.
+
+## Módulo Administración
+
+Rol: administración. Configura el inventario, los extras, los combos, las tarifas y las cuentas de los trabajadores, y es quien mira el negocio con números. Su acceso completo es sobre esta área: para trabajar además en reservas o en operaciones necesita que esas áreas se le habiliten, igual que cualquier otra cuenta. Los epics van en orden de dependencia: sin categorías no hay unidades, y sin unidades ni tarifas no hay reserva que cobrar.
+
+- Trabajadores, roles y permisos
+  - Como administración agrego un trabajador y le asigno su rol
+    - Se registran el nombre de la persona y su nombre de usuario.
+    - El rol base es administración, reservas u operaciones.
+    - El sistema genera una contraseña temporal de un solo uso.
+    - El trabajador cambia esa contraseña en su primer ingreso.
+  - Como administración habilito áreas adicionales sobre la cuenta de un trabajador
+    - Se habilitan áreas completas, no permisos sueltos.
+    - Sirve para quien unos días atiende reservas y otros días despacha en la playa.
+    - Quien queda con más de un área ve el selector de modo al entrar.
+    - El área se puede quitar en cualquier momento y el acceso se corta de inmediato.
+  - Como administración marco a un trabajador como guía
+    - La marca va sobre la cuenta y no crea un rol nuevo.
+    - Solo los trabajadores marcados como guía aparecen en la lista al asignar un tour.
+  - Como administración marco a un trabajador como encargado general de operaciones
+    - La marca va sobre la cuenta, igual que la de guía, y no crea un rol nuevo.
+    - Es quien puede subir y reemplazar las fotos de estado de las máquinas.
+  - Como administración habilito a alguien de reservas para registrar guías externos
+    - Es una marca sobre la cuenta, igual que la de guía y la de encargado general, y no crea un rol nuevo.
+    - Sin esa marca, la persona de reservas no ve la opción de crear la cuenta y el servidor le rechaza la operación.
+    - La marca se puede quitar en cualquier momento.
+    - Administración siempre puede crear esas cuentas, con marca o sin ella, porque es quien crea todas las cuentas del sistema.
+  - Como administración desbloqueo la cuenta de un trabajador
+    - Aplica a la cuenta de un trabajador que llegó a los diez intentos fallidos.
+    - La cuenta de administración no llega a bloquearse, así que no hace falta desbloquearla.
+  - Como administración genero una nueva contraseña temporal
+    - Aplica al trabajador que perdió la suya y no tiene correo personal registrado.
+    - La contraseña es de un solo uso y obliga a cambiarla al entrar.
+  - Como administración bloqueo la cuenta de un trabajador que sale de la empresa
+    - La cuenta se bloquea, no se borra, para no perder el historial de lo que hizo.
+    - Las sesiones abiertas de esa persona se cierran en el momento.
+  - Como administración reactivo la cuenta de un trabajador que vuelve
+    - La cuenta vuelve con las mismas credenciales y conserva su historial.
+  - Como administración extiendo o reactivo la caducidad de una cuenta temporal
+    - Aplica a las cuentas de guía externo que ya vencieron o que están por vencer.
+    - Al extender la fecha la cuenta vuelve a entrar al sistema.
+  - Como administración consulto y filtro la lista de trabajadores
+    - Columnas: nombre, usuario, rol base, áreas adicionales, marcas, fecha de caducidad y estado.
+    - Filtros por rol y por estado.
+    - Las cuentas temporales de guía externo se identifican como tales y muestran si están vigentes o inhabilitadas.
+  - Validaciones del módulo de trabajadores
+    - El sistema tiene una sola cuenta de administración y no se puede bloquear ni eliminar, porque quedaría sin dueño.
+    - Reservas solo puede crear cuentas temporales de guía externo. Cualquier otra cuenta la crea administración.
+    - El nombre de usuario es único en todo el sistema.
+    - Bloquear una cuenta no borra los registros que esa persona creó.
+- Catálogo del inventario
+  - Como administración gestiono el catálogo de categorías del inventario
+    - Aquí entra todo lo que la empresa tiene: jet skis, lanchas, cuadraciclos, kayaks, tablas, parrillas, remos, chalecos y extintores.
+    - El equipo reservable no es un registro aparte: es la parte del inventario marcada como reservable.
+    - La lista no queda cerrada de antemano, porque cada temporada aparece algo nuevo que hace falta contar. Si mañana compran drybags, se crea la categoría y se define su comportamiento sin tocar nada más.
+    - Una categoría que nunca tuvo unidades ni artículos se elimina. Una que ya tuvo se marca inactiva, para no romper el historial.
+  - Como administración defino el comportamiento de cada categoría
+    - Si se identifica una por una o se lleva por cantidad. Se identifican las que llevan motor, gasolina, horas o kilómetros, golpes y fotos: jet skis, lanchas y cuadraciclos. El resto se cuenta: kayaks, paddleboards, tablas, parrillas, remos, chalecos y extintores.
+    - De un jet ski interesa cuál sale, porque cada uno tiene su historia. De los kayaks interesa cuántos hay, porque no da lo mismo tener tres dobles o uno.
+    - Si es reservable. Solo las categorías reservables aparecen en el tablero y se pueden asociar a una reserva.
+    - Si lleva motor, y si el uso se mide en horas de motor o en kilómetros. El equipo de agua con motor lleva horas; los cuadraciclos llevan kilometraje.
+    - Si consume gasolina.
+    - Si se puede dañar.
+    - Si lleva fotos de estado. Los jet skis las llevan; un kayak no las necesita.
+    - Si solo se alquila con guía.
+    - Cuánto dura por defecto una salida.
+  - Como administración defino el depósito de garantía de una categoría
+    - Se registra el monto en dólares y en colones. Por ejemplo doscientos dólares o cien mil colones para los jet skis.
+    - El monto se puede modificar cuando la empresa lo decida.
+    - Hay categorías sin depósito. Administración decide a cuáles ponerles, por ejemplo agregárselo también a los cuadraciclos.
+    - El monto que se le pide al cliente sale de la categoría del equipo que va a salir.
+  - Como administración defino qué tipo de aviso lleva cada categoría
+    - El aviso puede ser por cantidad, por fecha de vencimiento, por ambas cosas o por ninguna.
+    - Por cantidad se define la cantidad mínima a partir de la cual salta el aviso. Es el caso de los chalecos.
+    - Por vencimiento se define con cuánta anticipación avisar. Es el caso de los extintores y del contenido de los botiquines.
+    - Cada vez que se agrega una categoría nueva, administración decide qué aviso le corresponde o si no lleva ninguno.
+    - Los botiquines solo salen en los tours y no en las rentas, así que no se pierden: su contenido se gasta cuando se usa y además se vence.
+  - Validaciones del catálogo
+    - No se elimina una categoría que tenga unidades o artículos registrados.
+    - Una categoría reservable se identifica siempre una por una, porque una reserva compromete una unidad concreta y no una cantidad.
+    - La modalidad de una categoría, entre identificada por unidad y llevada por cantidad, no se cambia después de que tenga registros.
+- Unidades y artículos del inventario
+  - Como administración gestiono las unidades de una categoría que se identifica una por una
+    - Cada unidad lleva su código propio, único dentro de la empresa, por ejemplo la placa del jet ski.
+    - Estado de la unidad: disponible, ocupado, en mantenimiento, dañado, en reparación o dado de baja.
+    - Se lleva la gasolina actual, las horas o el kilometraje acumulado, y el valor al que toca el próximo cambio de aceite.
+    - Crear, consultar y modificar. Para sacarla del inventario se da de baja, no se elimina.
+  - Como administración gestiono la cantidad de una categoría que se lleva por cantidad
+    - Se registra cuántos hay en total.
+    - Se separan por estado: disponibles, dañados y en reparación.
+    - Cuando se bota o se pierde uno, se baja la cantidad. No hay nada que dar de baja porque no hay ficha por unidad, y el historial de conteos deja ver de cuánto a cuánto bajó y en qué fecha.
+  - Como administración doy de baja una unidad sin borrar su historial
+    - Aplica a las categorías identificadas una por una, cuando la máquina se vende, se pierde o se destruye.
+    - Se registra el motivo de la baja y su fecha.
+    - La unidad desaparece del inventario, del tablero y de todo lo que se pueda agendar: para la operación diaria deja de existir.
+    - Su registro se conserva para que las reservas viejas, sus reportes de daño y su historial de mantenimiento sigan cuadrando.
+    - En las categorías que se llevan por cantidad no aplica: ahí simplemente se baja el número.
+  - Validaciones de las unidades
+    - El código de una unidad es único dentro de la empresa.
+    - No se elimina una unidad comprometida en una reserva vigente.
+    - La cantidad de unidades libres que muestra el tablero sale del estado de cada unidad y no se digita.
+- Extras de las lanchas
+  - Como administración gestiono el catálogo de extras
+    - Por ejemplo parrilla, tubing, wake y tablas.
+    - Un extra que nunca se usó en una reserva se elimina. Uno que ya se usó se marca inactivo, para no romper el historial.
+  - Como administración defino a cuál embarcación aplica cada extra
+    - No todas las embarcaciones admiten lo mismo.
+    - Al agregar extras a una reserva solo se ofrecen los que aplican a esa embarcación.
+  - Como administración indico cuáles extras ocupan equipo real del inventario
+    - Algunos extras son solamente un cobro adicional.
+    - Los que ocupan equipo real descuentan de la disponibilidad como cualquier otro equipo.
+- Combos y tarifas
+  - Como administración gestiono los combos predefinidos
+    - Son los paquetes que se venden seguido, por ejemplo lancha con jet ski y paddleboard.
+    - Se arman escogiendo qué equipos entran, por ejemplo lancha con jet ski y paddleboard, y después reservas solo asocia el grupo al combo ya creado.
+    - Un combo que nunca se vendió se elimina. Uno que ya se vendió se marca inactivo, para no romper el historial.
+  - Como administración le asigno a cada combo su precio de paquete
+    - El combo se vende como paquete y no como la suma de las partes.
+  - Como administración defino la tarifa de cada equipo y de cada tipo de salida
+    - Por ejemplo ciento veinte dólares o sesenta mil colones la hora de jet ski.
+    - La tarifa se registra en la moneda en que se cobra.
+  - Como administración modifico una tarifa cuando cambia el precio
+    - Las reservas ya cobradas conservan el monto con el que se cobraron.
+- Estadísticas y reportes
+  - Como administración consulto los ingresos del día con sus descuentos y devoluciones
+    - Los montos se muestran separados por moneda y no se suman en un solo total.
+  - Como administración consulto el movimiento por día y por mes en gráficos
+    - Permite comparar temporadas y días de la semana.
+  - Como administración consulto cuántas horas salió cada equipo
+    - Permite ver cuáles equipos se usan y cuáles casi no.
+  - Como administración consulto qué reservas atendió cada trabajador
+    - Sale de la firma que queda en cada reserva.
+  - Como administración consulto cuánto se ha gastado en mantener cada máquina
+    - Se construye a partir del historial de mantenimiento de la unidad.
+  - Como administración consulto los depósitos pendientes y los retenidos
+    - La finalidad de este epic es que la administración mire el negocio con números y no de memoria.
+
+## Módulo Reservas
+
+Rol: reservas. Trabaja desde la oficina y es quien atiende al cliente. Toda reserva entra por aquí, la que se agenda con días de anticipación y la que se crea con el cliente de pie enfrente. El calendario es su vista principal.
+
+- Calendario
+  - Como reservas consulto el calendario en vista diaria, semanal, mensual y anual
+    - La vista se escoge según lo que se esté haciendo.
+    - Operaciones ve solamente el día y la semana, porque en la playa no hace falta más.
+  - Como reservas veo en el calendario qué hay agendado, a qué hora, con qué equipo y a nombre de quién
+    - Es la vista principal de quien trabaja en reservas.
+  - Como reservas consulto el detalle de una reserva
+    - Se muestra toda la información asociada a la salida.
+    - Incluye el equipo comprometido, los extras, los guías asignados y el estado del cobro.
+    - Indica quién creó la reserva y quién la modificó de último.
+- Creación de reservas
+  - Como reservas creo una reserva
+    - Se registran el nombre a que va la reserva, la cantidad de personas, la fecha, la hora, la duración y el equipo que va a ocupar.
+    - Del cliente se guarda solo eso, a propósito: el correo y los demás datos de contacto viven en FareHarbor.
+    - La reserva queda visible en el calendario.
+    - La reserva queda registrada a nombre de quien la creó.
+  - Como reservas registro en el momento al cliente que llega a la oficina sin haber agendado
+    - Buena parte de los clientes llega sin agendar y ese caso no cambia el flujo.
+    - Toda reserva entra por el mismo lugar, así que operaciones siempre despacha contra una reserva que ya existe.
+  - Como reservas agendo una salida fuera del horario de nueve a cinco
+    - Hay días con horas extra y el sistema no lo impide.
+  - Como reservas asocio a la reserva los equipos concretos que va a ocupar
+    - Cada equipo asociado baja de la disponibilidad.
+    - Se registran los recursos comprometidos con su unidad, no solo con su categoría.
+- Tipo de reserva: renta, tour y combo
+  - Como reservas elijo el tipo de reserva
+    - Renta: el cliente se lleva el equipo por su cuenta.
+    - Tour: la salida va acompañada por un guía.
+    - Combo: junta varios equipos distintos en un solo paquete.
+    - Hay equipo que solo puede salir en tour, como las lanchas y los cuadraciclos.
+  - Como reservas elijo un combo predefinido de la lista
+    - Son los paquetes que administración dejó armados porque se venden seguido.
+    - El combo se cobra con su precio de paquete.
+  - Como reservas armo un combo a la medida escogiendo libremente qué equipos entran
+    - Sirve para atender solicitudes específicas del cliente.
+    - Cada equipo del combo queda asociado a la reserva y baja de la disponibilidad igual que si se hubiera reservado por separado.
+    - El sistema propone como precio la suma de las tarifas individuales, y reservas lo ajusta si acordó otro monto.
+    - A diferencia del combo predefinido, que se vende con su precio de paquete ya fijado por administración.
+  - Como reservas le agrego extras a una reserva de lancha
+    - Solo se ofrecen los extras que aplican a esa embarcación.
+    - Los extras que ocupan equipo real del inventario lo descuentan de la disponibilidad.
+    - Los extras que son solamente un cobro adicional no tocan el inventario.
+- Guías de la salida
+  - Como reservas asigno uno o más guías a un tour
+    - No hay máximo de personas por tour: se llena hasta que se agota el equipo.
+    - Cuando el grupo es grande salen dos guías, por ejemplo un tour de ocho cuadraciclos.
+    - Solo se listan los trabajadores marcados como guía.
+  - Como reservas creo la cuenta temporal de un guía externo
+    - Solo puede hacerlo quien tenga la marca que administración otorga para esto. Sin la marca la opción no aparece.
+    - Se guardan su nombre y su cédula, nada más.
+    - La cuenta lleva rol de operaciones y marca de guía, porque el guía externo hace el mismo trabajo.
+    - La fecha de caducidad es obligatoria.
+    - Cumplida esa fecha la cuenta queda inhabilitada, no entra más al sistema y no se le puede asignar un tour nuevo.
+    - El nombre de usuario es la cédula, porque ya está registrada, es única y alguien que viene una semana no va a recordar un usuario inventado.
+    - El sistema genera una contraseña temporal de un solo uso, igual que cuando administración crea a un trabajador de planta.
+    - El guía externo cambia esa contraseña en su primer ingreso.
+    - El correo personal es opcional para el guía externo.
+    - Reservas puede crear únicamente este tipo de cuenta: no crea trabajadores de planta, no crea cuentas de administración y no cambia roles.
+    - La cuenta queda registrada a nombre de quien la creó y se identifica como guía externo.
+  - Como reservas veo quién lleva cada tour
+    - La información se muestra en el tablero, en el detalle de la reserva y en el historial.
+    - Hoy eso se pregunta por mensaje cada vez.
+- Disponibilidad y advertencias
+  - Como reservas consulto la disponibilidad de los equipos en una franja horaria concreta
+    - La pregunta es por franja y no por el instante actual: el sistema tiene que saber si un kayak está libre el sábado de diez a doce.
+  - Como reservas recibo una advertencia cuando agendo equipo que ya está comprometido en esa franja
+    - El sistema avisa pero deja seguir. No bloquea.
+    - Hay días en que la operación se acomoda sobre la marcha y un bloqueo estorbaría más de lo que ayuda.
+    - La advertencia indica con cuál reserva choca.
+  - Como reservas consulto el estado de los equipos antes de comprometerlos
+    - No se ofrece equipo que esté en mantenimiento o dado de baja.
+- Cambios sobre una reserva
+  - Como reservas modifico una reserva agendada
+    - Se actualiza la información cuando cambian las condiciones del cliente.
+    - El cambio queda registrado a nombre de quien lo hizo.
+  - Como reservas parto una reserva en dos o más salidas
+    - Pasa que el grupo llega incompleto y sale en dos tandas.
+    - El sistema permite dividirla en vez de obligar a inventar una reserva nueva.
+    - Al partirla se indica qué equipo y cuántas personas van en cada salida.
+    - El cobro no se parte: se queda completo en la reserva original y a nombre del mismo cliente, porque se cobra por reserva y no por persona.
+    - La segunda salida nace sin cobro propio.
+    - El depósito de garantía se queda con la reserva original.
+    - Cada salida conserva la referencia a la reserva de la que salió.
+  - Como reservas pospongo una reserva para otra fecha y hora
+    - Una reserva agendada se pospone por el motivo que sea.
+    - Una reserva que ya fue despachada solo se pospone por clima: lluvia muy fuerte o tormenta.
+    - Al posponer una despachada, el equipo se cierra y vuelve al tablero, registrando la gasolina y las horas o el kilometraje de lo que sí se usó.
+    - El cobro se conserva vivo para la fecha nueva: no se le vuelve a cobrar al cliente.
+    - El depósito de garantía se conserva hasta la salida nueva.
+    - La reserva vuelve al estado agendada con la fecha y la hora nuevas.
+  - Como reservas cancelo una reserva registrando el motivo
+    - El motivo es obligatorio, porque sirve para revisar después por qué se cae la gente.
+    - La reserva queda como cancelada y deja de mostrarse en la aplicación de operaciones.
+    - El equipo no se libera solo ni se bloquea nada.
+  - Como reservas cancelo una salida que ya está en curso
+    - Cuando operaciones está ocupado lo reportan por radio a la oficina y ahí se registra.
+    - Aplica a cambios de clima o a problemas durante la salida.
+    - Aunque la reserva quede cancelada, operaciones registra cómo volvió el equipo: la gasolina, las horas o el kilometraje, y los daños si los hubo.
+    - Sin ese registro se perdería el dato de una máquina que sí salió al agua.
+    - El depósito de garantía se resuelve igual que en un cierre normal.
+    - El equipo vuelve al tablero como disponible, salvo que haya quedado dañado o en mantenimiento.
+- Cobros, descuentos y depósitos
+  - Como reservas cobro una reserva aplicando la tarifa correspondiente
+    - La tarifa sale del catálogo que definió administración.
+    - El sistema propone el monto multiplicando la tarifa por la duración de la salida, y reservas lo ajusta si el precio acordado fue otro.
+    - El cobro es por reserva y no por persona: si se agendó una lancha para seis y solo llegan dos, se cobra lo mismo y no se devuelve dinero.
+    - El cobro se puede registrar en cualquier momento, desde que se agenda hasta que se cierra, para cubrir al que paga por adelantado y al que paga al volver.
+    - El cobro queda registrado a nombre de quien lo hizo.
+  - Como reservas modifico la tarifa al momento de cobrar
+    - Reservas puede ajustar el precio libremente, sin margen ni tope, porque a veces se juega con el precio para atraer clientes.
+    - Queda registrado el monto acordado y no solo el de la tarifa de lista.
+  - Como reservas registro el cobro en la moneda en que entró
+    - Dólares o colones.
+    - El sistema no convierte ni maneja tipo de cambio.
+    - Los montos se acumulan por moneda y nunca se suman entre sí.
+  - Como reservas registro el cobro de una reserva en dos tractos
+    - Una misma reserva se puede pagar en más de un movimiento.
+    - Cada movimiento lleva su monto, su moneda y su método de pago.
+    - Un cliente puede pagar una parte en dólares y otra en colones, y cada parte se guarda en su moneda.
+    - La reserva muestra cuánto se ha cobrado y cuánto falta.
+  - Como reservas anoto el método de pago
+    - Efectivo, tarjeta, PayPal, SINPE u otro, como texto.
+    - El sistema no procesa pagos ni valida tarjetas: lleva el control, no el dinero.
+  - Como reservas registro una devolución parcial cuando se cancela una salida
+    - Se indica el porcentaje devuelto.
+    - La cuenta del día refleja lo que de verdad entró.
+  - Como reservas registro el depósito de garantía que recibí del cliente
+    - El depósito lo recibe la oficina cuando el cliente pasa a pagar, así que lo registra reservas. Operaciones no lo ve ni lo cobra.
+    - El sistema propone el monto a partir de la categoría del equipo que va a salir, por ejemplo doscientos dólares o cien mil colones en un jet ski.
+    - Reservas indica si en esa salida hubo depósito o no, porque no todas lo llevan.
+    - Se registra el monto y la moneda en que se recibió.
+    - Desde ese momento el depósito aparece en la lista de pendientes de resolver.
+  - Como reservas registro la devolución o la retención del depósito de garantía
+    - Resuelve los depósitos que quedaron pendientes después de que operaciones cerró la salida.
+    - Si el equipo volvió en orden se devuelve completo y el depósito queda liberado.
+    - Si hubo daño se retiene una parte o la totalidad, indicando cuánto se retiene y por qué.
+    - El monto retenido entra al reporte de ingresos como plata que se quedó la empresa.
+    - El detalle queda anotado y se ve en el reporte.
+    - Al resolverlo, el depósito sale de la lista de pendientes.
+  - Como reservas cobro el tiempo adicional de una salida que se pasó de su hora
+    - Se registra dentro del cobro de la reserva como tiempo adicional, aparte de la tarifa.
+    - Por ejemplo el cliente que se queda treinta minutos de más.
+    - Sale de dos lados: de las reservas que se pasaron de su hora sin avisar, y de las que operaciones extendió sobre la marcha.
+    - Reservas decide si el tiempo de más se cobra o si va de cortesía.
+    - Reservas registra el monto acordado por ese tiempo.
+  - Como reservas consulto los ingresos del día y sus gráficos
+    - Los montos van separados por moneda y no se suman en un solo total.
+    - Operaciones no ve esta información, porque no necesita ver plata para hacer su trabajo.
+  - Como reservas consulto qué depósitos siguen pendientes de resolver
+    - Es plata de otra persona y no puede quedar en el aire.
+
+## Módulo Operaciones
+
+Rol: operaciones. Es quien está en la playa y en el muelle. Despacha contra reservas que ya existen, cierra las salidas y lleva el control de las máquinas y del inventario. No ve información de dinero.
+
+- Despacho de reservas
+  - Como operaciones veo las reservas del día que faltan por despachar
+    - La lista se limita al día en curso.
+    - Las reservas canceladas no aparecen.
+  - Como operaciones despacho una reserva seleccionándola de la lista
+    - No se vuelven a escribir los datos: la reserva ya existe y solo se selecciona.
+    - El equipo queda marcado como ocupado y arranca el conteo hasta la hora de regreso.
+    - Es la separación entre agendar y despachar, que es la parte nueva más importante del sistema.
+    - El despacho queda registrado a nombre de quien lo hizo.
+  - Como operaciones registro la gasolina y las horas de motor al momento del despacho
+    - Aplica solo a las categorías que llevan motor.
+  - Como operaciones veo cuánto falta para que vuelva cada equipo que está afuera
+    - Es la vista que hoy no existe y obliga a subir a leer la conversación de WhatsApp.
+  - Como operaciones veo como pendiente la reserva que pasó su hora de regreso y no ha vuelto
+    - No se cierra sola ni desaparece de la pantalla.
+    - El cobro del tiempo de más se decide aparte.
+  - Como operaciones extiendo o recorto la duración de una reserva en curso
+    - El conteo hasta la hora de regreso se recalcula.
+    - Al extender, la reserva queda marcada para reservas con las horas de más, para que la oficina decida si las cobra o si van de cortesía.
+    - Operaciones no decide de plata: solo deja constancia de que la salida se alargó.
+  - Como operaciones consulto el calendario del día y de la semana
+    - No hacen falta las vistas de mes ni de año.
+  - Como operaciones veo quién lleva cada tour
+    - Incluye tanto a los guías con cuenta como a los guías externos registrados por nombre.
+- Cierre de la reserva
+  - Como operaciones cierro una reserva registrando cómo volvió el equipo
+    - Si todo está en orden, queda constancia.
+    - Si no, se levanta el reporte de daño correspondiente y se actualiza el estado de la unidad.
+    - El reporte de daño es lo que después usa reservas para decidir si retiene el depósito. Operaciones no ve ni toca el depósito, porque no recibe dinero.
+    - Se registra la gasolina y las horas de motor con las que volvió.
+    - La reserva cerrada pasa al historial.
+- Máquinas y mantenimiento
+  - Como operaciones registro la gasolina con la que sale y con la que vuelve una unidad
+    - Aplica a las categorías marcadas como que consumen gasolina.
+  - Como operaciones registro las horas de motor acumuladas de una unidad
+    - De ahí sale el aviso de cambio de aceite.
+  - Como operaciones recibo el aviso de cambio de aceite cuando una unidad llega a sus horas
+    - El umbral se define en la ficha de la unidad.
+  - Como operaciones levanto un reporte de daño de un jet ski
+    - La causa se elige entre vuelco, choque, falla de máquina u otra.
+    - Se escribe una descripción de lo ocurrido.
+    - Se indica cuánto subió el conteo de golpes de esa máquina.
+    - El reporte queda a nombre de quien lo levantó.
+  - Como operaciones consulto los reportes de daño anteriores de una unidad
+    - Los reportes se consultan después, no solamente se registran.
+  - Como encargado general subo y reemplazo las fotos de estado de una máquina
+    - Se guardan varias fotos por máquina, una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+    - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
+    - Se reemplazan cuando cambia el estado de la máquina.
+    - Solo puede subirlas quien tenga la marca de encargado general, además de administración.
+    - No se guarda una foto por salida, porque ocupa demasiado espacio y no compensa. Para una discusión puntual con un cliente basta con la foto que el trabajador toma en el momento con su propio celular.
+  - Como operaciones veo las fotos actualizadas de una máquina junto a su número de golpes
+    - El resto de operaciones las ve pero no las cambia.
+  - Como operaciones marco una unidad como en mantenimiento
+    - La unidad sale de la disponibilidad sin borrarse.
+    - Se puede marcar al momento de recibir el equipo.
+  - Como operaciones registro un trabajo de mantenimiento sobre una máquina
+    - Cambio de llanta, cambio de pieza, cambio de aceite y en general todo lo que se le haga al equipo, con su fecha.
+    - Hoy esto no está anotado en ninguna parte.
+  - Como operaciones consulto el historial de mantenimiento de una máquina
+    - Es lo que permite saber cuánto cuesta sostener cada máquina.
+  - Como operaciones corrijo la gasolina, las horas, los golpes o el estado de una unidad sin abrir una reserva
+    - Pasa seguido que alguien echa gasolina, cambia el aceite o encuentra un golpe fuera de una salida.
+    - La corrección queda registrada a nombre de quien la hizo.
+- Inventario
+  - Como operaciones consulto el inventario por categoría
+    - El inventario cubre todo lo que la empresa tiene, incluidos los jet skis y las lanchas.
+    - Al entrar a una categoría identificada una por una se ven sus unidades con su código y su estado, por ejemplo los cuatro o cinco jet skis que haya.
+    - Al entrar a una categoría llevada por cantidad se ve cuántos hay y cuántos están disponibles, dañados o en reparación.
+  - Como operaciones marco una unidad o un artículo como dañado
+    - Los estados son disponible, dañado o en reparación, los mismos que usa el resto del inventario.
+    - Un chaleco roto sigue sumando como chaleco si solo se mira el número, y ahí es donde el conteo engaña.
+    - Al marcar dañada una unidad de una categoría reservable, el tablero deja de ofrecerla en ese mismo momento.
+  - Como operaciones levanto un conteo de inventario cuando lo decidamos
+    - El conteo cubre todo el inventario, categoría por categoría.
+    - En las categorías identificadas una por una se confirma cada unidad y su estado.
+    - En las categorías llevadas por cantidad se anota cuántos hay de cada estado.
+    - En teoría es mensual, pero no siempre se puede, así que operaciones escoge cuándo hacerlo.
+  - Como operaciones consulto los conteos de inventario del último año
+    - Cada conteo guarda su fecha y el nombre de quien lo levantó.
+  - Como operaciones modifico el inventario y el cambio queda a mi nombre
+    - Cualquier persona de operaciones puede modificarlo, con la condición de que cada cambio quede registrado.
+  - Como operaciones recibo un aviso cuando un artículo baja de su cantidad mínima
+    - Aplica solo a las categorías que administración configuró con aviso por cantidad.
+    - Perder un chaleco no ha pasado, pero se está pendiente de eso todo el tiempo.
+  - Como operaciones recibo un aviso cuando un artículo se acerca a su fecha de vencimiento
+    - Aplica solo a las categorías que administración configuró con aviso por vencimiento, como los extintores y el contenido de los botiquines.
+    - La anticipación del aviso sale de la configuración de la categoría.
+
+## Reglas transversales
+
+Reglas que aplican a todo el sistema. Se listan aquí una sola vez en lugar de repetirlas dentro de cada historia.
+
+- Seguridad y sesión
+  - Autenticación resuelta con Supabase. Cada persona entra con su propio usuario y nadie digita la contraseña de otro.
+  - La contraseña exige mayúscula, minúscula, número y símbolo, con largo mínimo y largo máximo. Las reglas se muestran desde antes de escribirla.
+  - La cuenta de un trabajador se bloquea al llegar a diez intentos fallidos seguidos y solo administración la desbloquea.
+  - La recuperación de contraseña se hace con un PIN de un solo uso enviado al correo personal, para todos los roles. No hay inicio de sesión con Google ni con otro proveedor.
+  - El sistema tiene una sola cuenta de administración. No se bloquea nunca: pasados los diez intentos entra al proceso de recuperación, que es su única salida.
+  - Si se pierde el acceso a esa cuenta y a su correo, la única vía que queda es reponer la contraseña desde la consola de Supabase, por fuera de la aplicación. Hay que tener claro quién tiene esa llave.
+  - De 7:00 a. m. a 7:00 p. m. la sesión no caduca por inactividad. De 7:00 p. m. a 7:00 a. m. se cierra a los treinta minutos sin actividad, contados desde la última acción.
+  - La franja horaria se evalúa en el servidor y no con el reloj del dispositivo.
+  - No se guardan llaves sensibles en el dispositivo del trabajador, y las operaciones delicadas se resuelven fuera del celular.
+- Roles y permisos
+  - Lo que cada persona ve y puede hacer depende de su rol base, de sus áreas adicionales y del modo activo.
+  - La restricción nunca se queda en esconder botones: el servidor rechaza la operación aunque se intente por otro camino.
+  - El sistema tiene una sola cuenta de administración y no se puede bloquear ni eliminar.
+  - Las marcas sobre una cuenta son independientes del rol y se ponen y se quitan por aparte. Hoy son tres: guía, encargado general y registro de guías externos.
+    - La marca de guía no otorga permisos: solo hace que la persona aparezca en la lista al asignar un tour.
+    - La de encargado general habilita subir las fotos de estado de las máquinas.
+    - La de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
+  - Las áreas se habilitan completas y los permisos sueltos no existen. Lo que no es un área es una marca, y las marcas son pocas y con nombre propio.
+- Estados de una reserva
+  - Agendada: la reserva existe en el calendario y el equipo queda comprometido para su franja horaria.
+  - Despachada: operaciones la seleccionó, el equipo salió y corre el conteo hasta la hora de regreso.
+  - Cerrada: el equipo volvió, se registró cómo volvió y la reserva pasa al historial.
+  - Cancelada: la reserva se anuló con su motivo, deja de mostrarse en la aplicación de operaciones y pasa al historial.
+  - Posponer no es un estado. La reserva vuelve a agendada con la fecha nueva y queda el rastro del cambio.
+  - Una reserva se puede cancelar tanto desde agendada como desde despachada.
+  - Solo las reservas cerradas y las canceladas salen del trabajo diario y viven en el historial.
+- Trazabilidad
+  - Toda reserva, despacho, cierre, cobro, conteo de inventario, reporte de daño y trabajo de mantenimiento guarda quién lo creó y quién lo modificó de último, con su fecha.
+  - Esa firma se muestra en el detalle del registro y en el historial, para saber si el dato lo metió una persona u otra.
+  - Los ajustes de inventario y los movimientos de dinero quedan siempre a nombre de quien los hizo.
+- Tiempo real y rendimiento
+  - La información se actualiza sola en todos los dispositivos, sin refrescar la pantalla.
+  - La aplicación tiene que abrir rápido incluso con señal mala, porque se abre y se cierra decenas de veces al día a la orilla del lago.
+  - La paginación se resuelve en el servidor y es obligatoria en todos los listados.
+  - El estado ocupada de una unidad y la disponibilidad por franja horaria los calcula el sistema, no se digitan.
+- Sin borrado físico
+  - La cuenta de un trabajador se bloquea, no se borra, para no perder el historial de lo que hizo.
+  - Una unidad se da de baja y conserva sus reportes de daño y su historial de mantenimiento.
+  - Una reserva cancelada queda como cancelada y pasa al historial con su motivo.
+- Retención de datos
+  - El historial de conteos de inventario se conserva un año hacia atrás.
+  - El historial de reservas se conserva cinco años. Si el plan de Supabase contratado no alcanza para ese volumen, se baja a dos años.
+- Dinero
+  - El sistema lleva el control del dinero pero no lo mueve: no procesa pagos, no valida tarjetas y no convierte monedas.
+  - Los montos en dólares y en colones se muestran separados y nunca se suman en un solo total.
+  - Una reserva se puede cobrar en dos tractos, con una parte en dólares y otra en colones. Cada parte se guarda en su moneda.
+  - Reservas ajusta el precio libremente al momento de cobrar, sin margen ni tope.
+  - Operaciones no ve información de dinero en ninguna pantalla.
+- Móvil primero y español
+  - La aplicación se diseña primero para el celular, porque quien la usa está de pie en la playa o en el muelle.
+  - Los botones son grandes y separados, pensados para usarse con una mano y con las manos mojadas.
+  - Toda la interfaz está en español.
+- Infraestructura
+  - El proyecto corre sobre el plan de Supabase de veinticinco dólares.
+  - El plazo de cinco años del historial de reservas depende de que ese plan alcance para el volumen.
+- Fuera de esta versión
+  - Modo sin conexión para registrar despachos y cierres sin señal, con sincronización posterior. Complica demasiado el sistema para lo que devuelve y queda anotado como mejora posterior.
+  - Foto del estado del equipo en cada salida y cada regreso. Se descarta por espacio y se mantiene solamente la foto actualizada por jet ski.
+  - Integración automática con FareHarbor. Por ahora los dos sistemas conviven sin hablarse.
+  - El sitio público de marketing, que es un proyecto aparte y donde sí entra el cliente final.
+
+## Anexo. Decisiones del proyecto
+
+Las decisiones las toma Leno y el resto del equipo las lee. Lo de la primera lista ya está cerrado y bajado a regla dentro del documento. Lo de la segunda todavía hay que resolverlo.
+
+- Decisiones tomadas
+  - La sesión no caduca por inactividad durante la jornada, de 7:00 a. m. a 7:00 p. m.
+    - El trabajo es de campo y obligar a escribir una contraseña con las manos mojadas frena la operación.
+    - Fuera de ese horario aplican treinta minutos de inactividad.
+    - Se acepta que un dispositivo desatendido quede abierto durante la jornada, considerando que el equipo es de seis personas conocidas y el teléfono es personal.
+    - No se pide PIN ni huella para volver: el trabajador guarda su usuario y su contraseña en el teléfono y entra con un clic.
+  - Ninguna operación vuelve a pedir la contraseña estando la sesión activa.
+    - El sistema lleva el control del dinero pero no mueve dinero real, así que no hace falta una segunda confirmación.
+  - Las capacidades que no son un área completa se resuelven con marcas sobre la cuenta. Hoy son tres.
+    - La marca de guía habilita a la persona para que se le asigne un tour.
+    - La marca de encargado general habilita a la persona para subir las fotos de estado de las máquinas.
+    - La marca de registro de guías externos habilita a alguien de reservas para crear esas cuentas temporales.
+    - Se escogió la marca en vez de una lista de permisos sueltos, para no terminar con veinte casillas que nadie puede auditar.
+  - Administración habilita áreas adicionales sobre una cuenta, y quien tenga más de un área escoge el modo al entrar.
+    - Se habilitan áreas completas y no permisos sueltos.
+    - Dentro del modo la aplicación se comporta como si la cuenta solo tuviera esa área, para no mezclar pantallas.
+  - La trazabilidad se resuelve con la firma en cada registro y no con una pantalla de bitácora.
+    - Cada registro guarda quién lo creó y quién lo modificó de último.
+    - Con eso se sabe si la reserva la metió una persona u otra, que es lo que se necesita.
+  - Del cliente se guarda solamente el nombre a que va la reserva y la cantidad de personas.
+    - El correo y los demás datos de contacto ya viven en FareHarbor.
+  - La advertencia por choque de disponibilidad avisa pero no bloquea.
+  - El sistema no maneja tipo de cambio y los montos van separados por moneda.
+    - Una misma reserva se puede cobrar en dos tractos, con una parte en dólares y otra en colones.
+    - Cada parte se guarda en su moneda y los totales nunca se suman entre sí.
+  - Reservas ajusta el precio al momento de cobrar, sin margen ni tope.
+    - A veces se juega con el precio para atraer más clientes.
+  - La devolución por cancelación la anota reservas y nadie la autoriza dentro del sistema.
+    - En la práctica el criterio es del jefe, pero eso queda fuera de la aplicación.
+    - Como no se mueve dinero real, el registro sirve solamente para llevar el control.
+  - Cada artículo de inventario define su propio aviso.
+    - Puede ser por cantidad, por fecha de vencimiento, por ambas cosas o por ninguna.
+    - Los chalecos avisan por cantidad y los extintores por vencimiento.
+    - Cuando se agrega un artículo nuevo, administración decide qué aviso le corresponde o si no lleva ninguno.
+  - El historial de reservas se conserva cinco años.
+    - Si el plan de Supabase contratado no alcanza para ese volumen, se baja a dos años.
+    - El historial de conteos de inventario ya estaba definido en un año.
+  - Las fotos de estado de una máquina son varias y las sube el encargado general.
+    - Una por ángulo: costado derecho, costado izquierdo y frente, y opcionalmente una por debajo.
+    - Sirven para ver el detalle de los daños y tener una referencia de cómo está la máquina hoy.
+    - El resto de operaciones las ve pero no las cambia.
+  - Del guía externo se guardan solo el nombre y la cédula, y su registro lleva fecha de caducidad.
+    - Cumplida la fecha queda inhabilitado y administración lo ve así en su lista.
+  - El uso se mide en horas de motor para el equipo de agua y en kilometraje para los cuadraciclos.
+    - Las lanchas y los jet skis llevan horas de motor.
+    - Los cuadraciclos llevan kilometraje.
+    - De cualquiera de los dos sale el aviso del próximo cambio de aceite.
+  - Una reserva tiene cuatro estados: agendada, despachada, cerrada y cancelada.
+    - Posponer no es un estado: la reserva vuelve a agendada con la fecha nueva.
+    - Se puede cancelar tanto desde agendada como desde despachada.
+  - El cobro es por reserva y no por persona.
+    - Si se agendó una lancha para seis y solo llegan dos, se cobra lo mismo y no se devuelve dinero, porque el precio ya se incluyó.
+    - Por eso al partir una reserva el cobro no se parte: se queda completo en la original, a nombre del mismo cliente.
+    - El cobro se puede registrar en cualquier momento, desde que se agenda hasta que se cierra.
+    - El tiempo que el cliente se pase de su hora se cobra aparte, como tiempo adicional dentro de la misma reserva.
+  - Una reserva ya despachada solo se pospone por clima: lluvia muy fuerte o tormenta.
+    - El equipo se cierra y vuelve al tablero con la gasolina y las horas de lo que sí se usó.
+    - El cobro y el depósito se conservan para la fecha nueva, sin volver a cobrarle al cliente.
+    - Una reserva que todavía no ha salido se pospone por el motivo que sea.
+  - El depósito de garantía se configura por categoría.
+    - Doscientos dólares o cien mil colones en los jet skis, y el monto se puede modificar.
+    - Hay categorías sin depósito, y administración le puede agregar uno a otras, como los cuadraciclos.
+    - Al cerrar, reservas devuelve el depósito completo si el equipo volvió en orden, o retiene una parte o la totalidad si hubo daño, indicando cuánto y por qué.
+    - Lo retenido entra al reporte de ingresos.
+  - El inventario es un solo registro de todo lo que la empresa tiene.
+    - Ahí entran los jet skis, las lanchas y los cuadraciclos igual que los remos, los chalecos y los extintores.
+    - El equipo reservable no es un registro aparte: es la parte del inventario cuya categoría está marcada como reservable.
+    - El conteo que levanta operaciones cubre todo, y al entrar a la categoría de jet skis salen los cuatro o cinco que haya.
+    - El tablero y el inventario son dos pantallas distintas sobre ese mismo registro: el tablero filtra lo reservable y sirve para agendar y despachar; el inventario lo muestra todo y sirve para contar y marcar estado.
+    - Así una unidad se registra una sola vez, y si operaciones la marca dañada en el conteo, el tablero deja de ofrecerla en el momento.
+  - El proyecto corre sobre el plan de Supabase de veinticinco dólares.
+    - Leno, como responsable del mantenimiento del sistema, es quien prueba la restauración del respaldo.
+  - La recuperación de contraseña se hace con un PIN al correo personal, para todos los roles.
+    - Se descartó el enlace de un solo uso: en celular el PIN funciona mejor y es un solo mecanismo que programar.
+    - No se usa inicio de sesión con Google ni con otro proveedor, aunque Supabase lo soporta, porque en este sistema se entra por nombre de usuario y no por correo.
+  - El bloqueo por intentos fallidos es a los diez, para todos.
+  - El sistema tiene una sola cuenta de administración y nunca se bloquea.
+    - Pasados los diez intentos entra al proceso de recuperación en vez de bloquearse, porque no hay otra cuenta que la desbloquee.
+    - Por eso su correo personal es obligatorio, mientras que en las demás cuentas es opcional.
+    - La consola de Supabase queda como salida de emergencia si se pierde también el correo.
+  - El guía externo tiene cuenta temporal con rol de operaciones y marca de guía.
+    - Hace el mismo trabajo que operaciones, así que ve lo mismo.
+    - La puede crear reservas, pero solo si administración le puso la marca que lo habilita.
+    - Reservas solo puede crear este tipo de cuenta, ninguna otra.
+    - La cuenta se identifica como guía externo y queda firmada por quien la creó.
+- Decisiones pendientes
+  - No queda ninguna decisión abierta.
+    - Todas las que aparecían aquí se resolvieron y están bajadas a regla dentro del documento.
+    - La última en cerrarse fue la de los extras que ocupan equipo real: al quedar el inventario como un solo registro, un extra reservable se compromete por franja igual que cualquier otra unidad.

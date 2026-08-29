@@ -7,8 +7,7 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
-import { signOut } from "firebase/auth";
-import { auth } from "@/app/services/firebase";
+import { createBrowserSupabaseClient } from "@/app/services";
 import {
   BROWSER_EVENTS,
   PATHS,
@@ -23,7 +22,7 @@ export const useInactivityTimeoutWithWarning = ({
   timeoutMinutes = 30,
   warningMinutes = 5,
   onTimeout,
-  redirectPath = PATHS.ADMIN_LOGIN,
+  redirectPath = PATHS.ACCESS.LOGIN,
 }: UseInactivityTimeoutWithWarningProps = {}): InactivityTimeoutWithWarning => {
   const router = useRouter();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -66,8 +65,10 @@ export const useInactivityTimeoutWithWarning = ({
     timeoutRef.current = setTimeout(
       async () => {
         try {
-          if (onTimeout) onTimeout();
-          await signOut(auth);
+          if (onTimeout) {
+            onTimeout();
+          }
+          await createBrowserSupabaseClient().auth.signOut();
           router.push(redirectPath);
         } catch {
           router.push(redirectPath);
@@ -116,8 +117,10 @@ export const useInactivityTimeoutWithWarning = ({
     timeoutRef.current = setTimeout(
       async () => {
         try {
-          if (onTimeout) onTimeout();
-          await signOut(auth);
+          if (onTimeout) {
+            onTimeout();
+          }
+          await createBrowserSupabaseClient().auth.signOut();
           router.push(redirectPath);
         } catch {
           router.push(redirectPath);
@@ -136,7 +139,7 @@ export const useInactivityTimeoutWithWarning = ({
 
   const handleLogout = useCallback(async () => {
     try {
-      await signOut(auth);
+      await createBrowserSupabaseClient().auth.signOut();
       router.push(redirectPath);
     } catch {
       router.push(redirectPath);
@@ -154,12 +157,20 @@ export const useInactivityTimeoutWithWarning = ({
     ];
 
     events.forEach((event) => {
-      document.addEventListener(event, handleActivity, true);
+      document.addEventListener(
+        event,
+        handleActivity,
+        true
+      );
     });
 
     return () => {
       events.forEach((event) => {
-        document.removeEventListener(event, handleActivity, true);
+        document.removeEventListener(
+          event,
+          handleActivity,
+          true
+        );
       });
       clearAllTimeouts();
     };

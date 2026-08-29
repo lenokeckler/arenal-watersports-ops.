@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
 import { SESSION_CONFIG } from "@/app/constants";
-import { auth } from "@/app/services/firebase";
+import { createBrowserSupabaseClient } from "@/app/services";
 import { useSessionStore } from "@/app/components/session/hooks/useSessionStore";
 import { InactivityTimeoutProvider } from "./InactivityTimeoutContext";
 import SessionForm from "../session-inactivity-form/SessionInactivityForm";
@@ -18,16 +17,24 @@ const LayoutSessionProvider = ({
     useSessionStore();
 
   useEffect(() => {
-    setHasActiveUser(Boolean(auth.currentUser));
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (authenticatedUser) => {
-        setHasActiveUser(Boolean(authenticatedUser));
+    const supabase = createBrowserSupabaseClient();
+
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setHasActiveUser(Boolean(session));
+      });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_authEvent, session) => {
+        setHasActiveUser(Boolean(session));
       }
     );
 
     return () => {
-      unsubscribe();
+      subscription.unsubscribe();
       resetSession();
     };
   }, [setHasActiveUser, resetSession]);

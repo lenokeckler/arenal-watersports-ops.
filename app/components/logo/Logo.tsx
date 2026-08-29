@@ -6,7 +6,7 @@ import { BOOLEAN, PATHS, LOGO } from "@/app/constants";
 
 const Logo = ({ src, alt, onClick }: LogoProps) => (
   <Link
-    href={PATHS.HOME}
+    href={PATHS.COMMON.ROOT}
     className="relative flex items-center h-[80px] sm:h-[100px]"
     onClick={onClick}
   >
@@ -20,7 +20,7 @@ const Logo = ({ src, alt, onClick }: LogoProps) => (
       />
     </div>
     <span className="absolute left-[60px] sm:left-[80px] top-1/2 -translate-y-1/2 text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
-      {LOGO.mediXenter}
+      {LOGO.ARENAL}
     </span>
   </Link>
 );

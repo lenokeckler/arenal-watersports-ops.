@@ -1,3 +1,3 @@
 export const LOGO = {
-  mediXenter: "ediXenter",
+  ARENAL: "Arenal Water Sports",
 } as const;
