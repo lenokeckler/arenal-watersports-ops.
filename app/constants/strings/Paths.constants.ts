@@ -18,8 +18,12 @@ export const PATHS = {
   },
   COMMON: {
     CATEGORY: "/tablero/categoria",
+    CATEGORY_DETAIL: (categoryId: string): string =>
+      `/tablero/categoria/${categoryId}`,
     DASHBOARD: "/tablero",
     HISTORY: "/historial",
+    INVENTORY: "/inventario",
+    PRICES: "/precios",
     PROFILE: "/perfil",
     ROOT: "/",
   },
@@ -34,6 +38,8 @@ export const PATHS = {
   RESERVATIONS: {
     CALENDAR: "/reservas/calendario",
     DETAIL: "/reservas/detalle",
+    DETAIL_BY_ID: (reservationId: string): string =>
+      `/reservas/detalle/${reservationId}`,
     NEW: "/reservas/nueva",
     ROOT: "/reservas",
   },

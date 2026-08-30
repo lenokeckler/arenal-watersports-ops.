@@ -136,3 +136,47 @@ export { EMAIL_CONFIG } from "./email/Email.constants";
 export {
   WORK_MODE_SCREEN,
 } from "./acceso/WorkModeScreen.constants";
+export {
+  EQUIPMENT_UNIT_STATUS,
+  EQUIPMENT_UNIT_STATUS_BADGE,
+  EQUIPMENT_UNIT_STATUS_LABEL,
+  type EquipmentUnitStatus,
+} from "./tablero/EquipmentStatus.constants";
+export {
+  TRACKING_MODE,
+  TRACKING_MODE_LABEL,
+  type TrackingMode,
+} from "./tablero/TrackingMode.constants";
+export {
+  CATEGORY_IMAGE_BY_NAME,
+  DEFAULT_CATEGORY_ICON,
+  UNIT_IMAGE_BY_CODE,
+} from "./tablero/EquipmentCategoryImage.constants";
+export {
+  HISTORY_RESERVATION_STATUSES,
+  RESERVATION_STATUS,
+  RESERVATION_STATUS_LABEL,
+  type ReservationStatus,
+} from "./tablero/ReservationStatus.constants";
+export {
+  RESERVATION_TYPE,
+  RESERVATION_TYPE_LABEL,
+  type ReservationType,
+} from "./tablero/ReservationType.constants";
+export {
+  CURRENCY_CODE,
+  CURRENCY_LABEL,
+  type CurrencyCode,
+} from "./tablero/Currency.constants";
+export { BOARD_SCREEN } from "./tablero/BoardScreen.constants";
+export { CATEGORY_DETAIL_SCREEN } from "./tablero/CategoryDetailScreen.constants";
+export {
+  BOTTOM_NAV,
+  BOTTOM_NAV_ITEM_ID,
+  type BottomNavItemId,
+} from "./tablero/BottomNav.constants";
+export { PAGINATION_CONTROL } from "./tablero/PaginationControl.constants";
+export { HISTORY_SCREEN } from "./tablero/HistoryScreen.constants";
+export { PRICE_LIST_SCREEN } from "./tablero/PriceListScreen.constants";
+export { INVENTORY_SCREEN } from "./tablero/InventoryScreen.constants";
+export { REALTIME, REALTIME_TABLE } from "./tablero/Realtime.constants";
