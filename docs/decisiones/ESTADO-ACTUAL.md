@@ -62,6 +62,80 @@ pero no como efecto secundario de otra cosa.
 
 ---
 
+## Convención de manejo de errores en la capa de datos
+
+Toda la capa de lectura (`app/utils/**`) desestructuraba `const { data } =
+await supabase...` sin mirar `error`. Eso ya costó un defecto real: el embed
+ambiguo de `worker_areas` (ver más abajo, "Validó EP-ADM-01") fallaba con
+`PGRST201` en cada petición, y `fetchWorkersPage` se tragaba el error y
+mostraba "No hay trabajadores" con la cuenta de administración sembrada en
+la base. Diez historias terminadas se veían como una pantalla vacía.
+
+**La regla desde ahora:** cualquier consulta o `.rpc()` contra Supabase
+desestructura `error` junto con `data` y lo pasa por
+`throwIfSupabaseError(error, "modulo.nombreDeLaFuncion")` —
+`app/utils/supabase-error/SupabaseError.ts` — antes de tocar `data`. Esa
+función lanza `SupabaseQueryError` cuando `error` no es `null`; un
+`data: null` legítimo (por ejemplo `.maybeSingle()` sin filas) sigue
+devolviendo `null`/lista vacía como siempre, porque ese caso reporta
+`error: null`. Dentro de un `Promise.all`, cada resultado se revisa por
+separado después del `await` (ver `categoryHasRecords`,
+`fetchWorkerPermissionState`, `fetchWorkerAreaState`, `fetchPriceList` para
+el patrón).
+
+El mensaje de `SupabaseQueryError` lleva el código y el texto crudo de
+Postgrest — es solo para el registro del servidor (`console.error`/logs de
+`next start`), nunca se muestra al usuario.
+
+**La interfaz de error que faltaba** también se construyó en esta sesión:
+
+- `app/error.tsx` — límite de error de Next.js (App Router). Atrapa
+  cualquier excepción no manejada bajo el layout raíz, incluida la que
+  ahora lanza `throwIfSupabaseError`. Botones para reintentar (`reset`) y
+  volver a `/tablero`.
+- `app/not-found.tsx` — para una URL que no resuelve. Botón para volver a
+  `/tablero`.
+- `app/global-error.tsx` — el límite de último recurso si el propio
+  `app/layout.tsx` falla; define su propio `<html>`/`<body>` según exige
+  Next.js, y no importa componentes compartidos por si la falla viene de un
+  provider del que esos componentes también dependen.
+
+Los tres están en español, con lenguaje de persona, y sin volcar el error
+crudo ni el stack en pantalla. Los textos viven en
+`app/constants/errors/ErrorScreen.constants.ts` y
+`.../NotFoundScreen.constants.ts`.
+
+**Una limitación real de verificación, para que el próximo agente no se
+alarme:** un límite de error de React (`error.tsx`) solo se puede confirmar
+visualmente con un navegador real. En `next start` (producción), la
+respuesta inicial para una ruta que lanza una excepción es un documento
+HTML casi vacío (`<html id="__next_error__">` con un `<div hidden>`) — el
+contenido real de `error.tsx` se monta recién cuando React hidrata en el
+cliente. `curl` nunca ejecuta JavaScript, así que nunca va a "ver" el texto
+de `error.tsx` en el HTML crudo, aun cuando todo funciona bien. Lo que sí
+se puede confirmar sin navegador, y es lo que se confirmó en esta sesión:
+
+1. El código de estado cambia de `200` (con contenido vacío disfrazado de
+   "sin resultados") a `500` real.
+2. El `RSC payload`/manifest de la ruta referencia `app/error.tsx` como el
+   componente de error de ese segmento (`grep` sobre
+   `.next/server/app/<ruta>/page_client-reference-manifest.js` por
+   `"app/error.tsx"`).
+3. El log del servidor (`next start`/`next dev`, stdout) imprime el mensaje
+   de `SupabaseQueryError` con la consulta exacta que falló, no un error
+   genérico.
+
+Se rompió a propósito `WORKER_SELECT` en
+`app/utils/administracion/workers.ts` (el mismo `worker_areas(area)` sin
+calificar del defecto original) contra la base reseteada, se confirmaron
+los tres puntos de arriba, y se revirtió. La base terminó con
+`npm run db:reset` para no dejar la cuenta `admin` con
+`must_change_password = false` (se cambió temporalmente por script para
+poder armar una sesión autenticada sin pasar por `/acceso/primer-ingreso`
+en cada prueba).
+
+---
+
 ## Qué está terminado
 
 | | Estado |
