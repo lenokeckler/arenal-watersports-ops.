@@ -244,3 +244,9 @@ export {
   RATE_FORM_SCREEN,
 } from "./administracion/RatesScreen.constants";
 export { MONEY_LABEL } from "./strings/Money.constants";
+export {
+  DEPOSIT_STATUS,
+  DEPOSIT_STATUS_LABEL,
+  type DepositStatus,
+} from "./administracion/DepositStatus.constants";
+export { REPORTS_SCREEN } from "./administracion/ReportsScreen.constants";

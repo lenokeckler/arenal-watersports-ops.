@@ -51,12 +51,18 @@ const CARDS: readonly HubCardConfig[] = [
     icon: MATERIAL_ICON_NAME.ATTACH_MONEY,
     title: ADMIN_HUB_SCREEN.RATES.TITLE,
   },
+  {
+    description: ADMIN_HUB_SCREEN.REPORTS.DESCRIPTION,
+    href: PATHS.ADMIN.REPORTS,
+    icon: MATERIAL_ICON_NAME.DASHBOARD,
+    title: ADMIN_HUB_SCREEN.REPORTS.TITLE,
+  },
 ];
 
 /**
- * `/administracion` — a small hub over the sections EP-ADM-01 through
- * EP-ADM-05 build so far. Large, well-separated tap targets at every
- * width (US-TAB-005's rule, carried into this module).
+ * `/administracion` — a small hub over every section of the module
+ * (EP-ADM-01 through EP-ADM-06). Large, well-separated tap targets at
+ * every width (US-TAB-005's rule, carried into this module).
  */
 const AdminHub = (): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">

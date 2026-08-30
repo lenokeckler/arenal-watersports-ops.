@@ -1,8 +1,6 @@
 /**
- * `/administracion` (EP-ADM-01 through EP-ADM-05, in progress). A small hub
- * linking into the sections built so far. `PATHS.ADMIN` already reserves a
- * route for `reportes` (EP-ADM-06), the last section, which stays unlinked
- * until it exists.
+ * `/administracion` (EP-ADM-01 through EP-ADM-06 — the whole module). A
+ * small hub linking into every section administración owns.
  */
 export const ADMIN_HUB_SCREEN = {
   CATEGORIES: {
@@ -24,6 +22,11 @@ export const ADMIN_HUB_SCREEN = {
     DESCRIPTION:
       "El precio de referencia por categoría y tipo de salida.",
     TITLE: "Tarifas",
+  },
+  REPORTS: {
+    DESCRIPTION:
+      "Ingresos, movimiento, uso de equipo y depósitos.",
+    TITLE: "Estadísticas y reportes",
   },
   TITLE: "Administración",
   UNITS: {
