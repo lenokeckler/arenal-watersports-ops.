@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 /**
- * `/administracion` — entry point for EP-ADM-01 and EP-ADM-02. Links only
- * to the sections this dispatch built; `PATHS.ADMIN` already reserves
- * routes for combos, extras, tarifas, reportes and unidades, which are a
- * later dispatch and stay unlinked until they exist.
+ * `/administracion` — entry point for EP-ADM-01 through EP-ADM-04. Links
+ * only to the sections built so far; `PATHS.ADMIN` already reserves routes
+ * for combos, tarifas and reportes, which are a later dispatch and stay
+ * unlinked until they exist.
  */
 const AdminHubPage = async (): Promise<JSX.Element> => {
   const supabase = await createServerSupabaseClient();
