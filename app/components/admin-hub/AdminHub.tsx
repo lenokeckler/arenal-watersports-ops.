@@ -1,5 +1,9 @@
 import type { JSX } from "react";
-import { ADMIN_HUB_SCREEN, MATERIAL_ICON_NAME, PATHS } from "@/app/constants";
+import {
+  ADMIN_HUB_SCREEN,
+  MATERIAL_ICON_NAME,
+  PATHS,
+} from "@/app/constants";
 import Link from "@/app/components/link/Link";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 
@@ -23,12 +27,18 @@ const CARDS: readonly HubCardConfig[] = [
     icon: MATERIAL_ICON_NAME.CATEGORY,
     title: ADMIN_HUB_SCREEN.CATEGORIES.TITLE,
   },
+  {
+    description: ADMIN_HUB_SCREEN.UNITS.DESCRIPTION,
+    href: PATHS.ADMIN.UNITS,
+    icon: MATERIAL_ICON_NAME.INVENTORY_2,
+    title: ADMIN_HUB_SCREEN.UNITS.TITLE,
+  },
 ];
 
 /**
- * `/administracion` — a small hub over the two sections EP-ADM-01 and
- * EP-ADM-02 build. Large, well-separated tap targets at every width
- * (US-TAB-005's rule, carried into this module).
+ * `/administracion` — a small hub over the three sections EP-ADM-01
+ * through EP-ADM-03 build. Large, well-separated tap targets at every
+ * width (US-TAB-005's rule, carried into this module).
  */
 const AdminHub = (): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">

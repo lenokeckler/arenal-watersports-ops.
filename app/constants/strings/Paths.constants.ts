@@ -16,6 +16,15 @@ export const PATHS = {
     RATES: "/administracion/tarifas",
     REPORTS: "/administracion/reportes",
     ROOT: "/administracion",
+    UNIT_CATEGORY: (categoryId: string): string =>
+      `/administracion/unidades/${categoryId}`,
+    UNIT_DETAIL: (
+      categoryId: string,
+      unitId: string
+    ): string =>
+      `/administracion/unidades/${categoryId}/${unitId}`,
+    UNIT_NEW: (categoryId: string): string =>
+      `/administracion/unidades/${categoryId}/nueva`,
     UNITS: "/administracion/unidades",
     WORKER_DETAIL: (workerId: string): string =>
       `/administracion/trabajadores/${workerId}`,
