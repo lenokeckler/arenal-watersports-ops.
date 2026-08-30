@@ -39,13 +39,69 @@ export interface CategoryDetail extends CategoryListRow {
   usageMetric: Nullable<UsageMetric>;
 }
 
-const CATEGORY_LIST_SELECT = "id, name, status, tracking_mode, is_reservable";
+const CATEGORY_LIST_SELECT =
+  "id, name, status, tracking_mode, is_reservable";
 
 const CATEGORY_DETAIL_SELECT =
   "id, name, status, tracking_mode, is_reservable, has_motor, " +
   "usage_metric, consumes_fuel, can_be_damaged, has_condition_photos, " +
   "guide_only, default_duration_minutes, deposit_usd, deposit_crc, " +
   "alert_min_quantity, alert_expiry_days";
+
+/**
+ * The database answers in snake_case and the screens read camelCase, and
+ * concatenating a select string costs PostgREST its row inference. Both
+ * shapes are declared here and mapped explicitly, the same way
+ * `fetchWorkersPage` does for `workers`.
+ */
+interface CategoryListQueryRow {
+  id: string;
+  is_reservable: boolean;
+  name: string;
+  status: CategoryStatus;
+  tracking_mode: TrackingMode;
+}
+
+interface CategoryDetailQueryRow extends CategoryListQueryRow {
+  alert_expiry_days: Nullable<number>;
+  alert_min_quantity: Nullable<number>;
+  can_be_damaged: boolean;
+  consumes_fuel: boolean;
+  default_duration_minutes: Nullable<number>;
+  deposit_crc: Nullable<number>;
+  deposit_usd: Nullable<number>;
+  guide_only: boolean;
+  has_condition_photos: boolean;
+  has_motor: boolean;
+  usage_metric: Nullable<UsageMetric>;
+}
+
+const toCategoryListRow = (
+  row: CategoryListQueryRow
+): CategoryListRow => ({
+  id: row.id,
+  isReservable: row.is_reservable,
+  name: row.name,
+  status: row.status,
+  trackingMode: row.tracking_mode,
+});
+
+const toCategoryDetail = (
+  row: CategoryDetailQueryRow
+): CategoryDetail => ({
+  ...toCategoryListRow(row),
+  alertExpiryDays: row.alert_expiry_days,
+  alertMinQuantity: row.alert_min_quantity,
+  canBeDamaged: row.can_be_damaged,
+  consumesFuel: row.consumes_fuel,
+  defaultDurationMinutes: row.default_duration_minutes,
+  depositCrc: row.deposit_crc,
+  depositUsd: row.deposit_usd,
+  guideOnly: row.guide_only,
+  hasConditionPhotos: row.has_condition_photos,
+  hasMotor: row.has_motor,
+  usageMetric: row.usage_metric,
+});
 
 /**
  * US-ADM-012: every category the company owns, reservable or not, with
@@ -70,14 +126,22 @@ export const fetchCategoriesPage = async (
     query = query.eq("status", filters.status);
   }
   if (filters.search) {
-    query = query.ilike("name", `%${filters.search.trim()}%`);
+    query = query.ilike(
+      "name",
+      `%${filters.search.trim()}%`
+    );
   }
 
   const from = (page - 1) * pageSize;
-  const { data, count } = await query.range(from, from + pageSize - 1);
+  const { data, count } = await query.range(
+    from,
+    from + pageSize - 1
+  );
 
   return {
-    rows: (data ?? []) as CategoryListRow[],
+    rows: (
+      (data ?? []) as unknown as CategoryListQueryRow[]
+    ).map(toCategoryListRow),
     totalCount: count ?? 0,
   };
 };
@@ -96,28 +160,11 @@ export const fetchCategoryDetail = async (
     .eq("id", categoryId)
     .maybeSingle();
 
-  if (!data) {
-    return null;
-  }
-
-  return {
-    alertExpiryDays: data.alert_expiry_days,
-    alertMinQuantity: data.alert_min_quantity,
-    canBeDamaged: data.can_be_damaged,
-    consumesFuel: data.consumes_fuel,
-    defaultDurationMinutes: data.default_duration_minutes,
-    depositCrc: data.deposit_crc,
-    depositUsd: data.deposit_usd,
-    guideOnly: data.guide_only,
-    hasConditionPhotos: data.has_condition_photos,
-    hasMotor: data.has_motor,
-    id: data.id,
-    isReservable: data.is_reservable,
-    name: data.name,
-    status: data.status,
-    trackingMode: data.tracking_mode,
-    usageMetric: data.usage_metric,
-  };
+  return data
+    ? toCategoryDetail(
+        data as unknown as CategoryDetailQueryRow
+      )
+    : null;
 };
 
 /**
@@ -142,5 +189,8 @@ export const categoryHasRecords = async (
       .eq("category_id", categoryId),
   ]);
 
-  return (unitsResult.count ?? 0) > 0 || (stockResult.count ?? 0) > 0;
+  return (
+    (unitsResult.count ?? 0) > 0 ||
+    (stockResult.count ?? 0) > 0
+  );
 };
