@@ -21,6 +21,8 @@ export const API = {
       `/api/administracion/categorias/${categoryId}`,
     COMBO: (comboId: string): string =>
       `/api/administracion/combos/${comboId}`,
+    COMBO_ITEMS: (comboId: string): string =>
+      `/api/administracion/combos/${comboId}/items`,
     EXTRA: (extraId: string): string =>
       `/api/administracion/extras/${extraId}`,
     EXTRA_COMPATIBILITY: (extraId: string): string =>

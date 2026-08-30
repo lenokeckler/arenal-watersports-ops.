@@ -6,12 +6,12 @@
 export const COMBOS_SCREEN = {
   ADD_BUTTON: "Nuevo combo",
   COLUMN: {
-    ITEMS: "Equipos",
     NAME: "Combo",
     PRICE: "Precio de paquete",
     STATUS: "Estado",
   },
-  EMPTY_STATE: "No hay combos que coincidan con los filtros.",
+  EMPTY_STATE:
+    "No hay combos que coincidan con los filtros.",
   FILTER: {
     ALL_STATUSES: "Todos",
     APPLY: "Buscar",
@@ -40,16 +40,20 @@ export const COMBO_FORM_SCREEN = {
   },
   EDIT_TITLE: "Editar combo",
   ERROR: {
-    GENERIC: "No se pudo guardar el combo. Revise los datos.",
-    ITEMS_REQUIRED:
-      "Agregue al menos un equipo al combo.",
+    GENERIC:
+      "No se pudo guardar el combo. Revise los datos.",
+    ITEMS_REQUIRED: "Agregue al menos un equipo al combo.",
     NAME_REQUIRED: "El nombre es obligatorio.",
     NAME_TAKEN: "Ya existe un combo con ese nombre.",
   },
   ITEMS: {
     ADD_BUTTON: "Agregar equipo",
+    CATEGORY_ALREADY_ADDED:
+      "Ese equipo ya está en el combo.",
     CATEGORY_LABEL: "Categoría",
     EMPTY_STATE: "Este combo todavía no tiene equipos.",
+    NEW_COMBO_HINT:
+      "Guarde el combo primero para poder agregarle equipos.",
     QUANTITY_LABEL: "Cantidad",
     REMOVE_BUTTON: "Quitar",
     TITLE: "Equipos del combo",
