@@ -30,10 +30,18 @@ export interface WorkerDetail extends WorkerListRow {
   nationalId: Nullable<string>;
 }
 
+// `worker_areas` and `worker_marks` each carry two foreign keys into
+// `workers` (`worker_id` and `granted_by`), so PostgREST cannot resolve
+// which one to embed without the explicit constraint name — an unqualified
+// `worker_areas(area)` fails every request with PGRST201 ("more than one
+// relationship was found"), which `fetchWorkerDetail` surfaced as a 404 and
+// `fetchWorkersPage` silently swallowed into an empty list. Both embeds
+// below pin the `worker_id` side of the relationship.
 const WORKER_SELECT =
   "id, username, full_name, base_role, status, is_external_guide, " +
   "national_id, expires_at, created_at, " +
-  "worker_areas(area), worker_marks(mark)";
+  "worker_areas!worker_areas_worker_id_fkey(area), " +
+  "worker_marks!worker_marks_worker_id_fkey(mark)";
 
 interface WorkerQueryRow {
   base_role: WorkArea;
