@@ -6,6 +6,11 @@ export {
 } from "@/app/components/image/constants";
 export { ERRORS } from "./errors/Errors.constant";
 export {
+  ERROR_SCREEN,
+  GLOBAL_ERROR_SCREEN,
+} from "./errors/ErrorScreen.constants";
+export { NOT_FOUND_SCREEN } from "./errors/NotFoundScreen.constants";
+export {
   ICON_HEADER_TYPE,
   ICON_ALTS,
   ICON_PATHS,
