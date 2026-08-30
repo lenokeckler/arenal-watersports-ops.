@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
 import type { ReservationType } from "@/app/constants";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface TariffRow {
   amountCrc: number | null;
@@ -36,24 +37,39 @@ export interface PriceList {
 export const fetchPriceList = async (
   supabase: SupabaseClient<Database>
 ): Promise<PriceList> => {
-  const [tariffsResult, extrasResult, combosResult] = await Promise.all([
-    supabase
-      .from("tariffs")
-      .select(
-        "type, amount_usd, amount_crc, category:equipment_categories!inner(name, status)"
-      )
-      .eq("category.status", "active"),
-    supabase
-      .from("extras")
-      .select("name, price_usd, price_crc")
-      .eq("status", "active")
-      .order("name"),
-    supabase
-      .from("combos")
-      .select("name, package_price_usd, package_price_crc")
-      .eq("status", "active")
-      .order("name"),
-  ]);
+  const [tariffsResult, extrasResult, combosResult] =
+    await Promise.all([
+      supabase
+        .from("tariffs")
+        .select(
+          "type, amount_usd, amount_crc, category:equipment_categories!inner(name, status)"
+        )
+        .eq("category.status", "active"),
+      supabase
+        .from("extras")
+        .select("name, price_usd, price_crc")
+        .eq("status", "active")
+        .order("name"),
+      supabase
+        .from("combos")
+        .select(
+          "name, package_price_usd, package_price_crc"
+        )
+        .eq("status", "active")
+        .order("name"),
+    ]);
+  throwIfSupabaseError(
+    tariffsResult.error,
+    "priceList.fetchPriceList.tariffs"
+  );
+  throwIfSupabaseError(
+    extrasResult.error,
+    "priceList.fetchPriceList.extras"
+  );
+  throwIfSupabaseError(
+    combosResult.error,
+    "priceList.fetchPriceList.combos"
+  );
 
   const tariffs: TariffRow[] = (tariffsResult.data ?? [])
     .map((tariff) => ({
@@ -66,17 +82,21 @@ export const fetchPriceList = async (
       first.categoryName.localeCompare(second.categoryName)
     );
 
-  const extras: ExtraRow[] = (extrasResult.data ?? []).map((extra) => ({
-    name: extra.name,
-    priceCrc: extra.price_crc,
-    priceUsd: extra.price_usd,
-  }));
+  const extras: ExtraRow[] = (extrasResult.data ?? []).map(
+    (extra) => ({
+      name: extra.name,
+      priceCrc: extra.price_crc,
+      priceUsd: extra.price_usd,
+    })
+  );
 
-  const combos: ComboRow[] = (combosResult.data ?? []).map((combo) => ({
-    name: combo.name,
-    packagePriceCrc: combo.package_price_crc,
-    packagePriceUsd: combo.package_price_usd,
-  }));
+  const combos: ComboRow[] = (combosResult.data ?? []).map(
+    (combo) => ({
+      name: combo.name,
+      packagePriceCrc: combo.package_price_crc,
+      packagePriceUsd: combo.package_price_usd,
+    })
+  );
 
   return { combos, extras, tariffs };
 };

@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
 import { TRACKING_MODE } from "@/app/constants";
 import type { Nullable } from "@/app/types";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { resolveEquipmentImage } from "./equipmentImage";
 
 export interface CategoryDetailUnit {
@@ -43,22 +44,36 @@ export const fetchCategoryDetail = async (
   supabase: SupabaseClient<Database>,
   categoryId: string
 ): Promise<Nullable<CategoryDetail>> => {
-  const { data: category } = await supabase
-    .from("equipment_categories")
-    .select("id, name, tracking_mode, is_reservable")
-    .eq("id", categoryId)
-    .maybeSingle();
+  const { data: category, error: categoryError } =
+    await supabase
+      .from("equipment_categories")
+      .select("id, name, tracking_mode, is_reservable")
+      .eq("id", categoryId)
+      .maybeSingle();
+  throwIfSupabaseError(
+    categoryError,
+    "categoryDetail.fetchCategoryDetail.category"
+  );
 
   if (!category || !category.is_reservable) {
     return null;
   }
 
-  if (category.tracking_mode === TRACKING_MODE.BY_QUANTITY) {
-    const { data: stock } = await supabase
-      .from("equipment_stock")
-      .select("quantity_available, quantity_damaged, quantity_in_repair")
-      .eq("category_id", categoryId)
-      .maybeSingle();
+  if (
+    category.tracking_mode === TRACKING_MODE.BY_QUANTITY
+  ) {
+    const { data: stock, error: stockError } =
+      await supabase
+        .from("equipment_stock")
+        .select(
+          "quantity_available, quantity_damaged, quantity_in_repair"
+        )
+        .eq("category_id", categoryId)
+        .maybeSingle();
+    throwIfSupabaseError(
+      stockError,
+      "categoryDetail.fetchCategoryDetail.stock"
+    );
 
     return {
       id: category.id,
@@ -73,12 +88,18 @@ export const fetchCategoryDetail = async (
     };
   }
 
-  const { data: units } = await supabase
+  const { data: units, error: unitsError } = await supabase
     .from("unit_current_state")
-    .select("id, code, effective_status, recorded_status, reservation_id, returns_at")
+    .select(
+      "id, code, effective_status, recorded_status, reservation_id, returns_at"
+    )
     .eq("category_id", categoryId)
     .neq("recorded_status", DECOMMISSIONED)
     .order("code");
+  throwIfSupabaseError(
+    unitsError,
+    "categoryDetail.fetchCategoryDetail.units"
+  );
 
   const reservationIds = Array.from(
     new Set(
@@ -96,10 +117,15 @@ export const fetchCategoryDetail = async (
   >();
 
   if (reservationIds.length > 0) {
-    const { data: reservations } = await supabase
-      .from("reservations")
-      .select("id, code, customer_name")
-      .in("id", reservationIds);
+    const { data: reservations, error: reservationsError } =
+      await supabase
+        .from("reservations")
+        .select("id, code, customer_name")
+        .in("id", reservationIds);
+    throwIfSupabaseError(
+      reservationsError,
+      "categoryDetail.fetchCategoryDetail.reservations"
+    );
 
     for (const reservation of reservations ?? []) {
       reservationsById.set(reservation.id, {
@@ -118,7 +144,10 @@ export const fetchCategoryDetail = async (
       const reservation = unit.reservation_id
         ? reservationsById.get(unit.reservation_id)
         : undefined;
-      const image = resolveEquipmentImage(category.name, unit.code ?? undefined);
+      const image = resolveEquipmentImage(
+        category.name,
+        unit.code ?? undefined
+      );
 
       return {
         code: unit.code ?? "",

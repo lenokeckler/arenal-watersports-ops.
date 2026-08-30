@@ -1,6 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Nullable } from "@/app/types";
-import type { WorkArea, WorkerMark, WorkerStatus } from "@/app/constants";
+import type {
+  WorkArea,
+  WorkerMark,
+  WorkerStatus,
+} from "@/app/constants";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface WorkersFilters {
   role: Nullable<WorkArea>;
@@ -57,7 +62,9 @@ interface WorkerQueryRow {
   worker_marks: { mark: WorkerMark }[] | null;
 }
 
-const toWorkerRow = (row: WorkerQueryRow): WorkerDetail => ({
+const toWorkerRow = (
+  row: WorkerQueryRow
+): WorkerDetail => ({
   additionalAreas: (row.worker_areas ?? [])
     .map((entry) => entry.area)
     .filter((area) => area !== row.base_role),
@@ -67,7 +74,9 @@ const toWorkerRow = (row: WorkerQueryRow): WorkerDetail => ({
   fullName: row.full_name,
   id: row.id,
   isExternalGuide: row.is_external_guide,
-  marks: (row.worker_marks ?? []).map((entry) => entry.mark),
+  marks: (row.worker_marks ?? []).map(
+    (entry) => entry.mark
+  ),
   nationalId: row.national_id,
   status: row.status,
   username: row.username,
@@ -98,14 +107,22 @@ export const fetchWorkersPage = async (
   }
   if (filters.search) {
     const term = filters.search.trim();
-    query = query.or(`full_name.ilike.%${term}%,username.ilike.%${term}%`);
+    query = query.or(
+      `full_name.ilike.%${term}%,username.ilike.%${term}%`
+    );
   }
 
   const from = (page - 1) * pageSize;
-  const { data, count } = await query.range(from, from + pageSize - 1);
+  const { data, count, error } = await query.range(
+    from,
+    from + pageSize - 1
+  );
+  throwIfSupabaseError(error, "workers.fetchWorkersPage");
 
   return {
-    rows: ((data ?? []) as unknown as WorkerQueryRow[]).map(toWorkerRow),
+    rows: ((data ?? []) as unknown as WorkerQueryRow[]).map(
+      toWorkerRow
+    ),
     totalCount: count ?? 0,
   };
 };
@@ -118,11 +135,14 @@ export const fetchWorkerDetail = async (
   supabase: SupabaseClient<Database>,
   workerId: string
 ): Promise<Nullable<WorkerDetail>> => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("workers")
     .select(WORKER_SELECT)
     .eq("id", workerId)
     .maybeSingle();
+  throwIfSupabaseError(error, "workers.fetchWorkerDetail");
 
-  return data ? toWorkerRow(data as unknown as WorkerQueryRow) : null;
+  return data
+    ? toWorkerRow(data as unknown as WorkerQueryRow)
+    : null;
 };

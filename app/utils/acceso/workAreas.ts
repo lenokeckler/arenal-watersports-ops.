@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
 import type { WorkArea } from "@/app/constants";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface WorkerAreaState {
   areas: WorkArea[];
@@ -32,6 +33,14 @@ export const fetchWorkerAreaState = async (
       .select("area")
       .eq("worker_id", workerId),
   ]);
+  throwIfSupabaseError(
+    workerResult.error,
+    "workAreas.fetchWorkerAreaState.worker"
+  );
+  throwIfSupabaseError(
+    areasResult.error,
+    "workAreas.fetchWorkerAreaState.areas"
+  );
 
   return {
     areas: (areasResult.data ?? []).map((row) => row.area),

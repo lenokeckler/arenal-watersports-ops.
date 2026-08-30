@@ -1,6 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
-import { WORK_AREA, WORKER_MARK, WORKER_STATUS } from "@/app/constants";
+import {
+  WORK_AREA,
+  WORKER_MARK,
+  WORKER_STATUS,
+} from "@/app/constants";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface WorkerPermissionState {
   isActive: boolean;
@@ -22,15 +27,34 @@ export const fetchWorkerPermissionState = async (
   supabase: SupabaseClient<Database>,
   workerId: string
 ): Promise<WorkerPermissionState> => {
-  const [workerResult, areasResult, marksResult] = await Promise.all([
-    supabase
-      .from("workers")
-      .select("status, expires_at")
-      .eq("id", workerId)
-      .maybeSingle(),
-    supabase.from("worker_areas").select("area").eq("worker_id", workerId),
-    supabase.from("worker_marks").select("mark").eq("worker_id", workerId),
-  ]);
+  const [workerResult, areasResult, marksResult] =
+    await Promise.all([
+      supabase
+        .from("workers")
+        .select("status, expires_at")
+        .eq("id", workerId)
+        .maybeSingle(),
+      supabase
+        .from("worker_areas")
+        .select("area")
+        .eq("worker_id", workerId),
+      supabase
+        .from("worker_marks")
+        .select("mark")
+        .eq("worker_id", workerId),
+    ]);
+  throwIfSupabaseError(
+    workerResult.error,
+    "workerPermissions.fetchWorkerPermissionState.worker"
+  );
+  throwIfSupabaseError(
+    areasResult.error,
+    "workerPermissions.fetchWorkerPermissionState.areas"
+  );
+  throwIfSupabaseError(
+    marksResult.error,
+    "workerPermissions.fetchWorkerPermissionState.marks"
+  );
 
   const isActive =
     workerResult.data?.status === WORKER_STATUS.ACTIVE &&
@@ -45,14 +69,20 @@ export const fetchWorkerPermissionState = async (
     };
   }
 
-  const areas = (areasResult.data ?? []).map((row) => row.area);
-  const marks = (marksResult.data ?? []).map((row) => row.mark);
+  const areas = (areasResult.data ?? []).map(
+    (row) => row.area
+  );
+  const marks = (marksResult.data ?? []).map(
+    (row) => row.mark
+  );
 
   return {
     isActive: true,
     isAdmin: areas.includes(WORK_AREA.ADMINISTRATION),
     isExternalGuideRegistrar:
       areas.includes(WORK_AREA.RESERVATIONS) &&
-      marks.includes(WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION),
+      marks.includes(
+        WORKER_MARK.EXTERNAL_GUIDE_REGISTRATION
+      ),
   };
 };

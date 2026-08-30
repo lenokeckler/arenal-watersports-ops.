@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Nullable } from "@/app/types";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface StockDetail {
   categoryId: string;
@@ -74,7 +75,7 @@ export const fetchStockDetail = async (
   supabase: SupabaseClient<Database>,
   categoryId: string
 ): Promise<Nullable<StockDetail>> => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("equipment_stock")
     .select(
       "category_id, quantity_available, quantity_damaged, " +
@@ -82,6 +83,7 @@ export const fetchStockDetail = async (
     )
     .eq("category_id", categoryId)
     .maybeSingle();
+  throwIfSupabaseError(error, "stock.fetchStockDetail");
 
   return data
     ? toStockDetail(data as unknown as StockQueryRow)
@@ -97,7 +99,7 @@ export const fetchStockMovements = async (
   supabase: SupabaseClient<Database>,
   categoryId: string
 ): Promise<StockMovementRow[]> => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("equipment_stock_movements")
     .select(
       "id, from_available, to_available, from_damaged, to_damaged, " +
@@ -105,6 +107,7 @@ export const fetchStockMovements = async (
     )
     .eq("category_id", categoryId)
     .order("created_at", { ascending: false });
+  throwIfSupabaseError(error, "stock.fetchStockMovements");
 
   return (
     (data ?? []) as unknown as StockMovementQueryRow[]

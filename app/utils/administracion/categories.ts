@@ -5,6 +5,7 @@ import type {
   TrackingMode,
   UsageMetric,
 } from "@/app/constants";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface CategoriesFilters {
   search: Nullable<string>;
@@ -133,9 +134,13 @@ export const fetchCategoriesPage = async (
   }
 
   const from = (page - 1) * pageSize;
-  const { data, count } = await query.range(
+  const { data, count, error } = await query.range(
     from,
     from + pageSize - 1
+  );
+  throwIfSupabaseError(
+    error,
+    "categories.fetchCategoriesPage"
   );
 
   return {
@@ -154,11 +159,15 @@ export const fetchCategoryDetail = async (
   supabase: SupabaseClient<Database>,
   categoryId: string
 ): Promise<Nullable<CategoryDetail>> => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("equipment_categories")
     .select(CATEGORY_DETAIL_SELECT)
     .eq("id", categoryId)
     .maybeSingle();
+  throwIfSupabaseError(
+    error,
+    "categories.fetchCategoryDetail"
+  );
 
   return data
     ? toCategoryDetail(
@@ -188,6 +197,14 @@ export const categoryHasRecords = async (
       .select("category_id", { count: "exact", head: true })
       .eq("category_id", categoryId),
   ]);
+  throwIfSupabaseError(
+    unitsResult.error,
+    "categories.categoryHasRecords.units"
+  );
+  throwIfSupabaseError(
+    stockResult.error,
+    "categories.categoryHasRecords.stock"
+  );
 
   return (
     (unitsResult.count ?? 0) > 0 ||

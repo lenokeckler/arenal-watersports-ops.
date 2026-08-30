@@ -6,6 +6,7 @@ import {
   type TrackingMode,
   type UnitStatus,
 } from "@/app/constants";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface InventoryCategoryRow {
   id: string;
@@ -77,11 +78,15 @@ const toUnitDetail = (
 export const fetchInventoryCategories = async (
   supabase: SupabaseClient<Database>
 ): Promise<InventoryCategoryRow[]> => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("equipment_categories")
     .select("id, name, tracking_mode")
     .eq("status", CATEGORY_STATUS.ACTIVE)
     .order("name");
+  throwIfSupabaseError(
+    error,
+    "units.fetchInventoryCategories"
+  );
 
   return (
     (data ?? []) as unknown as InventoryCategoryQueryRow[]
@@ -101,7 +106,7 @@ export const fetchUnitsForCategory = async (
   supabase: SupabaseClient<Database>,
   categoryId: string
 ): Promise<UnitListRow[]> => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("equipment_units")
     .select(
       "id, code, status, current_fuel, usage_total, next_oil_change_at"
@@ -109,6 +114,10 @@ export const fetchUnitsForCategory = async (
     .eq("category_id", categoryId)
     .neq("status", UNIT_STATUS.DECOMMISSIONED)
     .order("code");
+  throwIfSupabaseError(
+    error,
+    "units.fetchUnitsForCategory"
+  );
 
   return (
     (data ?? []) as unknown as UnitListQueryRow[]
@@ -119,7 +128,7 @@ export const fetchUnitDetail = async (
   supabase: SupabaseClient<Database>,
   unitId: string
 ): Promise<Nullable<UnitDetail>> => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("equipment_units")
     .select(
       "id, category_id, code, status, current_fuel, usage_total, " +
@@ -127,6 +136,7 @@ export const fetchUnitDetail = async (
     )
     .eq("id", unitId)
     .maybeSingle();
+  throwIfSupabaseError(error, "units.fetchUnitDetail");
 
   return data
     ? toUnitDetail(data as unknown as UnitDetailQueryRow)
