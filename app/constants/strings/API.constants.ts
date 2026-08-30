@@ -17,6 +17,8 @@ export const API = {
    * service role key. Each module adds its own routes.
    */
   ROUTES: {
+    CATEGORY: (categoryId: string): string =>
+      `/api/administracion/categorias/${categoryId}`,
     LOGIN_ATTEMPT: "/api/acceso/intento",
     PASSWORD_RECOVERY_PIN: "/api/acceso/pin-recuperacion",
     PASSWORD_RECOVERY_VERIFY: "/api/acceso/verificar-pin",
