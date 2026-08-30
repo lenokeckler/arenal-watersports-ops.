@@ -1,6 +1,6 @@
 # Estado actual — retomar desde aquí
 
-Última actualización: 2026-08-29.
+Última actualización: 2026-08-30.
 
 Este archivo existe para que el trabajo se pueda retomar mañana, o desde otra
 máquina, o por otra persona, sin depender de que nadie recuerde nada. Si algo
@@ -26,7 +26,10 @@ claude --continue
 ```
 
 Credenciales sembradas tras `npm run db:reset`: usuario `admin`, contraseña
-`Arenal.2026`.
+`Arenal.2026`. Esa cuenta arranca con `must_change_password = true`, así que
+el primer inicio de sesión pasa siempre por `/acceso/primer-ingreso` antes de
+llegar a cualquier otra pantalla — no es un defecto, es la historia
+US-ACC-003.
 
 Comandos que importan:
 
@@ -37,6 +40,25 @@ Comandos que importan:
 | `npm run db:reset` | Rehace la base y carga el inventario real |
 | `npm run db:test` | Corre las 325 pruebas del esquema (sin seed, a propósito) |
 | `npm run lint` / `typecheck` / `build` | Verificación de la aplicación |
+
+### Cuidado con `npm run format`
+
+`.prettierrc.json` fija `printWidth: 60`, más angosto de lo habitual, y una
+buena parte del código ya escrito (varios archivos de `worker-form`,
+`worker-detail`, `board`, `acceso`, etc.) nunca se pasó por ese ancho —
+probablemente porque se escribió antes de que ese valor quedara fijado, o
+porque un agente lo escribió a mano sin correr `format` después. El resultado
+es que `npm run format` hoy reescribe decenas de archivos ajenos a lo que se
+esté tocando, solo por el ancho de línea, no por errores de estilo reales.
+
+**No commitear ese reformateo masivo por accidente.** Antes de comprometer
+cualquier cambio: revisar `git status`, y si `format` tocó archivos fuera del
+alcance de la tarea, hacer `git checkout HEAD -- <esos archivos>` y dejar solo
+el propio diff. Sí vale la pena correr `npx prettier --check <los archivos
+propios>` para confirmar que el código nuevo cumple el ancho de 60, sin
+arrastrar al resto del repositorio. Esta sesión se topó con esto y así lo
+resolvió; vale la pena corregir el drift de una vez en una tarea dedicada,
+pero no como efecto secundario de otra cosa.
 
 ---
 
@@ -50,103 +72,128 @@ Comandos que importan:
 | **Sistema de diseño** — tokens de Stitch en Tailwind 4, fuentes autoalojadas, imágenes del equipo | ✅ |
 | **Módulo Acceso y Sesión** — 11 historias | ✅ |
 | **Módulo Tablero y Navegación** — 10 historias | ✅ |
+| **EP-ADM-01 — Trabajadores** — validado de punta a punta contra la app corriendo | ✅ |
+| **EP-ADM-02 — Catálogo de categorías** | ✅ |
+| **EP-ADM-03 — Unidades y artículos del inventario** | ✅ |
 
-Progreso general estimado: **~35%**. Son 21 de 112 historias, pero la fundación
-—esquema, seguridad, diseño, autenticación— está completa, y es la parte que más
-caro sale equivocar.
+Progreso general estimado: **~40%**. Son alrededor de 27 de 112 historias
+(EP-ADM-01 ya contaba; EP-ADM-02 son 4 historias más, EP-ADM-03 son 3 más),
+con la fundación —esquema, seguridad, diseño, autenticación— completa desde
+antes.
 
 ---
 
 ## Dónde se quedó el trabajo
 
-**Rama activa: `feat/modulo-administracion`**, sacada de `develop`.
+**Rama activa: `feat/modulo-administracion`**, sacada de `develop`. No se hizo
+merge; eso lo hace el dueño.
 
-Se estaba construyendo la **primera mitad del módulo Administración**:
+Esta sesión hizo dos cosas, en este orden:
 
-- **EP-ADM-01** — trabajadores, roles, áreas adicionales y las tres marcas
-  (`guia`, `encargado_general`, `registro_guias_externos`), altas con contraseña
-  temporal, bloqueo y desbloqueo, guías externos con caducidad.
-- **EP-ADM-02** — el catálogo de categorías del inventario.
+### 1. Validó EP-ADM-01 de punta a punta y encontró un defecto real
 
-El commit con prefijo `wip(admin):` dice qué quedó terminado y qué a medias. Hay
-que leerlo antes de seguir.
+Nadie había ejecutado nunca la gestión de trabajadores. Se levantó el
+servidor, se armó una sesión autenticada por script (Node + `@supabase/ssr`
+con un cookie jar en memoria, porque el entorno no tiene navegador — el mismo
+truco sirve para cualquier tarea futura que necesite probar algo detrás de
+sesión) y se recorrió la cadena completa: login como `admin`, primer ingreso
+forzado, creación de un trabajador desde la propia interfaz, login como ese
+trabajador con la contraseña temporal, su propio primer ingreso, filtros y
+paginación de la lista, otorgar y revocar un área y una marca, bloquear
+(con el corte de sesión inmediato que exige el proxy) y reactivar, reponer
+contraseña temporal, y un guía externo con extensión de caducidad. Cada paso
+quedó verificado contra la base real, no simulado.
 
-### Lo primero que hay que hacer mañana
+**El defecto encontrado y arreglado** (commit `fix(admin): disambiguate the
+worker_areas/worker_marks embed`): `worker_areas` y `worker_marks` tienen cada
+una dos llaves foráneas hacia `workers` (`worker_id` y `granted_by`), así que
+el embed sin calificar `worker_areas(area)` en `WORKER_SELECT`
+(`app/utils/administracion/workers.ts`) fallaba con `PGRST201` en **cada**
+petición. `fetchWorkerDetail` lo mostraba como un 404 en toda ficha de
+trabajador; `fetchWorkersPage` se tragaba el error y mostraba la lista vacía
+— con la cuenta de administración ya sembrada en la base. Arreglado
+calificando ambos embeds con el nombre exacto de la relación
+(`worker_areas!worker_areas_worker_id_fkey`, etc.).
 
-**El typecheck falla.** Seis errores de tipos, todos en un solo archivo:
-`app/utils/administracion/categories.ts`, líneas 114-119. Supabase infiere
-`GenericStringError` en vez del tipo de la fila, así que `id`, `name`,
-`status`, `tracking_mode`, `is_reservable` y `usage_metric` no existen para
-TypeScript. El lint sí pasa, y nada de esto está mezclado a `develop`, así que
-no rompe nada más. Es un arreglo pequeño y contenido.
+También se detectó que la contraseña sembrada del `admin` no coincidía con
+`Arenal.2026` en el volumen de Docker que traía esta máquina (probablemente de
+una siembra anterior a la actual `seed.sql`). Se resolvió con `npm run
+db:reset`, que documentación y seed ya cubren — no era un defecto del código,
+solo una base desincronizada.
 
-**El punto más riesgoso sin verificar**, señalado por quien lo escribió:
-`app/api/administracion/trabajadores/[workerId]/permisos/route.ts` usa
-`ReturnType<typeof handlePermissionChange>` para exportar `POST` y `DELETE`.
-Merece una mirada antes que nada.
+### 2. Construyó EP-ADM-02 y EP-ADM-03 sobre el camino que ya estaba trazado
 
-**Nunca se ejecutó nada de esto:** el servidor de desarrollo, el build, ni se
-creó un trabajador desde la interfaz para entrar como él. Esa última es la
-prueba que de verdad valida el módulo, porque atraviesa la cuenta sintética, la
-contraseña temporal y el primer ingreso forzado.
+**EP-ADM-02 — Catálogo de categorías** (US-ADM-012 a 015): `/administracion/
+categorias` (lista con búsqueda, filtro por modalidad y por estado,
+paginación en servidor, igual que `WorkerList`) y `/administracion/
+categorias/nueva` + `/[categoryId]` con un `CategoryForm` compartido. El
+`tracking_mode` se bloquea en edición cuando `categoryHasRecords` es
+verdadero — verificado en vivo con Jet Ski (tiene unidades: aparece
+bloqueado) y con una categoría recién creada (no lo está). El botón elimina
+cuando la categoría nunca tuvo registros y marca inactiva cuando ya los tuvo,
+con reactivación disponible. Insertar y actualizar van directo por el cliente
+autenticado del propio administrador; borrar necesitó la única ruta de
+servidor nueva de este dispatch (`DELETE /api/administracion/categorias/
+[categoryId]`), porque `DELETE` está revocado para `authenticated` a nivel de
+base. La contradicción de la historia (una categoría reservable "siempre" se
+identifica por unidad) sigue resuelta como ya estaba documentado: los kayaks
+son reservables y se llevan por cantidad, y el código sigue el esquema, no el
+texto de la historia.
 
-### Lo que quedó construido de EP-ADM-01
+**EP-ADM-03 — Unidades y artículos** (US-ADM-016 a 018): `/administracion/
+unidades` es un hub sobre toda categoría activa, que entra a
+`/administracion/unidades/[categoryId]`, y esa pantalla se bifurca según
+`tracking_mode` — exactamente la misma decisión que ya toma la base
+(`units_check_category_mode` / `stock_check_category_mode`):
 
-`/administracion` como hub; `/administracion/trabajadores` con búsqueda,
-filtros y paginación en servidor; `/administracion/trabajadores/nuevo` que
-muestra la contraseña temporal de un solo uso; y el detalle de cada trabajador
-con áreas, las tres marcas, bloqueo y reactivación, reposición de temporal y
-extensión de caducidad para guías externos. La cuenta de administración aparece
-sin acciones, como debe ser. La barra inferior ganó su icono, visible solo en
-modo administración.
+- **`by_unit`**: lista de fichas (`UnitList`), con `/nueva` y `/[unitId]`
+  compartiendo `UnitForm`. Los campos de gasolina y uso de motor solo
+  aparecen si la categoría realmente consume gasolina o lleva motor. Dar de
+  baja es una acción aparte y terminal: pide el motivo con un
+  `window.prompt` (no existe un componente de diálogo con campo de texto en
+  este código base todavía; se documentó la decisión en el propio hook), y
+  la unidad desaparece de la lista para siempre, aunque su URL directa sigue
+  resolviendo con la nota de "dada de baja".
+- **`by_quantity`**: `StockForm` edita la única fila de existencias de la
+  categoría y, solo cuando alguna cantidad realmente cambia, registra un
+  movimiento en `equipment_stock_movements` y lo antepone al historial
+  visible — tocar solo la fecha de vencimiento no registra nada. Si la fila
+  de stock nunca se aprovisionó (categoría creada después del seed), el
+  formulario cae a un insert en vez de un update.
 
-Las rutas de servidor usan el rol de servicio y comprueban permisos en código,
-porque ese rol se salta la seguridad por fila. El borrado necesita rol de
-servicio porque `DELETE` está revocado a `authenticated` a nivel de base.
+Ninguna escritura de este dispatch necesitó ruta de servidor nueva salvo el
+borrado de categorías: nada más en EP-ADM-03 se elimina.
 
-### Lo que falta de EP-ADM-02, con el camino ya trazado
+Todo lo anterior quedó verificado en vivo contra la app corriendo y Supabase
+local, y la base se dejó reseteada al estado sembrado limpio al terminar
+(`npm run db:reset`) — no quedan trabajadores ni categorías de prueba.
 
-No existe ninguna pantalla de categorías. Pero la capa de datos ya está escrita
-en `app/utils/administracion/categories.ts` (`fetchCategoriesPage`,
-`fetchCategoryDetail`, `categoryHasRecords`), y **las categorías no necesitan
-ruta de servidor**: la política ya permite a un administrador autenticado
-insertar y actualizar directamente, igual que hace `ProfileForm`.
-
-El siguiente paso concreto era copiar la forma de `WorkerList` para la lista, y
-después un `CategoryForm` compartido entre crear y editar, con `tracking_mode`
-bloqueado en edición cuando `categoryHasRecords` sea verdadero, los campos
-condicionales (`usage_metric` solo si lleva motor, avisos, depósito por moneda)
-y el botón que borra o desactiva según si la categoría ya tuvo registros.
-
-### Una contradicción ya resuelta, por si reaparece
-
-Las validaciones de EP-ADM-02 dicen que una categoría reservable siempre se
-identifica una por una. **Eso es falso y ya se decidió así con el dueño**: los
-kayaks son reservables y se llevan por cantidad. El esquema no tiene esa
-restricción y el seed los siembra de esa forma a propósito. Está registrado como
-la decisión del modo híbrido. No hay que volver a abrirla.
-
-**Lo que falta de Administración**, que era un segundo despacho y no se empezó:
-EP-ADM-03 (unidades y artículos), EP-ADM-04 (extras de las lanchas), EP-ADM-05
-(combos y tarifas) y EP-ADM-06 (estadísticas y reportes).
+**Lo que falta de Administración:** EP-ADM-04 (extras de las lanchas),
+EP-ADM-05 (combos y tarifas) y EP-ADM-06 (estadísticas y reportes). Ninguno
+tiene una sola pantalla construida todavía.
 
 **Después de Administración:** Reservas (33 historias) y Operaciones (27). Son
-los dos módulos donde vive la lógica real del negocio —despacho, cierre, choques
-de disponibilidad, cobros y depósitos— así que son más difíciles que
+los dos módulos donde vive la lógica real del negocio —despacho, cierre,
+choques de disponibilidad, cobros y depósitos— así que son más difíciles que
 Administración, que es sobre todo CRUD.
 
 ---
 
 ## Cómo se está trabajando
 
-Decisión del dueño, tomada por presupuesto: **construir primero, probar después.**
-Sin suites de pruebas por tarea, sin agentes revisores, sin rondas de arreglo.
+Decisión del dueño, tomada por presupuesto: **construir primero, probar
+después.** Sin suites de pruebas por tarea, sin agentes revisores, sin
+rondas de arreglo.
 
-Lo único que se conserva es que cada agente **abra las pantallas y las mire una
-vez**. No es control de calidad, es la diferencia entre entregar algo que
-funciona y algo que compila: los últimos defectos del proyecto —el seed que no
-dejaba entrar a nadie, los íconos que se leían como palabras, las tarjetas
-estiradas— eran todos invisibles en el código y evidentes en pantalla.
+Lo único que se conserva es que cada agente **abra las pantallas y las mire
+una vez**. No es control de calidad, es la diferencia entre entregar algo
+que funciona y algo que compila: los últimos defectos del proyecto —el seed
+que no dejaba entrar a nadie, los íconos que se leían como palabras, las
+tarjetas estiradas, y ahora el embed ambiguo de `worker_areas`— eran todos
+invisibles en el código y evidentes en pantalla o en una petición real. Sin
+navegador gráfico, el sustituto que ha funcionado en esta sesión es una
+sesión autenticada armada por script (ver más arriba) más `curl` contra la
+app y consultas directas a la base con `psql` para confirmar el resultado.
 
 Cuando el dueño lo diga, viene una pasada de pruebas y de detalles.
 
@@ -154,21 +201,26 @@ Cuando el dueño lo diga, viene una pasada de pruebas y de detalles.
 
 ## Lo que hace falta del dueño
 
-Ninguna de estas dos frena el trabajo, pero sin ellas el proyecto no sale de
+Ninguna de estas frena el trabajo, pero sin ellas el proyecto no sale de
 local:
 
-1. **Credenciales del proyecto de Supabase en la nube.** Todo corre y se prueba
-   contra la base local; no existe todavía un proyecto en la nube al que subir
-   las migraciones.
-2. **Las cantidades reales de chalecos, remos, extintores y botiquines.** Están
-   en cero a propósito, para que administración las registre desde la
-   aplicación, que para eso es un CRUD. Si se prefiere sembrarlas, hacen falta
-   los números.
+1. **Credenciales del proyecto de Supabase en la nube.** Todo corre y se
+   prueba contra la base local; no existe todavía un proyecto en la nube al
+   que subir las migraciones.
+2. **Las cantidades reales de remos, extintores y botiquines** (chalecos ya
+   se puede registrar desde `/administracion/unidades`, que para eso es un
+   CRUD ahora). Siguen en cero a propósito.
 
-Y una pendiente de mirar, no de hacer: **nadie ha visto el tablero con ojos.**
-El entorno donde corren los agentes no tiene navegador, así que se verificó con
-peticiones y lectura del texto renderizado. Los datos y los textos están bien.
-Vale la pena abrir `/tablero` y decir si algo se ve mal.
+Y dos pendientes de mirar, no de hacer:
+
+- **Nadie ha visto el tablero, ni las pantallas nuevas de esta sesión, con
+  ojos.** El entorno donde corren los agentes no tiene navegador, así que se
+  verificó con peticiones y lectura del texto renderizado a 
+  390px/1440px solo por las clases Tailwind usadas, nunca visualmente. Vale
+  la pena abrir `/tablero`, `/administracion/categorias` y
+  `/administracion/unidades` y decir si algo se ve mal.
+- **El drift de `npm run format`** descrito arriba. No bloquea nada, pero
+  cuanto más tiempo pase, más grande será el diff de la limpieza.
 
 ---
 
