@@ -5,6 +5,7 @@ import "./globals.css";
 import { ReduxProvider } from "@/app/providers";
 import WorkdaySessionProvider from "@/app/components/session/WorkdaySessionProvider";
 import WorkAreaSwitcher from "@/app/components/work-area-switcher/WorkAreaSwitcher";
+import BottomNav from "@/app/components/bottom-nav/BottomNav";
 
 /**
  * Design-system fonts, self-hosted through `next/font` rather than a
@@ -84,6 +85,7 @@ const RootLayout = ({
         <WorkdaySessionProvider>
           {children}
           <WorkAreaSwitcher />
+          <BottomNav />
         </WorkdaySessionProvider>
       </ReduxProvider>
     </body>
