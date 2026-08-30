@@ -13,7 +13,7 @@ interface UseStockMovementLogReturn {
     reason: string,
     previous: StockQuantities,
     next: StockQuantities
-  ) => Promise<void>;
+  ) => Promise<boolean>;
   movements: StockMovementRow[];
 }
 
@@ -32,13 +32,20 @@ export const useStockMovementLog = (
     StockMovementRow[]
   >(initialMovements);
 
+  /**
+   * Returns whether the movement was actually recorded. `useStockFormViewModel`
+   * relies on this to surface `STOCK_FORM_SCREEN.ERROR.MOVEMENT_LOG_FAILED`
+   * instead of silently dropping a failed insert — the count itself may have
+   * already saved by the time this runs, so the caller must know the
+   * history write specifically failed.
+   */
   const logMovement = async (
     reason: string,
     previous: StockQuantities,
     next: StockQuantities
-  ): Promise<void> => {
+  ): Promise<boolean> => {
     const supabase = createBrowserSupabaseClient();
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("equipment_stock_movements")
       .insert({
         category_id: categoryId,
@@ -54,8 +61,8 @@ export const useStockMovementLog = (
       .select("id, created_at")
       .single();
 
-    if (!data) {
-      return;
+    if (error || !data) {
+      return false;
     }
 
     setMovements((current) => [
@@ -72,6 +79,8 @@ export const useStockMovementLog = (
       },
       ...current,
     ]);
+
+    return true;
   };
 
   return { logMovement, movements };

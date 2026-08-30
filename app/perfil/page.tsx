@@ -5,6 +5,7 @@ import { PATHS } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services";
 import AccessScreenShell from "@/app/components/access-screen-shell/AccessScreenShell";
 import ProfileForm from "@/app/components/profile-form/ProfileForm";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export const metadata: Metadata = {
   title: "Mi Perfil — Arenal Water Sports",
@@ -30,11 +31,14 @@ const ProfilePage = async (): Promise<JSX.Element> => {
     redirect(PATHS.ACCESS.LOGIN);
   }
 
-  const { data: worker } = await supabase
+  const { data: worker, error } = await supabase
     .from("workers")
-    .select("base_role, full_name, personal_email, username")
+    .select(
+      "base_role, full_name, personal_email, username"
+    )
     .eq("id", user.id)
     .maybeSingle();
+  throwIfSupabaseError(error, "perfil.fetchWorker");
 
   if (!worker) {
     redirect(PATHS.ACCESS.LOGIN);

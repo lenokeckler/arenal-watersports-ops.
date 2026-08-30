@@ -15,20 +15,29 @@ import {
   type WorkerMark,
 } from "@/app/constants";
 import { fetchWorkerPermissionState } from "@/app/utils/administracion/workerPermissions";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { logServerError } from "@/app/utils/logging/logServerError";
+
+const GENERIC_ERROR = "No se pudo completar la operación.";
 
 export interface WorkerPermissionRequestBody {
   kind: PermissionKind;
   value: WorkArea | WorkerMark;
 }
 
-export type WorkerPermissionResponseData = Record<string, never>;
+export type WorkerPermissionResponseData = Record<
+  string,
+  never
+>;
 
 interface RouteParams {
   params: Promise<{ workerId: string }>;
 }
 
-const VALID_AREAS: readonly WorkArea[] = Object.values(WORK_AREA);
-const VALID_MARKS: readonly WorkerMark[] = Object.values(WORKER_MARK);
+const VALID_AREAS: readonly WorkArea[] =
+  Object.values(WORK_AREA);
+const VALID_MARKS: readonly WorkerMark[] =
+  Object.values(WORKER_MARK);
 
 const isValidBody = (
   body: unknown
@@ -40,10 +49,16 @@ const isValidBody = (
   const { kind, value } = body as Record<string, unknown>;
 
   if (kind === PERMISSION_KIND.AREA) {
-    return typeof value === "string" && VALID_AREAS.includes(value as WorkArea);
+    return (
+      typeof value === "string" &&
+      VALID_AREAS.includes(value as WorkArea)
+    );
   }
   if (kind === PERMISSION_KIND.MARK) {
-    return typeof value === "string" && VALID_MARKS.includes(value as WorkerMark);
+    return (
+      typeof value === "string" &&
+      VALID_MARKS.includes(value as WorkerMark)
+    );
   }
   return false;
 };
@@ -62,13 +77,18 @@ const handlePermissionChange = async (
   request: Request,
   { params }: RouteParams,
   applyChange: (
-    serviceRoleClient: ReturnType<typeof createServiceRoleSupabaseClient>,
+    serviceRoleClient: ReturnType<
+      typeof createServiceRoleSupabaseClient
+    >,
     workerId: string,
     body: WorkerPermissionRequestBody,
     grantedBy: string
   ) => Promise<{ code?: string } | null>
 ): Promise<
-  NextResponse<SuccessResponse<WorkerPermissionResponseData> | ErrorResponse>
+  NextResponse<
+    | SuccessResponse<WorkerPermissionResponseData>
+    | ErrorResponse
+  >
 > => {
   const { workerId } = await params;
 
@@ -76,11 +96,15 @@ const handlePermissionChange = async (
   try {
     body = await request.json();
   } catch {
-    return Response.badRequest("Cuerpo de la solicitud inválido.");
+    return Response.badRequest(
+      "Cuerpo de la solicitud inválido."
+    );
   }
 
   if (!isValidBody(body)) {
-    return Response.badRequest("Cuerpo de la solicitud inválido.");
+    return Response.badRequest(
+      "Cuerpo de la solicitud inválido."
+    );
   }
 
   const serverClient = await createServerSupabaseClient();
@@ -92,7 +116,8 @@ const handlePermissionChange = async (
     return Response.unauthorized("Sesión no válida.");
   }
 
-  const serviceRoleClient = createServiceRoleSupabaseClient();
+  const serviceRoleClient =
+    createServiceRoleSupabaseClient();
   const { isAdmin } = await fetchWorkerPermissionState(
     serviceRoleClient,
     caller.id
@@ -104,34 +129,47 @@ const handlePermissionChange = async (
     );
   }
 
-  if (body.kind === PERMISSION_KIND.AREA) {
-    const { data: worker } = await serviceRoleClient
-      .from("workers")
-      .select("base_role")
-      .eq("id", workerId)
-      .maybeSingle();
-
-    if (worker?.base_role === body.value) {
-      return Response.badRequest(
-        "El rol base no se administra como área adicional."
+  try {
+    if (body.kind === PERMISSION_KIND.AREA) {
+      const { data: worker, error: workerError } =
+        await serviceRoleClient
+          .from("workers")
+          .select("base_role")
+          .eq("id", workerId)
+          .maybeSingle();
+      throwIfSupabaseError(
+        workerError,
+        "administracion.permisos.fetchWorkerBaseRole"
       );
+
+      if (worker?.base_role === body.value) {
+        return Response.badRequest(
+          "El rol base no se administra como área adicional."
+        );
+      }
     }
-  }
 
-  const error = await applyChange(
-    serviceRoleClient,
-    workerId,
-    body,
-    caller.id
-  );
-
-  if (error) {
-    return Response.internalError(
-      "No se pudo completar la operación."
+    const error = await applyChange(
+      serviceRoleClient,
+      workerId,
+      body,
+      caller.id
     );
-  }
 
-  return Response.success<WorkerPermissionResponseData>({});
+    if (error) {
+      return Response.internalError(GENERIC_ERROR);
+    }
+
+    return Response.success<WorkerPermissionResponseData>(
+      {}
+    );
+  } catch (error) {
+    // A Supabase failure while checking the base role must not silently
+    // fall through to applying the change — it fails closed and visibly (a
+    // 500 logged server-side) instead of closed and silent.
+    logServerError(error);
+    return Response.internalError(GENERIC_ERROR);
+  }
 };
 
 export const POST = (
@@ -141,19 +179,28 @@ export const POST = (
   handlePermissionChange(
     request,
     routeParams,
-    async (serviceRoleClient, workerId, body, grantedBy) => {
+    async (
+      serviceRoleClient,
+      workerId,
+      body,
+      grantedBy
+    ) => {
       const { error } =
         body.kind === PERMISSION_KIND.AREA
-          ? await serviceRoleClient.from("worker_areas").insert({
-              area: body.value as WorkArea,
-              granted_by: grantedBy,
-              worker_id: workerId,
-            })
-          : await serviceRoleClient.from("worker_marks").insert({
-              granted_by: grantedBy,
-              mark: body.value as WorkerMark,
-              worker_id: workerId,
-            });
+          ? await serviceRoleClient
+              .from("worker_areas")
+              .insert({
+                area: body.value as WorkArea,
+                granted_by: grantedBy,
+                worker_id: workerId,
+              })
+          : await serviceRoleClient
+              .from("worker_marks")
+              .insert({
+                granted_by: grantedBy,
+                mark: body.value as WorkerMark,
+                worker_id: workerId,
+              });
       return error;
     }
   );

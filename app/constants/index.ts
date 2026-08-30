@@ -120,6 +120,7 @@ export {
   type WorkerStatus,
 } from "./acceso/WorkerStatus.constants";
 export {
+  LOGIN_ATTEMPT_MESSAGE,
   LOGIN_ATTEMPT_OUTCOME,
   type LoginAttemptOutcome,
 } from "./acceso/LoginAttempt.constants";

@@ -107,11 +107,20 @@ export const useStockFormViewModel = ({
     }
 
     if (hasQuantityChange) {
-      await logMovement(
+      const loggedSuccessfully = await logMovement(
         values.reason.trim(),
         savedQuantities,
         nextQuantities
       );
+
+      if (!loggedSuccessfully) {
+        setIsBusy(false);
+        setFormError(
+          STOCK_FORM_SCREEN.ERROR.MOVEMENT_LOG_FAILED
+        );
+        return;
+      }
+
       setSavedQuantities(nextQuantities);
     }
 

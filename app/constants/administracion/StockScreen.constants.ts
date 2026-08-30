@@ -7,6 +7,9 @@ export const STOCK_FORM_SCREEN = {
   ERROR: {
     GENERIC:
       "No se pudo guardar el conteo. Revise los datos.",
+    MOVEMENT_LOG_FAILED:
+      "El conteo se guardó, pero no se pudo registrar el " +
+      "movimiento en el historial.",
     REASON_REQUIRED: "El motivo del cambio es obligatorio.",
   },
   EXPIRY_DATE_LABEL: "Fecha de vencimiento",
