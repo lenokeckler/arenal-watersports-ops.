@@ -71,6 +71,61 @@ Se estaba construyendo la **primera mitad del módulo Administración**:
 El commit con prefijo `wip(admin):` dice qué quedó terminado y qué a medias. Hay
 que leerlo antes de seguir.
 
+### Lo primero que hay que hacer mañana
+
+**El typecheck falla.** Seis errores de tipos, todos en un solo archivo:
+`app/utils/administracion/categories.ts`, líneas 114-119. Supabase infiere
+`GenericStringError` en vez del tipo de la fila, así que `id`, `name`,
+`status`, `tracking_mode`, `is_reservable` y `usage_metric` no existen para
+TypeScript. El lint sí pasa, y nada de esto está mezclado a `develop`, así que
+no rompe nada más. Es un arreglo pequeño y contenido.
+
+**El punto más riesgoso sin verificar**, señalado por quien lo escribió:
+`app/api/administracion/trabajadores/[workerId]/permisos/route.ts` usa
+`ReturnType<typeof handlePermissionChange>` para exportar `POST` y `DELETE`.
+Merece una mirada antes que nada.
+
+**Nunca se ejecutó nada de esto:** el servidor de desarrollo, el build, ni se
+creó un trabajador desde la interfaz para entrar como él. Esa última es la
+prueba que de verdad valida el módulo, porque atraviesa la cuenta sintética, la
+contraseña temporal y el primer ingreso forzado.
+
+### Lo que quedó construido de EP-ADM-01
+
+`/administracion` como hub; `/administracion/trabajadores` con búsqueda,
+filtros y paginación en servidor; `/administracion/trabajadores/nuevo` que
+muestra la contraseña temporal de un solo uso; y el detalle de cada trabajador
+con áreas, las tres marcas, bloqueo y reactivación, reposición de temporal y
+extensión de caducidad para guías externos. La cuenta de administración aparece
+sin acciones, como debe ser. La barra inferior ganó su icono, visible solo en
+modo administración.
+
+Las rutas de servidor usan el rol de servicio y comprueban permisos en código,
+porque ese rol se salta la seguridad por fila. El borrado necesita rol de
+servicio porque `DELETE` está revocado a `authenticated` a nivel de base.
+
+### Lo que falta de EP-ADM-02, con el camino ya trazado
+
+No existe ninguna pantalla de categorías. Pero la capa de datos ya está escrita
+en `app/utils/administracion/categories.ts` (`fetchCategoriesPage`,
+`fetchCategoryDetail`, `categoryHasRecords`), y **las categorías no necesitan
+ruta de servidor**: la política ya permite a un administrador autenticado
+insertar y actualizar directamente, igual que hace `ProfileForm`.
+
+El siguiente paso concreto era copiar la forma de `WorkerList` para la lista, y
+después un `CategoryForm` compartido entre crear y editar, con `tracking_mode`
+bloqueado en edición cuando `categoryHasRecords` sea verdadero, los campos
+condicionales (`usage_metric` solo si lleva motor, avisos, depósito por moneda)
+y el botón que borra o desactiva según si la categoría ya tuvo registros.
+
+### Una contradicción ya resuelta, por si reaparece
+
+Las validaciones de EP-ADM-02 dicen que una categoría reservable siempre se
+identifica una por una. **Eso es falso y ya se decidió así con el dueño**: los
+kayaks son reservables y se llevan por cantidad. El esquema no tiene esa
+restricción y el seed los siembra de esa forma a propósito. Está registrado como
+la decisión del modo híbrido. No hay que volver a abrirla.
+
 **Lo que falta de Administración**, que era un segundo despacho y no se empezó:
 EP-ADM-03 (unidades y artículos), EP-ADM-04 (extras de las lanchas), EP-ADM-05
 (combos y tarifas) y EP-ADM-06 (estadísticas y reportes).
