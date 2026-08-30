@@ -111,6 +111,7 @@ export {
 } from "./acceso/ChangePassword.constants";
 export {
   WORKER_STATUS,
+  WORKER_STATUS_LABEL,
   type WorkerStatus,
 } from "./acceso/WorkerStatus.constants";
 export {
@@ -180,3 +181,34 @@ export { HISTORY_SCREEN } from "./tablero/HistoryScreen.constants";
 export { PRICE_LIST_SCREEN } from "./tablero/PriceListScreen.constants";
 export { INVENTORY_SCREEN } from "./tablero/InventoryScreen.constants";
 export { REALTIME, REALTIME_TABLE } from "./tablero/Realtime.constants";
+export {
+  WORKER_MARK,
+  WORKER_MARK_LABEL,
+  WORKER_MARK_DESCRIPTION,
+  type WorkerMark,
+} from "./acceso/WorkerMark.constants";
+export {
+  USAGE_METRIC,
+  USAGE_METRIC_LABEL,
+  type UsageMetric,
+} from "./administracion/UsageMetric.constants";
+export {
+  CATEGORY_STATUS,
+  CATEGORY_STATUS_LABEL,
+  type CategoryStatus,
+} from "./administracion/CategoryStatus.constants";
+export { ADMIN_HUB_SCREEN } from "./administracion/AdminHubScreen.constants";
+export {
+  WORKERS_SCREEN,
+  WORKER_FORM_SCREEN,
+  WORKER_DETAIL_SCREEN,
+} from "./administracion/WorkersScreen.constants";
+export {
+  CATEGORIES_SCREEN,
+  CATEGORY_FORM_SCREEN,
+} from "./administracion/CategoriesScreen.constants";
+export { TEMPORARY_PASSWORD } from "./numbers/TemporaryPassword.constants";
+export {
+  PERMISSION_KIND,
+  type PermissionKind,
+} from "./administracion/PermissionKind.constants";

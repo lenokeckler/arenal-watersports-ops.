@@ -14,6 +14,7 @@ import { WORK_AREA, type WorkArea } from "@/app/constants/acceso/WorkArea.consta
  * screen does.
  */
 export const BOTTOM_NAV_ITEM_ID = {
+  ADMIN: "admin",
   BOARD: "board",
   CALENDAR: "calendar",
   HISTORY: "history",
@@ -69,6 +70,13 @@ export const BOTTOM_NAV = {
       ID: BOTTOM_NAV_ITEM_ID.PRICES,
       LABEL: "Precios",
       VISIBLE_IN: [WORK_AREA.OPERATIONS],
+    },
+    {
+      HREF: PATHS.ADMIN.ROOT,
+      ICON: MATERIAL_ICON_NAME.ADMIN_PANEL_SETTINGS,
+      ID: BOTTOM_NAV_ITEM_ID.ADMIN,
+      LABEL: "Administración",
+      VISIBLE_IN: [WORK_AREA.ADMINISTRATION],
     },
   ] as const satisfies ReadonlyArray<{
     HREF: string;

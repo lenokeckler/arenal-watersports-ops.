@@ -21,6 +21,11 @@ export const API = {
     PASSWORD_RECOVERY_PIN: "/api/acceso/pin-recuperacion",
     PASSWORD_RECOVERY_VERIFY: "/api/acceso/verificar-pin",
     WORKDAY: "/api/acceso/jornada",
+    WORKER_PERMISSIONS: (workerId: string): string =>
+      `/api/administracion/trabajadores/${workerId}/permisos`,
+    WORKER_TEMPORARY_PASSWORD: (workerId: string): string =>
+      `/api/administracion/trabajadores/${workerId}/contrasena-temporal`,
+    WORKERS: "/api/administracion/trabajadores",
   },
 } as const;
 

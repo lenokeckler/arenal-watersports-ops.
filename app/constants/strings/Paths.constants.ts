@@ -8,12 +8,18 @@ export const PATHS = {
   },
   ADMIN: {
     CATEGORIES: "/administracion/categorias",
+    CATEGORY_DETAIL: (categoryId: string): string =>
+      `/administracion/categorias/${categoryId}`,
+    CATEGORY_NEW: "/administracion/categorias/nueva",
     COMBOS: "/administracion/combos",
     EXTRAS: "/administracion/extras",
     RATES: "/administracion/tarifas",
     REPORTS: "/administracion/reportes",
     ROOT: "/administracion",
     UNITS: "/administracion/unidades",
+    WORKER_DETAIL: (workerId: string): string =>
+      `/administracion/trabajadores/${workerId}`,
+    WORKER_NEW: "/administracion/trabajadores/nuevo",
     WORKERS: "/administracion/trabajadores",
   },
   COMMON: {
