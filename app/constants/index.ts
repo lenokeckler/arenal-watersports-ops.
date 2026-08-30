@@ -231,3 +231,16 @@ export {
 } from "./administracion/UnitsScreen.constants";
 export { UNIT_FORM_SCREEN } from "./administracion/UnitFormScreen.constants";
 export { STOCK_FORM_SCREEN } from "./administracion/StockScreen.constants";
+export {
+  EXTRAS_SCREEN,
+  EXTRA_FORM_SCREEN,
+} from "./administracion/ExtrasScreen.constants";
+export {
+  COMBOS_SCREEN,
+  COMBO_FORM_SCREEN,
+} from "./administracion/CombosScreen.constants";
+export {
+  RATES_SCREEN,
+  RATE_FORM_SCREEN,
+} from "./administracion/RatesScreen.constants";
+export { MONEY_LABEL } from "./strings/Money.constants";

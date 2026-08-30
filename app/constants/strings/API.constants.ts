@@ -19,6 +19,12 @@ export const API = {
   ROUTES: {
     CATEGORY: (categoryId: string): string =>
       `/api/administracion/categorias/${categoryId}`,
+    COMBO: (comboId: string): string =>
+      `/api/administracion/combos/${comboId}`,
+    EXTRA: (extraId: string): string =>
+      `/api/administracion/extras/${extraId}`,
+    EXTRA_COMPATIBILITY: (extraId: string): string =>
+      `/api/administracion/extras/${extraId}/compatibilidad`,
     LOGIN_ATTEMPT: "/api/acceso/intento",
     PASSWORD_RECOVERY_PIN: "/api/acceso/pin-recuperacion",
     PASSWORD_RECOVERY_VERIFY: "/api/acceso/verificar-pin",

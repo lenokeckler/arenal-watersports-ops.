@@ -2,14 +2,10 @@ import type { JSX } from "react";
 import {
   CURRENCY_CODE,
   CURRENCY_LABEL,
-  PRICE_LIST_SCREEN,
+  MONEY_LABEL,
   type CurrencyCode,
 } from "@/app/constants";
-
-interface PriceAmountsProps {
-  amountCrc: number | null;
-  amountUsd: number | null;
-}
+import type { PriceAmountsProps } from "./models/PriceAmountsProps.interface";
 
 interface Amount {
   currency: CurrencyCode;
@@ -20,21 +16,26 @@ const NO_AMOUNTS = 0;
 
 /**
  * US-TAB-010 / US-ADM-026: amounts are shown per currency and never
- * summed — there is no exchange rate anywhere in this system.
+ * summed — there is no exchange rate anywhere in this system. Shared by
+ * `/precios` and every administración catalog that carries a price (extras,
+ * combos, tarifas).
  */
-const PriceAmounts = ({ amountCrc, amountUsd }: PriceAmountsProps): JSX.Element => {
+const PriceAmounts = ({
+  amountCrc,
+  amountUsd,
+}: PriceAmountsProps): JSX.Element => {
   const amounts: Amount[] = [];
-  if (amountUsd !== null) {
+  if (amountUsd !== null && amountUsd !== undefined) {
     amounts.push({ currency: CURRENCY_CODE.USD, value: amountUsd });
   }
-  if (amountCrc !== null) {
+  if (amountCrc !== null && amountCrc !== undefined) {
     amounts.push({ currency: CURRENCY_CODE.CRC, value: amountCrc });
   }
 
   if (amounts.length === NO_AMOUNTS) {
     return (
       <span className="text-on-surface-variant/60">
-        {PRICE_LIST_SCREEN.NO_PRICE}
+        {MONEY_LABEL.NO_PRICE}
       </span>
     );
   }

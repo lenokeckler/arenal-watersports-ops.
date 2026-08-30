@@ -11,8 +11,17 @@ export const PATHS = {
     CATEGORY_DETAIL: (categoryId: string): string =>
       `/administracion/categorias/${categoryId}`,
     CATEGORY_NEW: "/administracion/categorias/nueva",
+    COMBO_DETAIL: (comboId: string): string =>
+      `/administracion/combos/${comboId}`,
+    COMBO_NEW: "/administracion/combos/nueva",
     COMBOS: "/administracion/combos",
+    EXTRA_DETAIL: (extraId: string): string =>
+      `/administracion/extras/${extraId}`,
+    EXTRA_NEW: "/administracion/extras/nueva",
     EXTRAS: "/administracion/extras",
+    RATE_DETAIL: (tariffId: string): string =>
+      `/administracion/tarifas/${tariffId}`,
+    RATE_NEW: "/administracion/tarifas/nueva",
     RATES: "/administracion/tarifas",
     REPORTS: "/administracion/reportes",
     ROOT: "/administracion",
