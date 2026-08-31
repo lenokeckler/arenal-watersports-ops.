@@ -264,3 +264,5 @@ export {
   WEEKDAYS_LABEL_MONO,
 } from "./reservas/CalendarScreen.constants";
 export { RESERVATION_DETAIL_SCREEN } from "./reservas/ReservationDetailScreen.constants";
+export { NEW_RESERVATION_SCREEN } from "./reservas/NewReservationScreen.constants";
+export { RESERVATION_NUMBERS } from "./reservas/ReservationNumbers.constants";
