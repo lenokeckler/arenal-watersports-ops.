@@ -10,6 +10,10 @@ import {
   fetchCategoryDeposits,
   type CategoryDeposit,
 } from "./categoryDeposits";
+import {
+  RESERVATION_PRICING_SELECT,
+  toReservationPricing,
+} from "./reservationPricing";
 
 /**
  * One committed line of the outing, reduced to what money needs from it:
@@ -47,8 +51,7 @@ export interface ReservationMoneyContext {
 
 const RESERVATION_SELECT = `id, code, customer_name, type, status, starts_at,
   ends_at, closed_at, duration_minutes, extra_time_minutes,
-  parent_reservation_id, list_amount_usd, list_amount_crc,
-  agreed_amount_usd, agreed_amount_crc,
+  parent_reservation_id, ${RESERVATION_PRICING_SELECT},
   reservation_items(quantity, category_id,
     unit:equipment_units(category_id),
     extra:extras(price_usd, price_crc))`;
@@ -78,7 +81,9 @@ const toEquipmentLine = (
  * US-RES-023/US-RES-029: everything the charge screen needs about the
  * reservation itself before a single amount is proposed — the committed
  * equipment behind the tariff and the deposit, the agreed price the combo
- * flow already stored, and whether this outing was born from a split.
+ * flow already stored in `reservation_pricing` — absent on any reservation
+ * nobody has priced, which is not a failure — and whether this outing was
+ * born from a split.
  */
 export const fetchReservationMoneyContext = async (
   supabase: SupabaseClient<Database>,
@@ -98,6 +103,9 @@ export const fetchReservationMoneyContext = async (
     return null;
   }
 
+  const pricing = toReservationPricing(
+    reservation.reservation_pricing
+  );
   const lines = (
     (reservation.reservation_items ??
       []) as unknown as ReservationItemRow[]
@@ -111,8 +119,8 @@ export const fetchReservationMoneyContext = async (
   );
 
   return {
-    agreedAmountCrc: reservation.agreed_amount_crc,
-    agreedAmountUsd: reservation.agreed_amount_usd,
+    agreedAmountCrc: pricing.agreedAmountCrc,
+    agreedAmountUsd: pricing.agreedAmountUsd,
     categoryDeposits: await fetchCategoryDeposits(
       supabase,
       categoryIds
@@ -127,8 +135,8 @@ export const fetchReservationMoneyContext = async (
     isSplitChild:
       reservation.parent_reservation_id !== null,
     lines,
-    listAmountCrc: reservation.list_amount_crc,
-    listAmountUsd: reservation.list_amount_usd,
+    listAmountCrc: pricing.listAmountCrc,
+    listAmountUsd: pricing.listAmountUsd,
     parentReservationId: reservation.parent_reservation_id,
     startsAt: reservation.starts_at,
     status: reservation.status,

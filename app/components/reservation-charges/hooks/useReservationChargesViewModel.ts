@@ -40,7 +40,8 @@ export const useReservationChargesViewModel = ({
   );
 
   // US-RES-026: a renta or a tour stores no price of its own — only the
-  // combo flow writes `list_amount_*` — so without this fallback "cuánto
+  // combo flow writes a `reservation_pricing` row — so without this
+  // fallback "cuánto
   // falta" would read "—" on the most ordinary reservation there is. The
   // catalog proposal *is* the list price (tariff by duration), so it fills
   // that column. A split child is left out on purpose: its tariff stayed

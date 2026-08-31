@@ -37,10 +37,10 @@ const PriceLine = ({
  * US-RES-003 and EP-RES-07: the state of the charge — the list price, the
  * price actually agreed, and what has been charged so far, each currency
  * on its own line because the system converts nothing. Only rendered for
- * reservas and administración: operaciones does not see money, and while
- * `reservation_charges` is denied to it by policy, `list_amount_*` and
- * `agreed_amount_*` live on the reservation row it is allowed to read, so
- * hiding them is this screen's job.
+ * reservas and administración: operaciones does not see money, and since
+ * the amounts moved to `reservation_pricing` the policy denies them the
+ * same way it denies `reservation_charges`. Not rendering the section is
+ * no longer the only thing keeping operaciones out of it.
  */
 const ReservationDetailPayment = ({
   reservation,

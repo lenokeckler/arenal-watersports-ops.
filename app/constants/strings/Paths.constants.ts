@@ -52,9 +52,25 @@ export const PATHS = {
     ROOT: "/",
   },
   OPERATIONS: {
-    CLOSE: "/operaciones/cierre",
+    CLOSE_BY_ID: (reservationId: string): string =>
+      `/operaciones/cierre/${reservationId}`,
+    COUNT_DETAIL: (countId: string): string =>
+      `/operaciones/conteos/${countId}`,
+    COUNT_NEW: "/operaciones/conteos/nuevo",
+    COUNTS: "/operaciones/conteos",
     DISPATCH: "/operaciones/despacho",
     INVENTORY: "/operaciones/inventario",
+    INVENTORY_ALERTS: "/operaciones/avisos",
+    INVENTORY_CATEGORY: (categoryId: string): string =>
+      `/operaciones/inventario/${categoryId}`,
+    MACHINE_CORRECTION: (unitId: string): string =>
+      `/operaciones/maquinas/${unitId}/correccion`,
+    MACHINE_DAMAGE: (unitId: string): string =>
+      `/operaciones/maquinas/${unitId}/danos`,
+    MACHINE_DETAIL: (unitId: string): string =>
+      `/operaciones/maquinas/${unitId}`,
+    MACHINE_MAINTENANCE: (unitId: string): string =>
+      `/operaciones/maquinas/${unitId}/mantenimiento`,
     MACHINES: "/operaciones/maquinas",
     MAINTENANCE: "/operaciones/mantenimiento",
     ROOT: "/operaciones",

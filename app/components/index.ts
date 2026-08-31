@@ -1,4 +1,5 @@
 export { default as AccessScreenShell } from "./access-screen-shell/AccessScreenShell";
+export { default as ActionSheet } from "./action-sheet/ActionSheet";
 export { default as Badge } from "./badge/Badge";
 export { default as Button } from "./button/Button";
 export { default as Pagination } from "./pagination/Pagination";

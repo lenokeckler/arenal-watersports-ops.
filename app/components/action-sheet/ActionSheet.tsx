@@ -3,7 +3,7 @@ import { MATERIAL_ICON_NAME } from "@/app/constants";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import type { MaterialIconName } from "@/app/components/icons/material-icon/constants";
 
-interface ReservationActionSheetProps {
+interface ActionSheetProps {
   children: ReactNode;
   icon: MaterialIconName;
   onClose: () => void;
@@ -11,16 +11,18 @@ interface ReservationActionSheetProps {
 }
 
 /**
- * The overlay-plus-bottom-sheet chrome shared by the edit, split, postpone
- * and cancel action sheets on `/reservas/detalle/[reservationId]` — one
- * shell so each modal only owns its own form.
+ * The overlay-plus-bottom-sheet chrome shared by every action sheet in the
+ * app — first built for `/reservas/detalle/[reservationId]`'s edit, split,
+ * postpone and cancel sheets, and reused as-is by operaciones' dispatch,
+ * duration and close sheets: one shell so each modal only owns its own
+ * form.
  */
-const ReservationActionSheet = ({
+const ActionSheet = ({
   children,
   icon,
   onClose,
   title,
-}: ReservationActionSheetProps): JSX.Element => (
+}: ActionSheetProps): JSX.Element => (
   <div className="fixed inset-0 z-40 flex flex-col justify-end">
     <button
       type="button"
@@ -55,4 +57,4 @@ const ReservationActionSheet = ({
   </div>
 );
 
-export default ReservationActionSheet;
+export default ActionSheet;

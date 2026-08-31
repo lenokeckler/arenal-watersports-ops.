@@ -13,7 +13,7 @@ import {
 import Button from "@/app/components/button/Button";
 import Spinner from "@/app/components/spinner/Spinner";
 import type { ReservationDetail } from "@/app/utils/reservas/reservationDetail";
-import ReservationActionSheet from "../ReservationActionSheet";
+import ActionSheet from "@/app/components/action-sheet/ActionSheet";
 import { useReservationSplitModalViewModel } from "./hooks/useReservationSplitModalViewModel";
 import ReservationSplitItemRow from "./components/ReservationSplitItemRow";
 
@@ -48,7 +48,7 @@ const ReservationSplitModal = ({
   });
 
   return (
-    <ReservationActionSheet
+    <ActionSheet
       icon={MATERIAL_ICON_NAME.CALL_SPLIT}
       onClose={onClose}
       title={RESERVATION_DETAIL_SCREEN.SPLIT.TITLE}
@@ -75,7 +75,9 @@ const ReservationSplitModal = ({
             </span>
             <input
               type={INPUT_TYPES.NUMBER}
-              min={RESERVATION_NUMBERS.MIN_SPLIT_PEOPLE_COUNT}
+              min={
+                RESERVATION_NUMBERS.MIN_SPLIT_PEOPLE_COUNT
+              }
               max={reservation.peopleCount}
               value={newPeopleCount}
               disabled={isBusy}
@@ -136,7 +138,7 @@ const ReservationSplitModal = ({
           )}
         </Button>
       </div>
-    </ReservationActionSheet>
+    </ActionSheet>
   );
 };
 

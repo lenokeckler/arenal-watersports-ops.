@@ -12,6 +12,8 @@ export interface StockDetail {
 
 export interface StockMovementRow {
   createdAt: string;
+  /** RNF-024: the movement is only worth anything with a name on it. */
+  createdBy: string;
   fromAvailable: number;
   fromDamaged: number;
   fromInRepair: number;
@@ -32,6 +34,7 @@ interface StockQueryRow {
 
 interface StockMovementQueryRow {
   created_at: string;
+  created_by: string;
   from_available: number;
   from_damaged: number;
   from_in_repair: number;
@@ -56,6 +59,7 @@ const toStockMovementRow = (
   row: StockMovementQueryRow
 ): StockMovementRow => ({
   createdAt: row.created_at,
+  createdBy: row.created_by,
   fromAvailable: row.from_available,
   fromDamaged: row.from_damaged,
   fromInRepair: row.from_in_repair,
@@ -103,7 +107,7 @@ export const fetchStockMovements = async (
     .from("equipment_stock_movements")
     .select(
       "id, from_available, to_available, from_damaged, to_damaged, " +
-        "from_in_repair, to_in_repair, reason, created_at"
+        "from_in_repair, to_in_repair, reason, created_at, created_by"
     )
     .eq("category_id", categoryId)
     .order("created_at", { ascending: false });
