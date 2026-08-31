@@ -38,7 +38,7 @@ Comandos que importan:
 | `npm run dev` | Levanta la aplicación en http://localhost:3000 |
 | `npm run db:start` / `db:stop` | Enciende y apaga Supabase local |
 | `npm run db:reset` | Rehace la base y carga el inventario real |
-| `npm run db:test` | Corre las 325 pruebas del esquema (sin seed, a propósito) |
+| `npm run db:test` | Corre las 362 pruebas del esquema (sin seed, a propósito) |
 | `npm run lint` / `typecheck` / `build` | Verificación de la aplicación |
 
 ### Cuidado con `npm run format`
@@ -142,116 +142,116 @@ en cada prueba).
 | --- | --- |
 | Base del profe adaptada, Firebase sustituido por Supabase | ✅ |
 | Agentes y skills a nivel de proyecto, documentos convertidos | ✅ |
-| **Modelo de datos** — 24 tablas, seguridad por fila, disponibilidad, tiempo real, retención | ✅ 325 pruebas |
+| **Modelo de datos** — 24 tablas, seguridad por fila, disponibilidad, tiempo real, retención | ✅ 362 pruebas |
 | **Sistema de diseño** — tokens de Stitch en Tailwind 4, fuentes autoalojadas, imágenes del equipo | ✅ |
 | **Módulo Acceso y Sesión** — 11 historias | ✅ |
 | **Módulo Tablero y Navegación** — 10 historias | ✅ |
 | **EP-ADM-01 — Trabajadores** — validado de punta a punta contra la app corriendo | ✅ |
 | **EP-ADM-02 — Catálogo de categorías** | ✅ |
 | **EP-ADM-03 — Unidades y artículos del inventario** | ✅ |
-
-Progreso general estimado: **~40%**. Son alrededor de 27 de 112 historias
-(EP-ADM-01 ya contaba; EP-ADM-02 son 4 historias más, EP-ADM-03 son 3 más),
-con la fundación —esquema, seguridad, diseño, autenticación— completa desde
-antes.
+| **EP-ADM-04 — Extras de las lanchas** | ✅ |
+| **EP-ADM-05 — Combos y tarifas** | ✅ |
+| **EP-ADM-06 — Estadísticas y reportes** | ✅ |
+| **Módulo Administración completo** — 31 historias, EP-ADM-01 a EP-ADM-06 | ✅ |Progreso: **52 de 112 historias, un 46%**. Son las 11 de Acceso, las 10 de
+Tablero (9 del backlog original más `US-TAB-010`, que vive en
+`historias-agregadas.md`) y las 31 de Administración, con la fundación
+—esquema, seguridad por fila, diseño, autenticación— completa desde antes.
+Quedan 60: las 33 de Reservas y las 27 de Operaciones.
 
 ---
 
 ## Dónde se quedó el trabajo
 
-**Rama activa: `feat/modulo-administracion`**, sacada de `develop`. No se hizo
-merge; eso lo hace el dueño.
+**Rama activa: `feat/modulo-administracion`**, sacada de `develop`.
 
-Esta sesión hizo dos cosas, en este orden:
+El módulo de Administración quedó **completo**: las seis épicas, las 31
+historias, de US-ADM-001 a US-ADM-031. Lo que se construyó por dispatch, en
+orden:
 
-### 1. Validó EP-ADM-01 de punta a punta y encontró un defecto real
+| Commit | Épica | Historias |
+| --- | --- | --- |
+| `d37953a` y anteriores | EP-ADM-01 a 03 — trabajadores, categorías, unidades | US-ADM-001 a 018 |
+| `3d1de5e` | EP-ADM-04 — extras de las lanchas | US-ADM-019 a 021 |
+| `f819b6c` | EP-ADM-05 — combos y tarifas | US-ADM-022 a 025 |
+| `28e858b` | EP-ADM-06 — estadísticas y reportes | US-ADM-026 a 031 |
+| `968acd0` | Arreglo de seguridad sobre `unit_current_state` | — |
 
-Nadie había ejecutado nunca la gestión de trabajadores. Se levantó el
-servidor, se armó una sesión autenticada por script (Node + `@supabase/ssr`
-con un cookie jar en memoria, porque el entorno no tiene navegador — el mismo
-truco sirve para cualquier tarea futura que necesite probar algo detrás de
-sesión) y se recorrió la cadena completa: login como `admin`, primer ingreso
-forzado, creación de un trabajador desde la propia interfaz, login como ese
-trabajador con la contraseña temporal, su propio primer ingreso, filtros y
-paginación de la lista, otorgar y revocar un área y una marca, bloquear
-(con el corte de sesión inmediato que exige el proxy) y reactivar, reponer
-contraseña temporal, y un guía externo con extensión de caducidad. Cada paso
-quedó verificado contra la base real, no simulado.
+Las decisiones que conviene no volver a discutir:
 
-**El defecto encontrado y arreglado** (commit `fix(admin): disambiguate the
-worker_areas/worker_marks embed`): `worker_areas` y `worker_marks` tienen cada
-una dos llaves foráneas hacia `workers` (`worker_id` y `granted_by`), así que
-el embed sin calificar `worker_areas(area)` en `WORKER_SELECT`
-(`app/utils/administracion/workers.ts`) fallaba con `PGRST201` en **cada**
-petición. `fetchWorkerDetail` lo mostraba como un 404 en toda ficha de
-trabajador; `fetchWorkersPage` se tragaba el error y mostraba la lista vacía
-— con la cuenta de administración ya sembrada en la base. Arreglado
-calificando ambos embeds con el nombre exacto de la relación
-(`worker_areas!worker_areas_worker_id_fkey`, etc.).
+- **EP-ADM-04.** La compatibilidad de un extra es **por unidad, no por
+  categoría**, porque esa es la forma de `extra_compatibility`. Solo se puede
+  editar una vez que el extra existe. `occupies_category_id` y
+  `occupies_quantity` se mueven juntos y el selector solo ofrece categorías
+  `by_quantity`: una categoría `by_unit` tiene fichas, no una cantidad que
+  algo pueda ocupar. Un extra nunca usado se borra de verdad; uno ya usado
+  solo se marca inactivo.
+- **EP-ADM-05.** Los ítems de un combo solo se editan cuando el combo ya
+  existe. Agregar y cambiar cantidad van por el cliente del propio
+  administrador; **quitar** necesita ruta de servidor con `service role`,
+  porque `DELETE` está revocado para `authenticated` a nivel de base — igual
+  que el borrado de categorías y el de extras. Las tarifas no tienen borrado:
+  la historia solo pide crear y modificar, y `reservation_charges` guarda su
+  propio monto, así que cambiar una tarifa nunca toca dinero ya cobrado. Al
+  editar una tarifa, categoría y tipo quedan bloqueados (cambiarlos podría
+  chocar con la fila única `(category_id, type)`).
+- **EP-ADM-06.** **Los números los calcula la base, no TypeScript.** La
+  migración `20260828001500_reports.sql` agrega siete vistas, todas con
+  `security_invoker = true`. Los ingresos se agrupan por día o mes **y por
+  moneda**: dos monedas el mismo día son dos renglones, nunca una suma, porque
+  el sistema no maneja tipo de cambio. El tablero de reportes es un Server
+  Component con un gráfico de barras en CSS puro — no se agregó ninguna
+  librería de gráficos.
 
-También se detectó que la contraseña sembrada del `admin` no coincidía con
-`Arenal.2026` en el volumen de Docker que traía esta máquina (probablemente de
-una siembra anterior a la actual `seed.sql`). Se resolvió con `npm run
-db:reset`, que documentación y seed ya cubren — no era un defecto del código,
-solo una base desincronizada.
+### El arreglo de seguridad que cerró el hallazgo pendiente
 
-### 2. Construyó EP-ADM-02 y EP-ADM-03 sobre el camino que ya estaba trazado
+El dispatch de EP-ADM-06 dejó anotado un hallazgo sin resolver: las vistas
+`unit_current_state` y `category_availability` se habrían creado sin
+`security_invoker`. Se revisó y **la mitad era falsa**:
+`category_availability` y `unit_conflicts` son **funciones**, no vistas, y
+ninguna es `security definer`, así que ya corrían con los privilegios de
+quien las llama. La otra mitad era real y ya está arreglada.
 
-**EP-ADM-02 — Catálogo de categorías** (US-ADM-012 a 015): `/administracion/
-categorias` (lista con búsqueda, filtro por modalidad y por estado,
-paginación en servidor, igual que `WorkerList`) y `/administracion/
-categorias/nueva` + `/[categoryId]` con un `CategoryForm` compartido. El
-`tracking_mode` se bloquea en edición cuando `categoryHasRecords` es
-verdadero — verificado en vivo con Jet Ski (tiene unidades: aparece
-bloqueado) y con una categoría recién creada (no lo está). El botón elimina
-cuando la categoría nunca tuvo registros y marca inactiva cuando ya los tuvo,
-con reactivación disponible. Insertar y actualizar van directo por el cliente
-autenticado del propio administrador; borrar necesitó la única ruta de
-servidor nueva de este dispatch (`DELETE /api/administracion/categorias/
-[categoryId]`), porque `DELETE` está revocado para `authenticated` a nivel de
-base. La contradicción de la historia (una categoría reservable "siempre" se
-identifica por unidad) sigue resuelta como ya estaba documentado: los kayaks
-son reservables y se llevan por cantidad, y el código sigue el esquema, no el
-texto de la historia.
+`unit_current_state` sí era la única vista del esquema sin la opción. Por
+omisión Postgres deja `security_invoker` en `false`, así que la vista
+evaluaba la seguridad por fila como su dueño —`postgres`, superusuario— y no
+como quien consulta. `units_select` es abierto a cualquier autenticado, así
+que las columnas de la unidad no filtraban nada nuevo; pero
+`reservations_select` e `items_select` exigen
+`has_area('reservas') or has_area('operaciones') or is_admin()`, y la vista
+expone `reservation_id` y `returns_at` sacados justo de esas dos tablas.
 
-**EP-ADM-03 — Unidades y artículos** (US-ADM-016 a 018): `/administracion/
-unidades` es un hub sobre toda categoría activa, que entra a
-`/administracion/unidades/[categoryId]`, y esa pantalla se bifurca según
-`tracking_mode` — exactamente la misma decisión que ya toma la base
-(`units_check_category_mode` / `stock_check_category_mode`):
+Se reprodujo contra la base sembrada, antes de arreglar, con un trabajador
+al que se le quitó su única área: `select count(*) from reservations` le
+devolvía **0 filas**, y la misma persona leía por la vista el identificador
+de la reserva despachada y su hora de regreso. `US-TAB-007` pide lo
+contrario con todas sus letras — la restricción no se queda en esconder
+botones — y una vista que salta el RLS es exactamente ese otro camino.
 
-- **`by_unit`**: lista de fichas (`UnitList`), con `/nueva` y `/[unitId]`
-  compartiendo `UnitForm`. Los campos de gasolina y uso de motor solo
-  aparecen si la categoría realmente consume gasolina o lleva motor. Dar de
-  baja es una acción aparte y terminal: pide el motivo con un
-  `window.prompt` (no existe un componente de diálogo con campo de texto en
-  este código base todavía; se documentó la decisión en el propio hook), y
-  la unidad desaparece de la lista para siempre, aunque su URL directa sigue
-  resolviendo con la nota de "dada de baja".
-- **`by_quantity`**: `StockForm` edita la única fila de existencias de la
-  categoría y, solo cuando alguna cantidad realmente cambia, registra un
-  movimiento en `equipment_stock_movements` y lo antepone al historial
-  visible — tocar solo la fecha de vencimiento no registra nada. Si la fila
-  de stock nunca se aprovisionó (categoría creada después del seed), el
-  formulario cae a un insert en vez de un update.
+La migración `20260828001550_unit_current_state_security_invoker.sql` lo
+corrige con un `alter view ... set (security_invoker = true)`: no recrea la
+vista, no toca su definición ni sus dependientes, solo cambia cómo se evalúa
+el RLS. Los permisos de `select` que la vista ahora necesita sobre las tablas
+de abajo ya estaban otorgados a `authenticated`, así que no hizo falta
+ninguno nuevo.
 
-Ninguna escritura de este dispatch necesitó ruta de servidor nueva salvo el
-borrado de categorías: nada más en EP-ADM-03 se elimina.
+**La regla, de aquí en adelante:** toda vista nueva se crea con
+`with (security_invoker = true)`, sin excepción. Una vista sin esa opción es
+una puerta lateral alrededor del RLS, y en este esquema el RLS es la única
+capa que separa lo que ve administración de lo que ve un guía.
 
-Todo lo anterior quedó verificado en vivo contra la app corriendo y Supabase
-local, y la base se dejó reseteada al estado sembrado limpio al terminar
-(`npm run db:reset`) — no quedan trabajadores ni categorías de prueba.
+Cinco pruebas pgTAP nuevas en `010_availability.test.sql` lo fijan: un
+trabajador sin área sigue viendo la fila de la unidad —`units_select` es
+abierto— pero recibe `null` en `reservation_id` y en `returns_at` y lee la
+unidad como disponible (menos información, nunca información ajena), mientras
+que operaciones sigue viendo el despacho activo igual que antes. La suite va
+en **362 pruebas, todas pasando**.
 
-**Lo que falta de Administración:** EP-ADM-04 (extras de las lanchas),
-EP-ADM-05 (combos y tarifas) y EP-ADM-06 (estadísticas y reportes). Ninguno
-tiene una sola pantalla construida todavía.
+**Lo que falta del proyecto:** Reservas (33 historias, siete épicas, de
+EP-RES-01 calendario a EP-RES-07 cobros, descuentos y depósitos) y
+Operaciones (27 historias). Son los dos módulos donde vive la lógica real del
+negocio —despacho, cierre, choques de disponibilidad, cobros y depósitos— así
+que son bastante más difíciles que Administración, que era sobre todo CRUD.
 
-**Después de Administración:** Reservas (33 historias) y Operaciones (27). Son
-los dos módulos donde vive la lógica real del negocio —despacho, cierre,
-choques de disponibilidad, cobros y depósitos— así que son más difíciles que
-Administración, que es sobre todo CRUD.
-
----
 
 ## Cómo se está trabajando
 
@@ -287,12 +287,17 @@ local:
 
 Y dos pendientes de mirar, no de hacer:
 
-- **Nadie ha visto el tablero, ni las pantallas nuevas de esta sesión, con
-  ojos.** El entorno donde corren los agentes no tiene navegador, así que se
-  verificó con peticiones y lectura del texto renderizado a 
-  390px/1440px solo por las clases Tailwind usadas, nunca visualmente. Vale
-  la pena abrir `/tablero`, `/administracion/categorias` y
-  `/administracion/unidades` y decir si algo se ve mal.
+- **Nadie ha visto ninguna pantalla con ojos.** El entorno donde corren los
+  agentes no tiene navegador, así que todo se verificó con peticiones
+  autenticadas y lectura del texto renderizado; el comportamiento a 390px y a
+  1440px se dedujo de las clases Tailwind usadas, nunca se miró. Ya son once
+  pantallas sin revisar: `/tablero`, `/administracion/categorias`,
+  `/administracion/unidades`, `/administracion/extras`,
+  `/administracion/combos`, `/administracion/tarifas` y
+  `/administracion/reportes`, más los formularios de cada una. Vale la pena
+  abrirlas y decir si algo se ve mal **antes** de arrancar Reservas, porque
+  Reservas reutiliza estos mismos patrones de lista y de formulario y
+  cualquier defecto visual se va a multiplicar.
 - **El drift de `npm run format`** descrito arriba. No bloquea nada, pero
   cuanto más tiempo pase, más grande será el diff de la limpieza.
 
