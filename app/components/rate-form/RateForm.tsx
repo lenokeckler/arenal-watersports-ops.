@@ -110,6 +110,7 @@ const RateForm = (props: RateFormProps): JSX.Element => {
         id={FIELD_IDS.TARIFF_AMOUNT_USD}
         name={FIELD_IDS.TARIFF_AMOUNT_USD}
         label={RATE_FORM_SCREEN.AMOUNT.USD_LABEL}
+        labelSuffix={STRING.Empty}
         type={INPUT_TYPES.NUMBER}
         value={values.amountUsd}
         onChange={(event) =>
@@ -129,6 +130,7 @@ const RateForm = (props: RateFormProps): JSX.Element => {
         id={FIELD_IDS.TARIFF_AMOUNT_CRC}
         name={FIELD_IDS.TARIFF_AMOUNT_CRC}
         label={RATE_FORM_SCREEN.AMOUNT.CRC_LABEL}
+        labelSuffix={STRING.Empty}
         type={INPUT_TYPES.NUMBER}
         value={values.amountCrc}
         onChange={(event) =>

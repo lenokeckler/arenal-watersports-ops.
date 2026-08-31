@@ -1,13 +1,25 @@
 import type { JSX } from "react";
-import { EXTRA_FORM_SCREEN, FIELD_IDS, INPUT_TYPES } from "@/app/constants";
+import {
+  EXTRA_FORM_SCREEN,
+  FIELD_IDS,
+  INPUT_TYPES,
+  MONEY_LABEL,
+  STRING,
+} from "@/app/constants";
 import FormField from "@/app/components/form-field/FormField";
 import type { ExtraFormValues } from "@/app/utils/administracion/extraValidation";
 import type { ExtraStringField } from "../models/ExtraFormViewModel.interface";
-import { EXTRA_FIELD_CLASS, EXTRA_SECTION_CLASS } from "../extraFormStyles";
+import {
+  EXTRA_FIELD_CLASS,
+  EXTRA_SECTION_CLASS,
+} from "../extraFormStyles";
 
 interface ExtraFormPriceProps {
   isBusy: boolean;
-  onFieldChange: (field: ExtraStringField, value: string) => void;
+  onFieldChange: (
+    field: ExtraStringField,
+    value: string
+  ) => void;
   values: ExtraFormValues;
 }
 
@@ -26,9 +38,12 @@ const ExtraFormPrice = ({
       id={FIELD_IDS.PRICE_USD}
       name={FIELD_IDS.PRICE_USD}
       label={EXTRA_FORM_SCREEN.PRICE.USD_LABEL}
+      labelSuffix={STRING.Empty}
       type={INPUT_TYPES.NUMBER}
       value={values.priceUsd}
-      onChange={(event) => onFieldChange("priceUsd", event.target.value)}
+      onChange={(event) =>
+        onFieldChange("priceUsd", event.target.value)
+      }
       disabled={isBusy}
       classNameField={EXTRA_FIELD_CLASS}
     />
@@ -37,12 +52,18 @@ const ExtraFormPrice = ({
       id={FIELD_IDS.PRICE_CRC}
       name={FIELD_IDS.PRICE_CRC}
       label={EXTRA_FORM_SCREEN.PRICE.CRC_LABEL}
+      labelSuffix={STRING.Empty}
       type={INPUT_TYPES.NUMBER}
       value={values.priceCrc}
-      onChange={(event) => onFieldChange("priceCrc", event.target.value)}
+      onChange={(event) =>
+        onFieldChange("priceCrc", event.target.value)
+      }
       disabled={isBusy}
       classNameField={EXTRA_FIELD_CLASS}
     />
+    <span className="font-label-mono text-label-mono text-on-surface-variant">
+      {MONEY_LABEL.CURRENCY_PAIR_HINT}
+    </span>
   </section>
 );
 

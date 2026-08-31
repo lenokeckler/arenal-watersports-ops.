@@ -3,6 +3,8 @@ import {
   CATEGORY_FORM_SCREEN,
   FIELD_IDS,
   INPUT_TYPES,
+  MONEY_LABEL,
+  STRING,
 } from "@/app/constants";
 import FormField from "@/app/components/form-field/FormField";
 import type {
@@ -44,6 +46,7 @@ const CategoryFormDeposit = ({
       id={FIELD_IDS.DEPOSIT_USD}
       name={FIELD_IDS.DEPOSIT_USD}
       label={CATEGORY_FORM_SCREEN.DEPOSIT.USD_LABEL}
+      labelSuffix={STRING.Empty}
       type={INPUT_TYPES.NUMBER}
       value={values.depositUsd}
       onChange={(event) =>
@@ -59,6 +62,7 @@ const CategoryFormDeposit = ({
       id={FIELD_IDS.DEPOSIT_CRC}
       name={FIELD_IDS.DEPOSIT_CRC}
       label={CATEGORY_FORM_SCREEN.DEPOSIT.CRC_LABEL}
+      labelSuffix={STRING.Empty}
       type={INPUT_TYPES.NUMBER}
       value={values.depositCrc}
       onChange={(event) =>
@@ -69,6 +73,9 @@ const CategoryFormDeposit = ({
       disabled={isBusy}
       classNameField={CATEGORY_FIELD_CLASS}
     />
+    <span className="font-label-mono text-label-mono text-on-surface-variant">
+      {MONEY_LABEL.CURRENCY_PAIR_HINT}
+    </span>
   </section>
 );
 

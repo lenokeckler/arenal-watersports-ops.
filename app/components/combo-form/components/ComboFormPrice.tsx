@@ -3,6 +3,8 @@ import {
   COMBO_FORM_SCREEN,
   FIELD_IDS,
   INPUT_TYPES,
+  MONEY_LABEL,
+  STRING,
 } from "@/app/constants";
 import FormField from "@/app/components/form-field/FormField";
 import type { ComboFormValues } from "@/app/utils/administracion/comboValidation";
@@ -36,6 +38,7 @@ const ComboFormPrice = ({
       id={FIELD_IDS.PACKAGE_PRICE_USD}
       name={FIELD_IDS.PACKAGE_PRICE_USD}
       label={COMBO_FORM_SCREEN.PACKAGE_PRICE.USD_LABEL}
+      labelSuffix={STRING.Empty}
       type={INPUT_TYPES.NUMBER}
       value={values.packagePriceUsd}
       onChange={(event) =>
@@ -49,6 +52,7 @@ const ComboFormPrice = ({
       id={FIELD_IDS.PACKAGE_PRICE_CRC}
       name={FIELD_IDS.PACKAGE_PRICE_CRC}
       label={COMBO_FORM_SCREEN.PACKAGE_PRICE.CRC_LABEL}
+      labelSuffix={STRING.Empty}
       type={INPUT_TYPES.NUMBER}
       value={values.packagePriceCrc}
       onChange={(event) =>
@@ -57,6 +61,9 @@ const ComboFormPrice = ({
       disabled={isBusy}
       classNameField={COMBO_FIELD_CLASS}
     />
+    <span className="font-label-mono text-label-mono text-on-surface-variant">
+      {MONEY_LABEL.CURRENCY_PAIR_HINT}
+    </span>
   </section>
 );
 
