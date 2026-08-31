@@ -298,3 +298,9 @@ export {
 export { OPERATIONS_NUMBERS } from "./operaciones/OperationsNumbers.constants";
 export { DISPATCH_BOARD_SCREEN } from "./operaciones/DispatchBoardScreen.constants";
 export { DISPATCH_SCREEN } from "./operaciones/DispatchScreen.constants";
+export {
+  DAMAGE_CAUSE,
+  DAMAGE_CAUSE_LABEL,
+  type DamageCause,
+} from "./operaciones/DamageCause.constants";
+export { RESERVATION_CLOSE_SCREEN } from "./operaciones/ReservationCloseScreen.constants";
