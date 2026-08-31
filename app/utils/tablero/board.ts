@@ -6,6 +6,12 @@ import { resolveEquipmentImage } from "./equipmentImage";
 
 export interface BoardCategory {
   free: number;
+  /**
+   * Cuando varias categorias comparten grupo, el tablero muestra una sola
+   * tarjeta con el nombre del grupo y la suma de las dos. `id` es entonces
+   * el de la primera del grupo, que es a donde lleva la tarjeta.
+   */
+  groupName: string | null;
   id: string;
   imageAlt: string;
   imageSrc: string | null;
@@ -41,6 +47,44 @@ const nowWindow = (): {
 };
 
 /**
+ * Las categorias que comparten `group_name` salen como una sola tarjeta con
+ * la suma de las dos. Un kayak doble y uno individual se cuentan y se cobran
+ * aparte, pero para quien mira el tablero son "kayaks": dos tarjetas donde
+ * deberia haber una llenaban la pantalla sin decir nada mas.
+ *
+ * El grupo hereda el orden y la imagen de su primera categoria, y su tarjeta
+ * lleva a esa misma — desde ahi se abre el desglose.
+ */
+const groupBoardCards = (
+  cards: BoardCategory[]
+): BoardCategory[] => {
+  const result: BoardCategory[] = [];
+  const groupIndexByName = new Map<string, number>();
+
+  for (const card of cards) {
+    if (card.groupName === null) {
+      result.push(card);
+      continue;
+    }
+
+    const existing = groupIndexByName.get(card.groupName);
+    if (existing === undefined) {
+      groupIndexByName.set(card.groupName, result.length);
+      result.push({ ...card, name: card.groupName });
+      continue;
+    }
+
+    result[existing] = {
+      ...result[existing],
+      free: result[existing].free + card.free,
+      total: result[existing].total + card.total,
+    };
+  }
+
+  return result;
+};
+
+/**
  * US-TAB-001/002/003: one card per reservable category with how many
  * units are free over the total. By_unit categories read straight off
  * `unit_current_state` (already resolves `occupied`); by_quantity
@@ -52,7 +96,7 @@ export const fetchBoardCategories = async (
   const { data: categories, error: categoriesError } =
     await supabase
       .from("equipment_categories")
-      .select("id, name, tracking_mode")
+      .select("id, name, tracking_mode, group_name")
       .eq("is_reservable", true)
       .eq("status", "active")
       .order("name");
@@ -145,7 +189,7 @@ export const fetchBoardCategories = async (
     })
   );
 
-  return categories.map((category) => {
+  const cards = categories.map((category) => {
     const counts =
       category.tracking_mode === TRACKING_MODE.BY_UNIT
         ? unitCountsByCategory.get(category.id)
@@ -154,6 +198,7 @@ export const fetchBoardCategories = async (
 
     return {
       free: counts?.free ?? 0,
+      groupName: category.group_name,
       id: category.id,
       imageAlt: image?.alt ?? category.name,
       imageSrc: image?.src ?? null,
@@ -162,4 +207,6 @@ export const fetchBoardCategories = async (
       trackingMode: category.tracking_mode,
     };
   });
+
+  return groupBoardCards(cards);
 };

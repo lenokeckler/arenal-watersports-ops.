@@ -342,6 +342,7 @@ export type Database = {
           default_duration_minutes: number | null;
           deposit_crc: number | null;
           deposit_usd: number | null;
+          group_name: string | null;
           guide_only: boolean;
           has_condition_photos: boolean;
           has_motor: boolean;
@@ -366,6 +367,7 @@ export type Database = {
           default_duration_minutes?: number | null;
           deposit_crc?: number | null;
           deposit_usd?: number | null;
+          group_name?: string | null;
           guide_only?: boolean;
           has_condition_photos?: boolean;
           has_motor?: boolean;
@@ -390,6 +392,7 @@ export type Database = {
           default_duration_minutes?: number | null;
           deposit_crc?: number | null;
           deposit_usd?: number | null;
+          group_name?: string | null;
           guide_only?: boolean;
           has_condition_photos?: boolean;
           has_motor?: boolean;

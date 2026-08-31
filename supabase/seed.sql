@@ -59,14 +59,18 @@ values
    200, 100000, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
 -- Llevadas por cantidad y reservables: no tienen historia propia por pieza.
+-- Los dos kayaks comparten grupo: se cuentan y se cobran aparte, pero para
+-- quien trabaja son "kayaks", y un grupo de siete que lleva dos dobles y
+-- tres individuales no deberia tener que buscarlos en dos renglones
+-- distintos.
 insert into equipment_categories
-  (name, tracking_mode, is_reservable, default_duration_minutes, created_by, updated_by)
+  (name, tracking_mode, is_reservable, group_name, default_duration_minutes, created_by, updated_by)
 values
-  ('Kayak doble',      'by_quantity', true, 60,
+  ('Kayak doble',      'by_quantity', true, 'Kayak', 60,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Kayak individual', 'by_quantity', true, 60,
+  ('Kayak individual', 'by_quantity', true, 'Kayak', 60,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Paddleboard',      'by_quantity', true, 60,
+  ('Paddleboard',      'by_quantity', true, null, 60,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
 -- Llevadas por cantidad y no reservables: viven en el inventario, se cuentan.

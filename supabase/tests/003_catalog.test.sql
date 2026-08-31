@@ -1,5 +1,5 @@
 begin;
-select plan(9);
+select plan(12);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -93,6 +93,49 @@ select lives_ok(
              '11111111-1111-1111-1111-111111111111',
              '11111111-1111-1111-1111-111111111111') $$,
   'una categoria reservable puede llevarse por cantidad'
+);
+
+-- ============================================================
+-- Agrupar categorias para mostrarlas (20260828002150)
+-- ============================================================
+
+-- `group_name` junta categorias solo para la pantalla: una tarjeta "Kayak"
+-- en el tablero y un solo bloque al reservar. Por dentro siguen separadas,
+-- que es lo que permite saber si el grupo se llevo un doble o un individual.
+insert into equipment_categories
+  (id, name, tracking_mode, is_reservable, group_name, default_duration_minutes, created_by, updated_by)
+values ('cccccccc-0000-0000-0000-0000000000a1', 'Kayak grupal doble', 'by_quantity', true, 'Kayak', 60,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+select lives_ok(
+  $$ insert into equipment_categories
+       (name, tracking_mode, is_reservable, group_name, default_duration_minutes, created_by, updated_by)
+     values ('Kayak grupal individual', 'by_quantity', true, 'Kayak', 60,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'dos categorias por cantidad comparten grupo'
+);
+
+-- Mezclar formas de llevar el inventario daria una tarjeta que no sabe
+-- sumar: una cuenta fichas y la otra cantidades.
+select throws_ok(
+  $$ insert into equipment_categories
+       (name, tracking_mode, is_reservable, group_name, default_duration_minutes, created_by, updated_by)
+     values ('Kayak de carreras', 'by_unit', true, 'Kayak', 60,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'P0001', 'Un grupo no mezcla categorias por unidad con categorias por cantidad',
+  'un grupo no mezcla por unidad con por cantidad'
+);
+
+-- Sin grupo es el caso normal: la categoria se muestra sola.
+select lives_ok(
+  $$ insert into equipment_categories
+       (name, tracking_mode, is_reservable, default_duration_minutes, created_by, updated_by)
+     values ('Tabla de remo', 'by_unit', true, 60,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'una categoria sin grupo se acepta igual que siempre'
 );
 
 select * from finish();

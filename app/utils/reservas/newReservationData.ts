@@ -14,6 +14,8 @@ import {
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface ReservableCategory {
+  /** Categorias que se muestran juntas; nulo si va sola. */
+  groupName: Nullable<string>;
   guideOnly: boolean;
   id: string;
   name: string;
@@ -37,7 +39,9 @@ export const fetchReservableCategories = async (
 ): Promise<ReservableCategory[]> => {
   const { data, error } = await supabase
     .from("equipment_categories")
-    .select("id, name, tracking_mode, guide_only")
+    .select(
+      "id, name, tracking_mode, guide_only, group_name"
+    )
     .eq("is_reservable", true)
     .eq("status", CATEGORY_STATUS.ACTIVE)
     .order("name");
@@ -50,6 +54,7 @@ export const fetchReservableCategories = async (
     guideOnly: category.guide_only,
     id: category.id,
     name: category.name,
+    groupName: category.group_name,
     trackingMode: category.tracking_mode,
   }));
 };
