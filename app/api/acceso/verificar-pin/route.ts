@@ -166,9 +166,18 @@ export const POST = async (
 
     // US-ACC-007: completing a recovery resets the failed-attempts counter —
     // for the administration account this is its only way back in past ten.
+    //
+    // Tambien levanta el cambio obligatorio. Quien acaba de recuperar
+    // eligio su propia contrasena, que es exactamente lo que el primer
+    // ingreso existe para forzar (US-ACC-003): dejarlo puesto mandaba a
+    // alguien que perdio la temporal antes de estrenarla a cambiar la clave
+    // que acababa de elegir, dos pantallas seguidas para lo mismo.
     await serviceRoleClient
       .from("workers")
-      .update({ failed_attempts: 0 })
+      .update({
+        failed_attempts: 0,
+        must_change_password: false,
+      })
       .eq("id", worker.id);
 
     return Response.success<PasswordRecoveryVerifyResponseData>(

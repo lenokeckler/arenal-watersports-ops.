@@ -8,6 +8,7 @@ import {
   INPUT_TYPES,
   MATERIAL_ICON_NAME,
   SPINNER_SIZE,
+  STRING,
   WORK_AREA,
   WORK_AREA_LABEL,
   WORKER_FORM_SCREEN,
@@ -198,6 +199,29 @@ const WorkerForm = ({
         </label>
       )}
 
+      <div className="flex flex-col gap-xs">
+        <FormField
+          id={FIELD_IDS.EMAIL}
+          name={FIELD_IDS.EMAIL}
+          label={WORKER_FORM_SCREEN.PERSONAL_EMAIL_LABEL}
+          type={INPUT_TYPES.EMAIL}
+          placeholder={
+            WORKER_FORM_SCREEN.PERSONAL_EMAIL_PLACEHOLDER
+          }
+          value={personalEmail}
+          onChange={handlePersonalEmailChange}
+          disabled={isSubmitting}
+          classNameField={FIELD_CLASS}
+          // El resto de los campos del formulario llevan asterisco por ser
+          // obligatorios; este no lo es, y el componente lo pone por
+          // omision. Sin quitarlo la etiqueta decia "(opcional) *".
+          labelSuffix={STRING.Empty}
+        />
+        <span className="font-label-mono text-label-mono text-on-surface-variant">
+          {WORKER_FORM_SCREEN.PERSONAL_EMAIL_HINT}
+        </span>
+      </div>
+
       {isExternalGuide && (
         <>
           <FormField
@@ -219,19 +243,6 @@ const WorkerForm = ({
             type={INPUT_TYPES.DATE}
             value={expiresAt}
             onChange={handleExpiresAtChange}
-            disabled={isSubmitting}
-            classNameField={FIELD_CLASS}
-          />
-          <FormField
-            id={FIELD_IDS.EMAIL}
-            name={FIELD_IDS.EMAIL}
-            label={WORKER_FORM_SCREEN.PERSONAL_EMAIL_LABEL}
-            type={INPUT_TYPES.EMAIL}
-            placeholder={
-              WORKER_FORM_SCREEN.PERSONAL_EMAIL_PLACEHOLDER
-            }
-            value={personalEmail}
-            onChange={handlePersonalEmailChange}
             disabled={isSubmitting}
             classNameField={FIELD_CLASS}
           />

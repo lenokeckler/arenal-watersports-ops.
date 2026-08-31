@@ -66,7 +66,15 @@ export const WORKER_FORM_SCREEN = {
   FULL_NAME_PLACEHOLDER: "Ej. Juan Pérez",
   NATIONAL_ID_LABEL: "Cédula",
   NATIONAL_ID_PLACEHOLDER: "Ej. 1-2345-6789",
-  PERSONAL_EMAIL_LABEL: "Correo personal (opcional)",
+  PERSONAL_EMAIL_LABEL: "Correo personal",
+  /**
+   * Sin correo, la persona no puede recuperar su propia contrasena: el PIN
+   * de US-ACC-006 se manda ahi. Queda opcional porque un guia externo de un
+   * dia puede no tener uno, pero la nota lo dice para que la decision sea
+   * consciente y no un olvido.
+   */
+  PERSONAL_EMAIL_HINT:
+    "Sin correo, esta persona no podrá recuperar su contraseña sola: tendrá que pedirle una temporal a administración.",
   PERSONAL_EMAIL_PLACEHOLDER: "correo@ejemplo.com",
   ROLE_LABEL: "Rol base",
   SUBMIT: "Crear trabajador",
