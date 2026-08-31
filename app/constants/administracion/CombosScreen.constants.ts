@@ -4,6 +4,7 @@
  * of the sum of the parts.
  */
 export const COMBOS_SCREEN = {
+  AUDIENCE_NAV_LABEL: "Secciones de combos",
   ADD_BUTTON: "Nuevo combo",
   COLUMN: {
     NAME: "Combo",
@@ -40,6 +41,7 @@ export const COMBO_FORM_SCREEN = {
   },
   EDIT_TITLE: "Editar combo",
   ERROR: {
+    PRICE_REQUIRED: "Escriba el precio del combo.",
     GENERIC:
       "No se pudo guardar el combo. Revise los datos.",
     ITEMS_REQUIRED: "Agregue al menos un equipo al combo.",
@@ -61,8 +63,10 @@ export const COMBO_FORM_SCREEN = {
   NAME_LABEL: "Nombre",
   NAME_PLACEHOLDER: "Ej. Paquete Familiar",
   NEW_TITLE: "Nuevo combo",
+  AUDIENCE_LABEL: "¿Para quién es este combo?",
   PACKAGE_PRICE: {
     CRC_LABEL: "Precio de paquete en colones",
+    HINT: "Los combos de nacionales se cotizan en colones y los de extranjeros en dólares; nunca se convierten entre sí.",
     TITLE: "Precio de paquete",
     USD_LABEL: "Precio de paquete en dólares",
   },

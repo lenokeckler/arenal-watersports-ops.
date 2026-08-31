@@ -25,6 +25,12 @@ const ComboListFilters = ({
     method="get"
     className="mb-lg flex flex-wrap items-end gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-sm backdrop-blur-md"
   >
+    {/* La seccion se conserva al buscar: cada publico es su propia lista. */}
+    <input
+      type="hidden"
+      name="audience"
+      value={filters.audience}
+    />
     <label className="flex flex-1 min-w-48 flex-col gap-1">
       <span className="font-label-mono text-label-mono text-on-surface-variant">
         {COMBOS_SCREEN.FILTER.SEARCH_LABEL}

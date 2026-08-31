@@ -22,8 +22,8 @@ insert into equipment_units (id, category_id, code, created_by, updated_by)
 values ('bbbbbbbb-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000002', 'LANCHA-1',
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
-insert into combos (id, name, package_price_usd, created_by, updated_by)
-values ('cccccccc-0000-0000-0000-000000000001', 'Paquete kayak', 100,
+insert into combos (id, name, audience, package_price_usd, created_by, updated_by)
+values ('cccccccc-0000-0000-0000-000000000001', 'Paquete kayak', 'foreign', 100,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 insert into reservations

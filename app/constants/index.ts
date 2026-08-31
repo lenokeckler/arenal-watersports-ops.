@@ -212,6 +212,12 @@ export {
   WORKER_DETAIL_SCREEN,
 } from "./administracion/WorkersScreen.constants";
 export {
+  COMBO_AUDIENCE,
+  COMBO_AUDIENCE_CURRENCY,
+  COMBO_AUDIENCE_LABEL,
+  type ComboAudience,
+} from "./administracion/ComboAudience.constants";
+export {
   WORKER_SCOPE,
   WORKER_SCOPE_LABEL,
   type WorkerScope,

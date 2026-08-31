@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import type { JSX } from "react";
 import {
   CATEGORY_STATUS,
-  PAGINATION,
   type CategoryStatus,
+  COMBO_AUDIENCE,
+  type ComboAudience,
+  PAGINATION,
 } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services";
 import { requireAdminWorker } from "@/app/utils/administracion/requireAdminWorker";
@@ -16,6 +18,7 @@ export const metadata: Metadata = {
 
 interface CombosPageParams {
   searchParams: Promise<{
+    audience?: string;
     page?: string;
     search?: string;
     status?: string;
@@ -23,6 +26,8 @@ interface CombosPageParams {
 }
 
 const FIRST_PAGE = 1;
+const VALID_AUDIENCES: readonly string[] =
+  Object.values(COMBO_AUDIENCE);
 const VALID_STATUSES: readonly string[] =
   Object.values(CATEGORY_STATUS);
 
@@ -42,6 +47,13 @@ const CombosPage = async ({
     FIRST_PAGE
   );
   const filters = {
+    // La seccion es parte del filtro, no una vista aparte: cada publico
+    // tiene sus propios combos, su propia moneda y su propia paginacion.
+    audience: VALID_AUDIENCES.includes(
+      resolvedParams.audience ?? ""
+    )
+      ? (resolvedParams.audience as ComboAudience)
+      : COMBO_AUDIENCE.NATIONAL,
     search: resolvedParams.search ?? null,
     status: VALID_STATUSES.includes(
       resolvedParams.status ?? ""

@@ -1,5 +1,7 @@
 import type { JSX } from "react";
 import {
+  COMBO_AUDIENCE,
+  COMBO_AUDIENCE_LABEL,
   COMBOS_SCREEN,
   MATERIAL_ICON_NAME,
   PAGINATION_CONTROL,
@@ -18,6 +20,7 @@ const buildPageHref = (
   page: number
 ): string => {
   const searchParams = new URLSearchParams();
+  searchParams.set("audience", filters.audience);
   if (filters.search) {
     searchParams.set("search", filters.search);
   }
@@ -62,6 +65,35 @@ const ComboList = ({
     </header>
 
     <main className="mx-auto max-w-6xl">
+      <nav
+        aria-label={COMBOS_SCREEN.AUDIENCE_NAV_LABEL}
+        className="mb-md flex gap-sm"
+      >
+        {(
+          [
+            COMBO_AUDIENCE.NATIONAL,
+            COMBO_AUDIENCE.FOREIGN,
+          ] as const
+        ).map((audience) => (
+          <Link
+            key={audience}
+            href={`${PATHS.ADMIN.COMBOS}?audience=${audience}`}
+            aria-current={
+              filters.audience === audience
+                ? "page"
+                : undefined
+            }
+            className={`flex min-h-12 flex-1 items-center justify-center rounded-lg border px-md font-button text-button uppercase transition-colors ${
+              filters.audience === audience
+                ? "border-primary bg-primary/20 text-primary"
+                : "border-white/10 text-on-surface-variant hover:border-primary/40"
+            }`}
+          >
+            {COMBO_AUDIENCE_LABEL[audience]}
+          </Link>
+        ))}
+      </nav>
+
       <ComboListFilters filters={filters} />
       <ComboListTable rows={rows} />
 

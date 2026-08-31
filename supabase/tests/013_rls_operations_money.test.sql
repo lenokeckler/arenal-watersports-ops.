@@ -71,8 +71,8 @@ select lives_ok(
 );
 
 select lives_ok(
-  $$ insert into combos (id, name, package_price_usd)
-     values ('cccccccc-0000-0000-0000-000000000001', 'Paquete Familiar', 300) $$,
+  $$ insert into combos (id, name, audience, package_price_usd)
+     values ('cccccccc-0000-0000-0000-000000000001', 'Paquete Familiar', 'foreign', 300) $$,
   'administracion crea combos'
 );
 
@@ -122,7 +122,7 @@ select throws_ok(
 );
 
 select throws_ok(
-  $$ insert into combos (name, package_price_usd) values ('Combo No Autorizado', 100) $$,
+  $$ insert into combos (name, audience, package_price_usd) values ('Combo No Autorizado', 'foreign', 100) $$,
   '42501', null,
   'reservas no crea combos'
 );
@@ -345,7 +345,7 @@ select throws_ok(
   'operaciones no crea extras'
 );
 select throws_ok(
-  $$ insert into combos (name, package_price_usd) values ('Combo No Autorizado', 100) $$,
+  $$ insert into combos (name, audience, package_price_usd) values ('Combo No Autorizado', 'foreign', 100) $$,
   '42501', null,
   'operaciones no crea combos'
 );

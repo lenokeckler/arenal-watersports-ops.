@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import {
+  COMBO_AUDIENCE_LABEL,
   COMBO_MODE,
   FIELD_IDS,
   INPUT_TYPES,
@@ -118,7 +119,10 @@ const ReservationFormCombo = ({
               },
               ...combos.map((combo) => ({
                 key: combo.id,
-                label: combo.name,
+                // La seccion va en la etiqueta: el mismo paquete existe
+                // para nacionales y para extranjeros a distinto precio, y
+                // quien toma la reserva tiene que poder distinguirlos.
+                label: `${combo.name} — ${COMBO_AUDIENCE_LABEL[combo.audience]}`,
                 value: combo.id,
               })),
             ]}

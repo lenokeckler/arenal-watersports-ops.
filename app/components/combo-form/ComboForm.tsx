@@ -36,6 +36,7 @@ const ComboForm = (props: ComboFormProps): JSX.Element => {
     handleAddItem,
     handleDeactivate,
     handleDelete,
+    handleAudienceChange,
     handleFieldChange,
     handleReactivate,
     handleRemoveItem,
@@ -84,6 +85,9 @@ const ComboForm = (props: ComboFormProps): JSX.Element => {
         isBusy={isBusy}
         onFieldChange={handleFieldChange}
         values={values}
+
+        onAudienceChange={handleAudienceChange}
+        priceError={errors.price}
       />
 
       <ComboFormItems

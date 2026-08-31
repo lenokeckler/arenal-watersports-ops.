@@ -1,3 +1,4 @@
+import type { ComboAudience } from "@/app/constants";
 import type { FormEvent } from "react";
 import type { Nullable } from "@/app/types";
 import type { CategoryStatus } from "@/app/constants";
@@ -19,6 +20,7 @@ export interface ComboFormViewModel {
   ) => void;
   handleDeactivate: () => void;
   handleDelete: () => void;
+  handleAudienceChange: (audience: ComboAudience) => void;
   handleFieldChange: (
     field: ComboStringField,
     value: string

@@ -2,13 +2,14 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Nullable } from "@/app/types";
 import {
   CATEGORY_STATUS,
+  type ComboAudience,
   RESERVATION_TYPE,
+  type ReservationType,
   TRACKING_MODE,
+  type TrackingMode,
   UNIT_STATUS,
   WORKER_MARK,
   WORKER_STATUS,
-  type ReservationType,
-  type TrackingMode,
 } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
@@ -166,6 +167,8 @@ export interface ReservableComboItem {
 }
 
 export interface ReservableCombo {
+  /** Para quien es: decide la moneda del paquete y en que seccion vive. */
+  audience: ComboAudience;
   id: string;
   items: ReservableComboItem[];
   name: string;
@@ -182,6 +185,7 @@ interface ReservableComboQueryRow {
     } | null;
     quantity: number;
   }[];
+  audience: ComboAudience;
   id: string;
   name: string;
   package_price_crc: Nullable<number>;
@@ -198,7 +202,7 @@ export const fetchReservableCombos = async (
   const { data, error } = await supabase
     .from("combos")
     .select(
-      `id, name, package_price_usd, package_price_crc,
+      `id, name, audience, package_price_usd, package_price_crc,
        combo_items(quantity,
          category:equipment_categories(id, name, tracking_mode))`
     )
@@ -212,6 +216,7 @@ export const fetchReservableCombos = async (
   return (
     (data ?? []) as unknown as ReservableComboQueryRow[]
   ).map((combo) => ({
+    audience: combo.audience,
     id: combo.id,
     items: (combo.combo_items ?? [])
       .filter((item) => item.category !== null)

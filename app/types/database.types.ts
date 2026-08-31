@@ -90,6 +90,7 @@ export type Database = {
       };
       combos: {
         Row: {
+          audience: Database["public"]["Enums"]["combo_audience"];
           created_at: string;
           created_by: string;
           id: string;
@@ -101,6 +102,7 @@ export type Database = {
           updated_by: string;
         };
         Insert: {
+          audience: Database["public"]["Enums"]["combo_audience"];
           created_at?: string;
           created_by: string;
           id?: string;
@@ -112,6 +114,7 @@ export type Database = {
           updated_by: string;
         };
         Update: {
+          audience?: Database["public"]["Enums"]["combo_audience"];
           created_at?: string;
           created_by?: string;
           id?: string;
@@ -2331,6 +2334,7 @@ export type Database = {
     Enums: {
       category_status: "active" | "inactive";
       charge_kind: "tariff" | "extra_time";
+      combo_audience: "national" | "foreign";
       currency_code: "USD" | "CRC";
       damage_cause:
         | "rollover"
@@ -2505,6 +2509,7 @@ export const Constants = {
     Enums: {
       category_status: ["active", "inactive"],
       charge_kind: ["tariff", "extra_time"],
+      combo_audience: ["national", "foreign"],
       currency_code: ["USD", "CRC"],
       damage_cause: [
         "rollover",

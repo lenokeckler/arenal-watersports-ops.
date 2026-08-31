@@ -43,8 +43,11 @@ export const useComboFormViewModel = ({
   const router = useRouter();
   const isEditMode = Boolean(combo);
 
-  const { values, handleFieldChange } =
-    useComboFieldsViewModel(combo);
+  const {
+    handleAudienceChange,
+    handleFieldChange,
+    values,
+  } = useComboFieldsViewModel(combo);
   const statusActions = useComboStatusActions(
     combo?.id ?? null,
     adminWorkerId,
@@ -118,6 +121,7 @@ export const useComboFormViewModel = ({
     handleAddItem: itemsState.handleAddItem,
     handleDeactivate: statusActions.handleDeactivate,
     handleDelete: statusActions.handleDelete,
+    handleAudienceChange,
     handleFieldChange,
     handleReactivate: statusActions.handleReactivate,
     handleRemoveItem: itemsState.handleRemoveItem,

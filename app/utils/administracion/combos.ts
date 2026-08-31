@@ -3,15 +3,19 @@ import type { Database, Nullable } from "@/app/types";
 import {
   CATEGORY_STATUS,
   type CategoryStatus,
+  type ComboAudience,
 } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface CombosFilters {
+  /** Cada seccion del catalogo es su propio publico. */
+  audience: ComboAudience;
   search: Nullable<string>;
   status: Nullable<CategoryStatus>;
 }
 
 export interface ComboListRow {
+  audience: ComboAudience;
   id: string;
   name: string;
   packagePriceCrc: Nullable<number>;
@@ -41,9 +45,10 @@ export interface ComboCategoryOption {
 }
 
 const COMBO_LIST_SELECT =
-  "id, name, status, package_price_usd, package_price_crc";
+  "id, name, status, audience, package_price_usd, package_price_crc";
 
 interface ComboListQueryRow {
+  audience: ComboAudience;
   id: string;
   name: string;
   package_price_crc: Nullable<number>;
@@ -60,6 +65,7 @@ interface ComboItemQueryRow {
 const toComboListRow = (
   row: ComboListQueryRow
 ): ComboListRow => ({
+  audience: row.audience,
   id: row.id,
   name: row.name,
   packagePriceCrc: row.package_price_crc,
@@ -77,6 +83,9 @@ export const fetchCombosPage = async (
   let query = supabase
     .from("combos")
     .select(COMBO_LIST_SELECT, { count: "exact" })
+    // Cada seccion lista lo suyo: los combos de nacionales y los de
+    // extranjeros son paquetes distintos, no dos precios del mismo.
+    .eq("audience", filters.audience)
     .order("name");
 
   if (filters.status) {
