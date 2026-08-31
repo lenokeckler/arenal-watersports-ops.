@@ -291,8 +291,9 @@ enums, políticas y triggers: `c6e8dc292f8fb01386cb4bb7c1adb0ef`, 173 elementos
 de cada lado. Lo único de más allá es `rls_auto_enable`, que agregó Supabase
 por la opción de RLS automático.
 
-**Falta el seed.** Producción sigue con cero filas. Dos intentos fallaron por
-razones de transporte, ya resueltas ambas:
+**El seed ya está aplicado.** Se corrió desde el editor SQL del panel, no desde
+la CLI. Dos intentos por la CLI fallaron antes, por razones de transporte que
+conviene no volver a pisar:
 
 1. Las comillas dobles del literal JSON de `raw_app_meta_data` no sobreviven
    al pasar el SQL como un solo argumento. Se cambió a `jsonb_build_object`,
@@ -301,16 +302,17 @@ razones de transporte, ya resueltas ambas:
    en 8191 contando su propio envoltorio. Hay que correrlo **sentencia por
    sentencia**; la más grande son 1154 caracteres.
 
-Para sembrar, con el proyecto ya vinculado:
+3. La CLI de Supabase **necesita Docker corriendo incluso para consultas
+   remotas**. Con el demonio apagado, `supabase db query --linked` se cuelga
+   sin decir por qué. Si algo de la CLI se queda pegado, revisar Docker antes
+   de buscar en la red.
 
-```
-grep -vE "^[[:space:]]*--" supabase/seed.sql | grep -v "^[[:space:]]*$" > seed_produccion.sql
-```
-
-y luego un script de PowerShell que parta ese archivo por `;` y llame
-`npx supabase db query --linked "<sentencia>;"` una vez por cada una. Escribir
-a la base de producción está bloqueado por el clasificador de permisos, así
-que ese script lo corre el dueño en una terminal, no el agente.
+La salida es el **editor SQL del panel**, en
+`https://supabase.com/dashboard/project/vzqbwlvheickxscrwvpw/sql/new`: acepta
+el archivo entero con comentarios, no pasa por `cmd.exe` y no necesita Docker.
+Para cualquier SQL futuro contra producción, ese es el camino — además de que
+escribir a producción está bloqueado por el clasificador de permisos, así que
+lo corre el dueño, no el agente.
 
 **Vercel todavía no se ha tocado.** El código ya está en GitHub (`develop`
 sincronizado). Las variables que hay que cargar allá son las de
