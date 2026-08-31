@@ -30,6 +30,11 @@ export const API = {
     LOGIN_ATTEMPT: "/api/acceso/intento",
     PASSWORD_RECOVERY_PIN: "/api/acceso/pin-recuperacion",
     PASSWORD_RECOVERY_VERIFY: "/api/acceso/verificar-pin",
+    RESERVATION_ITEM: (
+      reservationId: string,
+      itemId: string
+    ): string =>
+      `/api/reservas/${reservationId}/items/${itemId}`,
     WORKDAY: "/api/acceso/jornada",
     WORKER_PERMISSIONS: (workerId: string): string =>
       `/api/administracion/trabajadores/${workerId}/permisos`,

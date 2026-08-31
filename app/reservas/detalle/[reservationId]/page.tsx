@@ -24,10 +24,10 @@ const ReservationDetailPage = async ({
   params,
 }: ReservationDetailPageParams): Promise<JSX.Element> => {
   const supabase = await createServerSupabaseClient();
-  await requireWorkerWithAreas(supabase, [
-    WORK_AREA.RESERVATIONS,
-    WORK_AREA.OPERATIONS,
-  ]);
+  const { workerId } = await requireWorkerWithAreas(
+    supabase,
+    [WORK_AREA.RESERVATIONS, WORK_AREA.OPERATIONS]
+  );
 
   const { reservationId } = await params;
   const reservation = await fetchReservationDetail(
@@ -39,7 +39,12 @@ const ReservationDetailPage = async ({
     notFound();
   }
 
-  return <ReservationDetail reservation={reservation} />;
+  return (
+    <ReservationDetail
+      reservation={reservation}
+      workerId={workerId}
+    />
+  );
 };
 
 export default ReservationDetailPage;

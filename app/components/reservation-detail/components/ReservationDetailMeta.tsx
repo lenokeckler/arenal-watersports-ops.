@@ -46,6 +46,12 @@ const ReservationDetailMeta = ({
       label={RESERVATION_DETAIL_SCREEN.META.PEOPLE_COUNT}
       value={String(reservation.peopleCount)}
     />
+    {reservation.comboName && (
+      <Row
+        label={RESERVATION_DETAIL_SCREEN.META.COMBO}
+        value={reservation.comboName}
+      />
+    )}
     <Row
       label={RESERVATION_DETAIL_SCREEN.META.DURATION}
       value={RESERVATION_DETAIL_SCREEN.META.DURATION_VALUE(

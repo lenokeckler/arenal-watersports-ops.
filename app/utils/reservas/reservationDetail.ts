@@ -24,6 +24,7 @@ export interface ReservationDetail {
   cancellationReason: Nullable<string>;
   chargeTotals: ReservationChargeTotals;
   code: string;
+  comboName: Nullable<string>;
   createdAt: string;
   createdByName: string;
   customerName: string;
@@ -96,6 +97,7 @@ export const fetchReservationDetail = async (
           `id, code, customer_name, people_count, starts_at, ends_at,
          duration_minutes, type, status, cancellation_reason, dispatched_at,
          created_at, updated_at,
+         combo:combos(name),
          created_by_worker:workers!reservations_created_by_fkey(full_name),
          updated_by_worker:workers!reservations_updated_by_fkey(full_name),
          reservation_items(
@@ -133,6 +135,7 @@ export const fetchReservationDetail = async (
       chargesResult.data ?? []
     ),
     code: reservation.code,
+    comboName: reservation.combo?.name ?? null,
     createdAt: reservation.created_at,
     createdByName:
       reservation.created_by_worker?.full_name ?? "",

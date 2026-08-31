@@ -274,3 +274,7 @@ export {
   EQUIPMENT_VALIDITY,
   type EquipmentValidity,
 } from "./reservas/EquipmentValidity.constants";
+export {
+  RESERVATION_DETAIL_MODAL,
+  type ReservationDetailModal,
+} from "./reservas/ReservationDetailModal.constants";

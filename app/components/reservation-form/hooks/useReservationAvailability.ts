@@ -35,7 +35,8 @@ const loadAvailability = async (
   quantityCategoryIds: string[],
   selectedUnitIds: string[],
   startsAt: string,
-  endsAt: string
+  endsAt: string,
+  excludeReservationId?: string
 ): Promise<AvailabilitySnapshot> => {
   const [categoryEntries, unitEntries] = await Promise.all([
     Promise.all(
@@ -45,7 +46,8 @@ const loadAvailability = async (
             supabase,
             categoryId,
             startsAt,
-            endsAt
+            endsAt,
+            excludeReservationId
           );
         return [categoryId, availability] as const;
       })
@@ -56,7 +58,8 @@ const loadAvailability = async (
           supabase,
           unitId,
           startsAt,
-          endsAt
+          endsAt,
+          excludeReservationId
         );
         return [unitId, conflicts] as const;
       })
@@ -79,12 +82,15 @@ export interface UseReservationAvailabilityReturn extends AvailabilitySnapshot {
  * current franja — debounced, since the franja changes on every keystroke
  * of date/time/duration — and again whenever another dispatch touches the
  * watched tables, via the same realtime refresh the board uses.
+ * `excludeReservationId` (US-RES-018) keeps a reservation being edited from
+ * colliding with its own current commitment.
  */
 export const useReservationAvailability = (
   startsAtIso: string,
   endsAtIso: string,
   quantityCategoryIds: string[],
-  selectedUnitIds: string[]
+  selectedUnitIds: string[],
+  excludeReservationId?: string
 ): UseReservationAvailabilityReturn => {
   const [snapshot, setSnapshot] =
     useState<AvailabilitySnapshot>(
@@ -133,7 +139,8 @@ export const useReservationAvailability = (
       quantityCategoryIds,
       selectedUnitIds,
       debouncedStartsAt,
-      debouncedEndsAt
+      debouncedEndsAt,
+      excludeReservationId
     ).then((result) => {
       if (isCancelled) {
         return;
@@ -148,6 +155,7 @@ export const useReservationAvailability = (
   }, [
     debouncedStartsAt,
     debouncedEndsAt,
+    excludeReservationId,
     hasValidFranja,
     quantityCategoryIds,
     selectedUnitIds,

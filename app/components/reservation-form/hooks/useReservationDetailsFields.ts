@@ -6,7 +6,10 @@ import {
   TIME,
   type ReservationType,
 } from "@/app/constants";
-import { toDateOnlyParam } from "@/app/utils/reservas/calendarRange";
+import {
+  computeStartsAtIso,
+  toDateOnlyParam,
+} from "@/app/utils/reservas/calendarRange";
 import type { ReservationDetailsFieldsValues } from "@/app/utils/reservas/newReservationValidation";
 
 const DEFAULT_TIME = "09:00";
@@ -26,19 +29,6 @@ export interface UseReservationDetailsFieldsReturn {
   startsAtIso: string;
   values: ReservationDetailsFieldsValues;
 }
-
-const computeStartsAtIso = (
-  date: string,
-  time: string
-): string => {
-  if (!date || !time) {
-    return "";
-  }
-  const parsed = new Date(`${date}T${time}:00`);
-  return Number.isNaN(parsed.getTime())
-    ? ""
-    : parsed.toISOString();
-};
 
 const computeEndsAtIso = (
   startsAtIso: string,
@@ -60,45 +50,55 @@ const computeEndsAtIso = (
 
 /**
  * US-RES-004/US-RES-006: the reservation's basic data — nothing here
- * restricts the time to nine-to-five, on purpose.
+ * restricts the time to nine-to-five, on purpose. `initialValues` lets
+ * US-RES-018's edit modal seed the same fields from the reservation being
+ * modified instead of always starting from today/blank.
  */
-export const useReservationDetailsFields =
-  (): UseReservationDetailsFieldsReturn => {
-    const [customerName, setCustomerName] = useState("");
-    const [peopleCount, setPeopleCount] = useState("");
-    const [date, setDate] = useState(
-      toDateOnlyParam(new Date())
-    );
-    const [time, setTime] = useState(DEFAULT_TIME);
-    const [durationMinutes, setDurationMinutes] = useState(
+export const useReservationDetailsFields = (
+  initialValues?: Partial<ReservationDetailsFieldsValues>
+): UseReservationDetailsFieldsReturn => {
+  const [customerName, setCustomerName] = useState(
+    initialValues?.customerName ?? ""
+  );
+  const [peopleCount, setPeopleCount] = useState(
+    initialValues?.peopleCount ?? ""
+  );
+  const [date, setDate] = useState(
+    initialValues?.date ?? toDateOnlyParam(new Date())
+  );
+  const [time, setTime] = useState(
+    initialValues?.time ?? DEFAULT_TIME
+  );
+  const [durationMinutes, setDurationMinutes] = useState(
+    initialValues?.durationMinutes ??
       DEFAULT_DURATION_MINUTES
-    );
-    const [type, setType] = useState<ReservationType>(
-      RESERVATION_TYPE.RENTAL
-    );
+  );
+  const [type, setType] = useState<ReservationType>(
+    initialValues?.type ?? RESERVATION_TYPE.RENTAL
+  );
 
-    const startsAtIso = computeStartsAtIso(date, time);
-    const endsAtIso = computeEndsAtIso(
-      startsAtIso,
-      durationMinutes
-    );
+  const startsAtIso = computeStartsAtIso(date, time);
+  const endsAtIso = computeEndsAtIso(
+    startsAtIso,
+    durationMinutes
+  );
 
-    return {
-      endsAtIso,
-      handleCustomerNameChange: setCustomerName,
-      handleDateChange: setDate,
-      handleDurationChange: setDurationMinutes,
-      handlePeopleCountChange: setPeopleCount,
-      handleTimeChange: setTime,
-      handleTypeChange: setType,
-      startsAtIso,
-      values: {
-        customerName,
-        date,
-        durationMinutes,
-        peopleCount,
-        time,
-        type,
-      },
-    };
+  return {
+    endsAtIso,
+    handleCustomerNameChange: setCustomerName,
+    handleDateChange: setDate,
+    handleDurationChange: setDurationMinutes,
+    handlePeopleCountChange: setPeopleCount,
+    handleTimeChange: setTime,
+    handleTypeChange: setType,
+    startsAtIso,
+    values: {
+      customerName,
+      date,
+      durationMinutes,
+      peopleCount,
+      time,
+      type,
+    },
   };
+};

@@ -167,6 +167,35 @@ export const toDateOnlyParam = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
+/** "14:35" (24h, local time) — the shape `<input type="time">` expects. */
+export const toTimeOnlyParam = (date: Date): string => {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(
+    2,
+    "0"
+  );
+  return `${hours}:${minutes}`;
+};
+
+/**
+ * A `date`/`time` field pair as one ISO instant — shared by the new-
+ * reservation form (`useReservationDetailsFields`) and the postpone modal
+ * (US-RES-020), the two places a worker types a date and a time and needs
+ * the franja they resolve to.
+ */
+export const computeStartsAtIso = (
+  date: string,
+  time: string
+): string => {
+  if (!date || !time) {
+    return "";
+  }
+  const parsed = new Date(`${date}T${time}:00`);
+  return Number.isNaN(parsed.getTime())
+    ? ""
+    : parsed.toISOString();
+};
+
 export const parseDateOnlyParam = (
   value: string | undefined
 ): Date => {
