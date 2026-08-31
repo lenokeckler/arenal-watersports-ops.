@@ -27,9 +27,11 @@ const insertChildReservation = async (
   params: SplitReservationParams,
   workerId: string
 ): Promise<string> => {
-  // US-RES-019: the child never carries list/agreed amounts — the database
-  // itself refuses it (`reservations_split_child_no_charge`), this just
-  // never tries to set them.
+  // US-RES-019: the child never carries list/agreed amounts. They live in
+  // `reservation_pricing` now, so the child is created without a row there
+  // and nothing else writes one: the trigger
+  // `reservation_pricing_no_split_child` rejects the attempt outright, so
+  // trying would fail the split rather than degrade it.
   const { data, error } = await supabase
     .from("reservations")
     .insert({
@@ -143,10 +145,10 @@ const applyQuantityMoves = async (
 
 /**
  * US-RES-019: partir una reserva into two salidas. The charge never
- * splits — the child simply never receives `list_amount_*`/
- * `agreed_amount_*`, and the database enforces that itself — and the
- * deposit stays with the parent because `deposits` references the parent
- * reservation only, untouched here. Guides are not split: they stay
+ * splits — the child simply never gets a `reservation_pricing` row, and
+ * the database enforces that itself — and the deposit stays with the
+ * parent because `deposits` references the parent reservation only,
+ * untouched here. Guides are not split: they stay
  * assigned to the parent, since the story's own acceptance criteria only
  * ever mention equipment and people count.
  */

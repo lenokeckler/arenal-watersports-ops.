@@ -63,8 +63,8 @@ const fetchUnitDamageContext = async (
  * equipment committed (via the same `fetchReservationEquipmentItems` the
  * edit/split/postpone modals already use) plus each unit's current impact
  * count, so the damage form starts from the real number instead of zero.
- * Explicit columns only, `list_amount_*`/`agreed_amount_*` excluded on
- * purpose — operaciones does not see money.
+ * Explicit columns only, `reservation_pricing` never embedded on purpose
+ * — operaciones does not see money, and its policy denies the row.
  */
 export const fetchReservationCloseData = async (
   supabase: SupabaseClient<Database>,

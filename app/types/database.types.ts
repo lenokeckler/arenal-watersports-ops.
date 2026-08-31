@@ -1485,10 +1485,87 @@ export type Database = {
           },
         ];
       };
-      reservations: {
+      reservation_pricing: {
         Row: {
           agreed_amount_crc: number | null;
           agreed_amount_usd: number | null;
+          created_at: string;
+          created_by: string | null;
+          list_amount_crc: number | null;
+          list_amount_usd: number | null;
+          reservation_id: string;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        Insert: {
+          agreed_amount_crc?: number | null;
+          agreed_amount_usd?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          list_amount_crc?: number | null;
+          list_amount_usd?: number | null;
+          reservation_id: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Update: {
+          agreed_amount_crc?: number | null;
+          agreed_amount_usd?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          list_amount_crc?: number | null;
+          list_amount_usd?: number | null;
+          reservation_id?: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_pricing_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reservations: {
+        Row: {
           cancellation_reason: string | null;
           closed_at: string | null;
           code: string;
@@ -1501,8 +1578,6 @@ export type Database = {
           ends_at: string | null;
           extra_time_minutes: number;
           id: string;
-          list_amount_crc: number | null;
-          list_amount_usd: number | null;
           parent_reservation_id: string | null;
           people_count: number;
           starts_at: string;
@@ -1512,8 +1587,6 @@ export type Database = {
           updated_by: string;
         };
         Insert: {
-          agreed_amount_crc?: number | null;
-          agreed_amount_usd?: number | null;
           cancellation_reason?: string | null;
           closed_at?: string | null;
           code?: string;
@@ -1526,8 +1599,6 @@ export type Database = {
           ends_at?: string | null;
           extra_time_minutes?: number;
           id?: string;
-          list_amount_crc?: number | null;
-          list_amount_usd?: number | null;
           parent_reservation_id?: string | null;
           people_count: number;
           starts_at: string;
@@ -1537,8 +1608,6 @@ export type Database = {
           updated_by: string;
         };
         Update: {
-          agreed_amount_crc?: number | null;
-          agreed_amount_usd?: number | null;
           cancellation_reason?: string | null;
           closed_at?: string | null;
           code?: string;
@@ -1551,8 +1620,6 @@ export type Database = {
           ends_at?: string | null;
           extra_time_minutes?: number;
           id?: string;
-          list_amount_crc?: number | null;
-          list_amount_usd?: number | null;
           parent_reservation_id?: string | null;
           people_count?: number;
           starts_at?: string;

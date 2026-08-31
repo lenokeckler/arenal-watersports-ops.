@@ -8,9 +8,9 @@ import {
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 /**
- * One reservation card for either operations list. Never selects
- * `list_amount_*` / `agreed_amount_*` — operaciones does not see money
- * (see `docs/decisiones/BRIEF-AGENTES.md`).
+ * One reservation card for either operations list. Never embeds
+ * `reservation_pricing` — operaciones does not see money, and its policy
+ * would deny the row anyway (see `docs/decisiones/BRIEF-AGENTES.md`).
  */
 export interface OperationsReservationSummary {
   code: string;

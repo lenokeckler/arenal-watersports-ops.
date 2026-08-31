@@ -8,6 +8,10 @@ import {
 } from "@/app/constants";
 import type { Nullable } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import {
+  RESERVATION_PRICING_SELECT,
+  toReservationPricing,
+} from "./reservationPricing";
 
 export interface ReservationDetailItem {
   extraName: Nullable<string>;
@@ -87,9 +91,10 @@ const sumChargesByCurrency = (
 /**
  * US-RES-003: everything a single reservation's detail screen needs in one
  * pass — committed equipment, extras, guides, who created and last touched
- * it, and its charge totals. `reservation_charges` is filtered by RLS to
- * reservas/admin already (`charges_select`), so operaciones simply reads an
- * empty array here, never an error.
+ * it, and its charge totals. `reservation_charges` and
+ * `reservation_pricing` are both filtered by RLS to reservas/admin
+ * already, so operaciones simply reads an empty array and a null price
+ * here, never an error.
  */
 export const fetchReservationDetail = async (
   supabase: SupabaseClient<Database>,
@@ -103,8 +108,7 @@ export const fetchReservationDetail = async (
           `id, code, customer_name, people_count, starts_at, ends_at,
          duration_minutes, type, status, cancellation_reason, dispatched_at,
          created_at, updated_at,
-         list_amount_usd, list_amount_crc,
-         agreed_amount_usd, agreed_amount_crc,
+         ${RESERVATION_PRICING_SELECT},
          combo:combos(name),
          created_by_worker:workers!reservations_created_by_fkey(full_name),
          updated_by_worker:workers!reservations_updated_by_fkey(full_name),
@@ -137,9 +141,12 @@ export const fetchReservationDetail = async (
     return null;
   }
 
+  const pricing = toReservationPricing(
+    reservation.reservation_pricing
+  );
   return {
-    agreedAmountCrc: reservation.agreed_amount_crc,
-    agreedAmountUsd: reservation.agreed_amount_usd,
+    agreedAmountCrc: pricing.agreedAmountCrc,
+    agreedAmountUsd: pricing.agreedAmountUsd,
     cancellationReason: reservation.cancellation_reason,
     chargeTotals: sumChargesByCurrency(
       chargesResult.data ?? []
@@ -169,8 +176,8 @@ export const fetchReservationDetail = async (
         label: labelForItem(item),
       })
     ),
-    listAmountCrc: reservation.list_amount_crc,
-    listAmountUsd: reservation.list_amount_usd,
+    listAmountCrc: pricing.listAmountCrc,
+    listAmountUsd: pricing.listAmountUsd,
     peopleCount: reservation.people_count,
     startsAt: reservation.starts_at,
     status: reservation.status,
