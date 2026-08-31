@@ -69,6 +69,12 @@ export const useDepositRegisterViewModel = ({
       workerId
     )
       .then(() => {
+        // `onSaved` refresca el Server Component, pero este componente de
+        // cliente no se desmonta: sin devolver la bandera, el boton queda
+        // deshabilitado con "Loading..." y no se puede registrar un segundo
+        // movimiento sin recargar la pagina. Eso rompia el cobro en dos
+        // tractos de US-RES-026 en la practica.
+        setIsBusy(false);
         setAmount(EMPTY_TEXT);
         onSaved();
       })
