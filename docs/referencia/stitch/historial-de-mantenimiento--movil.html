@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AQUAMGR - Historial de Mantenimiento</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "surface-variant": "#2d3449",
+                        "primary": "#57f1db",
+                        "surface-container-lowest": "#060e20",
+                        "primary-container": "#2dd4bf",
+                        "on-tertiary-fixed": "#001e2c",
+                        "on-surface-variant": "#bacac5",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-high": "#222a3d",
+                        "on-secondary": "#670211",
+                        "outline-variant": "#3c4a46",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#c4e7ff",
+                        "surface-container": "#171f33",
+                        "on-primary-fixed": "#00201c",
+                        "surface-dim": "#0b1326",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "on-surface": "#dae2fd",
+                        "surface-bright": "#31394d",
+                        "on-tertiary-container": "#005371",
+                        "on-primary-fixed-variant": "#005047",
+                        "inverse-surface": "#dae2fd",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ffb3b0",
+                        "on-primary-container": "#00574d",
+                        "on-primary": "#003731",
+                        "on-secondary-fixed": "#410006",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "primary-fixed-dim": "#3cddc7",
+                        "secondary-container": "#881d24",
+                        "on-secondary-container": "#ff9996",
+                        "primary-fixed": "#62fae3",
+                        "background": "#0b1326",
+                        "surface-container-highest": "#2d3449",
+                        "surface": "#0b1326",
+                        "on-error": "#690005",
+                        "on-background": "#dae2fd",
+                        "secondary-fixed": "#ffdad8",
+                        "on-tertiary": "#00354a",
+                        "outline": "#859490",
+                        "tertiary-container": "#5ec9ff",
+                        "inverse-primary": "#006b5f",
+                        "tertiary": "#afe0ff",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-tint": "#3cddc7",
+                        "surface-container-low": "#131b2e",
+                        "secondary-fixed-dim": "#ffb3b0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "md": "24px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-input:focus {
+            box-shadow: inset 0 0 0 1px #57f1db, 0 0 8px rgba(87, 241, 219, 0.3);
+            border-color: transparent;
+            outline: none;
+        }
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, #57f1db 0%, rgba(87, 241, 219, 0.2) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen relative font-sans overflow-x-hidden pt-16 pb-24 md:hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-outline-variant/20 shadow-md">
+<div class="flex items-center justify-between px-margin-mobile h-16">
+<button class="text-primary hover:bg-surface-variant/50 transition-colors active:scale-95 transition-transform p-2 rounded-full">
+<span class="material-symbols-outlined">waves</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tighter">AQUAMGR</h1>
+<button class="text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-95 transition-transform p-2 rounded-full">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<main class="px-margin-mobile py-md flex flex-col gap-md relative z-10">
+<!-- Registration Form -->
+<section class="glass-panel rounded-xl p-md flex flex-col gap-sm shadow-xl">
+<h2 class="font-title-md text-title-md text-primary">Registrar Mantenimiento</h2>
+<form class="flex flex-col gap-sm">
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Tipo de Trabajo</label>
+<select class="w-full bg-surface-container-high border border-outline-variant/30 rounded-lg p-sm text-on-surface glow-input font-body-base text-body-base">
+<option>Cambio de Aceite</option>
+<option>Reparación de Casco</option>
+<option>Revisión General</option>
+<option>Reemplazo de Batería</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Descripción</label>
+<input class="w-full bg-surface-container-high border border-outline-variant/30 rounded-lg p-sm text-on-surface glow-input font-body-base text-body-base placeholder:text-on-surface-variant/50" placeholder="Detalles de la operación..." type="text"/>
+</div>
+<div class="flex gap-sm">
+<div class="flex flex-col gap-xs flex-1">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Costo</label>
+<div class="relative">
+<span class="absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant font-body-base">$</span>
+<input class="w-full pl-8 bg-surface-container-high border border-outline-variant/30 rounded-lg p-sm text-on-surface glow-input font-body-base text-body-base placeholder:text-on-surface-variant/50" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs flex-1">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Autor</label>
+<input class="w-full bg-surface-container-high border border-outline-variant/30 rounded-lg p-sm text-on-surface glow-input font-body-base text-body-base placeholder:text-on-surface-variant/50 uppercase" placeholder="Iniciales/ID" type="text"/>
+</div>
+</div>
+<button class="mt-xs bg-primary text-on-primary-fixed w-full py-sm rounded-lg font-button text-button uppercase tracking-wide hover:bg-primary-fixed-dim transition-colors active:scale-[0.98]" type="button">
+                    Registrar
+                </button>
+</form>
+</section>
+<!-- Timeline -->
+<section class="mt-base flex flex-col">
+<h3 class="font-title-md text-title-md text-on-surface mb-md">Historial</h3>
+<div class="relative pl-8 flex flex-col gap-md">
+<div class="timeline-line absolute left-3 top-2 bottom-0 z-0"></div>
+<!-- Entry 1 -->
+<div class="relative z-10 glass-panel rounded-lg p-sm shadow-lg border border-primary/20">
+<div class="absolute -left-9 top-2 bg-background p-1 rounded-full">
+<div class="bg-primary/20 p-1 rounded-full border border-primary/50">
+<span class="material-symbols-outlined text-primary text-[18px]">build</span>
+</div>
+</div>
+<div class="flex justify-between items-start mb-xs">
+<span class="font-title-md text-title-md text-on-surface">Cambio de Filtros</span>
+<span class="font-label-mono text-label-mono text-error font-bold">$125.50</span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant/80 mb-sm text-sm">Sustitución de filtros de aire y combustible de rutina.</p>
+<div class="flex justify-between items-end">
+<span class="font-label-mono text-label-mono text-on-surface-variant/60">12/OCT - 14:30</span>
+<span class="font-label-mono text-label-mono text-primary/70 bg-primary/10 px-2 py-1 rounded">AUTH: JD-992</span>
+</div>
+</div>
+<!-- Entry 2 -->
+<div class="relative z-10 glass-panel rounded-lg p-sm shadow-lg border border-outline-variant/20">
+<div class="absolute -left-9 top-2 bg-background p-1 rounded-full">
+<div class="bg-surface-variant p-1 rounded-full border border-outline-variant/50">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">water_drop</span>
+</div>
+</div>
+<div class="flex justify-between items-start mb-xs">
+<span class="font-title-md text-title-md text-on-surface">Sellado Menor</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant/80">$45.00</span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant/80 mb-sm text-sm">Aplicación de resina epoxi en junta de proa.</p>
+<div class="flex justify-between items-end">
+<span class="font-label-mono text-label-mono text-on-surface-variant/60">10/OCT - 09:15</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant/50 bg-surface-variant/50 px-2 py-1 rounded">AUTH: MK-114</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container-low/70 dark:bg-surface-container-low/70 backdrop-blur-xl border-t border-outline-variant/10 shadow-2xl">
+<div class="flex justify-around items-center h-20 px-2 pb-safe">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 p-2 rounded-lg flex-1">
+<span class="material-symbols-outlined mb-1">calendar_month</span>
+<span class="font-label-mono text-label-mono">Reservations</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary fill-primary hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 p-2 rounded-lg flex-1">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">speed</span>
+<span class="font-label-mono text-label-mono">Operations</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 p-2 rounded-lg flex-1">
+<span class="material-symbols-outlined mb-1">kayaking</span>
+<span class="font-label-mono text-label-mono">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 p-2 rounded-lg flex-1">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-mono text-label-mono">Admin</span>
+</button>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Arenal Ops - Tiempo Restante</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#2dd4bf",
+                      "secondary": "#ffb3b0",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "on-error": "#690005",
+                      "surface-container-highest": "#2d3449",
+                      "primary-fixed-dim": "#3cddc7",
+                      "primary": "#57f1db",
+                      "outline-variant": "#3c4a46",
+                      "secondary-container": "#881d24",
+                      "on-secondary-fixed": "#410006",
+                      "on-surface-variant": "#bacac5",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-low": "#131b2e",
+                      "on-surface": "#dae2fd",
+                      "outline": "#859490",
+                      "error": "#ffb4ab",
+                      "surface-tint": "#3cddc7",
+                      "surface-dim": "#0b1326",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-container": "#00574d",
+                      "on-primary-fixed": "#00201c",
+                      "on-background": "#dae2fd",
+                      "tertiary": "#afe0ff",
+                      "on-tertiary-fixed": "#001e2c",
+                      "on-tertiary-container": "#005371",
+                      "on-secondary": "#670211",
+                      "inverse-surface": "#dae2fd",
+                      "inverse-primary": "#006b5f",
+                      "inverse-on-surface": "#283044",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "background": "#0b1326",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "tertiary-container": "#5ec9ff",
+                      "on-primary": "#003731",
+                      "surface-container-lowest": "#060e20",
+                      "surface": "#0b1326",
+                      "surface-bright": "#31394d",
+                      "on-tertiary": "#00354a",
+                      "on-primary-fixed-variant": "#005047",
+                      "secondary-fixed": "#ffdad8",
+                      "error-container": "#93000a",
+                      "tertiary-fixed": "#c4e7ff",
+                      "surface-variant": "#2d3449",
+                      "surface-container": "#171f33",
+                      "primary-fixed": "#62fae3",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "on-secondary-container": "#ff9996"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "base": "8px",
+                      "sm": "12px",
+                      "xl": "80px",
+                      "margin-desktop": "40px",
+                      "lg": "48px",
+                      "md": "24px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-teal:hover {
+            box-shadow: inset 0 0 10px rgba(87, 241, 219, 0.5);
+        }
+        .glow-coral:hover {
+            box-shadow: inset 0 0 10px rgba(255, 179, 176, 0.5);
+        }
+        
+        .progress-circle {
+            transform: rotate(-90deg);
+        }
+        .progress-circle circle {
+            transition: stroke-dashoffset 1s linear;
+        }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-base antialiased min-h-screen flex flex-col overflow-x-hidden">
+<!-- Ambient Background Layer -->
+<div class="fixed inset-0 z-[-1] pointer-events-none">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#003731]/20 via-background to-background"></div>
+<div class="absolute bottom-0 right-0 w-1/2 h-1/2 bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] from-primary-container/10 to-transparent blur-3xl"></div>
+</div>
+<!-- TopAppBar (Mobile & Desktop Header) -->
+<header class="bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl font-title-md text-title-md-mobile docked full-width top-0 sticky z-50 border-b border-white/10 shadow-md flex justify-between items-center px-margin-mobile h-16 w-full md:hidden">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">Arenal Ops</div>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high border border-outline-variant flex items-center justify-center">
+<img alt="User profile avatar" class="object-cover w-full h-full" data-alt="A close up, high resolution portrait of a professional watersports operations manager. The subject is well lit with subtle teal rim lighting, reflecting the high-tech, marine operational environment. The overall mood is focused, authoritative, and clean." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBckgKOTtN4-GjFyEoCLjrLmJxTy5NmTGM3d01a49y6l-G1QmFosVO-zs2GJR6C0jdH-Kn6WW-ObDxIIswMCHJXTWxfo-5tk29cEeWUnFjXhBDYpHmj_aZIhEj6sSidmySO3vKdvWnJH-mTijUw2W6mrF-7pENq5OAEftVGnnUs2Nnh36IRMtcBgMhY-T_WSrsOhzTZ92lzcSQYYfZ7fSRcDqE0DNoqab0oH6kIc0Mg0GbVjNnM-EkQm4-pLt51brQgd--84cwauCXG"/>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- NavigationDrawer (Desktop Sidebar) -->
+<aside class="hidden md:flex flex-col h-screen fixed inset-y-0 left-0 w-64 z-[60] bg-surface dark:bg-surface-dim shadow-xl border-r border-surface-container-low p-md">
+<!-- Profile Header -->
+<div class="flex flex-col items-start mb-lg">
+<div class="w-12 h-12 rounded-full overflow-hidden mb-sm border-2 border-primary">
+<img alt="Usuario Operativo" class="object-cover w-full h-full" data-alt="A close up, high resolution portrait of a professional watersports operations manager. The subject is well lit with subtle teal rim lighting, reflecting the high-tech, marine operational environment. The overall mood is focused, authoritative, and clean." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRI6qzyB39_1LNqPwNIsx5XkK2P8IFq5Ta8uETgo1L0KWzEpzccMKKpxu58y6El9iHuKyQRUi79b4mbb59-4YxWizw_49s3cVdSEuvcIglnfbMkb6LylzdpZpoC3LUodvk44nhAtNyOFBPjbmuJV63o_GcWOHlnpePMX7JJh1NAONoEVfgQ7yWdk1Gm0qfknnwWfUZ4z5VFeOlRxe_b4HlKrxOYLQa-pwwBDaA2CWXN8dqQE0PRS_ltnjCDbfow2DT2r87qusko_pC"/>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">Arenal Ops Admin</h2>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mt-xs">Modo: Operaciones</p>
+<span class="font-label-mono text-label-mono text-outline mt-1">v1.0.4</span>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 flex flex-col gap-2 font-body-base text-body-base">
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface transition-colors" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-primary font-bold bg-primary-container/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-primary" data-icon="directions_boat">directions_boat</span>
+<span>Flota</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface transition-colors" data-icon="groups">groups</span>
+<span>Personal</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface transition-colors" data-icon="analytics">analytics</span>
+<span>Reportes</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-surface-container-low">
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface transition-colors" data-icon="logout">logout</span>
+<span>Cerrar Sesión</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop pb-24 md:pb-margin-desktop">
+<!-- Page Header -->
+<div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Monitor de Despachos</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Equipos actualmente en el agua.</p>
+</div>
+<!-- Quick Stats / Filters -->
+<div class="flex gap-3">
+<div class="glass-panel px-4 py-2 rounded-lg flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(87,241,219,0.8)]"></div>
+<span class="font-label-mono text-label-mono text-primary">6 ACTIVOS</span>
+</div>
+<div class="glass-panel px-4 py-2 rounded-lg flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(255,179,176,0.8)]"></div>
+<span class="font-label-mono text-label-mono text-secondary">2 VENCIDOS</span>
+</div>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-md">
+<!-- OVERDUE CARD 1 -->
+<article class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden border-secondary/30 glow-coral group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 blur-2xl rounded-full -mr-16 -mt-16 pointer-events-none"></div>
+<!-- Header -->
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 rounded-full bg-secondary/10 text-secondary font-label-mono text-label-mono border border-secondary/20">JS-04</span>
+<span class="text-on-surface-variant font-body-base text-body-base">Jet Ski</span>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="warning">warning</span>
+</div>
+<!-- Circular Progress (Overdue) -->
+<div class="flex justify-center items-center py-sm z-10">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="progress-circle w-full h-full" viewbox="0 0 100 100">
+<circle class="text-surface-container-high" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-secondary shadow-[0_0_15px_rgba(255,179,176,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="283" stroke-dashoffset="0" stroke-width="6"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-secondary">-05</span>
+<span class="font-label-mono text-label-mono text-secondary">MIN</span>
+</div>
+</div>
+</div>
+<!-- Details -->
+<div class="flex flex-col gap-1 z-10">
+<div class="flex justify-between font-body-base text-body-base text-sm">
+<span class="text-on-surface-variant">Cliente:</span>
+<span class="text-on-surface font-medium">Martín Pérez</span>
+</div>
+<div class="flex justify-between font-body-base text-body-base text-sm">
+<span class="text-on-surface-variant">Retorno Esp.:</span>
+<span class="text-secondary font-medium">14:30</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-auto pt-sm z-10">
+<button class="w-full py-2 px-4 rounded-lg bg-transparent border border-secondary text-secondary font-button text-button uppercase hover:bg-secondary/10 transition-colors">Contactar</button>
+</div>
+</article>
+<!-- ACTIVE CARD 1 -->
+<article class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden glow-teal group">
+<!-- Header -->
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 rounded-full bg-primary-container/10 text-primary font-label-mono text-label-mono border border-primary/20">KA-12</span>
+<span class="text-on-surface-variant font-body-base text-body-base">Kayak Doble</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="sailing">sailing</span>
+</div>
+<!-- Circular Progress -->
+<div class="flex justify-center items-center py-sm z-10">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="progress-circle w-full h-full" viewbox="0 0 100 100">
+<circle class="text-surface-container-high" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="6"></circle>
+<!-- 45/60 min = 75% -> 283 * 0.25 = 70 offset -->
+<circle class="text-primary drop-shadow-[0_0_8px_rgba(87,241,219,0.3)]" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="283" stroke-dashoffset="70" stroke-width="6"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">45</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">MIN</span>
+</div>
+</div>
+</div>
+<!-- Details -->
+<div class="flex flex-col gap-1 z-10">
+<div class="flex justify-between font-body-base text-body-base text-sm">
+<span class="text-on-surface-variant">Cliente:</span>
+<span class="text-on-surface font-medium">Laura Gómez</span>
+</div>
+<div class="flex justify-between font-body-base text-body-base text-sm">
+<span class="text-on-surface-variant">Retorno Esp.:</span>
+<span class="text-on-surface font-medium">15:15</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-auto pt-sm z-10">
+<button class="w-full py-2 px-4 rounded-lg bg-transparent border border-outline text-on-surface font-button text-button uppercase hover:border-primary hover:text-primary transition-colors">Extender</button>
+</div>
+</article>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-high/80 dark:bg-surface-container-highest/80 backdrop-blur-2xl border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] rounded-t-xl font-label-mono text-label-mono">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 transition-colors rounded-xl px-2 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="calendar_today">calendar_today</span>
+<span>Reservas</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary rounded-xl px-4 py-1 shadow-[inset_0_0_10px_rgba(87,241,219,0.2)] scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="sailing">sailing</span>
+<span>Ops</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 transition-colors rounded-xl px-2 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="inventory_2">inventory_2</span>
+<span>Inventario</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 transition-colors rounded-xl px-2 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
+<span>Admin</span>
+</a>
+</nav>
+</body></html>

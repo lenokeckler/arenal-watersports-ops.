@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-width=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>AQUAFLEET - Selección de Salida</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#0b1326",
+                      "on-background": "#dae2fd",
+                      "primary-fixed-dim": "#3cddc7",
+                      "outline-variant": "#3c4a46",
+                      "on-tertiary-container": "#005371",
+                      "on-secondary-container": "#ff9996",
+                      "inverse-primary": "#006b5f",
+                      "surface-container-low": "#131b2e",
+                      "on-surface-variant": "#bacac5",
+                      "inverse-surface": "#dae2fd",
+                      "surface-tint": "#3cddc7",
+                      "surface-container": "#171f33",
+                      "primary-fixed": "#62fae3",
+                      "on-tertiary": "#00354a",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-high": "#222a3d",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "on-tertiary-fixed": "#001e2c",
+                      "surface-dim": "#0b1326",
+                      "secondary-container": "#881d24",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "tertiary-container": "#5ec9ff",
+                      "error": "#ffb4ab",
+                      "on-error": "#690005",
+                      "on-primary-container": "#00574d",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "surface-container-highest": "#2d3449",
+                      "surface-bright": "#31394d",
+                      "on-secondary-fixed": "#410006",
+                      "primary-container": "#2dd4bf",
+                      "tertiary": "#afe0ff",
+                      "surface-container-lowest": "#060e20",
+                      "secondary": "#ffb3b0",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "primary": "#57f1db",
+                      "on-surface": "#dae2fd",
+                      "on-primary-fixed-variant": "#005047",
+                      "error-container": "#93000a",
+                      "on-primary-fixed": "#00201c",
+                      "secondary-fixed": "#ffdad8",
+                      "outline": "#859490",
+                      "tertiary-fixed": "#c4e7ff",
+                      "on-secondary": "#670211",
+                      "surface-variant": "#2d3449",
+                      "on-primary": "#003731",
+                      "inverse-on-surface": "#283044",
+                      "background": "#0b1326"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "margin-desktop": "40px",
+                      "base": "8px",
+                      "md": "24px",
+                      "margin-mobile": "16px",
+                      "gutter": "20px",
+                      "xl": "80px",
+                      "lg": "48px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-panel-selected {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid #57f1db;
+            box-shadow: inset 0 0 12px rgba(87, 241, 219, 0.2);
+        }
+        
+        .bg-radial-glow {
+            background: radial-gradient(circle at center, #171f33 0%, #020617 100%);
+        }
+        
+        /* Material symbols specific fill adjustment */
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base bg-radial-glow min-h-screen flex flex-col pt-16 pb-24 relative overflow-x-hidden">
+<!-- Ambient background glows -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary opacity-5 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-tertiary-container opacity-5 blur-[100px]"></div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-xl flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center text-on-surface-variant hover:bg-primary/10 transition-colors rounded-full p-2 active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">waves</span>
+</div>
+<div class="font-display-lg text-primary tracking-tighter uppercase font-headline-lg-mobile text-headline-lg-mobile">
+            AQUAFLEET
+        </div>
+<div class="flex items-center text-on-surface-variant hover:bg-primary/10 transition-colors rounded-full p-2 active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow z-10 px-margin-mobile md:px-margin-desktop w-full max-w-7xl mx-auto flex flex-col mt-md">
+<div class="mb-md">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background mb-xs">Tipo de Salida</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Selecciona la modalidad para esta nueva reserva.</p>
+</div>
+<!-- Selection Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
+<!-- Card 1: Renta (Selected) -->
+<label class="relative cursor-pointer group">
+<input checked="" class="sr-only" name="salida_tipo" type="radio" value="renta"/>
+<div class="glass-panel-selected rounded-xl p-md flex flex-col h-full transition-all duration-300 transform group-hover:-translate-y-1 group-active:scale-[0.98]">
+<div class="flex justify-between items-start mb-md">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-[28px]" data-weight="fill">sailing</span>
+</div>
+<!-- Custom Radio Indicator -->
+<div class="w-6 h-6 rounded-full border-2 border-primary flex items-center justify-center">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+</div>
+</div>
+<div class="flex-grow">
+<h2 class="font-title-md text-title-md text-on-background mb-sm">Renta</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md">El cliente se lleva el equipo por su cuenta.</p>
+</div>
+<div class="mt-auto pt-sm border-t border-white/10">
+<span class="font-label-mono text-label-mono text-primary uppercase">Desde $120.00</span>
+</div>
+</div>
+</label>
+<!-- Card 2: Tour -->
+<label class="relative cursor-pointer group">
+<input class="sr-only" name="salida_tipo" type="radio" value="tour"/>
+<div class="glass-panel rounded-xl p-md flex flex-col h-full transition-all duration-300 transform group-hover:-translate-y-1 group-hover:border-white/20 group-hover:bg-surface-container-high/80 group-active:scale-[0.98]">
+<div class="flex justify-between items-start mb-md">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center border border-white/5 group-hover:border-white/10 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[28px]">explore</span>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant group-hover:border-outline transition-colors"></div>
+</div>
+<div class="flex-grow">
+<h2 class="font-title-md text-title-md text-on-background mb-sm group-hover:text-primary transition-colors">Tour</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md">Salida acompañada por un guía profesional.</p>
+</div>
+<div class="mt-auto pt-sm border-t border-white/5 group-hover:border-white/10 transition-colors">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Desde $150.00</span>
+</div>
+</div>
+</label>
+<!-- Card 3: Combo -->
+<label class="relative cursor-pointer group">
+<input class="sr-only" name="salida_tipo" type="radio" value="combo"/>
+<div class="glass-panel rounded-xl p-md flex flex-col h-full transition-all duration-300 transform group-hover:-translate-y-1 group-hover:border-white/20 group-hover:bg-surface-container-high/80 group-active:scale-[0.98]">
+<div class="flex justify-between items-start mb-md">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center border border-white/5 group-hover:border-white/10 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[28px]">grid_view</span>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant group-hover:border-outline transition-colors"></div>
+</div>
+<div class="flex-grow">
+<h2 class="font-title-md text-title-md text-on-background mb-sm group-hover:text-primary transition-colors">Combo</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md">Varios equipos distintos en un solo paquete.</p>
+</div>
+<div class="mt-auto pt-sm border-t border-white/5 group-hover:border-white/10 transition-colors">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Desde $240.00</span>
+</div>
+</div>
+</label>
+</div>
+</main>
+<!-- Floating Action Area (Next Button) -->
+<div class="fixed bottom-[80px] md:bottom-md left-0 w-full px-margin-mobile md:px-margin-desktop z-40 pointer-events-none flex justify-center">
+<div class="w-full max-w-7xl flex justify-end pointer-events-auto">
+<button class="bg-primary text-on-primary font-button text-button uppercase px-xl py-sm rounded-lg shadow-[0_4px_14px_rgba(87,241,219,0.3)] hover:bg-primary-fixed-dim hover:shadow-[0_6px_20px_rgba(87,241,219,0.4)] active:scale-95 transition-all duration-200 flex items-center gap-xs">
+                Siguiente
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-lg border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] flex justify-around items-center px-4 py-3 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">dashboard</span>
+<span class="font-label-mono text-label-mono">Tablero</span>
+</a>
+<!-- Active Nav Item -->
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-xl px-3 py-1 active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" data-weight="fill">add_circle</span>
+<span class="font-label-mono text-label-mono">Nueva</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">kayaking</span>
+<span class="font-label-mono text-label-mono">Equipos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-mono text-label-mono">Usuarios</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">history</span>
+<span class="font-label-mono text-label-mono">Historial</span>
+</a>
+</nav>
+<!-- SideNav (Desktop Replacement for BottomNav) - Hidden on mobile, flex on desktop -->
+<nav class="hidden md:flex flex-col fixed left-0 top-16 bottom-0 w-[80px] bg-surface-container/50 backdrop-blur-lg border-r border-white/5 z-40 py-md items-center justify-start gap-md">
+<a class="flex flex-col items-center justify-center w-full py-2 text-on-surface-variant hover:text-primary-fixed-dim transition-all group" href="#">
+<div class="p-2 rounded-full group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<span class="font-label-mono text-label-mono mt-1 opacity-0 group-hover:opacity-100 absolute left-20 bg-surface-container-high px-2 py-1 rounded shadow-lg pointer-events-none transition-opacity">Tablero</span>
+</a>
+<!-- Active SideNav Item -->
+<a class="flex flex-col items-center justify-center w-full py-2 text-primary group relative" href="#">
+<div class="absolute left-0 w-1 h-8 bg-primary rounded-r-full"></div>
+<div class="p-2 rounded-full bg-primary/10">
+<span class="material-symbols-outlined" data-weight="fill">add_circle</span>
+</div>
+<span class="font-label-mono text-label-mono mt-1 opacity-0 group-hover:opacity-100 absolute left-20 bg-surface-container-high px-2 py-1 rounded shadow-lg pointer-events-none transition-opacity">Nueva</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full py-2 text-on-surface-variant hover:text-primary-fixed-dim transition-all group" href="#">
+<div class="p-2 rounded-full group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">kayaking</span>
+</div>
+<span class="font-label-mono text-label-mono mt-1 opacity-0 group-hover:opacity-100 absolute left-20 bg-surface-container-high px-2 py-1 rounded shadow-lg pointer-events-none transition-opacity">Equipos</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full py-2 text-on-surface-variant hover:text-primary-fixed-dim transition-all group" href="#">
+<div class="p-2 rounded-full group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">group</span>
+</div>
+<span class="font-label-mono text-label-mono mt-1 opacity-0 group-hover:opacity-100 absolute left-20 bg-surface-container-high px-2 py-1 rounded shadow-lg pointer-events-none transition-opacity">Usuarios</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full py-2 text-on-surface-variant hover:text-primary-fixed-dim transition-all group" href="#">
+<div class="p-2 rounded-full group-hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">history</span>
+</div>
+<span class="font-label-mono text-label-mono mt-1 opacity-0 group-hover:opacity-100 absolute left-20 bg-surface-container-high px-2 py-1 rounded shadow-lg pointer-events-none transition-opacity">Historial</span>
+</a>
+</nav>
+<!-- Add margin-left to main content on desktop to accommodate SideNav -->
+<style>
+        @media (min-width: 768px) {
+            main {
+                padding-left: calc(80px + 40px); /* SideNav width + desktop margin */
+            }
+            .fixed.bottom-\[80px\] {
+                padding-left: calc(80px + 40px);
+                bottom: 40px; /* Reset bottom offset since no bottom nav */
+            }
+        }
+    </style>
+<script>
+        // Simple script to handle radio button visual selection state
+        document.addEventListener('DOMContentLoaded', () => {
+            const labels = document.querySelectorAll('label');
+            
+            labels.forEach(label => {
+                const radio = label.querySelector('input[type="radio"]');
+                const panel = label.querySelector('div.rounded-xl');
+                const icon = label.querySelector('.material-symbols-outlined');
+                const title = label.querySelector('h2');
+                
+                // Get the custom radio indicator elements
+                const indicatorContainer = label.querySelector('.rounded-full.border-2');
+                
+                if (radio.checked) {
+                    setAsSelected(panel, icon, title, indicatorContainer);
+                }
+
+                radio.addEventListener('change', (e) => {
+                    // Reset all
+                    labels.forEach(l => {
+                        const r = l.querySelector('input[type="radio"]');
+                        const p = l.querySelector('div.rounded-xl');
+                        const ic = l.querySelector('.material-symbols-outlined');
+                        const t = l.querySelector('h2');
+                        const ind = l.querySelector('.rounded-full.border-2');
+                        
+                        setAsUnselected(p, ic, t, ind);
+                    });
+                    
+                    // Set current
+                    if(e.target.checked) {
+                        setAsSelected(panel, icon, title, indicatorContainer);
+                    }
+                });
+            });
+
+            function setAsSelected(panel, icon, title, indicator) {
+                // Panel classes
+                panel.classList.remove('glass-panel', 'group-hover:border-white/20', 'group-hover:bg-surface-container-high/80');
+                panel.classList.add('glass-panel-selected');
+                
+                // Icon container & icon
+                const iconContainer = icon.parentElement;
+                iconContainer.classList.remove('bg-surface-variant', 'border-white/5', 'group-hover:border-white/10');
+                iconContainer.classList.add('bg-primary/20', 'border-primary/30');
+                icon.classList.remove('text-on-surface-variant');
+                icon.classList.add('text-primary');
+                icon.setAttribute('data-weight', 'fill');
+                
+                // Title
+                title.classList.remove('group-hover:text-primary');
+                
+                // Price text
+                const priceDiv = panel.querySelector('.border-t');
+                const priceText = priceDiv.querySelector('span');
+                priceDiv.classList.remove('border-white/5', 'group-hover:border-white/10');
+                priceDiv.classList.add('border-white/10');
+                priceText.classList.remove('text-on-surface-variant');
+                priceText.classList.add('text-primary');
+
+                // Custom radio indicator
+                indicator.classList.remove('border-outline-variant', 'group-hover:border-outline');
+                indicator.classList.add('border-primary');
+                if(!indicator.querySelector('div')) {
+                    indicator.innerHTML = '<div class="w-3 h-3 rounded-full bg-primary"></div>';
+                }
+            }
+
+            function setAsUnselected(panel, icon, title, indicator) {
+                 // Panel classes
+                 panel.classList.remove('glass-panel-selected');
+                 panel.classList.add('glass-panel', 'group-hover:border-white/20', 'group-hover:bg-surface-container-high/80');
+                 
+                 // Icon container & icon
+                 const iconContainer = icon.parentElement;
+                 iconContainer.classList.remove('bg-primary/20', 'border-primary/30');
+                 iconContainer.classList.add('bg-surface-variant', 'border-white/5', 'group-hover:border-white/10');
+                 icon.classList.remove('text-primary');
+                 icon.classList.add('text-on-surface-variant');
+                 icon.removeAttribute('data-weight');
+                 
+                 // Title
+                 title.classList.add('group-hover:text-primary');
+                 
+                 // Price text
+                 const priceDiv = panel.querySelector('.border-t');
+                 const priceText = priceDiv.querySelector('span');
+                 priceDiv.classList.remove('border-white/10');
+                 priceDiv.classList.add('border-white/5', 'group-hover:border-white/10');
+                 priceText.classList.remove('text-primary');
+                 priceText.classList.add('text-on-surface-variant');
+
+                 // Custom radio indicator
+                 indicator.classList.remove('border-primary');
+                 indicator.classList.add('border-outline-variant', 'group-hover:border-outline');
+                 indicator.innerHTML = '';
+            }
+        });
+    </script>
+</body></html>

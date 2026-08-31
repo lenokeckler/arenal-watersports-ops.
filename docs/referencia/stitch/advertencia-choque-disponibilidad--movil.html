@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Arenal Ops - Advertencia de Disponibilidad</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#005371",
+                      "on-secondary": "#670211",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "surface-tint": "#3cddc7",
+                      "on-tertiary-fixed": "#001e2c",
+                      "secondary-fixed": "#ffdad8",
+                      "outline-variant": "#3c4a46",
+                      "on-surface": "#dae2fd",
+                      "tertiary-fixed": "#c4e7ff",
+                      "on-secondary-container": "#ff9996",
+                      "background": "#0b1326",
+                      "on-secondary-fixed": "#410006",
+                      "on-primary-container": "#00574d",
+                      "surface-dim": "#0b1326",
+                      "secondary": "#ffb3b0",
+                      "on-surface-variant": "#bacac5",
+                      "surface-container-lowest": "#060e20",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "on-tertiary": "#00354a",
+                      "on-background": "#dae2fd",
+                      "surface-variant": "#2d3449",
+                      "on-primary-fixed": "#00201c",
+                      "secondary-container": "#881d24",
+                      "primary-fixed-dim": "#3cddc7",
+                      "on-primary-fixed-variant": "#005047",
+                      "inverse-on-surface": "#283044",
+                      "surface-container": "#171f33",
+                      "surface": "#0b1326",
+                      "inverse-primary": "#006b5f",
+                      "on-error": "#690005",
+                      "primary-fixed": "#62fae3",
+                      "error": "#ffb4ab",
+                      "primary-container": "#2dd4bf",
+                      "error-container": "#93000a",
+                      "tertiary-container": "#5ec9ff",
+                      "inverse-surface": "#dae2fd",
+                      "surface-container-highest": "#2d3449",
+                      "outline": "#859490",
+                      "on-error-container": "#ffdad6",
+                      "on-primary": "#003731",
+                      "surface-bright": "#31394d",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "tertiary": "#afe0ff",
+                      "surface-container-high": "#222a3d",
+                      "primary": "#57f1db",
+                      "surface-container-low": "#131b2e",
+                      "on-secondary-fixed-variant": "#881d24"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "sm": "12px",
+                      "margin-desktop": "40px",
+                      "xl": "80px",
+                      "md": "24px",
+                      "xs": "4px",
+                      "margin-mobile": "16px",
+                      "lg": "48px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        /* Custom scrollbar and utilities */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-enter {
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen w-full font-body-base overflow-hidden selection:bg-primary/30 antialiased max-w-[390px] mx-auto relative flex flex-col">
+<!-- Background (Simulated behind the overlay) -->
+<div class="absolute inset-0 z-0 bg-surface-container flex flex-col pointer-events-none opacity-50 blur-sm grayscale-[30%]">
+<!-- Mock TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile py-sm w-full z-50 bg-surface/70 border-b border-white/10 shadow-sm">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">water</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface">Nueva</h1>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">close</span>
+</header>
+<div class="p-margin-mobile flex-1 overflow-y-auto">
+<div class="glass-panel rounded-xl p-md mb-sm h-32"></div>
+<div class="glass-panel rounded-xl p-md mb-sm h-48"></div>
+<div class="glass-panel rounded-xl p-md mb-sm h-24"></div>
+</div>
+<!-- Mock BottomNavBar -->
+<nav class="flex justify-around items-center h-[72px] pb-safe px-xs bg-surface/80 border-t border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] fixed bottom-0 w-full rounded-t-xl z-50">
+<div class="flex flex-col items-center justify-center text-outline-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-mono text-label-mono mt-xs">Tablero</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary scale-110">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-mono text-label-mono mt-xs font-bold">Nueva</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sailing</span>
+<span class="font-label-mono text-label-mono mt-xs">Equipos</span>
+</div>
+</nav>
+</div>
+<!-- Overlay -->
+<div class="absolute inset-0 z-40 bg-[#020617]/80 backdrop-blur-sm transition-opacity duration-300 flex flex-col justify-end">
+<!-- Bottom Sheet Modal -->
+<div class="modal-enter w-full bg-surface-container-high rounded-t-xl border-t border-secondary-container/30 shadow-[0_-8px_32px_rgba(136,29,36,0.15)] flex flex-col relative z-50 pb-safe">
+<!-- Handle -->
+<div class="w-full flex justify-center py-xs">
+<div class="w-12 h-1.5 rounded-full bg-white/20"></div>
+</div>
+<div class="px-margin-mobile pt-sm pb-md flex flex-col gap-md">
+<!-- Header/Warning Indicator -->
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-sm text-secondary">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h2 class="font-title-md text-title-md font-semibold text-secondary">Choque de Disponibilidad</h2>
+</div>
+</div>
+<!-- Stats Summary -->
+<div class="grid grid-cols-3 gap-xs bg-surface-variant/50 rounded-lg p-sm border border-white/5">
+<div class="flex flex-col items-center text-center">
+<span class="font-display-lg text-display-lg text-on-surface">4</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Usables</span>
+</div>
+<div class="flex flex-col items-center text-center border-l border-r border-white/5">
+<span class="font-display-lg text-display-lg text-secondary">3</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Comprometidas</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-display-lg text-display-lg text-primary">1</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Libres (Franja)</span>
+</div>
+</div>
+<!-- Message Body -->
+<div class="bg-secondary-container/10 border border-secondary-container/20 rounded-lg p-md flex flex-col gap-sm">
+<p class="font-body-base text-body-base text-on-surface">
+                        Se ha detectado un conflicto de disponibilidad en el horario seleccionado. La unidad seleccionada choca con la siguiente reserva:
+                    </p>
+<div class="bg-surface-container rounded p-sm flex flex-col gap-xs border border-white/5">
+<div class="flex justify-between items-center">
+<span class="font-label-mono text-label-mono text-secondary">#RES-4902</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">10:00 AM - 12:00 PM</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface">
+<span class="material-symbols-outlined text-[16px]">person</span>
+<span class="font-body-base text-body-base font-medium">Familia Rodriguez</span>
+</div>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mt-xs">
+                        * Puedes continuar porque la operación permite acomodos sobre la marcha.
+                    </p>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-sm mt-xs">
+<button class="w-full h-[48px] rounded-lg bg-secondary text-on-secondary font-button text-button uppercase tracking-wider flex items-center justify-center gap-xs hover:bg-secondary-fixed transition-colors shadow-[inset_0_2px_4px_rgba(255,255,255,0.2)]" type="button">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+                        Continuar de todos modos
+                    </button>
+<button class="w-full h-[48px] rounded-lg bg-transparent border border-outline text-on-surface font-button text-button uppercase tracking-wider flex items-center justify-center gap-xs hover:bg-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+                        Cambiar Equipo
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

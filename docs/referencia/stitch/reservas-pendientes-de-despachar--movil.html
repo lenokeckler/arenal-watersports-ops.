@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Arenal Ops - Reservas Pendientes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#2dd4bf",
+                        "secondary": "#ffb3b0",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#2d3449",
+                        "primary-fixed-dim": "#3cddc7",
+                        "primary": "#57f1db",
+                        "outline-variant": "#3c4a46",
+                        "secondary-container": "#881d24",
+                        "on-secondary-fixed": "#410006",
+                        "on-surface-variant": "#bacac5",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#131b2e",
+                        "on-surface": "#dae2fd",
+                        "outline": "#859490",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#3cddc7",
+                        "surface-dim": "#0b1326",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-container": "#00574d",
+                        "on-primary-fixed": "#00201c",
+                        "on-background": "#dae2fd",
+                        "tertiary": "#afe0ff",
+                        "on-tertiary-fixed": "#001e2c",
+                        "on-tertiary-container": "#005371",
+                        "on-secondary": "#670211",
+                        "inverse-surface": "#dae2fd",
+                        "inverse-primary": "#006b5f",
+                        "inverse-on-surface": "#283044",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "background": "#0b1326",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "tertiary-container": "#5ec9ff",
+                        "on-primary": "#003731",
+                        "surface-container-lowest": "#060e20",
+                        "surface": "#0b1326",
+                        "surface-bright": "#31394d",
+                        "on-tertiary": "#00354a",
+                        "on-primary-fixed-variant": "#005047",
+                        "secondary-fixed": "#ffdad8",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#c4e7ff",
+                        "surface-variant": "#2d3449",
+                        "surface-container": "#171f33",
+                        "primary-fixed": "#62fae3",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "on-secondary-container": "#ff9996"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "xl": "80px",
+                        "margin-desktop": "40px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #020617; /* Level 0 Deep Navy */
+            background-image: radial-gradient(circle at 50% 0%, #0b1326 0%, #020617 100%);
+            color: theme('colors.on-background');
+        }
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card-interactive:hover, .glass-card-interactive:active {
+            background-color: rgba(30, 41, 59, 0.85);
+            box-shadow: inset 0 0 8px theme('colors.primary');
+        }
+        .glass-card-urgent {
+            background-color: rgba(136, 29, 36, 0.3); /* Coral/Secondary container tinted */
+            backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.secondary');
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-base text-body-base min-h-screen flex flex-col pb-[90px]">
+<!-- TopAppBar -->
+<header class="bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl font-title-md text-title-md-mobile docked full-width top-0 sticky z-50 border-b border-white/10 shadow-md flex justify-between items-center px-margin-mobile h-16 w-full">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">Arenal Ops</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A highly detailed close-up portrait of a professional water sports operations manager wearing a dark navy cap and polarized sunglasses. The lighting is bright and outdoor, reflecting off the water. The aesthetic is modern, crisp, and professional, perfectly suited for a high-end operations dashboard user profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTBFtk12W6Ttv-uFeiCIhWHBo5DMP1NWOGD7bK8dw855n24u1jaiRZ2zxXPtzy6BDAIHx3ItQKHNTdPPCY_6tHosUQZkzs4JL-I_0WS4-iXsqTYD0rCLfJfVq0u2acFL7Ax-FLVZ40Dflob78vvR6V5xCwAJbE8hmp0lLGTqx_w2m9U4qNGKgTXCXK5g2Mm2ySDGSX4911hAckHCm47aljaTDDOkO7NJ2cpK4Z17jx-ZLrv2FFSUqGBBAGIixi2LGj7U3OURRRHS29"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-margin-mobile py-md flex flex-col gap-sm max-w-lg mx-auto w-full">
+<!-- Section Header -->
+<div class="flex justify-between items-end mb-xs">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Reservas</h1>
+<span class="font-label-mono text-label-mono text-primary px-2 py-1 bg-primary-container/20 rounded-full">HOY 14 OCT</span>
+</div>
+<!-- Urgent Alert Section -->
+<div class="glass-card-urgent rounded-xl p-sm flex items-start gap-sm mb-base shadow-md">
+<span class="material-symbols-outlined text-secondary text-2xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+<div class="flex-1">
+<h2 class="font-title-md text-title-md-mobile text-secondary font-bold leading-tight">Reservas Vencidas</h2>
+<p class="font-body-base text-body-base text-on-error-container opacity-90 mt-xs">JS-04 lleva +15m de retraso en retorno.</p>
+</div>
+<button class="text-secondary font-button text-button uppercase bg-secondary/10 px-3 py-1.5 rounded-lg border border-secondary/30 hover:bg-secondary/20 transition-colors">
+                Localizar
+            </button>
+</div>
+<!-- Pending Dispatch List -->
+<div class="flex flex-col gap-sm">
+<!-- Card 1 -->
+<div class="glass-card glass-card-interactive rounded-xl p-sm flex flex-col gap-sm transition-all duration-200">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">09:30</span>
+</div>
+<span class="font-label-mono text-label-mono bg-primary-container/20 text-primary px-2 py-1 rounded-full border border-primary/30">Jet Ski</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<div class="font-title-md text-title-md-mobile text-on-surface font-semibold">García, Carlos</div>
+<div class="flex items-center gap-xs text-on-surface-variant text-sm mt-1">
+<span class="material-symbols-outlined text-[16px]">group</span> 2 pers
+                            <span class="text-white/30 mx-1">|</span>
+<span class="material-symbols-outlined text-[16px]">key</span> JS-01
+                        </div>
+</div>
+</div>
+<button class="w-full mt-2 bg-primary text-on-primary font-button text-button uppercase py-3 rounded-lg hover:opacity-90 active:scale-95 transition-all shadow-[0_0_15px_rgba(87,241,219,0.3)]">
+                    Confirmar Despacho
+                </button>
+</div>
+<!-- Card 2 -->
+<div class="glass-card glass-card-interactive rounded-xl p-sm flex flex-col gap-sm transition-all duration-200">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-on-surface" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">10:00</span>
+</div>
+<span class="font-label-mono text-label-mono bg-tertiary-container/20 text-tertiary px-2 py-1 rounded-full border border-tertiary/30">Kayak</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<div class="font-title-md text-title-md-mobile text-on-surface font-semibold">Smith, Sarah</div>
+<div class="flex items-center gap-xs text-on-surface-variant text-sm mt-1">
+<span class="material-symbols-outlined text-[16px]">group</span> 4 pers
+                            <span class="text-white/30 mx-1">|</span>
+<span class="material-symbols-outlined text-[16px]">key</span> K-02, K-03
+                        </div>
+</div>
+</div>
+<button class="w-full mt-2 bg-transparent text-primary border border-primary/50 font-button text-button uppercase py-3 rounded-lg hover:bg-primary/10 active:scale-95 transition-all">
+                    Preparar Equipo
+                </button>
+</div>
+<!-- Card 3 -->
+<div class="glass-card glass-card-interactive rounded-xl p-sm flex flex-col gap-sm transition-all duration-200 opacity-70">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface-variant">11:15</span>
+</div>
+<span class="font-label-mono text-label-mono bg-primary-container/10 text-primary-fixed-dim px-2 py-1 rounded-full border border-primary/20">Jet Ski</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<div class="font-title-md text-title-md-mobile text-on-surface-variant font-semibold">Ramírez, Luis</div>
+<div class="flex items-center gap-xs text-on-surface-variant text-sm mt-1">
+<span class="material-symbols-outlined text-[16px]">group</span> 1 pers
+                            <span class="text-white/30 mx-1">|</span>
+<span class="material-symbols-outlined text-[16px]">key</span> JS-05
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container-high/80 dark:bg-surface-container-highest/80 backdrop-blur-2xl font-label-mono text-label-mono docked full-width bottom-0 rounded-t-xl border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] fixed left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe md:hidden">
+<button class="flex flex-col items-center justify-center bg-primary-container/20 text-primary rounded-xl px-4 py-1 shadow-[inset_0_0_10px_rgba(87,241,219,0.2)] hover:bg-surface-variant/50 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span>Reservas</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 hover:opacity-100 active:scale-90 transition-all duration-200 px-4 py-1 rounded-xl">
+<span class="material-symbols-outlined mb-1">sailing</span>
+<span>Ops</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 hover:opacity-100 active:scale-90 transition-all duration-200 px-4 py-1 rounded-xl">
+<span class="material-symbols-outlined mb-1">inventory_2</span>
+<span>Inventario</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 hover:opacity-100 active:scale-90 transition-all duration-200 px-4 py-1 rounded-xl">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span>Admin</span>
+</button>
+</nav>
+</body></html>
