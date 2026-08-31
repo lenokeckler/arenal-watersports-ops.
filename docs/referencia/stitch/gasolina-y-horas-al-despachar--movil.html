@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Registro de Despacho</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#2dd4bf",
+                      "secondary": "#ffb3b0",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "on-error": "#690005",
+                      "surface-container-highest": "#2d3449",
+                      "primary-fixed-dim": "#3cddc7",
+                      "primary": "#57f1db",
+                      "outline-variant": "#3c4a46",
+                      "secondary-container": "#881d24",
+                      "on-secondary-fixed": "#410006",
+                      "on-surface-variant": "#bacac5",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-low": "#131b2e",
+                      "on-surface": "#dae2fd",
+                      "outline": "#859490",
+                      "error": "#ffb4ab",
+                      "surface-tint": "#3cddc7",
+                      "surface-dim": "#0b1326",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-container": "#00574d",
+                      "on-primary-fixed": "#00201c",
+                      "on-background": "#dae2fd",
+                      "tertiary": "#afe0ff",
+                      "on-tertiary-fixed": "#001e2c",
+                      "on-tertiary-container": "#005371",
+                      "on-secondary": "#670211",
+                      "inverse-surface": "#dae2fd",
+                      "inverse-primary": "#006b5f",
+                      "inverse-on-surface": "#283044",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "background": "#0b1326",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "tertiary-container": "#5ec9ff",
+                      "on-primary": "#003731",
+                      "surface-container-lowest": "#060e20",
+                      "surface": "#0b1326",
+                      "surface-bright": "#31394d",
+                      "on-tertiary": "#00354a",
+                      "on-primary-fixed-variant": "#005047",
+                      "secondary-fixed": "#ffdad8",
+                      "error-container": "#93000a",
+                      "tertiary-fixed": "#c4e7ff",
+                      "surface-variant": "#2d3449",
+                      "surface-container": "#171f33",
+                      "primary-fixed": "#62fae3",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "on-secondary-container": "#ff9996"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "base": "8px",
+                      "sm": "12px",
+                      "xl": "80px",
+                      "margin-desktop": "40px",
+                      "lg": "48px",
+                      "md": "24px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-base antialiased selection:bg-primary selection:text-on-primary">
+<div class="min-h-screen flex flex-col relative overflow-hidden">
+<!-- Background Gradient/Glow Effect -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+<div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[120px]"></div>
+</div>
+<!-- TopAppBar (Transactional - Hidden for focused task, using a custom back header instead) -->
+<header class="w-full flex items-center p-margin-mobile pt-safe-top z-10 sticky top-0 bg-background/80 backdrop-blur-md">
+<button class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="ml-4 flex flex-col">
+<span class="font-label-mono text-label-mono text-primary uppercase tracking-wider">Despacho</span>
+<h1 class="font-title-md text-title-md">JS-04 Yamaha VX</h1>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col p-margin-mobile z-10 max-w-md mx-auto w-full gap-lg">
+<!-- Machine Info Card -->
+<div class="relative rounded-xl overflow-hidden bg-surface-container/70 backdrop-blur-xl border border-white/10 p-sm shadow-xl flex items-center gap-4">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern Yamaha VX wave runner jet ski viewed from a high angle. The machine is parked on a dock. Dark background with dramatic teal studio lighting reflecting off the metallic hull, highlighting its aggressive lines and sporty design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDweC2_PS7xdTZjUFu7g_zH12pbUTM667qNtq5VdXN7lkiLLQAleK8QIHVlO9AyEK_LCPulth_T3lyXQElBudwNDkHJHnDmC16KO2BV1Z5ITDuVMgjSNXe6ytx0VrApeWFLgxdKHKnfJi4QBngJBKppBSHTUD922rPOQ3Suze0q_yjrZ85MnzaVDnYiwrXKuM455ltALXRYSNbiBIK7Sle_U9UBOD4bRX58puZTM2WCjShz5zHxHfWHyNEbiO7yci6_U3DN1m7NuV7b"/>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary-fixed">JS-04</h2>
+<span class="font-body-base text-body-base text-on-surface-variant">Yamaha VX Cruiser HO</span>
+<div class="flex items-center gap-1 mt-2">
+<span class="inline-flex px-2 py-1 rounded-full bg-primary-container/20 text-primary font-label-mono text-label-mono">Mantenimiento OK</span>
+</div>
+</div>
+</div>
+<!-- Fuel Level Selector -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<h3 class="font-title-md text-title-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">local_gas_station</span> Nivel de Gasolina
+                    </h3>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="fuel-btn bg-surface-container-high border border-white/10 rounded-lg py-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-variant transition-all focus:outline-none" data-value="0.25">
+<div class="w-8 h-4 rounded-sm border border-outline relative overflow-hidden">
+<div class="absolute left-0 bottom-0 w-[25%] h-full bg-error transition-all duration-300"></div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface">1/4</span>
+</button>
+<button class="fuel-btn bg-surface-container-high border border-white/10 rounded-lg py-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-variant transition-all focus:outline-none" data-value="0.5">
+<div class="w-8 h-4 rounded-sm border border-outline relative overflow-hidden">
+<div class="absolute left-0 bottom-0 w-[50%] h-full bg-tertiary transition-all duration-300"></div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface">1/2</span>
+</button>
+<button class="fuel-btn bg-surface-container-high border border-white/10 rounded-lg py-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-variant transition-all focus:outline-none" data-value="0.75">
+<div class="w-8 h-4 rounded-sm border border-outline relative overflow-hidden">
+<div class="absolute left-0 bottom-0 w-[75%] h-full bg-primary transition-all duration-300"></div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface">3/4</span>
+</button>
+<button class="fuel-btn bg-primary-container/20 border-primary shadow-[inset_0_0_10px_rgba(87,241,219,0.2)] rounded-lg py-4 flex flex-col items-center justify-center gap-2 transition-all focus:outline-none" data-value="1">
+<div class="w-8 h-4 rounded-sm border border-primary relative overflow-hidden">
+<div class="absolute left-0 bottom-0 w-full h-full bg-primary transition-all duration-300"></div>
+</div>
+<span class="font-label-mono text-label-mono text-primary font-bold">Lleno</span>
+</button>
+</div>
+</section>
+<!-- Engine Hours Input -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<h3 class="font-title-md text-title-md flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">timer</span> Horómetro
+                    </h3>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Último: 1245.2 h</span>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-xl p-4 pl-6 text-center font-label-mono text-display-lg text-primary focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all placeholder:text-surface-bright/50" placeholder="1245.2" step="0.1" type="number"/>
+<span class="absolute right-6 top-1/2 -translate-y-1/2 font-label-mono text-title-md text-on-surface-variant">hrs</span>
+</div>
+<div class="flex justify-center">
+<p class="text-xs text-on-surface-variant opacity-70">Debe ser mayor al último registro.</p>
+</div>
+</section>
+<div class="flex-grow"></div>
+<!-- Submit Button -->
+<div class="pb-margin-mobile">
+<button class="w-full bg-primary text-on-primary font-button text-button uppercase tracking-wider py-4 rounded-xl shadow-lg hover:shadow-[0_0_20px_rgba(87,241,219,0.4)] active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">send</span>
+                    Registrar Salida
+                </button>
+</div>
+</main>
+</div>
+<script>
+        // Simple script for fuel button selection interaction
+        document.querySelectorAll('.fuel-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Reset all
+                document.querySelectorAll('.fuel-btn').forEach(b => {
+                    b.classList.remove('bg-primary-container/20', 'border-primary', 'shadow-[inset_0_0_10px_rgba(87,241,219,0.2)]');
+                    b.classList.add('bg-surface-container-high', 'border-white/10');
+                    b.querySelector('span').classList.remove('text-primary', 'font-bold');
+                    b.querySelector('span').classList.add('text-on-surface');
+                    b.querySelector('.border').classList.remove('border-primary');
+                    b.querySelector('.border').classList.add('border-outline');
+                });
+                
+                // Set active
+                this.classList.remove('bg-surface-container-high', 'border-white/10');
+                this.classList.add('bg-primary-container/20', 'border-primary', 'shadow-[inset_0_0_10px_rgba(87,241,219,0.2)]');
+                this.querySelector('span').classList.remove('text-on-surface');
+                this.querySelector('span').classList.add('text-primary', 'font-bold');
+                this.querySelector('.border').classList.remove('border-outline');
+                this.querySelector('.border').classList.add('border-primary');
+            });
+        });
+    </script>
+</body></html>

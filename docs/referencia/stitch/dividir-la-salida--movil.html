@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Arenal Ops - Detalle de Reserva</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#006b5f",
+                        "on-tertiary": "#00354a",
+                        "on-tertiary-fixed": "#001e2c",
+                        "on-primary-fixed": "#00201c",
+                        "surface-container-highest": "#2d3449",
+                        "primary-container": "#2dd4bf",
+                        "surface-container-low": "#131b2e",
+                        "on-error": "#690005",
+                        "outline-variant": "#3c4a46",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "tertiary-container": "#5ec9ff",
+                        "primary-fixed-dim": "#3cddc7",
+                        "on-surface-variant": "#bacac5",
+                        "on-secondary-fixed": "#410006",
+                        "on-secondary": "#670211",
+                        "surface-variant": "#2d3449",
+                        "primary": "#57f1db",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-tertiary-container": "#005371",
+                        "tertiary-fixed": "#c4e7ff",
+                        "inverse-on-surface": "#283044",
+                        "on-primary": "#003731",
+                        "surface": "#0b1326",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#222a3d",
+                        "background": "#0b1326",
+                        "surface-container": "#171f33",
+                        "secondary-fixed": "#ffdad8",
+                        "outline": "#859490",
+                        "on-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-secondary-container": "#ff9996",
+                        "surface-bright": "#31394d",
+                        "on-primary-container": "#00574d",
+                        "on-background": "#dae2fd",
+                        "tertiary": "#afe0ff",
+                        "surface-dim": "#0b1326",
+                        "surface-container-lowest": "#060e20",
+                        "primary-fixed": "#62fae3",
+                        "surface-tint": "#3cddc7",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ffb3b0",
+                        "inverse-surface": "#dae2fd",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#881d24",
+                        "secondary-fixed-dim": "#ffb3b0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "80px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "lg": "48px",
+                        "gutter": "20px",
+                        "sm": "12px",
+                        "margin-desktop": "40px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bottom-sheet {
+            background: rgba(6, 14, 32, 0.85); /* surface-container-lowest with opacity */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(0);
+            animation: slideUp 0.3s ease-out forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .bg-gradient-radial {
+            background: radial-gradient(circle at center, #131b2e 0%, #020617 100%);
+        }
+        
+        /* Input Number hiding controls */
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base antialiased h-screen w-full max-w-[390px] mx-auto overflow-hidden relative shadow-2xl">
+<!-- Background Dashboard (Original Reservation) -->
+<div class="absolute inset-0 bg-gradient-radial flex flex-col pt-16 px-margin-mobile opacity-50 pointer-events-none transition-opacity duration-300">
+<!-- Header -->
+<header class="flex justify-between items-center mb-md">
+<div>
+<p class="font-label-mono text-label-mono text-primary mb-xs uppercase tracking-wider">Reserva #4892</p>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Familia Rodriguez</h1>
+</div>
+<div class="h-10 w-10 rounded-full bg-surface-container flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</header>
+<!-- Main Info Card -->
+<div class="glass-panel rounded-xl p-md mb-md">
+<div class="flex items-center justify-between mb-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">directions_boat</span>
+<span class="font-title-md text-title-md">Tour Volcán</span>
+</div>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full font-label-mono text-label-mono border border-primary/30">EN PROGRESO</span>
+</div>
+<p class="text-on-surface-variant font-body-base text-body-base mb-sm">Inicio: 08:30 AM • Duración: 4h</p>
+<div class="flex gap-4 mt-md border-t border-white/10 pt-md">
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono mb-xs uppercase">Pax</p>
+<p class="font-title-md text-title-md">6</p>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono mb-xs uppercase">Equipos</p>
+<p class="font-title-md text-title-md">3 Jet Skis</p>
+</div>
+</div>
+</div>
+<!-- Action Buttons (Blurred out) -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-high rounded-lg p-sm text-center border border-white/5 opacity-50">
+<span class="material-symbols-outlined block text-on-surface-variant mb-xs">receipt_long</span>
+<span class="font-button text-button text-on-surface-variant">Factura</span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-sm text-center border border-white/5 opacity-50">
+<span class="material-symbols-outlined block text-on-surface-variant mb-xs">call_split</span>
+<span class="font-button text-button text-on-surface-variant">Dividir</span>
+</div>
+</div>
+</div>
+<!-- Modal Overlay Backdrop -->
+<div class="absolute inset-0 bg-surface/60 backdrop-blur-sm z-40"></div>
+<!-- Bottom Sheet Modal -->
+<div class="bottom-sheet absolute bottom-0 left-0 w-full h-[751px] rounded-t-3xl z-50 flex flex-col">
+<!-- Drag Handle -->
+<div class="w-full flex justify-center pt-sm pb-2">
+<div class="w-12 h-1.5 bg-on-surface-variant/30 rounded-full"></div>
+</div>
+<!-- Header -->
+<div class="px-margin-mobile pb-sm border-b border-white/5 flex items-center justify-between shrink-0">
+<h2 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">call_split</span>
+                Dividir Salida
+            </h2>
+<button class="p-2 rounded-full hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">close</span>
+</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto px-margin-mobile py-md">
+<!-- Original Departure Block -->
+<div class="mb-lg">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant mb-sm uppercase tracking-wider flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                    Salida Original
+                </h3>
+<div class="glass-panel rounded-xl p-sm grid grid-cols-2 gap-sm">
+<!-- Pax Selector -->
+<div class="bg-surface/50 rounded-lg p-sm border border-white/5 flex flex-col items-center">
+<span class="text-on-surface-variant font-label-mono text-label-mono mb-2 uppercase">Personas</span>
+<div class="flex items-center justify-between w-full">
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">4</span>
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Equipment Selector -->
+<div class="bg-surface/50 rounded-lg p-sm border border-white/5 flex flex-col items-center">
+<span class="text-on-surface-variant font-label-mono text-label-mono mb-2 uppercase">Equipos</span>
+<div class="flex items-center justify-between w-full">
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">2</span>
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Arrow Divider -->
+<div class="flex justify-center -my-6 relative z-10 mb-sm">
+<div class="bg-surface-container-high rounded-full p-2 border border-white/10 shadow-lg">
+<span class="material-symbols-outlined text-on-surface-variant">arrow_downward</span>
+</div>
+</div>
+<!-- New Departure Block -->
+<div class="mb-md">
+<h3 class="font-label-mono text-label-mono text-primary mb-sm uppercase tracking-wider flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    Salida Nueva
+                </h3>
+<div class="glass-panel rounded-xl p-sm grid grid-cols-2 gap-sm border-primary/30">
+<!-- Pax Selector -->
+<div class="bg-primary/5 rounded-lg p-sm border border-primary/20 flex flex-col items-center shadow-[inset_0_0_10px_rgba(45,212,191,0.05)]">
+<span class="text-on-surface-variant font-label-mono text-label-mono mb-2 uppercase">Personas</span>
+<div class="flex items-center justify-between w-full">
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">2</span>
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Equipment Selector -->
+<div class="bg-primary/5 rounded-lg p-sm border border-primary/20 flex flex-col items-center shadow-[inset_0_0_10px_rgba(45,212,191,0.05)]">
+<span class="text-on-surface-variant font-label-mono text-label-mono mb-2 uppercase">Equipos</span>
+<div class="flex items-center justify-between w-full">
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">1</span>
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Info Alert -->
+<div class="bg-primary-container/10 border border-primary/20 rounded-lg p-sm flex gap-3 items-start mb-lg">
+<span class="material-symbols-outlined text-primary mt-0.5" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="font-body-base text-[14px] text-primary/90 leading-tight">
+                    El cobro y el depósito se quedan completos en la reserva original. La segunda salida nace sin cobro propio.
+                </p>
+</div>
+</div>
+<!-- Fixed Bottom Action -->
+<div class="p-margin-mobile pt-sm border-t border-white/5 bg-surface-container-lowest/90 backdrop-blur-md shrink-0">
+<button class="w-full bg-primary hover:bg-primary-fixed text-on-primary font-button text-button uppercase py-4 rounded-lg shadow-[inset_0_2px_4px_rgba(255,255,255,0.3)] transition-all active:scale-[0.98]">
+                Confirmar División
+            </button>
+</div>
+</div>
+</body></html>

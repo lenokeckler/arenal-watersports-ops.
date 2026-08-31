@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Combos Predefinidos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#0b1326",
+                        "on-background": "#dae2fd",
+                        "primary-fixed-dim": "#3cddc7",
+                        "outline-variant": "#3c4a46",
+                        "on-tertiary-container": "#005371",
+                        "on-secondary-container": "#ff9996",
+                        "inverse-primary": "#006b5f",
+                        "surface-container-low": "#131b2e",
+                        "on-surface-variant": "#bacac5",
+                        "inverse-surface": "#dae2fd",
+                        "surface-tint": "#3cddc7",
+                        "surface-container": "#171f33",
+                        "primary-fixed": "#62fae3",
+                        "on-tertiary": "#00354a",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#222a3d",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-tertiary-fixed": "#001e2c",
+                        "surface-dim": "#0b1326",
+                        "secondary-container": "#881d24",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "tertiary-container": "#5ec9ff",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "on-primary-container": "#00574d",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "surface-container-highest": "#2d3449",
+                        "surface-bright": "#31394d",
+                        "on-secondary-fixed": "#410006",
+                        "primary-container": "#2dd4bf",
+                        "tertiary": "#afe0ff",
+                        "surface-container-lowest": "#060e20",
+                        "secondary": "#ffb3b0",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "primary": "#57f1db",
+                        "on-surface": "#dae2fd",
+                        "on-primary-fixed-variant": "#005047",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#00201c",
+                        "secondary-fixed": "#ffdad8",
+                        "outline": "#859490",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-secondary": "#670211",
+                        "surface-variant": "#2d3449",
+                        "on-primary": "#003731",
+                        "inverse-on-surface": "#283044",
+                        "background": "#0b1326"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-desktop": "40px",
+                        "base": "8px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "20px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["JetBrains Mono"],
+                        "title-md": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bg-radial-gradient {
+            background: radial-gradient(circle at top right, rgba(0, 83, 113, 0.3) 0%, rgba(11, 19, 38, 1) 60%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface bg-radial-gradient min-h-screen font-body-base text-body-base antialiased pb-24 pt-20 selection:bg-primary/30 selection:text-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-xl flex items-center justify-between px-margin-mobile h-16">
+<button class="text-primary dark:text-primary hover:bg-primary/10 transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="waves">waves</span>
+</button>
+<h1 class="font-display-lg text-primary tracking-tighter uppercase font-headline-lg-mobile text-headline-lg-mobile">AQUAFLEET</h1>
+<button class="text-primary dark:text-primary hover:bg-primary/10 transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto space-y-md">
+<div class="flex items-center justify-between py-sm">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Combos Predefinidos</h2>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full glass-panel hover:bg-surface-container transition-colors text-primary font-button text-button uppercase active:scale-95">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                Filtros
+            </button>
+</div>
+<!-- Combos List -->
+<div class="space-y-md">
+<!-- Combo Card 1 -->
+<article class="glass-panel rounded-xl overflow-hidden flex flex-col md:flex-row group transition-all duration-300 hover:shadow-[inset_0_0_0_2px_#3cddc7] hover:bg-surface-container/90 relative">
+<div class="relative h-48 md:h-auto md:w-2/5 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A dynamic, high-quality, professional photograph showing an action-packed water sports scene. In the foreground, a sleek, modern jet ski cuts through pristine blue water. Slightly behind, a bright tandem kayak is visible. The lighting is cinematic, capturing the splash of water under a clear, sunny sky. The overall color palette features deep ocean blues and vibrant accents, fitting a premium, high-tech water sports management aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_AnalgGrV7yNx227alNsrVPYBt0WWtM2x2czT9KhE9X8HZkNZeN3QcpOOlHXF7azmDNN8GyhU6TQ-oLPq6Qkd3gR62xK-th9p62K0gvWKJxVViOyYpbhTNa9kedxZtB_hiplQYyjj8I03RygJ-ld0iiLJ7_8c34heixZxDBRT9d4Pzw6-MoERWW3NivQoM98173kwMwU7324oRJgZBFJ2gjpWJ2HBvJyIvWFWiQxaGNz4Xx_Z7DOZYd_1zp8TfSQuqPQZXRc6j2Id"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent md:bg-gradient-to-r"></div>
+<div class="absolute top-sm left-sm flex gap-2">
+<span class="px-3 py-1 bg-tertiary-container/20 text-tertiary font-label-mono text-label-mono rounded-full backdrop-blur-md border border-tertiary-container/30 uppercase">Popular</span>
+</div>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between relative z-10">
+<div>
+<h3 class="font-title-md text-title-md text-primary mb-2">Combo Aventura</h3>
+<div class="space-y-3 mb-6">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5 text-[20px]">kayaking</span>
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Incluye</p>
+<p class="text-on-background">1 Jet Ski + 1 Kayak Doble</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5 text-[20px]">schedule</span>
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Duración</p>
+<p class="text-on-background">2 horas</p>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 pt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-1">Precio Total</p>
+<p class="font-title-md text-title-md text-on-background">USD: $180.00</p>
+<p class="text-on-surface-variant text-sm">CRC: ₡95,000</p>
+</div>
+<button class="w-full sm:w-auto bg-primary text-on-primary font-button text-button uppercase py-3 px-6 rounded-lg hover:bg-primary-fixed transition-colors active:scale-95 shadow-[0_0_15px_rgba(87,241,219,0.3)]">
+                            Seleccionar Combo
+                        </button>
+</div>
+</div>
+</article>
+<!-- Combo Card 2 -->
+<article class="glass-panel rounded-xl overflow-hidden flex flex-col md:flex-row group transition-all duration-300 hover:shadow-[inset_0_0_0_2px_#3cddc7] hover:bg-surface-container/90 relative">
+<div class="relative h-48 md:h-auto md:w-2/5 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A serene, high-quality photograph of a family enjoying water sports. A sturdy, premium motorboat is anchored in calm, crystal-clear turquoise waters. Nearby, two people are calmly paddling on modern paddleboards. The setting is idyllic, with soft, golden-hour sunlight casting long shadows and creating a peaceful, luxurious mood. The style is crisp and professional, matching a high-end maritime operations system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeHNI_Kvtczv3S5fjFJmMzUlVGisCxjziet3FL6CyAB_Y-9CcnLDw8Z_awSEb81_wRFT6u4ZHeJPEUI0YsxJCk0tX9887OwxUPvEMP_ONmhY-QP55pX-SZchY4TJJYai3Z37rsdwoeIyUpebZBT21o2DaYpXMuKUZUsyex95JVMjBBcU7lAKp4vHKbKJ2Nq4waHSDTvsYmxDeRj0fD2BmIaR4np_UrLqEYmJV2J1wDMdPpwTBul83LTgfEK4k_jVf2s0sWjvzCyphD"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent md:bg-gradient-to-r"></div>
+<div class="absolute top-sm left-sm flex gap-2">
+<span class="px-3 py-1 bg-secondary-container/20 text-secondary font-label-mono text-label-mono rounded-full backdrop-blur-md border border-secondary-container/30 uppercase">Familiar</span>
+</div>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between relative z-10">
+<div>
+<h3 class="font-title-md text-title-md text-primary mb-2">Combo Familiar</h3>
+<div class="space-y-3 mb-6">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5 text-[20px]">sailing</span>
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Incluye</p>
+<p class="text-on-background">1 Lancha + 2 Paddleboards</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5 text-[20px]">schedule</span>
+<div>
+<p class="text-on-surface-variant font-label-mono text-label-mono uppercase mb-1">Duración</p>
+<p class="text-on-background">3 horas</p>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 pt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-1">Precio Total</p>
+<p class="font-title-md text-title-md text-on-background">USD: $350.00</p>
+<p class="text-on-surface-variant text-sm">CRC: ₡185,000</p>
+</div>
+<button class="w-full sm:w-auto bg-primary text-on-primary font-button text-button uppercase py-3 px-6 rounded-lg hover:bg-primary-fixed transition-colors active:scale-95 shadow-[0_0_15px_rgba(87,241,219,0.3)]">
+                            Seleccionar Combo
+                        </button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-lg border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] flex justify-around items-center px-4 py-3 pb-safe md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out group">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:drop-shadow-[0_0_8px_rgba(87,241,219,0.5)]">dashboard</span>
+<span class="font-label-mono text-label-mono">Tablero</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-xl px-3 py-1 hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out group">
+<span class="material-symbols-outlined text-[24px] mb-1 drop-shadow-[0_0_8px_rgba(87,241,219,0.5)]" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-mono text-label-mono">Nueva</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out group">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:drop-shadow-[0_0_8px_rgba(87,241,219,0.5)]">kayaking</span>
+<span class="font-label-mono text-label-mono">Equipos</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out group">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:drop-shadow-[0_0_8px_rgba(87,241,219,0.5)]">group</span>
+<span class="font-label-mono text-label-mono">Usuarios</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-all active:scale-90 duration-200 ease-out group">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:drop-shadow-[0_0_8px_rgba(87,241,219,0.5)]">history</span>
+<span class="font-label-mono text-label-mono">Historial</span>
+</button>
+</nav>
+</body></html>

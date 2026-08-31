@@ -8,7 +8,7 @@ import type {
   DailyRevenuePoint,
   MonthlyReservationPoint,
 } from "@/app/utils/administracion/reports";
-import SimpleBarChart from "./SimpleBarChart";
+import SimpleBarChart from "@/app/components/simple-bar-chart/SimpleBarChart";
 
 interface ReservationsTrendSectionProps {
   dailyReservationCounts: DailyReservationPoint[];
@@ -36,6 +36,7 @@ const ReservationsTrendSection = ({
     </h2>
 
     <SimpleBarChart
+      emptyState={REPORTS_SCREEN.TREND.EMPTY_STATE}
       title={REPORTS_SCREEN.TREND.DAILY_RESERVATIONS_TITLE}
       points={dailyReservationCounts.map((point) => ({
         label: point.day.slice(DAY_LABEL_LENGTH),
@@ -44,6 +45,7 @@ const ReservationsTrendSection = ({
     />
 
     <SimpleBarChart
+      emptyState={REPORTS_SCREEN.TREND.EMPTY_STATE}
       title={
         REPORTS_SCREEN.TREND.MONTHLY_RESERVATIONS_TITLE
       }
@@ -61,6 +63,7 @@ const ReservationsTrendSection = ({
       return points.length > 0 ? (
         <SimpleBarChart
           key={currency}
+          emptyState={REPORTS_SCREEN.TREND.EMPTY_STATE}
           title={`${REPORTS_SCREEN.TREND.DAILY_REVENUE_TITLE} (${currency})`}
           points={points.map((point) => ({
             label: point.day.slice(DAY_LABEL_LENGTH),

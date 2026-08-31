@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Posponer Reserva - Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#006b5f",
+                    "on-tertiary": "#00354a",
+                    "on-tertiary-fixed": "#001e2c",
+                    "on-primary-fixed": "#00201c",
+                    "surface-container-highest": "#2d3449",
+                    "primary-container": "#2dd4bf",
+                    "surface-container-low": "#131b2e",
+                    "on-error": "#690005",
+                    "outline-variant": "#3c4a46",
+                    "tertiary-fixed-dim": "#7bd0ff",
+                    "tertiary-container": "#5ec9ff",
+                    "primary-fixed-dim": "#3cddc7",
+                    "on-surface-variant": "#bacac5",
+                    "on-secondary-fixed": "#410006",
+                    "on-secondary": "#670211",
+                    "surface-variant": "#2d3449",
+                    "primary": "#57f1db",
+                    "on-primary-fixed-variant": "#005047",
+                    "on-tertiary-container": "#005371",
+                    "tertiary-fixed": "#c4e7ff",
+                    "inverse-on-surface": "#283044",
+                    "on-primary": "#003731",
+                    "surface": "#0b1326",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#222a3d",
+                    "background": "#0b1326",
+                    "surface-container": "#171f33",
+                    "secondary-fixed": "#ffdad8",
+                    "outline": "#859490",
+                    "on-surface": "#dae2fd",
+                    "on-secondary-fixed-variant": "#881d24",
+                    "on-tertiary-fixed-variant": "#004c69",
+                    "on-secondary-container": "#ff9996",
+                    "surface-bright": "#31394d",
+                    "on-primary-container": "#00574d",
+                    "on-background": "#dae2fd",
+                    "tertiary": "#afe0ff",
+                    "surface-dim": "#0b1326",
+                    "surface-container-lowest": "#060e20",
+                    "primary-fixed": "#62fae3",
+                    "surface-tint": "#3cddc7",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#ffb3b0",
+                    "inverse-surface": "#dae2fd",
+                    "error": "#ffb4ab",
+                    "secondary-container": "#881d24",
+                    "secondary-fixed-dim": "#ffb3b0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "80px",
+                    "xs": "4px",
+                    "md": "24px",
+                    "margin-mobile": "16px",
+                    "lg": "48px",
+                    "gutter": "20px",
+                    "sm": "12px",
+                    "margin-desktop": "40px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-base": ["Hanken Grotesk"],
+                    "button": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "title-md": ["Hanken Grotesk"],
+                    "label-mono": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "body-base": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "button": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #020617; /* Level 0 Background */
+            background-image: radial-gradient(circle at 50% -20%, #131b2e, #020617 80%);
+            min-height: 100vh;
+        }
+        
+        /* Material Symbols Outlined Customization */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        /* Glassmorphism Classes based on style guidance */
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-modal {
+            background-color: rgba(11, 19, 38, 0.85); /* Darker for modal */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-glass {
+            background-color: rgba(6, 14, 32, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .input-glass:focus {
+            outline: none;
+            border-color: #57f1db;
+            box-shadow: inset 0 0 0 1px #57f1db, 0 0 15px rgba(87, 241, 219, 0.2);
+        }
+
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased overflow-hidden w-full max-w-[390px] mx-auto relative h-[844px] shadow-2xl flex flex-col">
+<!-- Top App Bar (Mocked behind modal) -->
+<header class="fixed top-0 w-full bg-surface/70 dark:bg-surface/70 backdrop-blur-md border-b border-white/10 shadow-sm flex items-center justify-between px-margin-mobile h-16 z-10">
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:bg-white/5 active:scale-95 transition-transform p-2 rounded-full">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Reserva #4092</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-white/5 active:scale-95 transition-transform p-2 rounded-full">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</header>
+<!-- Canvas Zone (Mocked Content behind Modal) -->
+<main class="flex-1 pt-[80px] px-margin-mobile pb-32 overflow-y-auto">
+<!-- Status Badge -->
+<div class="flex items-center gap-2 mb-md">
+<span class="px-sm py-1 rounded-full bg-primary-container/20 text-primary font-label-mono text-label-mono ring-1 ring-inset ring-primary/30 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                CONFIRMADA
+            </span>
+<span class="text-on-surface-variant font-label-mono text-label-mono">Hoy, 14:30</span>
+</div>
+<!-- Client Info -->
+<div class="glass-card rounded-xl p-md mb-md">
+<div class="flex items-center gap-sm mb-sm">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center text-primary font-bold">
+                    MG
+                </div>
+<div>
+<h2 class="font-title-md text-title-md text-on-surface">Maria Gonzalez</h2>
+<p class="font-body-base text-body-base text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">phone</span> +506 8888 4444
+                    </p>
+</div>
+</div>
+</div>
+<!-- Equipment -->
+<h3 class="font-title-md text-title-md text-on-surface mb-sm">Equipo Asignado</h3>
+<div class="grid grid-cols-2 gap-sm mb-md">
+<div class="glass-card rounded-lg overflow-hidden relative h-32 group hover:bg-white/5 transition-all">
+<img class="w-full h-full object-cover opacity-60" data-alt="A sleek, modern jet ski floating calmly on crystal clear blue water. The water sports equipment looks professional-grade and robust. The setting is a bright, sunny day at a high-end lake resort, conveying a sense of premium outdoor adventure. The mood is energetic yet controlled, lit by natural high-key sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw0NDlvyASH4GbU9rhKaOkZ4iEUc6EMm1QhfkwUtWcmOFIMYMm8lmxKzHrb1ldzzwmjVqN-6hyanCu3rVtacfubJ4qpH625D8pYZybOrOcrwpqTcQG8brK6KBLPKib2ciumAWObArNgE88X29aKFo9meovo2gbN1W3vLwBc9_7fqE8eRfEzBnIpci13JUBJwinAmfmjVDv1L2oaEbXbVa8FLR9Egg7ELEdm4ekZGcfxagadn4cNaXooPy8DyShiIdh7N6zEM2uVhgN"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-sm">
+<span class="font-label-mono text-label-mono text-primary uppercase">Jet Ski</span>
+<span class="font-title-md text-title-md text-white">JS-04</span>
+</div>
+</div>
+<div class="glass-card rounded-lg overflow-hidden relative h-32 group hover:bg-white/5 transition-all">
+<div class="absolute inset-0 flex items-center justify-center border-2 border-dashed border-white/10 rounded-lg m-2">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">add</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Overlay Background (Dimming the canvas) -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"></div>
+<!-- Bottom Sheet Modal (Posponer) -->
+<div class="fixed bottom-0 left-0 w-full z-50 glass-modal rounded-t-xl transform transition-transform duration-300 ease-out translate-y-0 pb-margin-mobile">
+<!-- Drag Handle -->
+<div class="w-full flex justify-center pt-xs pb-sm">
+<div class="w-12 h-1.5 bg-white/20 rounded-full"></div>
+</div>
+<div class="px-margin-mobile">
+<!-- Header -->
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-weight="fill">update</span>
+                    Posponer Reserva
+                </h2>
+<button class="text-on-surface-variant hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Notice: Payment Retained (Teal) -->
+<div class="bg-primary/10 border border-primary/30 rounded-lg p-sm flex items-start gap-sm mb-md shadow-[inset_0_0_10px_rgba(87,241,219,0.1)]">
+<span class="material-symbols-outlined text-primary mt-0.5">info</span>
+<p class="font-body-base text-[14px] leading-tight text-on-surface">
+                    El cobro y el depósito se conservan para la fecha nueva. <strong class="text-primary font-semibold">Al cliente no se le vuelve a cobrar.</strong>
+</p>
+</div>
+<!-- Warning: Coral (Mocked Visibility) -->
+<div class="bg-error/10 border border-error/30 rounded-lg p-sm flex items-start gap-sm mb-md shadow-[inset_0_0_10px_rgba(255,180,171,0.1)]">
+<span class="material-symbols-outlined text-error mt-0.5">warning</span>
+<p class="font-body-base text-[14px] leading-tight text-on-surface">
+<strong class="text-error font-semibold">Solo se pospone por clima.</strong> Registre el equipo que sí se usó si aplica.
+                </p>
+</div>
+<!-- Form Fields -->
+<div class="space-y-sm mb-md">
+<!-- Date & Time Selectors Row -->
+<div class="flex gap-sm">
+<div class="flex-1">
+<label class="block font-label-mono text-label-mono text-on-surface-variant mb-xs ml-1 uppercase">Nueva Fecha</label>
+<div class="relative">
+<span class="absolute left-sm top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">calendar_today</span>
+<input class="w-full input-glass rounded-lg py-sm pl-[40px] pr-sm font-title-md text-title-md text-on-surface appearance-none bg-[rgba(6,14,32,0.6)]" type="date" value="2023-10-25"/>
+</div>
+</div>
+<div class="flex-1">
+<label class="block font-label-mono text-label-mono text-on-surface-variant mb-xs ml-1 uppercase">Nueva Hora</label>
+<div class="relative">
+<span class="absolute left-sm top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">schedule</span>
+<input class="w-full input-glass rounded-lg py-sm pl-[40px] pr-sm font-title-md text-title-md text-on-surface appearance-none bg-[rgba(6,14,32,0.6)]" type="time" value="09:00"/>
+</div>
+</div>
+</div>
+<!-- Reason Text Area -->
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant mb-xs ml-1 uppercase">Motivo</label>
+<textarea class="w-full input-glass rounded-lg p-sm font-body-base text-body-base text-on-surface resize-none" placeholder="Ej. Tormenta eléctrica imprevista, a solicitud del cliente..." rows="3"></textarea>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary hover:bg-primary-fixed text-on-primary-fixed font-button text-button uppercase tracking-wider py-md rounded-lg shadow-[0_0_15px_rgba(87,241,219,0.3)] hover:shadow-[0_0_25px_rgba(87,241,219,0.5)] transition-all active:scale-95 flex items-center justify-center gap-2 mb-2">
+                Actualizar Fecha
+            </button>
+<button class="w-full bg-transparent border border-white/10 hover:bg-white/5 text-on-surface font-button text-button uppercase tracking-wider py-sm rounded-lg transition-all active:scale-95">
+                Cancelar
+            </button>
+</div>
+</div>
+</body></html>

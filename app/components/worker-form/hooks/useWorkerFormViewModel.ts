@@ -19,6 +19,20 @@ type FieldChangeEvent = ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
 
+const USERNAME_WHITESPACE = /\s+/g;
+
+/**
+ * US-RES-013: "el nombre de usuario es la cédula, porque ya está
+ * registrada, es única y alguien que viene una semana no va a recordar un
+ * usuario inventado" — applies the moment `isExternalGuide` is true,
+ * whether that came from administración's toggle or from the reservas-only
+ * restricted flow. `workers_username_format` only requires lowercase,
+ * trimmed, 3–40 characters; a cédula already satisfies the length, this
+ * only normalizes case and strips incidental whitespace.
+ */
+const deriveUsernameFromNationalId = (nationalId: string): string =>
+  nationalId.trim().toLowerCase().replace(USERNAME_WHITESPACE, "");
+
 interface CreateWorkerResult {
   data?: CreateWorkerResponseData;
   error?: string;
@@ -65,29 +79,52 @@ const createWorker = async (
   }
 };
 
+export interface UseWorkerFormViewModelParams {
+  /**
+   * US-RES-013: reservas with `registro_guias_externos` can only ever
+   * create the temporary external-guide shape — the role picker and the
+   * toggle disappear, and `isExternalGuide` starts (and stays) `true`.
+   */
+  restrictToExternalGuide?: boolean;
+}
+
 /**
- * All the logic behind `WorkerForm` (US-ADM-001, US-ADM-005). Posts to
- * `POST /api/administracion/trabajadores`, which is the only place that
- * may write `auth.users` — see that route for why the external-guide shape
- * is re-validated there rather than trusted from this form.
+ * All the logic behind `WorkerForm` (US-ADM-001, US-ADM-005, US-RES-013).
+ * Posts to `POST /api/administracion/trabajadores`, which is the only
+ * place that may write `auth.users` — see that route for why the
+ * external-guide shape is re-validated there rather than trusted from
+ * this form.
  */
-export const useWorkerFormViewModel = (): WorkerFormViewModel => {
+export const useWorkerFormViewModel = ({
+  restrictToExternalGuide = false,
+}: UseWorkerFormViewModelParams = {}): WorkerFormViewModel => {
   const [fullName, setFullName] = useState<string>(STRING.Empty);
   const [username, setUsername] = useState<string>(STRING.Empty);
   const [baseRole, setBaseRole] = useState<WorkArea>(WORK_AREA.OPERATIONS);
-  const [isExternalGuide, setIsExternalGuide] = useState<boolean>(false);
+  const [isExternalGuide, setIsExternalGuide] = useState<boolean>(
+    restrictToExternalGuide
+  );
   const [nationalId, setNationalId] = useState<string>(STRING.Empty);
   const [expiresAt, setExpiresAt] = useState<string>(STRING.Empty);
+  const [personalEmail, setPersonalEmail] = useState<string>(
+    STRING.Empty
+  );
 
   const [fullNameError, setFullNameError] = useState<Nullable<string>>(null);
   const [usernameError, setUsernameError] = useState<Nullable<string>>(null);
   const [formError, setFormError] = useState<Nullable<string>>(null);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [createdUsername, setCreatedUsername] =
+    useState<Nullable<string>>(null);
   const [createdWorkerId, setCreatedWorkerId] =
     useState<Nullable<string>>(null);
   const [temporaryPassword, setTemporaryPassword] =
     useState<Nullable<string>>(null);
+
+  const effectiveUsername = isExternalGuide
+    ? deriveUsernameFromNationalId(nationalId)
+    : username;
 
   const clearErrors = (): void => {
     setFullNameError(null);
@@ -121,6 +158,10 @@ export const useWorkerFormViewModel = (): WorkerFormViewModel => {
     setExpiresAt(event.target.value);
   };
 
+  const handlePersonalEmailChange = (event: FieldChangeEvent): void => {
+    setPersonalEmail(event.target.value);
+  };
+
   const validate = (): boolean => {
     let isValid = true;
 
@@ -128,7 +169,7 @@ export const useWorkerFormViewModel = (): WorkerFormViewModel => {
       setFullNameError(WORKER_FORM_SCREEN.ERROR.FULL_NAME_REQUIRED);
       isValid = false;
     }
-    if (!username.trim()) {
+    if (!isExternalGuide && !username.trim()) {
       setUsernameError(WORKER_FORM_SCREEN.ERROR.USERNAME_REQUIRED);
       isValid = false;
     }
@@ -153,7 +194,8 @@ export const useWorkerFormViewModel = (): WorkerFormViewModel => {
       fullName: fullName.trim(),
       isExternalGuide,
       nationalId: isExternalGuide ? nationalId.trim() : null,
-      username: username.trim().toLowerCase(),
+      personalEmail: personalEmail.trim() || null,
+      username: effectiveUsername,
     });
 
     if (!result.ok || !result.data) {
@@ -166,6 +208,7 @@ export const useWorkerFormViewModel = (): WorkerFormViewModel => {
       return;
     }
 
+    setCreatedUsername(result.data.username);
     setCreatedWorkerId(result.data.workerId);
     setTemporaryPassword(result.data.temporaryPassword);
     setIsSubmitting(false);
@@ -190,7 +233,9 @@ export const useWorkerFormViewModel = (): WorkerFormViewModel => {
 
   return {
     baseRole,
+    createdUsername,
     createdWorkerId,
+    effectiveUsername,
     expiresAt,
     formError,
     fullName,
@@ -201,11 +246,13 @@ export const useWorkerFormViewModel = (): WorkerFormViewModel => {
     handleFullNameChange,
     handleIsExternalGuideToggle,
     handleNationalIdChange,
+    handlePersonalEmailChange,
     handleSubmit,
     handleUsernameChange,
     isExternalGuide,
     isSubmitting,
     nationalId,
+    personalEmail,
     temporaryPassword,
     username,
     usernameError,

@@ -1,16 +1,5 @@
 import type { JSX } from "react";
-import { REPORTS_SCREEN } from "@/app/constants";
-
-export interface BarChartPoint {
-  label: string;
-  value: number;
-}
-
-interface SimpleBarChartProps {
-  formatValue?: (value: number) => string;
-  points: BarChartPoint[];
-  title: string;
-}
+import type { SimpleBarChartProps } from "./models/SimpleBarChartProps.interface";
 
 const NO_POINTS = 0;
 const MIN_HEIGHT_PERCENT = 4;
@@ -21,12 +10,15 @@ const defaultFormatValue = (value: number): string =>
   String(value);
 
 /**
- * A dependency-free bar chart (US-ADM-027: "el gráfico muestra la
- * evolución... a lo largo del tiempo"). Plain CSS bars instead of a
- * charting library — the data is a handful of points at a time, so a
- * library would only add weight for a phone on a bad connection.
+ * A dependency-free bar chart, shared by `/administracion/reportes`
+ * (US-ADM-027) and `/reservas/ingresos` (US-RES-032). Plain CSS bars
+ * instead of a charting library — the data is a handful of points at a
+ * time, so a library would only add weight for a phone on a bad
+ * connection. The empty-state wording comes from the calling screen: the
+ * chart itself belongs to no module.
  */
 const SimpleBarChart = ({
+  emptyState,
   formatValue = defaultFormatValue,
   points,
   title,
@@ -38,7 +30,7 @@ const SimpleBarChart = ({
           {title}
         </h3>
         <p className="font-body-base text-body-base text-on-surface-variant">
-          {REPORTS_SCREEN.TREND.EMPTY_STATE}
+          {emptyState}
         </p>
       </div>
     );

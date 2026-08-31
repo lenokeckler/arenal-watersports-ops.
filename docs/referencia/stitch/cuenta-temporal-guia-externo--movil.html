@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cuenta Temporal de Guía Externo - Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#dae2fd",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-primary": "#003731",
+                        "secondary-fixed": "#ffdad8",
+                        "primary-container": "#2dd4bf",
+                        "surface": "#0b1326",
+                        "tertiary": "#afe0ff",
+                        "on-surface": "#dae2fd",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#00574d",
+                        "on-tertiary-fixed": "#001e2c",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#31394d",
+                        "on-error": "#690005",
+                        "on-background": "#dae2fd",
+                        "surface-container-low": "#131b2e",
+                        "surface-tint": "#3cddc7",
+                        "surface-container": "#171f33",
+                        "on-primary-fixed": "#00201c",
+                        "on-tertiary": "#00354a",
+                        "surface-variant": "#2d3449",
+                        "tertiary-container": "#5ec9ff",
+                        "secondary-container": "#881d24",
+                        "background": "#0b1326",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "inverse-on-surface": "#283044",
+                        "on-surface-variant": "#bacac5",
+                        "primary": "#57f1db",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "outline": "#859490",
+                        "surface-container-highest": "#2d3449",
+                        "on-secondary-container": "#ff9996",
+                        "surface-dim": "#0b1326",
+                        "on-tertiary-container": "#005371",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#3cddc7",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "primary-fixed": "#62fae3",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-container-high": "#222a3d",
+                        "secondary": "#ffb3b0",
+                        "on-secondary-fixed": "#410006",
+                        "tertiary-fixed": "#c4e7ff",
+                        "outline-variant": "#3c4a46",
+                        "inverse-primary": "#006b5f",
+                        "surface-container-lowest": "#060e20",
+                        "on-secondary": "#670211"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "md": "24px",
+                        "margin-desktop": "40px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "margin-mobile": "16px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020617;
+            background-image: radial-gradient(circle at 50% 0%, #131b2e 0%, #0b1326 100%);
+            background-attachment: fixed;
+        }
+        
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-glass {
+            background-color: rgba(11, 19, 38, 0.5);
+            border: 1px solid rgba(133, 148, 144, 0.3);
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .input-glass:focus-within {
+            border-color: #57f1db;
+            box-shadow: 0 0 0 1px #57f1db, inset 0 0 8px rgba(87, 241, 219, 0.2);
+        }
+
+        .inner-glow-teal {
+            box-shadow: inset 0 0 8px rgba(87, 241, 219, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface min-h-screen flex flex-col font-body-base">
+<!-- TopAppBar -->
+<header class="bg-surface/70 backdrop-blur-md dark:bg-surface/70 w-full sticky top-0 z-50 border-b border-white/10 shadow-sm shadow-md">
+<div class="flex justify-between items-center px-margin-mobile py-sm w-full">
+<button class="text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-95 duration-200 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-display-lg text-title-md font-bold text-primary tracking-widest text-center flex-1 pr-[40px]">ARENAL OPS</h1>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 px-margin-mobile py-md flex flex-col gap-md pb-xl overflow-y-auto">
+<!-- Header -->
+<div class="mb-sm">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-xs">Cuenta Temporal</h2>
+<p class="text-on-surface-variant text-sm">Registro de Guía Externo</p>
+</div>
+<!-- Form Card -->
+<div class="glass-card rounded-xl p-md flex flex-col gap-md">
+<!-- Nombre -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-xs" for="nombre">Nombre Completo</label>
+<div class="input-glass rounded-lg flex items-center px-sm py-sm">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm">person</span>
+<input class="bg-transparent border-none outline-none text-on-surface w-full placeholder:text-on-surface-variant/50 focus:ring-0 p-0 font-body-base" id="nombre" placeholder="Ej. Juan Pérez" type="text"/>
+</div>
+</div>
+<!-- Teléfono -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-xs" for="telefono">Teléfono</label>
+<div class="input-glass rounded-lg flex items-center px-sm py-sm">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm">phone_iphone</span>
+<input class="bg-transparent border-none outline-none text-on-surface w-full placeholder:text-on-surface-variant/50 focus:ring-0 p-0 font-body-base" id="telefono" placeholder="+506 8888 8888" type="tel"/>
+</div>
+</div>
+<!-- Correo -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-xs" for="correo">Correo Personal</label>
+<div class="input-glass rounded-lg flex items-center px-sm py-sm">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm">mail</span>
+<input class="bg-transparent border-none outline-none text-on-surface w-full placeholder:text-on-surface-variant/50 focus:ring-0 p-0 font-body-base" id="correo" placeholder="correo@ejemplo.com" type="email"/>
+</div>
+</div>
+<!-- Fecha Caducidad -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-xs" for="fecha">Fecha de Caducidad</label>
+<div class="input-glass rounded-lg flex items-center px-sm py-sm">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm">calendar_month</span>
+<input class="bg-transparent border-none outline-none text-on-surface w-full focus:ring-0 p-0 font-body-base [color-scheme:dark]" id="fecha" type="date"/>
+</div>
+</div>
+</div>
+<!-- Info Alert -->
+<div class="bg-primary-container/10 border border-primary/20 rounded-xl p-sm flex items-start gap-sm inner-glow-teal mt-xs">
+<span class="material-symbols-outlined text-primary mt-xs" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="text-on-surface text-sm leading-relaxed">
+                La cuenta se crea con una contraseña temporal que el guía debe cambiar en su primer ingreso. La cuenta vence automáticamente en la fecha indicada.
+            </p>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full p-margin-mobile bg-surface-container/90 backdrop-blur-xl border-t border-white/10 z-50">
+<button class="w-full bg-primary text-on-primary-fixed-variant font-button text-button uppercase py-sm rounded-lg hover:bg-primary-fixed transition-colors active:scale-95 duration-150 shadow-[0_0_15px_rgba(87,241,219,0.3)]">
+            Crear cuenta temporal
+        </button>
+</div>
+</body></html>

@@ -1,5 +1,5 @@
 begin;
-select plan(64);
+select plan(67);
 
 -- ============================================================
 -- Fixtures
@@ -67,10 +67,14 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
+-- Ismael ve su propia fila y la de Celso, porque Celso ya tiene la marca
+-- 'guia' (fixture de arriba) y workers_select_guides deja pasar la fila de
+-- cualquier guia a quien tenga area reservas u operaciones (US-RES-012/
+-- US-RES-014).
 select is(
   (select count(*)::int from workers),
-  1,
-  'ismael solo ve su propia fila en workers'
+  2,
+  'ismael ve su propia fila y la de cualquier guia'
 );
 
 reset role;
@@ -261,10 +265,12 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
+-- Ismael ve la marca 'guia' de Celso (worker_marks_select_guides), pero
+-- ninguna otra marca ajena: 'registro_guias_externos' sigue privada.
 select is(
   (select count(*)::int from worker_marks),
-  0,
-  'ismael no ve marcas de otro trabajador'
+  1,
+  'ismael solo ve la marca guia de otro trabajador'
 );
 
 reset role;
@@ -724,6 +730,50 @@ select lives_ok(
      values ('cccccccc-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000002', 10, 0, 0) $$,
   'operaciones crea lineas de conteo'
 );
+
+-- ============================================================
+-- El otro borde de workers_select_guides / worker_marks_select_guides
+-- ============================================================
+
+-- Las dos politicas que 20260828001650 agrega para que reservas pueda
+-- asignar guias exigen has_area('reservas') or has_area('operaciones'). Las
+-- pruebas de arriba confirman que un area valida si pasa; estas confirman
+-- que sin area no pasa nada, que es el lado que de verdad protege. Se agrega
+-- al final a proposito: creando a Diego aqui, ninguna cuenta de filas
+-- anterior cambia.
+--
+-- Diego entra como operaciones y se le retira su unica area, para
+-- representar a quien no tiene ninguna: ni reservas, ni operaciones, ni
+-- administracion.
+reset role;
+insert into auth.users (id, email)
+values ('44444444-4444-4444-4444-444444444444', 'diego@arenal.local');
+insert into workers (id, username, full_name, base_role)
+values ('44444444-4444-4444-4444-444444444444', 'diego', 'Diego', 'operaciones');
+delete from worker_areas
+ where worker_id = '44444444-4444-4444-4444-444444444444' and area = 'operaciones';
+
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"44444444-4444-4444-4444-444444444444","role":"authenticated"}';
+
+select is(
+  (select count(*)::int from workers),
+  1,
+  'sin area, workers_select_guides no aplica: solo se ve la fila propia'
+);
+select is(
+  (select count(*)::int from workers
+   where id = '33333333-3333-3333-3333-333333333333'),
+  0,
+  'sin area, la fila de un guia sigue invisible aunque tenga la marca'
+);
+select is(
+  (select count(*)::int from worker_marks),
+  0,
+  'sin area, la marca guia de otro trabajador sigue invisible'
+);
+
+reset role;
 
 select * from finish();
 rollback;

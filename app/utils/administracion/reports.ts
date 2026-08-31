@@ -319,6 +319,7 @@ export interface DepositRow {
   customerName: string;
   id: string;
   reservationCode: string;
+  reservationId: string;
   retainedAmount: Nullable<number>;
   retentionReason: Nullable<string>;
   status: DepositStatus;
@@ -328,6 +329,7 @@ interface DepositQueryRow {
   amount: number;
   currency: CurrencyCode;
   id: string;
+  reservation_id: string;
   reservations: {
     code: string;
     customer_name: string;
@@ -345,14 +347,15 @@ const toDepositRow = (
   customerName: row.reservations?.customer_name ?? "",
   id: row.id,
   reservationCode: row.reservations?.code ?? "",
+  reservationId: row.reservation_id,
   retainedAmount: row.retained_amount,
   retentionReason: row.retention_reason,
   status: row.status,
 });
 
 const DEPOSIT_SELECT =
-  "id, amount, currency, status, retained_amount, retention_reason, " +
-  "reservations(code, customer_name)";
+  "id, reservation_id, amount, currency, status, retained_amount, " +
+  "retention_reason, reservations(code, customer_name)";
 
 /** US-ADM-031: depositos que la empresa todavia tiene en la mano, sin resolver. */
 export const fetchPendingDeposits = async (

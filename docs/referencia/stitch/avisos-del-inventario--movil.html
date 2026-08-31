@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Avisos de Inventario</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#3c4a46",
+                        "primary-container": "#2dd4bf",
+                        "on-primary-container": "#00574d",
+                        "inverse-primary": "#006b5f",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-lowest": "#060e20",
+                        "surface-container-highest": "#2d3449",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#ffdad8",
+                        "surface-container": "#171f33",
+                        "on-surface-variant": "#bacac5",
+                        "on-background": "#dae2fd",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#131b2e",
+                        "primary-fixed-dim": "#3cddc7",
+                        "surface-container-high": "#222a3d",
+                        "secondary": "#ffb3b0",
+                        "surface-variant": "#2d3449",
+                        "surface-tint": "#3cddc7",
+                        "inverse-on-surface": "#283044",
+                        "error": "#ffb4ab",
+                        "on-primary": "#003731",
+                        "surface": "#0b1326",
+                        "on-primary-fixed": "#00201c",
+                        "surface-dim": "#0b1326",
+                        "primary-fixed": "#62fae3",
+                        "tertiary-container": "#5ec9ff",
+                        "primary": "#57f1db",
+                        "secondary-container": "#881d24",
+                        "on-surface": "#dae2fd",
+                        "on-error": "#690005",
+                        "background": "#0b1326",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-tertiary-container": "#005371",
+                        "on-primary-fixed-variant": "#005047",
+                        "surface-bright": "#31394d",
+                        "on-tertiary-fixed": "#001e2c",
+                        "outline": "#859490",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "on-secondary-fixed": "#410006",
+                        "on-secondary": "#670211",
+                        "tertiary": "#afe0ff",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "on-secondary-container": "#ff9996",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-tertiary": "#00354a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-desktop": "40px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "lg": "48px",
+                        "gutter": "20px",
+                        "xs": "4px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "button": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "body-base": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020617; /* Deep Navy foundation */
+            background-image: radial-gradient(circle at top right, rgba(11, 19, 38, 0.8) 0%, #020617 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-item {
+            background: rgba(19, 27, 46, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glow-coral {
+            box-shadow: inset 0 0 12px rgba(255, 180, 171, 0.1);
+        }
+        
+        .glow-teal-hover:hover {
+            box-shadow: inset 0 0 8px rgba(45, 212, 191, 0.3);
+            background: rgba(30, 41, 59, 0.85);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased font-body-base overflow-x-hidden flex flex-col pt-16 pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary dark:text-primary active:scale-95 duration-200" data-icon="waves">waves</span>
+<span class="font-display-lg text-display-lg-mobile tracking-tight text-primary dark:text-primary">AquaOps Pro</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-title-md text-title-md text-on-surface">Avisos</span>
+<div aria-label="Operator Profile" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-margin-mobile flex flex-col gap-md md:hidden"> <!-- Mobile specific layout as requested -->
+<!-- Section 1: Cantidad Mínima -->
+<section class="flex flex-col gap-sm">
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-error" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h2 class="font-title-md text-title-md text-on-surface">Cantidad Mínima</h2>
+</div>
+<div class="glass-card rounded-xl p-sm flex flex-col gap-sm glow-coral">
+<!-- Item 1 -->
+<div class="glass-item rounded-lg p-sm flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-button text-button text-on-surface">Chalecos Talla M</span>
+<div class="flex gap-sm mt-xs">
+<span class="font-label-mono text-label-mono text-error">Actual: 4</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Mín: 10</span>
+</div>
+</div>
+<button class="bg-primary/20 text-primary border border-primary/30 rounded-lg px-sm py-xs font-button text-button uppercase tracking-wider glow-teal-hover transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm align-middle mr-xs" data-icon="add_shopping_cart">add_shopping_cart</span>Pedir
+                    </button>
+</div>
+<!-- Item 2 -->
+<div class="glass-item rounded-lg p-sm flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-button text-button text-on-surface">Aceite Motor 2T</span>
+<div class="flex gap-sm mt-xs">
+<span class="font-label-mono text-label-mono text-error">Actual: 1L</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Mín: 5L</span>
+</div>
+</div>
+<button class="bg-primary/20 text-primary border border-primary/30 rounded-lg px-sm py-xs font-button text-button uppercase tracking-wider glow-teal-hover transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm align-middle mr-xs" data-icon="add_shopping_cart">add_shopping_cart</span>Pedir
+                    </button>
+</div>
+</div>
+</section>
+<!-- Section 2: Vencimientos -->
+<section class="flex flex-col gap-sm mt-md">
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-secondary" data-icon="timer" style="font-variation-settings: 'FILL' 1;">timer</span>
+<h2 class="font-title-md text-title-md text-on-surface">Vencimientos</h2>
+</div>
+<div class="glass-card rounded-xl p-sm flex flex-col gap-sm">
+<!-- Urgente: Vencido -->
+<div class="glass-item rounded-lg p-sm flex flex-col gap-sm border-error/30 bg-error-container/10">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-button text-button text-on-surface">Botiquín Base (Jet Ski 2)</span>
+<span class="font-label-mono text-label-mono text-error mt-xs font-bold">Vencido: hace 2 días</span>
+</div>
+<span class="bg-error/20 text-error px-xs py-1 rounded text-[10px] font-label-mono uppercase border border-error/20">Crítico</span>
+</div>
+<button class="w-full bg-error text-on-error rounded-lg py-xs font-button text-button uppercase tracking-wider active:scale-95 transition-transform flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="done_all">done_all</span>Renovado
+                    </button>
+</div>
+<!-- Próximo a vencer -->
+<div class="glass-item rounded-lg p-sm flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-button text-button text-on-surface">Extintor JS-04</span>
+<span class="font-label-mono text-label-mono text-secondary mt-xs">Vence en: 5 días</span>
+</div>
+<span class="bg-secondary/20 text-secondary px-xs py-1 rounded text-[10px] font-label-mono uppercase border border-secondary/20">Atención</span>
+</div>
+<div class="flex gap-xs w-full">
+<button class="flex-1 bg-surface-container-high border border-outline-variant text-on-surface rounded-lg py-xs font-button text-button uppercase tracking-wider active:scale-95 transition-transform">
+                            Ignorar
+                        </button>
+<button class="flex-1 bg-primary text-on-primary rounded-lg py-xs font-button text-button uppercase tracking-wider active:scale-95 transition-transform flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="edit_calendar">edit_calendar</span>Agendar
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-xs pt-xs bg-surface-container/70 dark:bg-surface-container/70 backdrop-blur-lg rounded-t-xl border-t border-white/10 shadow-2xl md:hidden">
+<button class="flex flex-col items-center justify-center bg-primary-container/20 text-primary-container rounded-xl p-sm shadow-[inset_0_0_8px_rgba(45,212,191,0.3)] hover:bg-white/5 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined mb-1" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-mono text-label-mono">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 p-sm hover:bg-white/5 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined mb-1" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-mono text-label-mono">Schedule</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 p-sm hover:bg-white/5 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined mb-1" data-icon="badge">badge</span>
+<span class="font-label-mono text-label-mono">Staff</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 p-sm hover:bg-white/5 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+<span class="font-label-mono text-label-mono">Reports</span>
+</button>
+</nav>
+</body></html>
