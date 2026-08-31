@@ -12,7 +12,7 @@ import {
 } from "@/app/constants";
 import Button from "@/app/components/button/Button";
 import Spinner from "@/app/components/spinner/Spinner";
-import ReservationActionSheet from "../ReservationActionSheet";
+import ActionSheet from "@/app/components/action-sheet/ActionSheet";
 import { useReservationCancelModalViewModel } from "./hooks/useReservationCancelModalViewModel";
 
 interface ReservationCancelModalProps {
@@ -34,12 +34,17 @@ const ReservationCancelModal = ({
   status,
   workerId,
 }: ReservationCancelModalProps): JSX.Element => {
-  const { error, handleReasonChange, handleSubmit, isBusy, reason } =
-    useReservationCancelModalViewModel({
-      onCancelled,
-      reservationId,
-      workerId,
-    });
+  const {
+    error,
+    handleReasonChange,
+    handleSubmit,
+    isBusy,
+    reason,
+  } = useReservationCancelModalViewModel({
+    onCancelled,
+    reservationId,
+    workerId,
+  });
 
   const subtitle =
     status === RESERVATION_STATUS.DISPATCHED
@@ -47,7 +52,7 @@ const ReservationCancelModal = ({
       : RESERVATION_DETAIL_SCREEN.CANCEL.SUBTITLE_SCHEDULED;
 
   return (
-    <ReservationActionSheet
+    <ActionSheet
       icon={MATERIAL_ICON_NAME.CANCEL}
       onClose={onClose}
       title={RESERVATION_DETAIL_SCREEN.CANCEL.TITLE}
@@ -112,7 +117,7 @@ const ReservationCancelModal = ({
           {RESERVATION_DETAIL_SCREEN.CANCEL.BACK}
         </Button>
       </div>
-    </ReservationActionSheet>
+    </ActionSheet>
   );
 };
 

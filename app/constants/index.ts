@@ -295,3 +295,6 @@ export {
   PENDING_DEPOSITS_SCREEN,
   RESERVATIONS_REVENUE_SCREEN,
 } from "./reservas/ReservationsRevenueScreen.constants";
+export { OPERATIONS_NUMBERS } from "./operaciones/OperationsNumbers.constants";
+export { DISPATCH_BOARD_SCREEN } from "./operaciones/DispatchBoardScreen.constants";
+export { DISPATCH_SCREEN } from "./operaciones/DispatchScreen.constants";

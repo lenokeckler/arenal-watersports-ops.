@@ -12,7 +12,7 @@ import {
 } from "@/app/constants";
 import Button from "@/app/components/button/Button";
 import Spinner from "@/app/components/spinner/Spinner";
-import ReservationActionSheet from "../ReservationActionSheet";
+import ActionSheet from "@/app/components/action-sheet/ActionSheet";
 import { useReservationPostponeModalViewModel } from "./hooks/useReservationPostponeModalViewModel";
 import ReservationPostponeClosingRow from "./components/ReservationPostponeClosingRow";
 
@@ -59,7 +59,7 @@ const ReservationPostponeModal = ({
   });
 
   return (
-    <ReservationActionSheet
+    <ActionSheet
       icon={MATERIAL_ICON_NAME.SCHEDULE}
       onClose={onClose}
       title={RESERVATION_DETAIL_SCREEN.POSTPONE.TITLE}
@@ -161,7 +161,7 @@ const ReservationPostponeModal = ({
           )}
         </Button>
       </div>
-    </ReservationActionSheet>
+    </ActionSheet>
   );
 };
 

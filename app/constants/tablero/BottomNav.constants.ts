@@ -3,7 +3,10 @@ import {
   type MaterialIconName,
 } from "@/app/components/icons/material-icon/constants";
 import { PATHS } from "@/app/constants/strings/Paths.constants";
-import { WORK_AREA, type WorkArea } from "@/app/constants/acceso/WorkArea.constants";
+import {
+  WORK_AREA,
+  type WorkArea,
+} from "@/app/constants/acceso/WorkArea.constants";
 
 /**
  * The fixed bottom bar (US-TAB-004, US-TAB-005): board, calendar,
@@ -20,6 +23,7 @@ export const BOTTOM_NAV_ITEM_ID = {
   CALENDAR: "calendar",
   HISTORY: "history",
   INVENTORY: "inventory",
+  OPERATIONS: "operations",
   PRICES: "prices",
   REVENUE: "revenue",
 } as const;
@@ -46,14 +50,27 @@ export const BOTTOM_NAV = {
       ICON: MATERIAL_ICON_NAME.CALENDAR_MONTH,
       ID: BOTTOM_NAV_ITEM_ID.CALENDAR,
       LABEL: "Calendario",
-      VISIBLE_IN: [WORK_AREA.OPERATIONS, WORK_AREA.RESERVATIONS],
+      VISIBLE_IN: [
+        WORK_AREA.OPERATIONS,
+        WORK_AREA.RESERVATIONS,
+      ],
+    },
+    {
+      HREF: PATHS.OPERATIONS.ROOT,
+      ICON: MATERIAL_ICON_NAME.SAILING,
+      ID: BOTTOM_NAV_ITEM_ID.OPERATIONS,
+      LABEL: "Operaciones",
+      VISIBLE_IN: [WORK_AREA.OPERATIONS],
     },
     {
       HREF: PATHS.COMMON.INVENTORY,
       ICON: MATERIAL_ICON_NAME.INVENTORY_2,
       ID: BOTTOM_NAV_ITEM_ID.INVENTORY,
       LABEL: "Inventario",
-      VISIBLE_IN: [WORK_AREA.ADMINISTRATION, WORK_AREA.OPERATIONS],
+      VISIBLE_IN: [
+        WORK_AREA.ADMINISTRATION,
+        WORK_AREA.OPERATIONS,
+      ],
     },
     {
       HREF: PATHS.COMMON.HISTORY,

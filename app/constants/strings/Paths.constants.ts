@@ -52,7 +52,8 @@ export const PATHS = {
     ROOT: "/",
   },
   OPERATIONS: {
-    CLOSE: "/operaciones/cierre",
+    CLOSE_BY_ID: (reservationId: string): string =>
+      `/operaciones/cierre/${reservationId}`,
     DISPATCH: "/operaciones/despacho",
     INVENTORY: "/operaciones/inventario",
     MACHINES: "/operaciones/maquinas",
