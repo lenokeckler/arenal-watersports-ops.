@@ -1,6 +1,6 @@
 # Estado actual — retomar desde aquí
 
-Última actualización: 2026-08-30.
+Última actualización: 2026-08-31.
 
 Este archivo existe para que el trabajo se pueda retomar mañana, o desde otra
 máquina, o por otra persona, sin depender de que nadie recuerde nada. Si algo
@@ -38,7 +38,7 @@ Comandos que importan:
 | `npm run dev` | Levanta la aplicación en http://localhost:3000 |
 | `npm run db:start` / `db:stop` | Enciende y apaga Supabase local |
 | `npm run db:reset` | Rehace la base y carga el inventario real |
-| `npm run db:test` | Corre las 362 pruebas del esquema (sin seed, a propósito) |
+| `npm run db:test` | Corre las 365 pruebas del esquema (sin seed, a propósito) |
 | `npm run lint` / `typecheck` / `build` | Verificación de la aplicación |
 
 ### Cuidado con `npm run format`
@@ -142,7 +142,7 @@ en cada prueba).
 | --- | --- |
 | Base del profe adaptada, Firebase sustituido por Supabase | ✅ |
 | Agentes y skills a nivel de proyecto, documentos convertidos | ✅ |
-| **Modelo de datos** — 24 tablas, seguridad por fila, disponibilidad, tiempo real, retención | ✅ 362 pruebas |
+| **Modelo de datos** — 24 tablas, seguridad por fila, disponibilidad, tiempo real, retención | ✅ 365 pruebas |
 | **Sistema de diseño** — tokens de Stitch en Tailwind 4, fuentes autoalojadas, imágenes del equipo | ✅ |
 | **Módulo Acceso y Sesión** — 11 historias | ✅ |
 | **Módulo Tablero y Navegación** — 10 historias | ✅ |
@@ -152,11 +152,16 @@ en cada prueba).
 | **EP-ADM-04 — Extras de las lanchas** | ✅ |
 | **EP-ADM-05 — Combos y tarifas** | ✅ |
 | **EP-ADM-06 — Estadísticas y reportes** | ✅ |
-| **Módulo Administración completo** — 31 historias, EP-ADM-01 a EP-ADM-06 | ✅ |Progreso: **52 de 112 historias, un 46%**. Son las 11 de Acceso, las 10 de
-Tablero (9 del backlog original más `US-TAB-010`, que vive en
-`historias-agregadas.md`) y las 31 de Administración, con la fundación
-—esquema, seguridad por fila, diseño, autenticación— completa desde antes.
-Quedan 60: las 33 de Reservas y las 27 de Operaciones.
+| **Módulo Administración completo** — 31 historias, EP-ADM-01 a EP-ADM-06 | ✅ |
+| **Módulo Reservas completo** — 33 historias, EP-RES-01 a EP-RES-07 | ✅ |Progreso: **85 de 112 historias, un 76%**. Son las 11 de Acceso, las 10 de
+Tablero (9 del backlog original más `US-TAB-010`), las 31 de Administración y
+las 33 de Reservas. Queda un solo módulo: **Operaciones, 27 historias**.
+
+La aplicación ya hace el trabajo de la empresa: se puede agendar una reserva,
+armarla con combos y extras, asignarle guías, modificarla, dividirla,
+posponerla, cancelarla, cobrarla en dos tractos y en dos monedas, y resolver
+su depósito. Lo que falta es el lado del muelle: despachar, cerrar, y el
+cuidado de las máquinas y del inventario.
 
 ---
 
