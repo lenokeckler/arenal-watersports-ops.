@@ -33,3 +33,15 @@ export const EDITABLE_UNIT_STATUSES: readonly UnitStatus[] =
     UNIT_STATUS.DAMAGED,
     UNIT_STATUS.IN_REPAIR,
   ];
+
+/**
+ * US-OPE-017: the statuses that keep a unit out of the water waiting to
+ * come back. `decommissioned` is deliberately absent — that one is not
+ * waiting for anything.
+ */
+export const MAINTENANCE_UNIT_STATUSES: readonly UnitStatus[] =
+  [
+    UNIT_STATUS.IN_MAINTENANCE,
+    UNIT_STATUS.DAMAGED,
+    UNIT_STATUS.IN_REPAIR,
+  ];

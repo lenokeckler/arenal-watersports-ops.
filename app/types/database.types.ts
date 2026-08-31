@@ -59,6 +59,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "combo_items_combo_id_fkey";
             columns: ["combo_id"];
             isOneToOne: false;
@@ -212,6 +233,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "damage_reports_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
         ];
       };
@@ -441,6 +469,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "equipment_stock_updated_by_fkey";
             columns: ["updated_by"];
             isOneToOne: false;
@@ -503,6 +552,27 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "equipment_stock_movements_created_by_fkey";
@@ -578,6 +648,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "equipment_units_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
@@ -649,6 +740,13 @@ export type Database = {
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "extra_compatibility_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
         ];
       };
       extras: {
@@ -714,6 +812,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "extras_updated_by_fkey";
             columns: ["updated_by"];
             isOneToOne: false;
@@ -775,6 +894,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "inventory_count_lines_count_id_fkey";
             columns: ["count_id"];
             isOneToOne: false;
@@ -801,6 +941,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
         ];
       };
@@ -927,6 +1074,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "maintenance_records_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "maintenance_records_updated_by_fkey";
@@ -1232,6 +1386,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "reservation_items_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
@@ -1286,6 +1461,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "reservation_items_updated_by_fkey";
@@ -1474,6 +1656,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "tariffs_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
@@ -1549,6 +1752,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photos_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
           {
             foreignKeyName: "unit_condition_photos_uploaded_by_fkey";
@@ -1789,6 +1999,43 @@ export type Database = {
         };
         Relationships: [];
       };
+      inventory_category_summary: {
+        Row: {
+          category_id: string | null;
+          category_name: string | null;
+          is_reservable: boolean | null;
+          quantity_available: number | null;
+          quantity_damaged: number | null;
+          quantity_in_maintenance: number | null;
+          quantity_in_repair: number | null;
+          quantity_total: number | null;
+          tracking_mode:
+            | Database["public"]["Enums"]["tracking_mode"]
+            | null;
+        };
+        Relationships: [];
+      };
+      inventory_expiry_alerts: {
+        Row: {
+          alert_expiry_days: number | null;
+          category_id: string | null;
+          category_name: string | null;
+          days_to_expiry: number | null;
+          expiry_date: string | null;
+          is_expired: boolean | null;
+        };
+        Relationships: [];
+      };
+      inventory_quantity_alerts: {
+        Row: {
+          alert_min_quantity: number | null;
+          category_id: string | null;
+          category_name: string | null;
+          missing_quantity: number | null;
+          quantity_available: number | null;
+        };
+        Relationships: [];
+      };
       maintenance_cost_by_unit: {
         Row: {
           category_id: string | null;
@@ -1808,6 +2055,27 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
           },
         ];
       };
@@ -1861,6 +2129,75 @@ export type Database = {
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+        ];
+      };
+      unit_service_status: {
+        Row: {
+          category_id: string | null;
+          category_name: string | null;
+          code: string | null;
+          is_oil_change_due: boolean | null;
+          next_oil_change_at: number | null;
+          remaining_usage: number | null;
+          status:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
+          unit_id: string | null;
+          usage_metric:
+            | Database["public"]["Enums"]["usage_metric"]
+            | null;
+          usage_total: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
         ];
       };
     };
@@ -1911,6 +2248,13 @@ export type Database = {
           ends_at: string;
           reservation_id: string;
           starts_at: string;
+        }[];
+      };
+      worker_display_names: {
+        Args: { p_worker_ids: string[] };
+        Returns: {
+          full_name: string;
+          worker_id: string;
         }[];
       };
     };
