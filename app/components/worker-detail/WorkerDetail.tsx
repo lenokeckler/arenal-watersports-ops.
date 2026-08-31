@@ -6,6 +6,7 @@ import {
   PATHS,
   WORK_AREA_LABEL,
   WORKER_DETAIL_SCREEN,
+  WORKER_FORM_SCREEN,
   WORKER_STATUS,
   WORKER_STATUS_LABEL,
 } from "@/app/constants";
@@ -26,7 +27,9 @@ import type { WorkerDetailProps } from "./models/WorkerDetailProps.interface";
  * at all, matching the module brief ("do not build UI that offers those
  * actions for it") — the database's own trigger is the real guard.
  */
-const WorkerDetail = ({ worker: initialWorker }: WorkerDetailProps): JSX.Element => {
+const WorkerDetail = ({
+  worker: initialWorker,
+}: WorkerDetailProps): JSX.Element => {
   const {
     actionError,
     availableAreas,
@@ -53,7 +56,9 @@ const WorkerDetail = ({ worker: initialWorker }: WorkerDetailProps): JSX.Element
           href={PATHS.ADMIN.WORKERS}
           className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-primary"
         >
-          <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_BACK} />
+          <MaterialIcon
+            name={MATERIAL_ICON_NAME.ARROW_BACK}
+          />
         </Link>
         <div className="flex flex-col">
           <h1 className="font-headline-lg text-headline-lg-mobile font-semibold text-on-surface md:text-headline-lg">
@@ -89,9 +94,13 @@ const WorkerDetail = ({ worker: initialWorker }: WorkerDetailProps): JSX.Element
         {resetPasswordResult && (
           <WorkerFormSuccess
             onCopyTemporaryPassword={() => {
-              void navigator.clipboard.writeText(resetPasswordResult);
+              void navigator.clipboard.writeText(
+                resetPasswordResult
+              );
             }}
+            showViewWorkerLink={false}
             temporaryPassword={resetPasswordResult}
+            title={WORKER_FORM_SCREEN.SUCCESS.RESET_TITLE}
             workerId={worker.id}
           />
         )}
@@ -120,7 +129,9 @@ const WorkerDetail = ({ worker: initialWorker }: WorkerDetailProps): JSX.Element
             isBusy={isBusy}
             isExternalGuide={worker.isExternalGuide}
             onBlock={handleBlock}
-            onExpiresAtDraftChange={handleExpiresAtDraftChange}
+            onExpiresAtDraftChange={
+              handleExpiresAtDraftChange
+            }
             onExtendExpiry={handleExtendExpiry}
             onReactivate={handleReactivate}
             onResetPassword={handleResetPassword}

@@ -14,7 +14,8 @@ export const WORKERS_SCREEN = {
     STATUS: "Estado",
     USERNAME: "Usuario",
   },
-  EMPTY_STATE: "No hay trabajadores que coincidan con los filtros.",
+  EMPTY_STATE:
+    "No hay trabajadores que coincidan con los filtros.",
   EXTERNAL_GUIDE_BADGE: "Guía externo",
   EXTERNAL_GUIDE_STATUS: {
     ACTIVE: "Vigente",
@@ -45,11 +46,15 @@ export const WORKERS_SCREEN = {
  */
 export const WORKER_FORM_SCREEN = {
   ERROR: {
-    EXPIRY_REQUIRED: "La fecha de caducidad es obligatoria para un guía externo.",
+    EXPIRY_REQUIRED:
+      "La fecha de caducidad es obligatoria para un guía externo.",
     FULL_NAME_REQUIRED: "El nombre es obligatorio.",
-    GENERIC: "No se pudo crear el trabajador. Inténtelo de nuevo.",
-    NATIONAL_ID_REQUIRED: "La cédula es obligatoria para un guía externo.",
-    USERNAME_REQUIRED: "El nombre de usuario es obligatorio.",
+    GENERIC:
+      "No se pudo crear el trabajador. Inténtelo de nuevo.",
+    NATIONAL_ID_REQUIRED:
+      "La cédula es obligatoria para un guía externo.",
+    USERNAME_REQUIRED:
+      "El nombre de usuario es obligatorio.",
     USERNAME_TAKEN: "Ese nombre de usuario ya existe.",
   },
   EXTERNAL_GUIDE_HINT:
@@ -68,6 +73,10 @@ export const WORKER_FORM_SCREEN = {
     BACK_TO_CALENDAR: "Volver al calendario",
     COPY: "Copiar",
     TEMPORARY_PASSWORD_LABEL: "Contraseña temporal",
+    // El mismo panel sirve para el alta y para reponer la contrasena de
+    // alguien que ya existe; decir "Trabajador creado" en el segundo caso
+    // es sencillamente falso.
+    RESET_TITLE: "Contraseña temporal repuesta",
     TITLE: "Trabajador creado",
     USERNAME_LABEL: "Nombre de usuario",
     VIEW_WORKER: "Ver trabajador",
@@ -75,8 +84,10 @@ export const WORKER_FORM_SCREEN = {
       "Esta contraseña solo se muestra una vez. Entréguesela a la persona: deberá cambiarla en su primer ingreso.",
   },
   TITLE: "Nuevo trabajador",
-  TITLE_EXTERNAL_GUIDE: "Nueva cuenta temporal de guía externo",
-  USERNAME_HINT: "Solo minúsculas, sin espacios ni acentos.",
+  TITLE_EXTERNAL_GUIDE:
+    "Nueva cuenta temporal de guía externo",
+  USERNAME_HINT:
+    "Solo minúsculas, sin espacios ni acentos.",
   USERNAME_IS_NATIONAL_ID_HINT:
     "El usuario es la cédula: nadie tiene que inventar ni recordar uno nuevo.",
   USERNAME_LABEL: "Nombre de usuario",
@@ -102,17 +113,20 @@ export const WORKER_DETAIL_SCREEN = {
     "Esta es la única cuenta de administración: no se puede bloquear, eliminar ni cambiar de rol.",
   AREAS: {
     EMPTY: "Sin áreas adicionales.",
-    GRANTED_LABEL: (areaLabel: string): string => `Otorgada: ${areaLabel}`,
+    GRANTED_LABEL: (areaLabel: string): string =>
+      `Otorgada: ${areaLabel}`,
     TITLE: "Áreas adicionales",
   },
   BACK: "Volver a trabajadores",
   ERROR: {
-    ACTION_FAILED: "No se pudo completar la acción. Inténtelo de nuevo.",
+    ACTION_FAILED:
+      "No se pudo completar la acción. Inténtelo de nuevo.",
     EXPIRY_REQUIRED: "Ingrese una fecha de caducidad.",
   },
   EXPIRY: {
     LABEL: "Fecha de caducidad",
-    NOT_APPLICABLE: "No aplica: no es una cuenta de guía externo.",
+    NOT_APPLICABLE:
+      "No aplica: no es una cuenta de guía externo.",
   },
   MARKS: {
     TITLE: "Marcas",
