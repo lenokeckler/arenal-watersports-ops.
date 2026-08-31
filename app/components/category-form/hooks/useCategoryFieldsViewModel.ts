@@ -34,6 +34,7 @@ const toInitialValues = (
   guideOnly: category?.guideOnly ?? false,
   hasConditionPhotos: category?.hasConditionPhotos ?? false,
   hasMotor: category?.hasMotor ?? false,
+  groupName: category?.groupName ?? STRING.Empty,
   isReservable: category?.isReservable ?? false,
   name: category?.name ?? STRING.Empty,
   trackingMode:

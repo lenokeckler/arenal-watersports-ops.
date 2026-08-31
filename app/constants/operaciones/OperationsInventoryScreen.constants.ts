@@ -30,7 +30,7 @@ export const OPERATIONS_INVENTORY_SCREEN = {
     REASON_PLACEHOLDER: "Por qué cambia la cantidad",
     REASON_REQUIRED: "Escriba el motivo del ajuste.",
     SIGNATURE_NOTICE:
-      "El ajuste queda registrado a tu nombre.",
+      "El ajuste queda registrado a su nombre.",
     STOCK_MISSING:
       "Esta categoría todavía no tiene existencias registradas. Administración las crea desde su ficha.",
     SUBMIT: "Guardar ajuste",

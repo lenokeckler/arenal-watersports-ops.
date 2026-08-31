@@ -29,6 +29,7 @@ export const FIELD_IDS = {
   EXPIRY_DATE: "expiry_date",
   EXTRA_NAME: "extra_name",
   FULL_NAME: "full_name",
+  GROUP_NAME: "group_name",
   GUIDE_ONLY: "guide_only",
   HAS_CONDITION_PHOTOS: "has_condition_photos",
   HAS_MOTOR: "has_motor",

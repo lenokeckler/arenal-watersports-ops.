@@ -28,6 +28,8 @@ export interface CategoriesPage {
 
 export interface CategoryDetail extends CategoryListRow {
   alertExpiryDays: Nullable<number>;
+  /** Nombre con el que se muestra junto a otras; nulo si va sola. */
+  groupName: Nullable<string>;
   alertMinQuantity: Nullable<number>;
   canBeDamaged: boolean;
   consumesFuel: boolean;
@@ -44,7 +46,7 @@ const CATEGORY_LIST_SELECT =
   "id, name, status, tracking_mode, is_reservable";
 
 const CATEGORY_DETAIL_SELECT =
-  "id, name, status, tracking_mode, is_reservable, has_motor, " +
+  "id, name, status, tracking_mode, is_reservable, has_motor, group_name, " +
   "usage_metric, consumes_fuel, can_be_damaged, has_condition_photos, " +
   "guide_only, default_duration_minutes, deposit_usd, deposit_crc, " +
   "alert_min_quantity, alert_expiry_days";
@@ -65,6 +67,7 @@ interface CategoryListQueryRow {
 
 interface CategoryDetailQueryRow extends CategoryListQueryRow {
   alert_expiry_days: Nullable<number>;
+  group_name: Nullable<string>;
   alert_min_quantity: Nullable<number>;
   can_be_damaged: boolean;
   consumes_fuel: boolean;
@@ -98,6 +101,7 @@ const toCategoryDetail = (
   defaultDurationMinutes: row.default_duration_minutes,
   depositCrc: row.deposit_crc,
   depositUsd: row.deposit_usd,
+  groupName: row.group_name,
   guideOnly: row.guide_only,
   hasConditionPhotos: row.has_condition_photos,
   hasMotor: row.has_motor,

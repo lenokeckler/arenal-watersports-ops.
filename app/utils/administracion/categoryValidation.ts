@@ -17,6 +17,11 @@ export interface CategoryFormValues {
   guideOnly: boolean;
   hasConditionPhotos: boolean;
   hasMotor: boolean;
+  /**
+   * Nombre con el que esta categoria se muestra junto a otras. Vacio es el
+   * caso normal: se muestra sola.
+   */
+  groupName: string;
   isReservable: boolean;
   name: string;
   trackingMode: TrackingMode;
@@ -100,6 +105,7 @@ export interface CategoryWritePayload {
   deposit_usd: Nullable<number>;
   guide_only: boolean;
   has_condition_photos: boolean;
+  group_name: Nullable<string>;
   has_motor: boolean;
   is_reservable: boolean;
   name: string;
@@ -137,6 +143,7 @@ export const buildCategoryPayload = (
     values.trackingMode === TRACKING_MODE.BY_UNIT &&
     values.hasConditionPhotos,
   has_motor: values.hasMotor,
+  group_name: values.groupName.trim() || null,
   is_reservable: values.isReservable,
   name: values.name.trim(),
   tracking_mode: values.trackingMode,

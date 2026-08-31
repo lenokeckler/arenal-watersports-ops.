@@ -78,6 +78,10 @@ export const CATEGORY_FORM_SCREEN = {
     NAME_TAKEN: "Ya existe una categoría con ese nombre.",
   },
   NAME_LABEL: "Nombre",
+  GROUP_NAME_HINT:
+    "Las categorías que comparten grupo salen como una sola tarjeta en el tablero y en un mismo bloque al reservar, pero se siguen contando y cobrando por separado. Déjelo vacío si esta categoría va sola.",
+  GROUP_NAME_LABEL: "Grupo",
+  GROUP_NAME_PLACEHOLDER: "Ej. Kayak",
   NAME_PLACEHOLDER: "Ej. Drybags",
   NEW_TITLE: "Nueva categoría",
   REACTIVATE_BUTTON: "Reactivar categoría",

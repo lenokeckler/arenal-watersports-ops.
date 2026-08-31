@@ -20,7 +20,7 @@ export const UNIT_CORRECTION_SCREEN = {
     USAGE_LABEL: "Lectura acumulada del instrumento",
   },
   SIGNATURE_NOTICE:
-    "La corrección queda registrada a tu nombre.",
+    "La corrección queda registrada a su nombre.",
   SUBTITLE:
     "Ajustá lo que pasó fuera de una salida. Lo que dejés vacío no se toca.",
   TITLE: "Corregir datos",

@@ -9,6 +9,7 @@ import {
   INPUT_TYPES,
   MATERIAL_ICON_NAME,
   SPINNER_SIZE,
+  STRING,
   TRACKING_MODE,
   TRACKING_MODE_LABEL,
 } from "@/app/constants";
@@ -91,6 +92,30 @@ const CategoryForm = (
             : CATEGORY_FIELD_CLASS
         }
       />
+
+      <div className="flex flex-col gap-xs">
+        <FormField
+          id={FIELD_IDS.GROUP_NAME}
+          name={FIELD_IDS.GROUP_NAME}
+          label={CATEGORY_FORM_SCREEN.GROUP_NAME_LABEL}
+          placeholder={
+            CATEGORY_FORM_SCREEN.GROUP_NAME_PLACEHOLDER
+          }
+          labelSuffix={STRING.Empty}
+          value={values.groupName}
+          onChange={(event) =>
+            handleFieldChange(
+              "groupName",
+              event.target.value
+            )
+          }
+          disabled={isBusy}
+          classNameField={CATEGORY_FIELD_CLASS}
+        />
+        <span className="font-label-mono text-label-mono text-on-surface-variant">
+          {CATEGORY_FORM_SCREEN.GROUP_NAME_HINT}
+        </span>
+      </div>
 
       <div className="flex flex-col gap-xs">
         <FormField
