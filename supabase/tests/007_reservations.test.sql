@@ -1,5 +1,5 @@
 begin;
-select plan(28);
+select plan(31);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -324,6 +324,54 @@ select lives_ok(
   $$ update reservations set status = 'cancelled', cancellation_reason = 'Cliente no se presento'
      where id = 'dddddddd-0000-0000-0000-000000000001' $$,
   'cancelar con motivo se acepta'
+);
+
+-- ============================================================
+-- El horometro solo sube (20260828001900)
+-- ============================================================
+
+-- `usage_out` se escribe al despachar y `usage_in` al cerrar, y de esa resta
+-- sale equipment_units.usage_total, el acumulado del que leen el reporte de
+-- horas de uso (US-ADM-028) y el aviso de cambio de aceite (US-OPE-012).
+-- Reproducido contra la aplicacion antes de la restriccion: se desapacho con
+-- 12.5 horas, se cerro con 11, y el acumulado bajo sin una sola queja.
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-0000000000f1', 'Horometro', 2, 'rental',
+        '2026-09-05 10:00:00+00', 60,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+select throws_ok(
+  $$ insert into reservation_items
+       (reservation_id, unit_id, usage_out, usage_in, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-0000000000f1',
+             'bbbbbbbb-0000-0000-0000-000000000001', 12.5, 11.0,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23514', null,
+  'cerrar con menos horas de las que salio es rechazado'
+);
+
+select lives_ok(
+  $$ insert into reservation_items
+       (reservation_id, unit_id, usage_out, usage_in, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-0000000000f1',
+             'bbbbbbbb-0000-0000-0000-000000000001', 12.5, 12.5,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'cerrar con la misma lectura se acepta: una salida puede no mover el horometro'
+);
+
+-- Despachar sin haber cerrado todavia es el estado normal entre las dos
+-- lecturas, y la restriccion no puede estorbarlo.
+select lives_ok(
+  $$ insert into reservation_items
+       (reservation_id, unit_id, usage_out, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-0000000000f1',
+             'bbbbbbbb-0000-0000-0000-000000000001', 30.0,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'una salida despachada y sin cerrar, con lectura de salida y sin la de regreso, se acepta'
 );
 
 select * from finish();

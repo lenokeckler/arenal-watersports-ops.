@@ -4,6 +4,11 @@
  * commits the equipment and records fuel/hours for the motorized ones.
  */
 export const DISPATCH_SCREEN = {
+  /**
+   * Sin esto la tarjeta imprime "4 PONTOON" de corrido, que en el muelle y
+   * de reojo se lee como cuatro pontones en vez de cuatro personas.
+   */
+  SUMMARY_SEPARATOR: "·",
   BOARD_LINK: "Equipo despachado",
   CONFIRM_ERROR:
     "No se pudo despachar la reserva. Intenta de nuevo.",

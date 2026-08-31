@@ -19,6 +19,10 @@ export const RESERVATION_CLOSE_SCREEN = {
   },
   EQUIPMENT_TITLE: "Equipo que regresó",
   ERROR: "No se pudo cerrar la reserva. Intenta de nuevo.",
+  DEPARTURE_FUEL: (value: number): string =>
+    `Salió con ${value}%`,
+  DEPARTURE_USAGE: (value: number): string =>
+    `Salió con ${value}`,
   FUEL_LABEL: "Gasolina final (%)",
   OK_NOTICE:
     "Si todo está en orden, no hace falta nada más aquí.",

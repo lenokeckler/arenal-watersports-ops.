@@ -9,6 +9,9 @@ import type { ReservationCloseEquipmentItem } from "./reservationCloseData";
 /** One returning unit's fuel/hours reading plus its optional damage report. */
 export interface ReservationCloseEquipmentRow {
   canBeDamaged: boolean;
+  /** Con que salio la unidad; ver `EquipmentReadingFieldState`. */
+  departureFuel: Nullable<number>;
+  departureUsage: Nullable<number>;
   damageCause: DamageCause | "";
   damageDescription: string;
   damageImpactDelta: string;
@@ -46,6 +49,8 @@ export const buildReservationCloseRows = (
     )
     .map((item) => ({
       canBeDamaged: item.canBeDamaged,
+      departureFuel: item.fuelOut,
+      departureUsage: item.usageOut,
       damageCause: "",
       damageDescription: EMPTY_READING,
       damageImpactDelta: String(

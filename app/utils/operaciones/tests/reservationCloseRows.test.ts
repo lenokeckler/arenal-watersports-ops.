@@ -7,6 +7,7 @@ const baseItem: ReservationCloseEquipmentItem = {
   categoryId: "category-1",
   categoryName: "Jet Ski",
   consumesFuel: false,
+  fuelOut: null,
   hasMotor: false,
   id: "item-1",
   impactCount: 0,
@@ -14,6 +15,7 @@ const baseItem: ReservationCloseEquipmentItem = {
   unitCode: "JS-01",
   unitId: "unit-1",
   usageMetric: "engine_hours",
+  usageOut: null,
 };
 
 describe("buildReservationCloseRows", () => {

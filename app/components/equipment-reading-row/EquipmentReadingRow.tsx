@@ -1,10 +1,14 @@
 import type { JSX } from "react";
 import {
   INPUT_TYPES,
+  RESERVATION_CLOSE_SCREEN,
   RESERVATION_NUMBERS,
   USAGE_METRIC_LABEL,
 } from "@/app/constants";
 import type { EquipmentReadingRowProps } from "./models/EquipmentReadingRowProps.interface";
+
+const HINT_CLASS =
+  "font-label-mono text-label-mono text-on-surface-variant";
 
 const INPUT_CLASS =
   "w-full rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
@@ -46,6 +50,13 @@ const EquipmentReadingRow = ({
             }
             className={INPUT_CLASS}
           />
+          {typeof reading.departureFuel === "number" && (
+            <span className={HINT_CLASS}>
+              {RESERVATION_CLOSE_SCREEN.DEPARTURE_FUEL(
+                reading.departureFuel
+              )}
+            </span>
+          )}
         </label>
       )}
       {reading.showUsage && (
@@ -57,7 +68,13 @@ const EquipmentReadingRow = ({
           </span>
           <input
             type={INPUT_TYPES.NUMBER}
-            min={RESERVATION_NUMBERS.MIN_QUANTITY}
+            // El horometro solo sube. La base lo garantiza con
+            // `reservation_items_usage_never_goes_back`; esto evita que
+            // el operador se entere hasta despues de darle a cerrar.
+            min={
+              reading.departureUsage ??
+              RESERVATION_NUMBERS.MIN_QUANTITY
+            }
             value={reading.usageReading}
             disabled={isDisabled}
             onChange={(event) =>
@@ -68,6 +85,13 @@ const EquipmentReadingRow = ({
             }
             className={INPUT_CLASS}
           />
+          {typeof reading.departureUsage === "number" && (
+            <span className={HINT_CLASS}>
+              {RESERVATION_CLOSE_SCREEN.DEPARTURE_USAGE(
+                reading.departureUsage
+              )}
+            </span>
+          )}
         </label>
       )}
     </div>

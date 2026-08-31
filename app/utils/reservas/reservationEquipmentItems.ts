@@ -7,12 +7,15 @@ export interface ReservationEquipmentItem {
   categoryId: Nullable<string>;
   categoryName: Nullable<string>;
   consumesFuel: boolean;
+  /** Lecturas tomadas al despachar, para poder compararlas al cerrar. */
+  fuelOut: Nullable<number>;
   hasMotor: boolean;
   id: string;
   quantity: Nullable<number>;
   unitCode: Nullable<string>;
   unitId: Nullable<string>;
   usageMetric: Nullable<UsageMetric>;
+  usageOut: Nullable<number>;
 }
 
 interface EquipmentCategoryFlags {
@@ -25,8 +28,10 @@ interface EquipmentCategoryFlags {
 
 interface ReservationItemRow {
   category: EquipmentCategoryFlags | null;
+  fuel_out: Nullable<number>;
   id: string;
   quantity: Nullable<number>;
+  usage_out: Nullable<number>;
   unit: {
     category: EquipmentCategoryFlags | null;
     code: string;
@@ -50,7 +55,7 @@ export const fetchReservationEquipmentItems = async (
   const { data, error } = await supabase
     .from("reservation_items")
     .select(
-      `id, quantity, unit_id,
+      `id, quantity, unit_id, fuel_out, usage_out,
        category:equipment_categories!reservation_items_category_id_fkey(
          id, name, has_motor, usage_metric, consumes_fuel
        ),
@@ -76,12 +81,14 @@ export const fetchReservationEquipmentItems = async (
       categoryId: category?.id ?? null,
       categoryName: category?.name ?? null,
       consumesFuel: category?.consumes_fuel ?? false,
+      fuelOut: row.fuel_out,
       hasMotor: category?.has_motor ?? false,
       id: row.id,
       quantity: row.quantity,
       unitCode: row.unit?.code ?? null,
       unitId: row.unit_id,
       usageMetric: category?.usage_metric ?? null,
+      usageOut: row.usage_out,
     };
   });
 };

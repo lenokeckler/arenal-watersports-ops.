@@ -3,6 +3,15 @@ import type { UsageMetric } from "@/app/constants";
 import type { ReservationEquipmentItem } from "./reservationEquipmentItems";
 
 export interface EquipmentReadingFieldState {
+  /**
+   * Con que salio la unidad. Solo lo llena el cierre: al despachar todavia
+   * no hay con que comparar. Sirve para dos cosas — que el operador vea el
+   * numero anterior antes de teclear el suyo, y que el campo no acepte uno
+   * menor, que es lo que `reservation_items_usage_never_goes_back` rechaza
+   * en la base.
+   */
+  departureFuel: Nullable<number>;
+  departureUsage: Nullable<number>;
   fuelPercent: string;
   itemId: string;
   showFuel: boolean;
@@ -30,6 +39,8 @@ export const buildEquipmentReadingFields = (
         item.unitId && (item.consumesFuel || item.hasMotor)
     )
     .map((item) => ({
+      departureFuel: item.fuelOut,
+      departureUsage: item.usageOut,
       fuelPercent: EMPTY_READING,
       itemId: item.id,
       showFuel: item.consumesFuel,

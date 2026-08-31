@@ -49,9 +49,14 @@ const PendingDispatchCard = ({
         />
         <span>{reservation.peopleCount}</span>
         {reservation.equipmentSummary.length > 0 && (
-          <span>
-            {reservation.equipmentSummary.join(", ")}
-          </span>
+          <>
+            <span aria-hidden="true">
+              {DISPATCH_SCREEN.SUMMARY_SEPARATOR}
+            </span>
+            <span>
+              {reservation.equipmentSummary.join(", ")}
+            </span>
+          </>
         )}
       </div>
       <span className="text-sm text-on-surface-variant">
