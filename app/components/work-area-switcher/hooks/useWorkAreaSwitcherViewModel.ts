@@ -6,10 +6,17 @@ import { PATHS, STORE_SLICES } from "@/app/constants";
 import type { WorkArea } from "@/app/constants";
 // Deep import on purpose — see `useLoginFormViewModel.ts`.
 import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
-import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/app/store/hooks";
 import { workAreaActions } from "@/app/store";
 import { useSessionStore } from "@/app/components/session/hooks/useSessionStore";
-import { fetchWorkerAreaState } from "@/app/utils/acceso/workAreas";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import {
+  fetchWorkerAreaState,
+  resolveActiveWorkArea,
+} from "@/app/utils/acceso/workAreas";
 import type { WorkAreaSwitcherViewModel } from "../models/WorkAreaSwitcherViewModel.interface";
 
 /**
@@ -38,24 +45,45 @@ export const useWorkAreaSwitcherViewModel =
 
       const supabase = createBrowserSupabaseClient();
 
-      void supabase.auth.getUser().then(async ({ data: { user } }) => {
-        if (!user) {
-          return;
-        }
+      void supabase.auth
+        .getUser()
+        .then(async ({ data: { user } }) => {
+          if (!user) {
+            return;
+          }
 
-        const state = await fetchWorkerAreaState(supabase, user.id);
+          const state = await fetchWorkerAreaState(
+            supabase,
+            user.id
+          );
+          const resolvedArea = resolveActiveWorkArea(state);
 
-        dispatch(
-          workAreaActions.setWorkAreaState({
-            activeArea: state.lastWorkArea,
-            availableAreas: state.areas,
-          })
-        );
-      });
+          dispatch(
+            workAreaActions.setWorkAreaState({
+              activeArea: resolvedArea,
+              availableAreas: state.areas,
+            })
+          );
+
+          // Persist the area we resolved for a single-area worker, so the
+          // rest of the system sees the same mode this session is using —
+          // the reports and the mode selector both read `last_work_area`
+          // straight from the row. Only when it was actually missing:
+          // a stored mode is never overwritten from here.
+          if (!state.lastWorkArea && resolvedArea) {
+            const { error } = await supabase
+              .from("workers")
+              .update({ last_work_area: resolvedArea })
+              .eq("id", user.id);
+            throwIfSupabaseError(
+              error,
+              "workAreaSwitcher.persistResolvedArea"
+            );
+          }
+        });
       // Re-runs only when the session itself appears or disappears — a
       // mode switch updates the slice directly (`handleSelectArea` below)
       // instead of forcing a refetch.
-       
     }, [hasActiveUser, dispatch]);
 
     const handleSelectArea = (area: WorkArea): void => {
@@ -65,20 +93,22 @@ export const useWorkAreaSwitcherViewModel =
 
       const supabase = createBrowserSupabaseClient();
 
-      void supabase.auth.getUser().then(async ({ data: { user } }) => {
-        if (!user) {
-          return;
-        }
+      void supabase.auth
+        .getUser()
+        .then(async ({ data: { user } }) => {
+          if (!user) {
+            return;
+          }
 
-        const { error } = await supabase
-          .from("workers")
-          .update({ last_work_area: area })
-          .eq("id", user.id);
+          const { error } = await supabase
+            .from("workers")
+            .update({ last_work_area: area })
+            .eq("id", user.id);
 
-        if (!error) {
-          dispatch(workAreaActions.setActiveArea(area));
-        }
-      });
+          if (!error) {
+            dispatch(workAreaActions.setActiveArea(area));
+          }
+        });
     };
 
     const handleLogout = (): void => {

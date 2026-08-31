@@ -24,6 +24,13 @@ import {
  * points at is still gated by the database policies for whatever that
  * screen does.
  */
+/**
+ * Las pantallas de `/acceso` no llevan barra: el proxy fuerza el primer
+ * ingreso desde cualquier ruta y sin excepcion (US-ACC-003), asi que
+ * ofrecer atajos a tablero o inventario ahi solo invita a un rebote.
+ */
+const ACCESS_SECTION_PREFIX = "/acceso";
+
 export const BOTTOM_NAV_ITEM_ID = {
   ADMIN: "admin",
   BOARD: "board",
@@ -40,6 +47,7 @@ export type BottomNavItemId =
   (typeof BOTTOM_NAV_ITEM_ID)[keyof typeof BOTTOM_NAV_ITEM_ID];
 
 export const BOTTOM_NAV = {
+  ACCESS_SECTION_PREFIX,
   ARIA_LABEL: "Navegación principal",
   ITEMS: [
     {

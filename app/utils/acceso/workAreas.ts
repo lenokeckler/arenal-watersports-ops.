@@ -3,6 +3,12 @@ import type { Database } from "@/app/types";
 import type { WorkArea } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
+/**
+ * A worker with exactly one enabled area has no mode to choose: that area
+ * is their mode.
+ */
+const SINGLE_AREA = 1;
+
 export interface WorkerAreaState {
   areas: WorkArea[];
   lastWorkArea: WorkArea | null;
@@ -46,4 +52,31 @@ export const fetchWorkerAreaState = async (
     areas: (areasResult.data ?? []).map((row) => row.area),
     lastWorkArea: workerResult.data?.last_work_area ?? null,
   };
+};
+
+/**
+ * Which area a worker is actually working in right now.
+ *
+ * `last_work_area` is only ever written when someone picks a mode, and the
+ * proxy only sends a worker to the mode selector when they have more than
+ * one area (rule 4 of `proxy.ts`). So a worker with a single area — which is
+ * most of them, and the seeded `admin` account — never had a mode at all:
+ * `activeArea` stayed null, `BottomNav` rendered nothing, and the compact
+ * switcher only offers mode buttons above one area, so there was no way to
+ * set one from the interface either. The whole app was left with no
+ * navigation, which is exactly what US-TAB-004 asks for.
+ *
+ * Falling back to the only area they have is not a default dressed up as a
+ * choice: with one area there is no choice to make.
+ */
+export const resolveActiveWorkArea = (
+  state: WorkerAreaState
+): WorkArea | null => {
+  if (state.lastWorkArea) {
+    return state.lastWorkArea;
+  }
+
+  return state.areas.length === SINGLE_AREA
+    ? state.areas[0]
+    : null;
 };

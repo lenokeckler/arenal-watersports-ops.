@@ -67,8 +67,6 @@ values
   ('Kayak individual', 'by_quantity', true, 60,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
   ('Paddleboard',      'by_quantity', true, 60,
-   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Tabla de wake',    'by_quantity', true, 60,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
 -- Llevadas por cantidad y no reservables: viven en el inventario, se cuentan.
@@ -85,6 +83,10 @@ values
   ('Botiquin',  'by_quantity', false, null, 30,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
   ('Parrilla',  'by_quantity', false, null, null,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  -- La tabla de wake nunca se alquila sola: va con la lancha Bennington y se
+  -- pide como extra. Sigue siendo inventario porque hay dos y se cuentan.
+  ('Tabla de wake', 'by_quantity', false, null, null,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
 -- ---------------- Unidades ----------------
@@ -111,6 +113,7 @@ select c.id,
        case c.name
          when 'Kayak doble'      then 6
          when 'Kayak individual' then 3
+         when 'Tabla de wake'    then 2
          else 0
        end,
        '00000000-0000-0000-0000-000000000001'
@@ -119,15 +122,19 @@ where c.tracking_mode = 'by_quantity';
 
 -- ---------------- Extras ----------------
 insert into extras (name, price_usd, created_by, updated_by)
+-- Solo lo que no se alquila por aparte. El paddleboard y los kayaks si se
+-- rentan solos, asi que llevarlos en una lancha es agregarlos como equipo de
+-- la reserva, no como extra: tenerlos ademas aqui daba dos caminos y dos
+-- precios para la misma cosa.
 values
-  ('Parrilla',    25, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Tubing',      30, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Wakeboard',   35, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Paddleboard', 20, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
+  ('Parrilla',  25, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Tubing',    30, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Wakeboard', 35, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
--- El pontoon lleva parrilla y paddleboard; el bennington va para wakeboard.
+-- El pontoon puede llevar parrilla si el cliente la pide. El wakeboard y el
+-- tubing son solo de la bennington, que es la que arrastra.
 insert into extra_compatibility (extra_id, unit_id)
 select e.id, u.id
 from extras e, equipment_units u
-where (e.name in ('Parrilla', 'Paddleboard') and u.code = 'PONTOON')
-   or (e.name in ('Wakeboard', 'Tubing')     and u.code = 'BENNINGTON');
+where (e.name = 'Parrilla'                and u.code = 'PONTOON')
+   or (e.name in ('Wakeboard', 'Tubing')  and u.code = 'BENNINGTON');

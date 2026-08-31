@@ -51,6 +51,9 @@ const ReservationFormUnitCategory = ({
             <button
               key={unit.id}
               type="button"
+              // Un lector de pantalla no ve el borde turquesa: sin esto,
+              // que la unidad este elegida o no suena exactamente igual.
+              aria-pressed={isSelected}
               disabled={isBusy}
               onClick={() => onToggleUnit(unit.id)}
               className={`rounded-full border px-sm py-1 font-label-mono text-label-mono transition-colors disabled:opacity-50 ${
