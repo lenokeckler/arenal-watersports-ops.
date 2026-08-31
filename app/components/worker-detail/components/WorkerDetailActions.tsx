@@ -13,13 +13,23 @@ import Button from "@/app/components/button/Button";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 
 interface WorkerDetailActionsProps {
+  /**
+   * La cuenta de administracion no se elimina: es la unica que puede volver
+   * a crear a las demas, y el disparador `workers_guard_admin` lo impide
+   * igual a nivel de base.
+   */
+  canDelete: boolean;
   expiresAtDraft: string;
   isBusy: boolean;
+  isConfirmingDelete: boolean;
   isExternalGuide: boolean;
   onBlock: () => void;
+  onCancelDelete: () => void;
+  onConfirmDelete: () => void;
   onExpiresAtDraftChange: (value: string) => void;
   onExtendExpiry: () => void;
   onReactivate: () => void;
+  onRequestDelete: () => void;
   onResetPassword: () => void;
   status: WorkerStatus;
 }
@@ -36,13 +46,18 @@ const ACTION_BUTTON_CLASS =
  * chose, so neither does this screen.
  */
 const WorkerDetailActions = ({
+  canDelete,
   expiresAtDraft,
   isBusy,
+  isConfirmingDelete,
   isExternalGuide,
   onBlock,
+  onCancelDelete,
+  onConfirmDelete,
   onExpiresAtDraftChange,
   onExtendExpiry,
   onReactivate,
+  onRequestDelete,
   onResetPassword,
   status,
 }: WorkerDetailActionsProps): JSX.Element => (
@@ -71,7 +86,9 @@ const WorkerDetailActions = ({
           onClick={onReactivate}
           className={ACTION_BUTTON_CLASS}
         >
-          <MaterialIcon name={MATERIAL_ICON_NAME.CHECK_CIRCLE} />
+          <MaterialIcon
+            name={MATERIAL_ICON_NAME.CHECK_CIRCLE}
+          />
           {WORKER_DETAIL_SCREEN.ACTIONS.REACTIVATE}
         </Button>
       )}
@@ -83,7 +100,9 @@ const WorkerDetailActions = ({
         onClick={onResetPassword}
         className={ACTION_BUTTON_CLASS}
       >
-        <MaterialIcon name={MATERIAL_ICON_NAME.LOCK_RESET} />
+        <MaterialIcon
+          name={MATERIAL_ICON_NAME.LOCK_RESET}
+        />
         {WORKER_DETAIL_SCREEN.ACTIONS.RESET_PASSWORD}
       </Button>
     </div>
@@ -99,7 +118,9 @@ const WorkerDetailActions = ({
             type={INPUT_TYPES.DATE}
             value={expiresAtDraft}
             disabled={isBusy}
-            onChange={(event) => onExpiresAtDraftChange(event.target.value)}
+            onChange={(event) =>
+              onExpiresAtDraftChange(event.target.value)
+            }
             className="min-h-12 rounded-lg border border-white/10 bg-surface-container-low px-sm text-on-surface"
           />
           <Button
@@ -109,7 +130,9 @@ const WorkerDetailActions = ({
             onClick={onExtendExpiry}
             className={ACTION_BUTTON_CLASS}
           >
-            <MaterialIcon name={MATERIAL_ICON_NAME.SCHEDULE} />
+            <MaterialIcon
+              name={MATERIAL_ICON_NAME.SCHEDULE}
+            />
             {WORKER_DETAIL_SCREEN.ACTIONS.EXTEND_EXPIRY}
           </Button>
         </div>
@@ -119,6 +142,57 @@ const WorkerDetailActions = ({
         </p>
       )}
     </div>
+
+    {canDelete && (
+      <div className="flex flex-col gap-sm border-t border-white/5 pt-sm">
+        {isConfirmingDelete ? (
+          <>
+            <p className="font-body-base text-body-base text-error">
+              {WORKER_DETAIL_SCREEN.ACTIONS.DELETE_WARNING}
+            </p>
+            <div className="flex flex-wrap gap-sm">
+              <Button
+                type={BUTTON_TYPES.BUTTON}
+                variant={BUTTON.BASE}
+                disabled={isBusy}
+                onClick={onConfirmDelete}
+                className={`${ACTION_BUTTON_CLASS} border-error/40 text-error hover:border-error hover:text-error`}
+              >
+                <MaterialIcon
+                  name={MATERIAL_ICON_NAME.DELETE}
+                />
+                {
+                  WORKER_DETAIL_SCREEN.ACTIONS
+                    .DELETE_CONFIRM
+                }
+              </Button>
+              <Button
+                type={BUTTON_TYPES.BUTTON}
+                variant={BUTTON.BASE}
+                disabled={isBusy}
+                onClick={onCancelDelete}
+                className={ACTION_BUTTON_CLASS}
+              >
+                {WORKER_DETAIL_SCREEN.ACTIONS.DELETE_CANCEL}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <Button
+            type={BUTTON_TYPES.BUTTON}
+            variant={BUTTON.BASE}
+            disabled={isBusy}
+            onClick={onRequestDelete}
+            className={`${ACTION_BUTTON_CLASS} self-start hover:border-error/40 hover:text-error`}
+          >
+            <MaterialIcon
+              name={MATERIAL_ICON_NAME.DELETE}
+            />
+            {WORKER_DETAIL_SCREEN.ACTIONS.DELETE}
+          </Button>
+        )}
+      </div>
+    )}
   </section>
 );
 

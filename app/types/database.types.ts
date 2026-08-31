@@ -1948,6 +1948,7 @@ export type Database = {
           base_role: Database["public"]["Enums"]["work_area"];
           created_at: string;
           created_by: string | null;
+          deleted_at: string | null;
           expires_at: string | null;
           failed_attempts: number;
           full_name: string;
@@ -1967,6 +1968,7 @@ export type Database = {
           base_role: Database["public"]["Enums"]["work_area"];
           created_at?: string;
           created_by?: string | null;
+          deleted_at?: string | null;
           expires_at?: string | null;
           failed_attempts?: number;
           full_name: string;
@@ -1986,6 +1988,7 @@ export type Database = {
           base_role?: Database["public"]["Enums"]["work_area"];
           created_at?: string;
           created_by?: string | null;
+          deleted_at?: string | null;
           expires_at?: string | null;
           failed_attempts?: number;
           full_name?: string;

@@ -104,6 +104,11 @@ export const WORKER_FORM_SCREEN = {
  */
 export const WORKER_DETAIL_SCREEN = {
   ACTIONS: {
+    DELETE: "Eliminar trabajador",
+    DELETE_CANCEL: "Cancelar",
+    DELETE_CONFIRM: "Sí, eliminar",
+    DELETE_WARNING:
+      "El perfil desaparece: se borra la cuenta, los permisos y los datos personales, y la persona no vuelve a entrar. Lo que hizo se conserva en el historial con su nombre. No se puede deshacer.",
     BLOCK: "Bloquear cuenta",
     EXTEND_EXPIRY: "Extender caducidad",
     REACTIVATE: "Reactivar cuenta",

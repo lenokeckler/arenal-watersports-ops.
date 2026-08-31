@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   API,
   PERMISSION_KIND,
+  PATHS,
   STRING,
   WORK_AREA,
   WORKER_DETAIL_SCREEN,
@@ -23,9 +25,10 @@ import type { ResetWorkerPasswordResponseData } from "@/app/api/administracion/t
 import type { WorkerDetailProps } from "../models/WorkerDetailProps.interface";
 import type { WorkerDetailViewModel } from "../models/WorkerDetailViewModel.interface";
 
-const ALL_AREAS: readonly WorkArea[] = Object.values(WORK_AREA);
+const ALL_AREAS: readonly WorkArea[] =
+  Object.values(WORK_AREA);
 
-const postJson = async <T,>(
+const postJson = async <T>(
   route: string,
   method: ApiMethod,
   body: unknown
@@ -33,23 +36,31 @@ const postJson = async <T,>(
   try {
     const response = await fetch(route, {
       body: JSON.stringify(body),
-      headers: { [API.HEADERS.CONTENT_TYPE]: API.HEADERS.JSON },
+      headers: {
+        [API.HEADERS.CONTENT_TYPE]: API.HEADERS.JSON,
+      },
       method,
     });
-    const responseBody = (await response.json().catch(() => null)) as
-      | (T & { error?: string })
-      | null;
+    const responseBody = (await response
+      .json()
+      .catch(() => null)) as
+      (T & { error?: string }) | null;
 
     if (!response.ok) {
       return {
-        error: responseBody?.error ?? WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED,
+        error:
+          responseBody?.error ??
+          WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED,
         ok: false,
       };
     }
 
     return { data: responseBody ?? undefined, ok: true };
   } catch {
-    return { error: WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED, ok: false };
+    return {
+      error: WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED,
+      ok: false,
+    };
   }
 };
 
@@ -65,20 +76,27 @@ const postJson = async <T,>(
 export const useWorkerDetailViewModel = ({
   worker: initialWorker,
 }: WorkerDetailProps): WorkerDetailViewModel => {
+  const router = useRouter();
   const [worker, setWorker] = useState(initialWorker);
-  const [status, setStatus] = useState<WorkerStatus>(initialWorker.status);
-  const [expiresAtDraft, setExpiresAtDraft] = useState<string>(
-    initialWorker.expiresAt?.slice(0, 10) ?? STRING.Empty
+  const [status, setStatus] = useState<WorkerStatus>(
+    initialWorker.status
   );
-  const [actionError, setActionError] = useState<Nullable<string>>(null);
+  const [expiresAtDraft, setExpiresAtDraft] =
+    useState<string>(
+      initialWorker.expiresAt?.slice(0, 10) ?? STRING.Empty
+    );
+  const [actionError, setActionError] =
+    useState<Nullable<string>>(null);
   const [resetPasswordResult, setResetPasswordResult] =
     useState<Nullable<string>>(null);
   const [isBusy, setIsBusy] = useState<boolean>(false);
 
-  const isAdminAccount = worker.baseRole === WORK_AREA.ADMINISTRATION;
+  const isAdminAccount =
+    worker.baseRole === WORK_AREA.ADMINISTRATION;
   const availableAreas = ALL_AREAS.filter(
     (area) =>
-      area !== worker.baseRole && !worker.additionalAreas.includes(area)
+      area !== worker.baseRole &&
+      !worker.additionalAreas.includes(area)
   );
 
   const changePermission = async (
@@ -96,7 +114,10 @@ export const useWorkerDetailViewModel = ({
 
     setIsBusy(false);
     if (!result.ok) {
-      setActionError(result.error ?? WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED);
+      setActionError(
+        result.error ??
+          WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED
+      );
     }
     return result.ok;
   };
@@ -105,37 +126,39 @@ export const useWorkerDetailViewModel = ({
     void changePermission(API.METHODS.POST, {
       kind: PERMISSION_KIND.AREA,
       value: area,
-    }).then(
-      (ok) => {
-        if (ok) {
-          setWorker((current) => ({
-            ...current,
-            additionalAreas: [...current.additionalAreas, area],
-          }));
-        }
+    }).then((ok) => {
+      if (ok) {
+        setWorker((current) => ({
+          ...current,
+          additionalAreas: [
+            ...current.additionalAreas,
+            area,
+          ],
+        }));
       }
-    );
+    });
   };
 
   const handleRemoveArea = (area: WorkArea): void => {
     void changePermission(API.METHODS.DELETE, {
       kind: PERMISSION_KIND.AREA,
       value: area,
-    }).then(
-      (ok) => {
-        if (ok) {
-          setWorker((current) => ({
-            ...current,
-            additionalAreas: current.additionalAreas.filter(
-              (existing) => existing !== area
-            ),
-          }));
-        }
+    }).then((ok) => {
+      if (ok) {
+        setWorker((current) => ({
+          ...current,
+          additionalAreas: current.additionalAreas.filter(
+            (existing) => existing !== area
+          ),
+        }));
       }
-    );
+    });
   };
 
-  const handleToggleMark = (mark: WorkerMark, isGranted: boolean): void => {
+  const handleToggleMark = (
+    mark: WorkerMark,
+    isGranted: boolean
+  ): void => {
     void changePermission(
       isGranted ? API.METHODS.DELETE : API.METHODS.POST,
       { kind: PERMISSION_KIND.MARK, value: mark }
@@ -144,14 +167,18 @@ export const useWorkerDetailViewModel = ({
         setWorker((current) => ({
           ...current,
           marks: isGranted
-            ? current.marks.filter((existing) => existing !== mark)
+            ? current.marks.filter(
+                (existing) => existing !== mark
+              )
             : [...current.marks, mark],
         }));
       }
     });
   };
 
-  const updateStatus = async (nextStatus: WorkerStatus): Promise<void> => {
+  const updateStatus = async (
+    nextStatus: WorkerStatus
+  ): Promise<void> => {
     setIsBusy(true);
     setActionError(null);
 
@@ -160,7 +187,9 @@ export const useWorkerDetailViewModel = ({
       .from("workers")
       .update({
         status: nextStatus,
-        ...(nextStatus === WORKER_STATUS.ACTIVE ? { failed_attempts: 0 } : {}),
+        ...(nextStatus === WORKER_STATUS.ACTIVE
+          ? { failed_attempts: 0 }
+          : {}),
       })
       .eq("id", worker.id);
 
@@ -182,13 +211,17 @@ export const useWorkerDetailViewModel = ({
     void updateStatus(WORKER_STATUS.ACTIVE);
   };
 
-  const handleExpiresAtDraftChange = (value: string): void => {
+  const handleExpiresAtDraftChange = (
+    value: string
+  ): void => {
     setExpiresAtDraft(value);
   };
 
   const handleExtendExpiry = (): void => {
     if (!expiresAtDraft) {
-      setActionError(WORKER_DETAIL_SCREEN.ERROR.EXPIRY_REQUIRED);
+      setActionError(
+        WORKER_DETAIL_SCREEN.ERROR.EXPIRY_REQUIRED
+      );
       return;
     }
 
@@ -198,7 +231,9 @@ export const useWorkerDetailViewModel = ({
     const supabase = createBrowserSupabaseClient();
     void supabase
       .from("workers")
-      .update({ expires_at: new Date(expiresAtDraft).toISOString() })
+      .update({
+        expires_at: new Date(expiresAtDraft).toISOString(),
+      })
       .eq("id", worker.id)
       .then(({ error }) => {
         setIsBusy(false);
@@ -211,6 +246,45 @@ export const useWorkerDetailViewModel = ({
           expiresAt: new Date(expiresAtDraft).toISOString(),
         }));
       });
+  };
+
+  const [isConfirmingDelete, setIsConfirmingDelete] =
+    useState<boolean>(false);
+
+  const handleRequestDelete = (): void => {
+    setActionError(null);
+    setIsConfirmingDelete(true);
+  };
+
+  const handleCancelDelete = (): void => {
+    setIsConfirmingDelete(false);
+  };
+
+  /**
+   * La persona dejo de trabajar aqui. El perfil se va; lo que hizo se
+   * queda. Al terminar se vuelve a la lista, porque esta ficha ya no
+   * existe: `fetchWorkerDetail` filtra los perfiles eliminados.
+   */
+  const handleConfirmDelete = (): void => {
+    setIsBusy(true);
+    setActionError(null);
+
+    void postJson<Record<string, never>>(
+      API.ROUTES.WORKER_DETAIL(worker.id),
+      API.METHODS.DELETE,
+      {}
+    ).then((result) => {
+      if (!result.ok) {
+        setIsBusy(false);
+        setIsConfirmingDelete(false);
+        setActionError(
+          result.error ??
+            WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED
+        );
+        return;
+      }
+      router.replace(PATHS.ADMIN.WORKERS);
+    });
   };
 
   const handleResetPassword = (): void => {
@@ -226,7 +300,8 @@ export const useWorkerDetailViewModel = ({
       setIsBusy(false);
       if (!result.ok || !result.data) {
         setActionError(
-          result.error ?? WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED
+          result.error ??
+            WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED
         );
         return;
       }
@@ -240,14 +315,18 @@ export const useWorkerDetailViewModel = ({
     expiresAtDraft,
     handleAddArea,
     handleBlock,
+    handleCancelDelete,
+    handleConfirmDelete,
     handleExpiresAtDraftChange,
     handleExtendExpiry,
     handleReactivate,
     handleRemoveArea,
+    handleRequestDelete,
     handleResetPassword,
     handleToggleMark,
     isAdminAccount,
     isBusy,
+    isConfirmingDelete,
     resetPasswordResult,
     status,
     worker,

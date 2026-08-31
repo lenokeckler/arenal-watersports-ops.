@@ -18,6 +18,7 @@ export const MATERIAL_ICON_NAME = {
   CANCEL: "cancel",
   CATEGORY: "category",
   CHECK_CIRCLE: "check_circle",
+  DELETE: "delete",
   CHECKLIST: "checklist",
   CHEVRON_RIGHT: "chevron_right",
   CLOSE: "close",

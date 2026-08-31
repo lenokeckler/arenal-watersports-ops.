@@ -55,7 +55,10 @@ const WorkerDetailAreas = ({
               aria-label={WORK_AREA_LABEL[area]}
               className="flex h-6 w-6 items-center justify-center rounded-full hover:bg-primary/20 disabled:opacity-50"
             >
-              <MaterialIcon name={MATERIAL_ICON_NAME.CLOSE} className="!text-[16px]" />
+              <MaterialIcon
+                name={MATERIAL_ICON_NAME.CLOSE}
+                className="!text-[16px]"
+              />
             </button>
           </li>
         ))}
@@ -72,7 +75,10 @@ const WorkerDetailAreas = ({
             onClick={() => onAddArea(area)}
             className="flex min-h-10 items-center gap-1 rounded-full border border-white/10 px-sm text-on-surface-variant hover:border-primary/40 hover:text-primary disabled:opacity-50"
           >
-            <MaterialIcon name={MATERIAL_ICON_NAME.ADD} className="!text-[16px]" />
+            <MaterialIcon
+              name={MATERIAL_ICON_NAME.ADD}
+              className="!text-[16px]"
+            />
             {WORK_AREA_LABEL[area]}
           </button>
         ))}

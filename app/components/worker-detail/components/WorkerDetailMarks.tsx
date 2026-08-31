@@ -11,10 +11,14 @@ import {
 interface WorkerDetailMarksProps {
   isBusy: boolean;
   marks: WorkerMark[];
-  onToggleMark: (mark: WorkerMark, isGranted: boolean) => void;
+  onToggleMark: (
+    mark: WorkerMark,
+    isGranted: boolean
+  ) => void;
 }
 
-const ALL_MARKS: readonly WorkerMark[] = Object.values(WORKER_MARK);
+const ALL_MARKS: readonly WorkerMark[] =
+  Object.values(WORKER_MARK);
 
 /**
  * The three marks (US-ADM-003/004/005): independent of role, each with its

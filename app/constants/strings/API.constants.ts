@@ -41,6 +41,8 @@ export const API = {
     WORKER_TEMPORARY_PASSWORD: (workerId: string): string =>
       `/api/administracion/trabajadores/${workerId}/contrasena-temporal`,
     WORKERS: "/api/administracion/trabajadores",
+    WORKER_DETAIL: (workerId: string): string =>
+      `/api/administracion/trabajadores/${workerId}`,
   },
 } as const;
 

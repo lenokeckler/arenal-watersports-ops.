@@ -36,14 +36,18 @@ const WorkerDetail = ({
     expiresAtDraft,
     handleAddArea,
     handleBlock,
+    handleCancelDelete,
+    handleConfirmDelete,
     handleExpiresAtDraftChange,
     handleExtendExpiry,
     handleReactivate,
     handleRemoveArea,
+    handleRequestDelete,
     handleResetPassword,
     handleToggleMark,
     isAdminAccount,
     isBusy,
+    isConfirmingDelete,
     resetPasswordResult,
     status,
     worker,
@@ -136,6 +140,12 @@ const WorkerDetail = ({
             onReactivate={handleReactivate}
             onResetPassword={handleResetPassword}
             status={status}
+
+            canDelete={!isAdminAccount}
+            isConfirmingDelete={isConfirmingDelete}
+            onCancelDelete={handleCancelDelete}
+            onConfirmDelete={handleConfirmDelete}
+            onRequestDelete={handleRequestDelete}
           />
         )}
       </main>

@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import {
   API,
   STRING,
@@ -30,8 +34,13 @@ const USERNAME_WHITESPACE = /\s+/g;
  * trimmed, 3–40 characters; a cédula already satisfies the length, this
  * only normalizes case and strips incidental whitespace.
  */
-const deriveUsernameFromNationalId = (nationalId: string): string =>
-  nationalId.trim().toLowerCase().replace(USERNAME_WHITESPACE, "");
+const deriveUsernameFromNationalId = (
+  nationalId: string
+): string =>
+  nationalId
+    .trim()
+    .toLowerCase()
+    .replace(USERNAME_WHITESPACE, "");
 
 interface CreateWorkerResult {
   data?: CreateWorkerResponseData;
@@ -46,11 +55,15 @@ const createWorker = async (
   try {
     const response = await fetch(API.ROUTES.WORKERS, {
       body: JSON.stringify(body),
-      headers: { [API.HEADERS.CONTENT_TYPE]: API.HEADERS.JSON },
+      headers: {
+        [API.HEADERS.CONTENT_TYPE]: API.HEADERS.JSON,
+      },
       method: API.METHODS.POST,
     });
 
-    const responseBody = (await response.json().catch(() => null)) as {
+    const responseBody = (await response
+      .json()
+      .catch(() => null)) as {
       error?: string;
       field?: string;
       temporaryPassword?: string;
@@ -60,7 +73,9 @@ const createWorker = async (
 
     if (!response.ok || !responseBody) {
       return {
-        error: responseBody?.error ?? WORKER_FORM_SCREEN.ERROR.GENERIC,
+        error:
+          responseBody?.error ??
+          WORKER_FORM_SCREEN.ERROR.GENERIC,
         field: responseBody?.field,
         ok: false,
       };
@@ -68,14 +83,18 @@ const createWorker = async (
 
     return {
       data: {
-        temporaryPassword: responseBody.temporaryPassword ?? STRING.Empty,
+        temporaryPassword:
+          responseBody.temporaryPassword ?? STRING.Empty,
         username: responseBody.username ?? STRING.Empty,
         workerId: responseBody.workerId ?? STRING.Empty,
       },
       ok: true,
     };
   } catch {
-    return { error: WORKER_FORM_SCREEN.ERROR.GENERIC, ok: false };
+    return {
+      error: WORKER_FORM_SCREEN.ERROR.GENERIC,
+      ok: false,
+    };
   }
 };
 
@@ -98,23 +117,35 @@ export interface UseWorkerFormViewModelParams {
 export const useWorkerFormViewModel = ({
   restrictToExternalGuide = false,
 }: UseWorkerFormViewModelParams = {}): WorkerFormViewModel => {
-  const [fullName, setFullName] = useState<string>(STRING.Empty);
-  const [username, setUsername] = useState<string>(STRING.Empty);
-  const [baseRole, setBaseRole] = useState<WorkArea>(WORK_AREA.OPERATIONS);
-  const [isExternalGuide, setIsExternalGuide] = useState<boolean>(
-    restrictToExternalGuide
-  );
-  const [nationalId, setNationalId] = useState<string>(STRING.Empty);
-  const [expiresAt, setExpiresAt] = useState<string>(STRING.Empty);
-  const [personalEmail, setPersonalEmail] = useState<string>(
+  const [fullName, setFullName] = useState<string>(
     STRING.Empty
   );
+  const [username, setUsername] = useState<string>(
+    STRING.Empty
+  );
+  const [baseRole, setBaseRole] = useState<WorkArea>(
+    WORK_AREA.OPERATIONS
+  );
+  const [isExternalGuide, setIsExternalGuide] =
+    useState<boolean>(restrictToExternalGuide);
+  const [nationalId, setNationalId] = useState<string>(
+    STRING.Empty
+  );
+  const [expiresAt, setExpiresAt] = useState<string>(
+    STRING.Empty
+  );
+  const [personalEmail, setPersonalEmail] =
+    useState<string>(STRING.Empty);
 
-  const [fullNameError, setFullNameError] = useState<Nullable<string>>(null);
-  const [usernameError, setUsernameError] = useState<Nullable<string>>(null);
-  const [formError, setFormError] = useState<Nullable<string>>(null);
+  const [fullNameError, setFullNameError] =
+    useState<Nullable<string>>(null);
+  const [usernameError, setUsernameError] =
+    useState<Nullable<string>>(null);
+  const [formError, setFormError] =
+    useState<Nullable<string>>(null);
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] =
+    useState<boolean>(false);
   const [createdUsername, setCreatedUsername] =
     useState<Nullable<string>>(null);
   const [createdWorkerId, setCreatedWorkerId] =
@@ -132,33 +163,49 @@ export const useWorkerFormViewModel = ({
     setFormError(null);
   };
 
-  const handleFullNameChange = (event: FieldChangeEvent): void => {
+  const handleFullNameChange = (
+    event: FieldChangeEvent
+  ): void => {
     setFullName(event.target.value);
     setFullNameError(null);
   };
 
-  const handleUsernameChange = (event: FieldChangeEvent): void => {
+  const handleUsernameChange = (
+    event: FieldChangeEvent
+  ): void => {
     setUsername(event.target.value);
     setUsernameError(null);
   };
 
-  const handleBaseRoleChange = (event: FieldChangeEvent): void => {
+  const handleBaseRoleChange = (
+    event: FieldChangeEvent
+  ): void => {
     setBaseRole(event.target.value as WorkArea);
   };
 
-  const handleIsExternalGuideToggle = (event: FieldChangeEvent): void => {
-    setIsExternalGuide((event.target as HTMLInputElement).checked);
+  const handleIsExternalGuideToggle = (
+    event: FieldChangeEvent
+  ): void => {
+    setIsExternalGuide(
+      (event.target as HTMLInputElement).checked
+    );
   };
 
-  const handleNationalIdChange = (event: FieldChangeEvent): void => {
+  const handleNationalIdChange = (
+    event: FieldChangeEvent
+  ): void => {
     setNationalId(event.target.value);
   };
 
-  const handleExpiresAtChange = (event: FieldChangeEvent): void => {
+  const handleExpiresAtChange = (
+    event: FieldChangeEvent
+  ): void => {
     setExpiresAt(event.target.value);
   };
 
-  const handlePersonalEmailChange = (event: FieldChangeEvent): void => {
+  const handlePersonalEmailChange = (
+    event: FieldChangeEvent
+  ): void => {
     setPersonalEmail(event.target.value);
   };
 
@@ -166,19 +213,27 @@ export const useWorkerFormViewModel = ({
     let isValid = true;
 
     if (!fullName.trim()) {
-      setFullNameError(WORKER_FORM_SCREEN.ERROR.FULL_NAME_REQUIRED);
+      setFullNameError(
+        WORKER_FORM_SCREEN.ERROR.FULL_NAME_REQUIRED
+      );
       isValid = false;
     }
     if (!isExternalGuide && !username.trim()) {
-      setUsernameError(WORKER_FORM_SCREEN.ERROR.USERNAME_REQUIRED);
+      setUsernameError(
+        WORKER_FORM_SCREEN.ERROR.USERNAME_REQUIRED
+      );
       isValid = false;
     }
     if (isExternalGuide && !nationalId.trim()) {
-      setFormError(WORKER_FORM_SCREEN.ERROR.NATIONAL_ID_REQUIRED);
+      setFormError(
+        WORKER_FORM_SCREEN.ERROR.NATIONAL_ID_REQUIRED
+      );
       isValid = false;
     }
     if (isExternalGuide && !expiresAt) {
-      setFormError(WORKER_FORM_SCREEN.ERROR.EXPIRY_REQUIRED);
+      setFormError(
+        WORKER_FORM_SCREEN.ERROR.EXPIRY_REQUIRED
+      );
       isValid = false;
     }
 
@@ -193,16 +248,22 @@ export const useWorkerFormViewModel = ({
       expiresAt: isExternalGuide ? expiresAt : null,
       fullName: fullName.trim(),
       isExternalGuide,
-      nationalId: isExternalGuide ? nationalId.trim() : null,
+      nationalId: isExternalGuide
+        ? nationalId.trim()
+        : null,
       personalEmail: personalEmail.trim() || null,
       username: effectiveUsername,
     });
 
     if (!result.ok || !result.data) {
       if (result.field === "username") {
-        setUsernameError(result.error ?? WORKER_FORM_SCREEN.ERROR.GENERIC);
+        setUsernameError(
+          result.error ?? WORKER_FORM_SCREEN.ERROR.GENERIC
+        );
       } else {
-        setFormError(result.error ?? WORKER_FORM_SCREEN.ERROR.GENERIC);
+        setFormError(
+          result.error ?? WORKER_FORM_SCREEN.ERROR.GENERIC
+        );
       }
       setIsSubmitting(false);
       return;
@@ -220,7 +281,9 @@ export const useWorkerFormViewModel = ({
     }
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (
+    event: FormEvent<HTMLFormElement>
+  ): void => {
     event.preventDefault();
     clearErrors();
 

@@ -1,5 +1,5 @@
 begin;
-select plan(14);
+select plan(17);
 
 select has_table('public', 'worker_areas', 'existe worker_areas');
 select has_table('public', 'worker_marks', 'existe worker_marks');
@@ -71,6 +71,39 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"44444444-4444-4444-4444-444444444444","role":"authenticated"}';
 select ok(not has_area('operaciones'), 'un guia externo vencido pierde el area el instante que pasa su fecha');
+
+-- ============================================================
+-- Eliminar un perfil (20260828001950)
+-- ============================================================
+
+-- Un `delete` de verdad no es posible: 36 llaves foraneas apuntan a
+-- `workers` y casi todas son `no action`, asi que la fila sobrevive con
+-- `deleted_at` puesto para que la firma de lo que la persona hizo siga
+-- teniendo nombre. Lo que se elimina es todo lo demas, y eso lo hace la
+-- ruta de servidor. Aqui van las dos reglas que ninguna ruta puede saltarse.
+reset role;
+
+select throws_ok(
+  $$ update workers set deleted_at = now()
+     where id = '11111111-1111-1111-1111-111111111111' $$,
+  'P0001', 'La cuenta de administracion no se elimina',
+  'la cuenta de administracion no se puede eliminar'
+);
+
+select lives_ok(
+  $$ update workers set deleted_at = now()
+     where id = '22222222-2222-2222-2222-222222222222' $$,
+  'cualquier otra cuenta si se puede eliminar'
+);
+
+-- Un perfil eliminado no vuelve. Quien regrese a la empresa entra con una
+-- cuenta nueva, no reviviendo la vieja con sus areas y marcas de entonces.
+select throws_ok(
+  $$ update workers set deleted_at = null
+     where id = '22222222-2222-2222-2222-222222222222' $$,
+  'P0001', 'Un perfil eliminado no se reactiva: cree una cuenta nueva',
+  'un perfil eliminado no se puede reactivar'
+);
 
 select * from finish();
 rollback;

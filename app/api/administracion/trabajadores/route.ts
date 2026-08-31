@@ -86,18 +86,25 @@ const isValidBody = (
 export const POST = async (
   request: Request
 ): Promise<
-  NextResponse<SuccessResponse<CreateWorkerResponseData> | ErrorResponse>
+  NextResponse<
+    | SuccessResponse<CreateWorkerResponseData>
+    | ErrorResponse
+  >
 > => {
   let body: unknown;
 
   try {
     body = await request.json();
   } catch {
-    return Response.badRequest("Cuerpo de la solicitud inválido.");
+    return Response.badRequest(
+      "Cuerpo de la solicitud inválido."
+    );
   }
 
   if (!isValidBody(body)) {
-    return Response.badRequest("Cuerpo de la solicitud inválido.");
+    return Response.badRequest(
+      "Cuerpo de la solicitud inválido."
+    );
   }
 
   const serverClient = await createServerSupabaseClient();
@@ -109,9 +116,13 @@ export const POST = async (
     return Response.unauthorized("Sesión no válida.");
   }
 
-  const serviceRoleClient = createServiceRoleSupabaseClient();
+  const serviceRoleClient =
+    createServiceRoleSupabaseClient();
   const { isAdmin, isExternalGuideRegistrar } =
-    await fetchWorkerPermissionState(serviceRoleClient, caller.id);
+    await fetchWorkerPermissionState(
+      serviceRoleClient,
+      caller.id
+    );
 
   if (!isAdmin && !isExternalGuideRegistrar) {
     return Response.forbidden(
@@ -121,10 +132,17 @@ export const POST = async (
 
   // Reservas (sin ser administración) solo puede crear la cuenta temporal
   // de guía externo, con esta forma exacta — igual que `workers_insert`.
-  const baseRole = isAdmin ? body.baseRole : WORK_AREA.OPERATIONS;
-  const isExternalGuide = isAdmin ? body.isExternalGuide : true;
+  const baseRole = isAdmin
+    ? body.baseRole
+    : WORK_AREA.OPERATIONS;
+  const isExternalGuide = isAdmin
+    ? body.isExternalGuide
+    : true;
 
-  if (isExternalGuide && (!body.nationalId || !body.expiresAt)) {
+  if (
+    isExternalGuide &&
+    (!body.nationalId || !body.expiresAt)
+  ) {
     return Response.badRequest(
       !body.nationalId
         ? WORKER_FORM_SCREEN.ERROR.NATIONAL_ID_REQUIRED
@@ -135,7 +153,9 @@ export const POST = async (
   const effectiveBaseRole = isExternalGuide
     ? WORK_AREA.OPERATIONS
     : baseRole;
-  const nationalId = isExternalGuide ? body.nationalId : null;
+  const nationalId = isExternalGuide
+    ? body.nationalId
+    : null;
   const expiresAt = isExternalGuide ? body.expiresAt : null;
 
   const username = body.username.trim().toLowerCase();
@@ -160,9 +180,8 @@ export const POST = async (
 
   const newWorkerId = createdAuthUser.user.id;
 
-  const { error: workerInsertError } = await serviceRoleClient
-    .from("workers")
-    .insert({
+  const { error: workerInsertError } =
+    await serviceRoleClient.from("workers").insert({
       base_role: effectiveBaseRole,
       created_by: caller.id,
       expires_at: expiresAt,
@@ -180,16 +199,20 @@ export const POST = async (
     ? null
     : isExternalGuide
       ? (
-          await serviceRoleClient.from("worker_marks").insert({
-            granted_by: caller.id,
-            mark: WORKER_MARK.GUIDE,
-            worker_id: newWorkerId,
-          })
+          await serviceRoleClient
+            .from("worker_marks")
+            .insert({
+              granted_by: caller.id,
+              mark: WORKER_MARK.GUIDE,
+              worker_id: newWorkerId,
+            })
         ).error
       : null;
 
   if (workerInsertError || markInsertError) {
-    await serviceRoleClient.auth.admin.deleteUser(newWorkerId);
+    await serviceRoleClient.auth.admin.deleteUser(
+      newWorkerId
+    );
 
     return Response.badRequest(
       workerInsertError?.code === UNIQUE_VIOLATION_CODE

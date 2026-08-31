@@ -30,11 +30,13 @@ const FIELD_CLASS =
 const FIELD_ERROR_CLASS =
   "w-full !rounded-lg !border !border-error/50 !bg-surface-container-low !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-error focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-error/20";
 
-const ROLE_OPTIONS = Object.values(WORK_AREA).map((role) => ({
-  key: role,
-  label: WORK_AREA_LABEL[role],
-  value: role,
-}));
+const ROLE_OPTIONS = Object.values(WORK_AREA).map(
+  (role) => ({
+    key: role,
+    label: WORK_AREA_LABEL[role],
+    value: role,
+  })
+);
 
 /**
  * `/administracion/trabajadores/nuevo` and `/reservas/guia-externo/nuevo`
@@ -71,10 +73,16 @@ const WorkerForm = ({
     usernameError,
   } = useWorkerFormViewModel({ restrictToExternalGuide });
 
-  if (createdWorkerId && temporaryPassword && createdUsername) {
+  if (
+    createdWorkerId &&
+    temporaryPassword &&
+    createdUsername
+  ) {
     return (
       <WorkerFormSuccess
-        onCopyTemporaryPassword={handleCopyTemporaryPassword}
+        onCopyTemporaryPassword={
+          handleCopyTemporaryPassword
+        }
         restrictToExternalGuide={restrictToExternalGuide}
         temporaryPassword={temporaryPassword}
         username={createdUsername}
@@ -99,13 +107,17 @@ const WorkerForm = ({
         id={FIELD_IDS.FULL_NAME}
         name={FIELD_IDS.FULL_NAME}
         label={WORKER_FORM_SCREEN.FULL_NAME_LABEL}
-        placeholder={WORKER_FORM_SCREEN.FULL_NAME_PLACEHOLDER}
+        placeholder={
+          WORKER_FORM_SCREEN.FULL_NAME_PLACEHOLDER
+        }
         value={fullName}
         onChange={handleFullNameChange}
         error={fullNameError ?? undefined}
         showErrorText
         disabled={isSubmitting}
-        classNameField={fullNameError ? FIELD_ERROR_CLASS : FIELD_CLASS}
+        classNameField={
+          fullNameError ? FIELD_ERROR_CLASS : FIELD_CLASS
+        }
       />
 
       {isExternalGuide ? (
@@ -121,7 +133,9 @@ const WorkerForm = ({
             classNameField={FIELD_CLASS}
           />
           <span className="font-label-mono text-label-mono text-on-surface-variant">
-            {WORKER_FORM_SCREEN.USERNAME_IS_NATIONAL_ID_HINT}
+            {
+              WORKER_FORM_SCREEN.USERNAME_IS_NATIONAL_ID_HINT
+            }
           </span>
         </div>
       ) : (
@@ -130,13 +144,19 @@ const WorkerForm = ({
             id={FIELD_IDS.USERNAME}
             name={FIELD_IDS.USERNAME}
             label={WORKER_FORM_SCREEN.USERNAME_LABEL}
-            placeholder={WORKER_FORM_SCREEN.USERNAME_PLACEHOLDER}
+            placeholder={
+              WORKER_FORM_SCREEN.USERNAME_PLACEHOLDER
+            }
             value={username}
             onChange={handleUsernameChange}
             error={usernameError ?? undefined}
             showErrorText
             disabled={isSubmitting}
-            classNameField={usernameError ? FIELD_ERROR_CLASS : FIELD_CLASS}
+            classNameField={
+              usernameError
+                ? FIELD_ERROR_CLASS
+                : FIELD_CLASS
+            }
           />
           <span className="font-label-mono text-label-mono text-on-surface-variant">
             {WORKER_FORM_SCREEN.USERNAME_HINT}
@@ -184,7 +204,9 @@ const WorkerForm = ({
             id={FIELD_IDS.NATIONAL_ID}
             name={FIELD_IDS.NATIONAL_ID}
             label={WORKER_FORM_SCREEN.NATIONAL_ID_LABEL}
-            placeholder={WORKER_FORM_SCREEN.NATIONAL_ID_PLACEHOLDER}
+            placeholder={
+              WORKER_FORM_SCREEN.NATIONAL_ID_PLACEHOLDER
+            }
             value={nationalId}
             onChange={handleNationalIdChange}
             disabled={isSubmitting}
@@ -205,7 +227,9 @@ const WorkerForm = ({
             name={FIELD_IDS.EMAIL}
             label={WORKER_FORM_SCREEN.PERSONAL_EMAIL_LABEL}
             type={INPUT_TYPES.EMAIL}
-            placeholder={WORKER_FORM_SCREEN.PERSONAL_EMAIL_PLACEHOLDER}
+            placeholder={
+              WORKER_FORM_SCREEN.PERSONAL_EMAIL_PLACEHOLDER
+            }
             value={personalEmail}
             onChange={handlePersonalEmailChange}
             disabled={isSubmitting}
@@ -225,7 +249,10 @@ const WorkerForm = ({
         ) : (
           <>
             <span>{WORKER_FORM_SCREEN.SUBMIT}</span>
-            <MaterialIcon name={MATERIAL_ICON_NAME.SAVE} className="!text-[18px]" />
+            <MaterialIcon
+              name={MATERIAL_ICON_NAME.SAVE}
+              className="!text-[18px]"
+            />
           </>
         )}
       </Button>

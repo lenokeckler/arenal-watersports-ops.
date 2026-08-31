@@ -97,6 +97,9 @@ export const fetchWorkersPage = async (
   let query = supabase
     .from("workers")
     .select(WORKER_SELECT, { count: "exact" })
+    // Un perfil eliminado ya no es una cuenta: la fila solo sobrevive para
+    // que la firma de lo que esa persona hizo siga teniendo nombre.
+    .is("deleted_at", null)
     .order("full_name");
 
   if (filters.role) {
@@ -139,6 +142,7 @@ export const fetchWorkerDetail = async (
     .from("workers")
     .select(WORKER_SELECT)
     .eq("id", workerId)
+    .is("deleted_at", null)
     .maybeSingle();
   throwIfSupabaseError(error, "workers.fetchWorkerDetail");
 
