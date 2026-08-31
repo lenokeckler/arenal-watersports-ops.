@@ -1,5 +1,6 @@
 export const FIELD_IDS = {
   ACCEPT_POLICIES: "accept_policies",
+  AGREED_AMOUNT: "agreed_amount",
   ALERT_EXPIRY_DAYS: "alert_expiry_days",
   ALERT_MIN_QUANTITY: "alert_min_quantity",
   BASE_ROLE: "base_role",
@@ -8,7 +9,9 @@ export const FIELD_IDS = {
   CODE: "code",
   COMBO_ITEM_CATEGORY: "combo_item_category",
   COMBO_ITEM_QUANTITY: "combo_item_quantity",
+  COMBO_MODE: "combo_mode",
   COMBO_NAME: "combo_name",
+  COMBO_SELECT: "combo_select",
   CONFIRM_PASSWORD: "confirm_password",
   CONSUMES_FUEL: "consumes_fuel",
   COUNTRY: "country",

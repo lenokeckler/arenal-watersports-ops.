@@ -266,3 +266,11 @@ export {
 export { RESERVATION_DETAIL_SCREEN } from "./reservas/ReservationDetailScreen.constants";
 export { NEW_RESERVATION_SCREEN } from "./reservas/NewReservationScreen.constants";
 export { RESERVATION_NUMBERS } from "./reservas/ReservationNumbers.constants";
+export {
+  COMBO_MODE,
+  type ComboMode,
+} from "./reservas/ComboMode.constants";
+export {
+  EQUIPMENT_VALIDITY,
+  type EquipmentValidity,
+} from "./reservas/EquipmentValidity.constants";

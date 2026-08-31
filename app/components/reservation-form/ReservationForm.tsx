@@ -4,8 +4,10 @@ import type { JSX } from "react";
 import {
   BUTTON,
   BUTTON_TYPES,
+  COMBO_MODE,
   MATERIAL_ICON_NAME,
   NEW_RESERVATION_SCREEN,
+  RESERVATION_TYPE,
   SPINNER_SIZE,
 } from "@/app/constants";
 import Button from "@/app/components/button/Button";
@@ -14,38 +16,68 @@ import Spinner from "@/app/components/spinner/Spinner";
 import { useReservationFormViewModel } from "./hooks/useReservationFormViewModel";
 import ReservationFormDetails from "./components/ReservationFormDetails";
 import ReservationFormEquipment from "./components/ReservationFormEquipment";
+import ReservationFormCombo from "./components/ReservationFormCombo";
+import ReservationFormComboCustomPrice from "./components/ReservationFormComboCustomPrice";
+import ReservationFormExtras from "./components/ReservationFormExtras";
+import ReservationFormGuides from "./components/ReservationFormGuides";
 import type { ReservationFormProps } from "./models/ReservationFormProps.interface";
 
 /**
- * `/reservas/nueva` (US-RES-004 through US-RES-007, US-RES-015 through
+ * `/reservas/nueva` (US-RES-004 through US-RES-012, US-RES-015 through
  * US-RES-017). Presentation only — every decision lives in
  * `useReservationFormViewModel`.
  */
 const ReservationForm = (
   props: ReservationFormProps
 ): JSX.Element => {
+  const { candidateUnits } = props;
   const {
+    agreedAmount,
     byQuantityCategories,
     byUnitCategories,
     candidateUnitsByCategory,
     categoryAvailability,
+    comboMode,
+    comboUnitSelections,
+    combos,
+    customComboSuggestedAmountCrc,
+    customComboSuggestedAmountUsd,
     detailsValues,
     errors,
+    extrasByUnit,
     formError,
+    guides,
+    handleAgreedAmountChange,
+    handleComboModeChange,
     handleCustomerNameChange,
     handleDateChange,
     handleDurationChange,
     handlePeopleCountChange,
     handleQuantityChange,
+    handleSelectCombo,
     handleSubmit,
     handleTimeChange,
+    handleToggleComboUnit,
+    handleToggleExtra,
+    handleToggleGuide,
     handleToggleUnit,
     handleTypeChange,
     isBusy,
     quantities,
+    selectedCombo,
+    selectedExtraIdsByUnit,
+    selectedGuideIds,
     selectedUnitIds,
+    selectedUnitIdsForExtras,
     unitConflicts,
   } = useReservationFormViewModel(props);
+
+  const isCombo =
+    detailsValues.type === RESERVATION_TYPE.COMBO;
+  const isTour =
+    detailsValues.type === RESERVATION_TYPE.TOUR;
+  const isCustomCombo =
+    isCombo && comboMode === COMBO_MODE.CUSTOM;
 
   return (
     <form
@@ -71,19 +103,93 @@ const ReservationForm = (
         values={detailsValues}
       />
 
-      <ReservationFormEquipment
-        byQuantityCategories={byQuantityCategories}
-        byUnitCategories={byUnitCategories}
-        candidateUnitsByCategory={candidateUnitsByCategory}
-        categoryAvailability={categoryAvailability}
-        equipmentError={errors.equipment}
+      {isCombo ? (
+        <>
+          <ReservationFormCombo
+            candidateUnitsByCategory={
+              candidateUnitsByCategory
+            }
+            combos={combos}
+            comboUnitSelections={comboUnitSelections}
+            isBusy={isBusy}
+            mode={comboMode}
+            onModeChange={handleComboModeChange}
+            onSelectCombo={handleSelectCombo}
+            onToggleComboUnit={handleToggleComboUnit}
+            selectedCombo={selectedCombo}
+          />
+          {errors.equipment && (
+            <p className="font-label-mono text-label-mono text-error">
+              {errors.equipment}
+            </p>
+          )}
+          {isCustomCombo && (
+            <>
+              <ReservationFormEquipment
+                byQuantityCategories={byQuantityCategories}
+                byUnitCategories={byUnitCategories}
+                candidateUnitsByCategory={
+                  candidateUnitsByCategory
+                }
+                categoryAvailability={categoryAvailability}
+                isBusy={isBusy}
+                onQuantityChange={handleQuantityChange}
+                onToggleUnit={handleToggleUnit}
+                quantities={quantities}
+                selectedUnitIds={selectedUnitIds}
+                unitConflicts={unitConflicts}
+              />
+              <ReservationFormComboCustomPrice
+                agreedAmount={agreedAmount}
+                isBusy={isBusy}
+                onAgreedAmountChange={
+                  handleAgreedAmountChange
+                }
+                suggestedAmountCrc={
+                  customComboSuggestedAmountCrc
+                }
+                suggestedAmountUsd={
+                  customComboSuggestedAmountUsd
+                }
+              />
+            </>
+          )}
+        </>
+      ) : (
+        <ReservationFormEquipment
+          byQuantityCategories={byQuantityCategories}
+          byUnitCategories={byUnitCategories}
+          candidateUnitsByCategory={
+            candidateUnitsByCategory
+          }
+          categoryAvailability={categoryAvailability}
+          equipmentError={errors.equipment}
+          isBusy={isBusy}
+          onQuantityChange={handleQuantityChange}
+          onToggleUnit={handleToggleUnit}
+          quantities={quantities}
+          selectedUnitIds={selectedUnitIds}
+          unitConflicts={unitConflicts}
+        />
+      )}
+
+      <ReservationFormExtras
+        candidateUnits={candidateUnits}
+        extrasByUnit={extrasByUnit}
         isBusy={isBusy}
-        onQuantityChange={handleQuantityChange}
-        onToggleUnit={handleToggleUnit}
-        quantities={quantities}
-        selectedUnitIds={selectedUnitIds}
-        unitConflicts={unitConflicts}
+        onToggleExtra={handleToggleExtra}
+        selectedExtraIdsByUnit={selectedExtraIdsByUnit}
+        selectedUnitIds={selectedUnitIdsForExtras}
       />
+
+      {isTour && (
+        <ReservationFormGuides
+          guides={guides}
+          isBusy={isBusy}
+          onToggleGuide={handleToggleGuide}
+          selectedGuideIds={selectedGuideIds}
+        />
+      )}
 
       <Button
         type={BUTTON_TYPES.SUBMIT}

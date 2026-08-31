@@ -67,10 +67,14 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
+-- Ismael ve su propia fila y la de Celso, porque Celso ya tiene la marca
+-- 'guia' (fixture de arriba) y workers_select_guides deja pasar la fila de
+-- cualquier guia a quien tenga area reservas u operaciones (US-RES-012/
+-- US-RES-014).
 select is(
   (select count(*)::int from workers),
-  1,
-  'ismael solo ve su propia fila en workers'
+  2,
+  'ismael ve su propia fila y la de cualquier guia'
 );
 
 reset role;
@@ -261,10 +265,12 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
 
+-- Ismael ve la marca 'guia' de Celso (worker_marks_select_guides), pero
+-- ninguna otra marca ajena: 'registro_guias_externos' sigue privada.
 select is(
   (select count(*)::int from worker_marks),
-  0,
-  'ismael no ve marcas de otro trabajador'
+  1,
+  'ismael solo ve la marca guia de otro trabajador'
 );
 
 reset role;
