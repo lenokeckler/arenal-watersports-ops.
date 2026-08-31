@@ -17,6 +17,10 @@ export interface InventoryCountLine {
   quantityAvailable: Nullable<number>;
   quantityDamaged: Nullable<number>;
   quantityInRepair: Nullable<number>;
+  /** Lo que el sistema tenia registrado al momento de contar. */
+  systemQuantityAvailable: Nullable<number>;
+  systemQuantityDamaged: Nullable<number>;
+  systemQuantityInRepair: Nullable<number>;
   unitId: Nullable<string>;
 }
 
@@ -66,6 +70,11 @@ export const createInventoryCount = async (
         quantity_available: line.quantityAvailable,
         quantity_damaged: line.quantityDamaged,
         quantity_in_repair: line.quantityInRepair,
+        system_quantity_available:
+          line.systemQuantityAvailable,
+        system_quantity_damaged: line.systemQuantityDamaged,
+        system_quantity_in_repair:
+          line.systemQuantityInRepair,
         unit_id: line.unitId,
       }))
     );

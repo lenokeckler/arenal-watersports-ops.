@@ -3,10 +3,13 @@
  * a damage report outside a close, and reading the ones already filed for
  * that machine.
  */
+/** Una maquina con un solo golpe no lleva plural. */
+const SINGLE_IMPACT = 1;
+
 export const DAMAGE_REPORTS_SCREEN = {
   ERROR: {
     CAUSE_REQUIRED: "Escogé la causa del daño.",
-    DESCRIPTION_REQUIRED: "Contá qué pasó.",
+    DESCRIPTION_REQUIRED: "Escriba qué pasó.",
     GENERIC:
       "No se pudo registrar el reporte. Intentá de nuevo.",
   },
@@ -26,11 +29,14 @@ export const DAMAGE_REPORTS_SCREEN = {
       "Esta máquina todavía no tiene reportes de daño.",
     FROM_RESERVATION: (code: string): string =>
       `Salida ${code}`,
-    IMPACTS: (delta: number): string => `+${delta} golpes`,
+    IMPACTS: (delta: number): string =>
+      `+${delta} ${delta === SINGLE_IMPACT ? "golpe" : "golpes"}`,
     OUTSIDE_RESERVATION: "Fuera de una salida",
     TITLE: "Reportes anteriores",
   },
   IMPACT_SUMMARY: (count: number): string =>
-    `${count} golpes acumulados`,
+    count === SINGLE_IMPACT
+      ? `${count} golpe acumulado`
+      : `${count} golpes acumulados`,
   TITLE: "Daños",
 } as const;

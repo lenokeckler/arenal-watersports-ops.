@@ -11,6 +11,9 @@ import {
 } from "./inventoryCountSummary";
 
 export interface InventoryCountLineRow {
+  systemQuantityAvailable: Nullable<number>;
+  systemQuantityDamaged: Nullable<number>;
+  systemQuantityInRepair: Nullable<number>;
   categoryName: string;
   confirmedStatus: Nullable<UnitStatus>;
   id: string;
@@ -30,12 +33,16 @@ interface CountLineQueryRow {
   equipment_units: Nullable<{ code: string }>;
   id: string;
   quantity_available: Nullable<number>;
+  system_quantity_available: Nullable<number>;
+  system_quantity_damaged: Nullable<number>;
+  system_quantity_in_repair: Nullable<number>;
   quantity_damaged: Nullable<number>;
   quantity_in_repair: Nullable<number>;
 }
 
 const COUNT_LINE_SELECT =
   "id, confirmed_status, quantity_available, quantity_damaged, " +
+  "system_quantity_available, system_quantity_damaged, system_quantity_in_repair, " +
   "quantity_in_repair, equipment_categories!inner(name), " +
   "equipment_units(code)";
 
@@ -88,6 +95,11 @@ export const fetchInventoryCountDetail = async (
       confirmedStatus: line.confirmed_status,
       id: line.id,
       quantityAvailable: line.quantity_available,
+      systemQuantityAvailable:
+        line.system_quantity_available,
+      systemQuantityDamaged: line.system_quantity_damaged,
+      systemQuantityInRepair:
+        line.system_quantity_in_repair,
       quantityDamaged: line.quantity_damaged,
       quantityInRepair: line.quantity_in_repair,
       unitCode: line.equipment_units?.code ?? null,

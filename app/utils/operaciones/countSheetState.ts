@@ -64,6 +64,11 @@ const toCategoryLines = (
       quantityAvailable: null,
       quantityDamaged: null,
       quantityInRepair: null,
+      // Una categoria por unidad se compara ficha por ficha, no por
+      // cantidad: aqui no hay resta que guardar.
+      systemQuantityAvailable: null,
+      systemQuantityDamaged: null,
+      systemQuantityInRepair: null,
       unitId: unit.unitId,
     }));
   }
@@ -77,6 +82,12 @@ const toCategoryLines = (
       ),
       quantityDamaged: toQuantity(state.quantityDamaged),
       quantityInRepair: toQuantity(state.quantityInRepair),
+      // Lo que el sistema decia en este momento, congelado con la linea.
+      // Es la unica forma de que un conteo viejo siga diciendo si aquel
+      // dia faltaba algo: el inventario de hoy ya cambio (US-OPE-024).
+      systemQuantityAvailable: category.quantityAvailable,
+      systemQuantityDamaged: category.quantityDamaged,
+      systemQuantityInRepair: category.quantityInRepair,
       unitId: null,
     },
   ];

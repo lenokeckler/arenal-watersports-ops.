@@ -862,6 +862,9 @@ export type Database = {
           quantity_available: number | null;
           quantity_damaged: number | null;
           quantity_in_repair: number | null;
+          system_quantity_available: number | null;
+          system_quantity_damaged: number | null;
+          system_quantity_in_repair: number | null;
           unit_id: string | null;
         };
         Insert: {
@@ -874,6 +877,9 @@ export type Database = {
           quantity_available?: number | null;
           quantity_damaged?: number | null;
           quantity_in_repair?: number | null;
+          system_quantity_available?: number | null;
+          system_quantity_damaged?: number | null;
+          system_quantity_in_repair?: number | null;
           unit_id?: string | null;
         };
         Update: {
@@ -886,6 +892,9 @@ export type Database = {
           quantity_available?: number | null;
           quantity_damaged?: number | null;
           quantity_in_repair?: number | null;
+          system_quantity_available?: number | null;
+          system_quantity_damaged?: number | null;
+          system_quantity_in_repair?: number | null;
           unit_id?: string | null;
         };
         Relationships: [

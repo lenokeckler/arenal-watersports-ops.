@@ -3,6 +3,10 @@
  * taking a count when operaciones decides to, and reading the ones already
  * taken.
  */
+/** Una sola pieza de diferencia no lleva plural. */
+const SINGLE_PIECE = 1;
+const NO_DIFFERENCE = 0;
+
 export const INVENTORY_COUNT_SCREEN = {
   HISTORY: {
     BY: (name: string): string => `Levantó ${name}`,
@@ -20,7 +24,7 @@ export const INVENTORY_COUNT_SCREEN = {
       GENERIC:
         "No se pudo cerrar el conteo. Intentá de nuevo.",
       NO_LINES:
-        "Confirmá al menos una categoría antes de cerrar el conteo.",
+        "Confirme al menos una categoría antes de cerrar el conteo.",
     },
     NOTES_LABEL: "Notas del conteo",
     NOTES_PLACEHOLDER: "Lo que valga la pena dejar dicho",
@@ -35,12 +39,33 @@ export const INVENTORY_COUNT_SCREEN = {
     },
     SUBMIT: "Cerrar el conteo",
     SUBTITLE:
-      "Categoría por categoría. Confirmá lo que contaste; lo que no toqués no entra al conteo.",
+      "Categoría por categoría. Confirme lo que contó; lo que no toque no entra al conteo.",
     TITLE: "Nuevo conteo",
     UNIT_CONFIRMED: "Confirmada",
     UNIT_PENDING: "Sin confirmar",
   },
   DETAIL: {
+    /**
+     * Lo que el conteo encontro de mas o de menos ese dia. Se dice con
+     * palabras y no con un signo: "faltaban 1" se entiende parado en el
+     * galeron; "-1" hay que interpretarlo.
+     */
+    DIFFERENCE: (
+      system: number,
+      difference: number
+    ): string => {
+      const amount = Math.abs(difference);
+      const isMissing = difference < NO_DIFFERENCE;
+      const verb =
+        amount === SINGLE_PIECE
+          ? isMissing
+            ? "faltaba"
+            : "sobraba"
+          : isMissing
+            ? "faltaban"
+            : "sobraban";
+      return `El sistema tenía ${system}: ${verb} ${amount}`;
+    },
     BY_QUANTITY: (
       available: number,
       damaged: number,

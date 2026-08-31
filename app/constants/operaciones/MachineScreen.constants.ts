@@ -32,7 +32,7 @@ export const MACHINE_DETAIL_SCREEN = {
     TITLE: "Fotos de estado",
     UPLOAD: "Subir foto",
     UPLOAD_ERROR:
-      "No se pudo subir la foto. Revisá el tamaño y el formato.",
+      "No se pudo subir la foto. Revise el tamaño y el formato.",
     UPLOADED_BY: (name: string, date: string): string =>
       `${name} · ${date}`,
     UNAVAILABLE: "No se pudo cargar la imagen.",

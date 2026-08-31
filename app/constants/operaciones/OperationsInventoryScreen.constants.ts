@@ -28,7 +28,7 @@ export const OPERATIONS_INVENTORY_SCREEN = {
     QUANTITY_TITLE: "Cantidades",
     REASON_LABEL: "Motivo del ajuste",
     REASON_PLACEHOLDER: "Por qué cambia la cantidad",
-    REASON_REQUIRED: "Escribí el motivo del ajuste.",
+    REASON_REQUIRED: "Escriba el motivo del ajuste.",
     SIGNATURE_NOTICE:
       "El ajuste queda registrado a tu nombre.",
     STOCK_MISSING:
