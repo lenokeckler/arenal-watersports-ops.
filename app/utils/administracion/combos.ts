@@ -182,6 +182,10 @@ export const fetchComboCategoryOptions = async (
     .from("equipment_categories")
     .select("id, name")
     .eq("status", CATEGORY_STATUS.ACTIVE)
+    // Un combo es un paquete que se le vende al cliente, asi que solo
+    // admite lo que se alquila. Sin este filtro la pantalla ofrecia armar
+    // un paquete con botiquines, chalecos o extintores.
+    .eq("is_reservable", true)
     .order("name");
   throwIfSupabaseError(
     error,
