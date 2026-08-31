@@ -52,6 +52,7 @@ export const MATERIAL_ICON_NAME = {
   STOREFRONT: "storefront",
   SURFING: "surfing",
   SWAP_HORIZ: "swap_horiz",
+  TODAY: "today",
   VISIBILITY: "visibility",
   VISIBILITY_OFF: "visibility_off",
   WARNING: "warning",

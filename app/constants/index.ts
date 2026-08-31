@@ -160,6 +160,7 @@ export {
 export {
   HISTORY_RESERVATION_STATUSES,
   RESERVATION_STATUS,
+  RESERVATION_STATUS_BADGE,
   RESERVATION_STATUS_LABEL,
   type ReservationStatus,
 } from "./tablero/ReservationStatus.constants";
@@ -250,3 +251,16 @@ export {
   type DepositStatus,
 } from "./administracion/DepositStatus.constants";
 export { REPORTS_SCREEN } from "./administracion/ReportsScreen.constants";
+export {
+  ALL_CALENDAR_VIEWS,
+  CALENDAR_VIEW,
+  CALENDAR_VIEW_LABEL,
+  DEFAULT_CALENDAR_VIEW,
+  OPERATIONS_CALENDAR_VIEWS,
+  type CalendarView,
+} from "./reservas/CalendarView.constants";
+export {
+  CALENDAR_SCREEN,
+  WEEKDAYS_LABEL_MONO,
+} from "./reservas/CalendarScreen.constants";
+export { RESERVATION_DETAIL_SCREEN } from "./reservas/ReservationDetailScreen.constants";
