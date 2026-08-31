@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Historial de Conteos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#3c4a46",
+                        "primary-container": "#2dd4bf",
+                        "on-primary-container": "#00574d",
+                        "inverse-primary": "#006b5f",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-lowest": "#060e20",
+                        "surface-container-highest": "#2d3449",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#ffdad8",
+                        "surface-container": "#171f33",
+                        "on-surface-variant": "#bacac5",
+                        "on-background": "#dae2fd",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#131b2e",
+                        "primary-fixed-dim": "#3cddc7",
+                        "surface-container-high": "#222a3d",
+                        "secondary": "#ffb3b0",
+                        "surface-variant": "#2d3449",
+                        "surface-tint": "#3cddc7",
+                        "inverse-on-surface": "#283044",
+                        "error": "#ffb4ab",
+                        "on-primary": "#003731",
+                        "surface": "#0b1326",
+                        "on-primary-fixed": "#00201c",
+                        "surface-dim": "#0b1326",
+                        "primary-fixed": "#62fae3",
+                        "tertiary-container": "#5ec9ff",
+                        "primary": "#57f1db",
+                        "secondary-container": "#881d24",
+                        "on-surface": "#dae2fd",
+                        "on-error": "#690005",
+                        "background": "#0b1326",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-tertiary-container": "#005371",
+                        "on-primary-fixed-variant": "#005047",
+                        "surface-bright": "#31394d",
+                        "on-tertiary-fixed": "#001e2c",
+                        "outline": "#859490",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "on-secondary-fixed": "#410006",
+                        "on-secondary": "#670211",
+                        "tertiary": "#afe0ff",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "on-secondary-container": "#ff9996",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-tertiary": "#00354a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-desktop": "40px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "lg": "48px",
+                        "gutter": "20px",
+                        "xs": "4px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "button": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "body-base": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bg-radial-gradient {
+            background: radial-gradient(circle at top right, rgba(11, 19, 38, 1) 0%, rgba(2, 6, 23, 1) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base antialiased bg-radial-gradient min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-sm transition-colors">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary dark:text-primary active:scale-95 duration-200 cursor-pointer">waves</span>
+<span class="font-display-lg text-display-lg-mobile tracking-tight text-primary dark:text-primary">AquaOps Pro</span>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 transition-colors p-2 rounded-full cursor-pointer active:scale-95 duration-200">account_circle</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 px-margin-mobile flex flex-col gap-md">
+<!-- Header & Filters -->
+<div class="flex flex-col gap-sm">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Historial de Conteos</h1>
+<div class="flex gap-sm overflow-x-auto pb-2 -mx-margin-mobile px-margin-mobile scrollbar-hide">
+<button class="glass-panel px-md py-sm rounded-full flex items-center gap-xs text-primary-container font-button text-button border-primary-container/30 bg-primary-container/10 active:scale-95 duration-200 shrink-0">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+                    Octubre 2023
+                </button>
+<button class="glass-panel px-md py-sm rounded-full flex items-center gap-xs text-on-surface-variant font-button text-button active:scale-95 duration-200 shrink-0">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                    Todos los tipos
+                </button>
+<button class="glass-panel px-md py-sm rounded-full flex items-center gap-xs text-on-surface-variant font-button text-button active:scale-95 duration-200 shrink-0">
+<span class="material-symbols-outlined text-sm">person</span>
+                    Todos los empleados
+                </button>
+</div>
+</div>
+<!-- List -->
+<div class="flex flex-col gap-sm">
+<!-- Card 1 (Negative) -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm active:scale-[0.98] duration-200 cursor-pointer hover:bg-surface-container-high/80 transition-colors shadow-lg">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">15 Oct 2023 • 18:30</span>
+<h3 class="font-title-md text-title-md text-on-surface mt-1">Cierre General</h3>
+</div>
+<div class="bg-surface-container rounded-lg p-2 border border-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">inventory_2</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-2">
+<div class="w-6 h-6 rounded-full bg-surface-bright flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small, stylized portrait photo of a man in his 30s with short dark hair, wearing a dark navy operations uniform. He is in front of a blurry, high-tech industrial background with subtle teal and coral lighting. The image is crisp, professional, and fits a modern dark-mode application aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIrDuJUvb0NP4ZSl-6BnVDcVxPeMCzJ0tY3ybN7D3fxyXzR7UQcLxCRRKkq9h-cE45y950O8ZaHVeaHimrtDEBLM0sCpjEZ_qLq5NXkYUwczPxCUOq-Hpj4SklZlUE_CUd56T7a357qcYWamxm3JnCmaUN40utk5sHcUcslJsNiNgkUnCmVjOtxdraKe850AiKKQ6TUzE3VtbEbHwiw5-qPbFMFkq-EnCdjfUp3nEQlFBKchIx9y-23gw1O58iIdYgzVqvYEr4tMq4"/>
+</div>
+<span class="font-body-base text-body-base text-on-surface-variant">Marcos P.</span>
+</div>
+<div class="flex flex-col gap-2 mt-4 pt-4 border-t border-white/10">
+<div class="flex justify-between items-center">
+<span class="font-body-base text-body-base text-on-surface-variant">Diferencias</span>
+<span class="font-button text-button text-error">3 categorías</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-base text-body-base text-on-surface-variant">Saldo neto</span>
+<span class="font-button text-button text-error bg-error-container/20 px-2 py-1 rounded-md">-$45.00</span>
+</div>
+</div>
+</div>
+<!-- Card 2 (Positive/Neutral) -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm active:scale-[0.98] duration-200 cursor-pointer hover:bg-surface-container-high/80 transition-colors shadow-lg">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">14 Oct 2023 • 08:15</span>
+<h3 class="font-title-md text-title-md text-on-surface mt-1">Apertura Turno</h3>
+</div>
+<div class="bg-surface-container rounded-lg p-2 border border-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">inventory_2</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-2">
+<div class="w-6 h-6 rounded-full bg-surface-bright flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">person</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface-variant">Lucía G.</span>
+</div>
+<div class="flex flex-col gap-2 mt-4 pt-4 border-t border-white/10">
+<div class="flex justify-between items-center">
+<span class="font-body-base text-body-base text-on-surface-variant">Diferencias</span>
+<span class="font-button text-button text-on-surface-variant">0 categorías</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-base text-body-base text-on-surface-variant">Saldo neto</span>
+<span class="font-button text-button text-primary-container bg-primary-container/10 px-2 py-1 rounded-md shadow-[inset_0_0_4px_rgba(45,212,191,0.2)]">+$0.00</span>
+</div>
+</div>
+</div>
+<!-- Card 3 (Negative) -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm active:scale-[0.98] duration-200 cursor-pointer hover:bg-surface-container-high/80 transition-colors shadow-lg">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">12 Oct 2023 • 19:00</span>
+<h3 class="font-title-md text-title-md text-on-surface mt-1">Cierre Fin de Semana</h3>
+</div>
+<div class="bg-surface-container rounded-lg p-2 border border-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">inventory_2</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-2">
+<div class="w-6 h-6 rounded-full bg-surface-bright flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">person</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface-variant">Marcos P.</span>
+</div>
+<div class="flex flex-col gap-2 mt-4 pt-4 border-t border-white/10">
+<div class="flex justify-between items-center">
+<span class="font-body-base text-body-base text-on-surface-variant">Diferencias</span>
+<span class="font-button text-button text-error">1 categoría</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-base text-body-base text-on-surface-variant">Saldo neto</span>
+<span class="font-button text-button text-error bg-error-container/20 px-2 py-1 rounded-md">-$12.50</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-xs pt-xs bg-surface-container/70 dark:bg-surface-container/70 backdrop-blur-lg rounded-t-xl border-t border-white/10 shadow-2xl md:hidden">
+<div class="flex flex-col items-center justify-center bg-primary-container/20 text-primary-container rounded-xl p-sm shadow-[inset_0_0_8px_rgba(45,212,191,0.3)] hover:bg-white/5 transition-all active:scale-90 duration-150 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-mono text-label-mono mt-1">Inventory</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 p-sm hover:bg-white/5 transition-all active:scale-90 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-mono text-label-mono mt-1">Schedule</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 p-sm hover:bg-white/5 transition-all active:scale-90 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-label-mono text-label-mono mt-1">Staff</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 p-sm hover:bg-white/5 transition-all active:scale-90 duration-150 cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-mono text-label-mono mt-1">Reports</span>
+</div>
+</nav>
+<style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

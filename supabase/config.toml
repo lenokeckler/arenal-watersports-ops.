@@ -105,8 +105,11 @@ openai_api_key = "env(OPENAI_API_KEY)"
 enabled = true
 # Port to use for the email testing server web interface.
 port = 54324
-# Uncomment to expose additional ports for testing user applications that send emails.
-# smtp_port = 54325
+# Exposes Inbucket's SMTP submission port so the app itself can send real
+# mail in development (US-ACC-006/007 recovery PIN) without external SMTP
+# credentials — the message still only ever lands in Inbucket, never a
+# real inbox. See `app/constants/email/Email.constants.ts`.
+smtp_port = 54325
 # pop3_port = 54326
 # admin_email = "admin@email.com"
 # sender_name = "Admin"

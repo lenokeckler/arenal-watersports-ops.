@@ -59,6 +59,27 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "combo_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
             foreignKeyName: "combo_items_combo_id_fkey";
             columns: ["combo_id"];
             isOneToOne: false;
@@ -69,6 +90,7 @@ export type Database = {
       };
       combos: {
         Row: {
+          audience: Database["public"]["Enums"]["combo_audience"];
           created_at: string;
           created_by: string;
           id: string;
@@ -80,6 +102,7 @@ export type Database = {
           updated_by: string;
         };
         Insert: {
+          audience: Database["public"]["Enums"]["combo_audience"];
           created_at?: string;
           created_by: string;
           id?: string;
@@ -91,6 +114,7 @@ export type Database = {
           updated_by: string;
         };
         Update: {
+          audience?: Database["public"]["Enums"]["combo_audience"];
           created_at?: string;
           created_by?: string;
           id?: string;
@@ -106,8 +130,22 @@ export type Database = {
             foreignKeyName: "combos_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "combos_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "combos_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "combos_updated_by_fkey";
@@ -154,6 +192,13 @@ export type Database = {
             foreignKeyName: "damage_reports_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "damage_reports_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
           },
@@ -182,8 +227,22 @@ export type Database = {
             foreignKeyName: "damage_reports_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "damage_reports_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "damage_reports_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
         ];
       };
@@ -232,6 +291,13 @@ export type Database = {
             foreignKeyName: "deposits_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "deposits_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
           },
@@ -253,6 +319,13 @@ export type Database = {
             foreignKeyName: "deposits_resolved_by_fkey";
             columns: ["resolved_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "deposits_resolved_by_fkey";
+            columns: ["resolved_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
           },
@@ -269,6 +342,7 @@ export type Database = {
           default_duration_minutes: number | null;
           deposit_crc: number | null;
           deposit_usd: number | null;
+          group_name: string | null;
           guide_only: boolean;
           has_condition_photos: boolean;
           has_motor: boolean;
@@ -293,6 +367,7 @@ export type Database = {
           default_duration_minutes?: number | null;
           deposit_crc?: number | null;
           deposit_usd?: number | null;
+          group_name?: string | null;
           guide_only?: boolean;
           has_condition_photos?: boolean;
           has_motor?: boolean;
@@ -317,6 +392,7 @@ export type Database = {
           default_duration_minutes?: number | null;
           deposit_crc?: number | null;
           deposit_usd?: number | null;
+          group_name?: string | null;
           guide_only?: boolean;
           has_condition_photos?: boolean;
           has_motor?: boolean;
@@ -336,8 +412,22 @@ export type Database = {
             foreignKeyName: "equipment_categories_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "equipment_categories_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_categories_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "equipment_categories_updated_by_fkey";
@@ -383,6 +473,34 @@ export type Database = {
             isOneToOne: true;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: true;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "equipment_stock_updated_by_fkey";
@@ -440,6 +558,34 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_stock_movements_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "equipment_stock_movements_created_by_fkey";
@@ -508,11 +654,46 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
             foreignKeyName: "equipment_units_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "equipment_units_updated_by_fkey";
@@ -555,8 +736,22 @@ export type Database = {
             foreignKeyName: "extra_compatibility_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "extra_compatibility_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "extra_compatibility_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
         ];
       };
@@ -605,6 +800,13 @@ export type Database = {
             foreignKeyName: "extras_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "extras_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
           },
@@ -614,6 +816,34 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "extras_occupies_category_id_fkey";
+            columns: ["occupies_category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "extras_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "extras_updated_by_fkey";
@@ -635,6 +865,9 @@ export type Database = {
           quantity_available: number | null;
           quantity_damaged: number | null;
           quantity_in_repair: number | null;
+          system_quantity_available: number | null;
+          system_quantity_damaged: number | null;
+          system_quantity_in_repair: number | null;
           unit_id: string | null;
         };
         Insert: {
@@ -647,6 +880,9 @@ export type Database = {
           quantity_available?: number | null;
           quantity_damaged?: number | null;
           quantity_in_repair?: number | null;
+          system_quantity_available?: number | null;
+          system_quantity_damaged?: number | null;
+          system_quantity_in_repair?: number | null;
           unit_id?: string | null;
         };
         Update: {
@@ -659,6 +895,9 @@ export type Database = {
           quantity_available?: number | null;
           quantity_damaged?: number | null;
           quantity_in_repair?: number | null;
+          system_quantity_available?: number | null;
+          system_quantity_damaged?: number | null;
+          system_quantity_in_repair?: number | null;
           unit_id?: string | null;
         };
         Relationships: [
@@ -668,6 +907,27 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
           },
           {
             foreignKeyName: "inventory_count_lines_count_id_fkey";
@@ -687,8 +947,22 @@ export type Database = {
             foreignKeyName: "inventory_count_lines_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "inventory_count_lines_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
           },
         ];
       };
@@ -715,6 +989,13 @@ export type Database = {
           notes?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "inventory_counts_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
           {
             foreignKeyName: "inventory_counts_created_by_fkey";
             columns: ["created_by"];
@@ -778,6 +1059,13 @@ export type Database = {
             foreignKeyName: "maintenance_records_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "maintenance_records_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
           },
@@ -792,8 +1080,29 @@ export type Database = {
             foreignKeyName: "maintenance_records_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "maintenance_records_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "maintenance_records_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "maintenance_records_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "maintenance_records_updated_by_fkey";
@@ -830,6 +1139,13 @@ export type Database = {
           worker_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "password_reset_pins_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
           {
             foreignKeyName: "password_reset_pins_worker_id_fkey";
             columns: ["worker_id"];
@@ -871,6 +1187,13 @@ export type Database = {
           reservation_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "refunds_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
           {
             foreignKeyName: "refunds_created_by_fkey";
             columns: ["created_by"];
@@ -930,6 +1253,13 @@ export type Database = {
             foreignKeyName: "reservation_charges_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_charges_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
           },
@@ -973,6 +1303,13 @@ export type Database = {
             foreignKeyName: "reservation_guides_assigned_by_fkey";
             columns: ["assigned_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_guides_assigned_by_fkey";
+            columns: ["assigned_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
           },
@@ -989,6 +1326,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservation_guides_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "reservation_guides_worker_id_fkey";
@@ -1057,6 +1401,34 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
             foreignKeyName: "reservation_items_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
@@ -1095,8 +1467,29 @@ export type Database = {
             foreignKeyName: "reservation_items_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_items_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "reservation_items_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "reservation_items_updated_by_fkey";
@@ -1107,10 +1500,87 @@ export type Database = {
           },
         ];
       };
-      reservations: {
+      reservation_pricing: {
         Row: {
           agreed_amount_crc: number | null;
           agreed_amount_usd: number | null;
+          created_at: string;
+          created_by: string | null;
+          list_amount_crc: number | null;
+          list_amount_usd: number | null;
+          reservation_id: string;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        Insert: {
+          agreed_amount_crc?: number | null;
+          agreed_amount_usd?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          list_amount_crc?: number | null;
+          list_amount_usd?: number | null;
+          reservation_id: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Update: {
+          agreed_amount_crc?: number | null;
+          agreed_amount_usd?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          list_amount_crc?: number | null;
+          list_amount_usd?: number | null;
+          reservation_id?: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_pricing_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "reservations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_reservation_id_fkey";
+            columns: ["reservation_id"];
+            isOneToOne: true;
+            referencedRelation: "unit_current_state";
+            referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "reservation_pricing_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "workers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reservations: {
+        Row: {
           cancellation_reason: string | null;
           closed_at: string | null;
           code: string;
@@ -1123,8 +1593,6 @@ export type Database = {
           ends_at: string | null;
           extra_time_minutes: number;
           id: string;
-          list_amount_crc: number | null;
-          list_amount_usd: number | null;
           parent_reservation_id: string | null;
           people_count: number;
           starts_at: string;
@@ -1134,8 +1602,6 @@ export type Database = {
           updated_by: string;
         };
         Insert: {
-          agreed_amount_crc?: number | null;
-          agreed_amount_usd?: number | null;
           cancellation_reason?: string | null;
           closed_at?: string | null;
           code?: string;
@@ -1148,8 +1614,6 @@ export type Database = {
           ends_at?: string | null;
           extra_time_minutes?: number;
           id?: string;
-          list_amount_crc?: number | null;
-          list_amount_usd?: number | null;
           parent_reservation_id?: string | null;
           people_count: number;
           starts_at: string;
@@ -1159,8 +1623,6 @@ export type Database = {
           updated_by: string;
         };
         Update: {
-          agreed_amount_crc?: number | null;
-          agreed_amount_usd?: number | null;
           cancellation_reason?: string | null;
           closed_at?: string | null;
           code?: string;
@@ -1173,8 +1635,6 @@ export type Database = {
           ends_at?: string | null;
           extra_time_minutes?: number;
           id?: string;
-          list_amount_crc?: number | null;
-          list_amount_usd?: number | null;
           parent_reservation_id?: string | null;
           people_count?: number;
           starts_at?: string;
@@ -1190,6 +1650,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "combos";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "reservations_created_by_fkey";
@@ -1211,6 +1678,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["reservation_id"];
+          },
+          {
+            foreignKeyName: "reservations_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "reservations_updated_by_fkey";
@@ -1264,11 +1738,46 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "tariffs_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "tariffs_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
             foreignKeyName: "tariffs_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tariffs_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "tariffs_updated_by_fkey";
@@ -1316,8 +1825,29 @@ export type Database = {
             foreignKeyName: "unit_condition_photos_unit_id_fkey";
             columns: ["unit_id"];
             isOneToOne: false;
+            referencedRelation: "maintenance_cost_by_unit";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photos_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
             referencedRelation: "unit_current_state";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photos_unit_id_fkey";
+            columns: ["unit_id"];
+            isOneToOne: false;
+            referencedRelation: "unit_service_status";
+            referencedColumns: ["unit_id"];
+          },
+          {
+            foreignKeyName: "unit_condition_photos_uploaded_by_fkey";
+            columns: ["uploaded_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "unit_condition_photos_uploaded_by_fkey";
@@ -1352,8 +1882,22 @@ export type Database = {
             foreignKeyName: "worker_areas_granted_by_fkey";
             columns: ["granted_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "worker_areas_granted_by_fkey";
+            columns: ["granted_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "worker_areas_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "worker_areas_worker_id_fkey";
@@ -1388,8 +1932,22 @@ export type Database = {
             foreignKeyName: "worker_marks_granted_by_fkey";
             columns: ["granted_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "worker_marks_granted_by_fkey";
+            columns: ["granted_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "worker_marks_worker_id_fkey";
+            columns: ["worker_id"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "worker_marks_worker_id_fkey";
@@ -1405,6 +1963,7 @@ export type Database = {
           base_role: Database["public"]["Enums"]["work_area"];
           created_at: string;
           created_by: string | null;
+          deleted_at: string | null;
           expires_at: string | null;
           failed_attempts: number;
           full_name: string;
@@ -1424,6 +1983,7 @@ export type Database = {
           base_role: Database["public"]["Enums"]["work_area"];
           created_at?: string;
           created_by?: string | null;
+          deleted_at?: string | null;
           expires_at?: string | null;
           failed_attempts?: number;
           full_name: string;
@@ -1443,6 +2003,7 @@ export type Database = {
           base_role?: Database["public"]["Enums"]["work_area"];
           created_at?: string;
           created_by?: string | null;
+          deleted_at?: string | null;
           expires_at?: string | null;
           failed_attempts?: number;
           full_name?: string;
@@ -1463,8 +2024,22 @@ export type Database = {
             foreignKeyName: "workers_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
+          },
+          {
+            foreignKeyName: "workers_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
             referencedRelation: "workers";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workers_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "reservations_by_worker";
+            referencedColumns: ["worker_id"];
           },
           {
             foreignKeyName: "workers_updated_by_fkey";
@@ -1477,6 +2052,148 @@ export type Database = {
       };
     };
     Views: {
+      daily_reservation_counts: {
+        Row: {
+          day: string | null;
+          reservations_count: number | null;
+        };
+        Relationships: [];
+      };
+      daily_revenue_report: {
+        Row: {
+          currency:
+            | Database["public"]["Enums"]["currency_code"]
+            | null;
+          day: string | null;
+          gross_amount: number | null;
+          net_amount: number | null;
+          refunds_amount: number | null;
+          retained_amount: number | null;
+        };
+        Relationships: [];
+      };
+      financial_movements: {
+        Row: {
+          currency:
+            | Database["public"]["Enums"]["currency_code"]
+            | null;
+          gross_amount: number | null;
+          occurred_on: string | null;
+          refunds_amount: number | null;
+          retained_amount: number | null;
+        };
+        Relationships: [];
+      };
+      inventory_category_summary: {
+        Row: {
+          category_id: string | null;
+          category_name: string | null;
+          is_reservable: boolean | null;
+          quantity_available: number | null;
+          quantity_damaged: number | null;
+          quantity_in_maintenance: number | null;
+          quantity_in_repair: number | null;
+          quantity_total: number | null;
+          tracking_mode:
+            | Database["public"]["Enums"]["tracking_mode"]
+            | null;
+        };
+        Relationships: [];
+      };
+      inventory_expiry_alerts: {
+        Row: {
+          alert_expiry_days: number | null;
+          category_id: string | null;
+          category_name: string | null;
+          days_to_expiry: number | null;
+          expiry_date: string | null;
+          is_expired: boolean | null;
+        };
+        Relationships: [];
+      };
+      inventory_quantity_alerts: {
+        Row: {
+          alert_min_quantity: number | null;
+          category_id: string | null;
+          category_name: string | null;
+          missing_quantity: number | null;
+          quantity_available: number | null;
+        };
+        Relationships: [];
+      };
+      maintenance_cost_by_unit: {
+        Row: {
+          category_id: string | null;
+          currency:
+            | Database["public"]["Enums"]["currency_code"]
+            | null;
+          last_performed_at: string | null;
+          records_count: number | null;
+          total_cost: number | null;
+          unit_code: string | null;
+          unit_id: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+        ];
+      };
+      monthly_reservation_counts: {
+        Row: {
+          month: string | null;
+          reservations_count: number | null;
+        };
+        Relationships: [];
+      };
+      monthly_revenue_report: {
+        Row: {
+          currency:
+            | Database["public"]["Enums"]["currency_code"]
+            | null;
+          gross_amount: number | null;
+          month: string | null;
+          net_amount: number | null;
+          refunds_amount: number | null;
+          retained_amount: number | null;
+        };
+        Relationships: [];
+      };
+      reservations_by_worker: {
+        Row: {
+          first_reservation_at: string | null;
+          last_reservation_at: string | null;
+          reservations_count: number | null;
+          worker_id: string | null;
+          worker_name: string | null;
+        };
+        Relationships: [];
+      };
       unit_current_state: {
         Row: {
           category_id: string | null;
@@ -1496,6 +2213,75 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "equipment_categories";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
+          },
+        ];
+      };
+      unit_service_status: {
+        Row: {
+          category_id: string | null;
+          category_name: string | null;
+          code: string | null;
+          is_oil_change_due: boolean | null;
+          next_oil_change_at: number | null;
+          remaining_usage: number | null;
+          status:
+            | Database["public"]["Enums"]["unit_status"]
+            | null;
+          unit_id: string | null;
+          usage_metric:
+            | Database["public"]["Enums"]["usage_metric"]
+            | null;
+          usage_total: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "equipment_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_category_summary";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_expiry_alerts";
+            referencedColumns: ["category_id"];
+          },
+          {
+            foreignKeyName: "equipment_units_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "inventory_quantity_alerts";
+            referencedColumns: ["category_id"];
           },
         ];
       };
@@ -1549,10 +2335,18 @@ export type Database = {
           starts_at: string;
         }[];
       };
+      worker_display_names: {
+        Args: { p_worker_ids: string[] };
+        Returns: {
+          full_name: string;
+          worker_id: string;
+        }[];
+      };
     };
     Enums: {
       category_status: "active" | "inactive";
       charge_kind: "tariff" | "extra_time";
+      combo_audience: "national" | "foreign";
       currency_code: "USD" | "CRC";
       damage_cause:
         | "rollover"
@@ -1727,6 +2521,7 @@ export const Constants = {
     Enums: {
       category_status: ["active", "inactive"],
       charge_kind: ["tariff", "extra_time"],
+      combo_audience: ["national", "foreign"],
       currency_code: ["USD", "CRC"],
       damage_cause: [
         "rollover",

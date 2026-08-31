@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Combo a la Medida - AQUAFLEET</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#0b1326",
+                        "on-background": "#dae2fd",
+                        "primary-fixed-dim": "#3cddc7",
+                        "outline-variant": "#3c4a46",
+                        "on-tertiary-container": "#005371",
+                        "on-secondary-container": "#ff9996",
+                        "inverse-primary": "#006b5f",
+                        "surface-container-low": "#131b2e",
+                        "on-surface-variant": "#bacac5",
+                        "inverse-surface": "#dae2fd",
+                        "surface-tint": "#3cddc7",
+                        "surface-container": "#171f33",
+                        "primary-fixed": "#62fae3",
+                        "on-tertiary": "#00354a",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#222a3d",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-tertiary-fixed": "#001e2c",
+                        "surface-dim": "#0b1326",
+                        "secondary-container": "#881d24",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "tertiary-container": "#5ec9ff",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "on-primary-container": "#00574d",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "surface-container-highest": "#2d3449",
+                        "surface-bright": "#31394d",
+                        "on-secondary-fixed": "#410006",
+                        "primary-container": "#2dd4bf",
+                        "tertiary": "#afe0ff",
+                        "surface-container-lowest": "#060e20",
+                        "secondary": "#ffb3b0",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "primary": "#57f1db",
+                        "on-surface": "#dae2fd",
+                        "on-primary-fixed-variant": "#005047",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#00201c",
+                        "secondary-fixed": "#ffdad8",
+                        "outline": "#859490",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-secondary": "#670211",
+                        "surface-variant": "#2d3449",
+                        "on-primary": "#003731",
+                        "inverse-on-surface": "#283044",
+                        "background": "#0b1326"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-desktop": "40px",
+                        "base": "8px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "20px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["JetBrains Mono"],
+                        "title-md": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Hide scrollbar for cleaner look on lists */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-base relative">
+<!-- TopAppBar Shared Component -->
+<header class="bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-xl fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center hover:bg-primary/10 transition-colors active:scale-95 duration-150 p-1 rounded cursor-pointer">
+<span class="material-symbols-outlined text-primary dark:text-primary">waves</span>
+</div>
+<div class="font-display-lg text-primary tracking-tighter uppercase text-[28px] md:text-display-lg">
+            AQUAFLEET
+        </div>
+<div class="flex items-center hover:bg-primary/10 transition-colors active:scale-95 duration-150 p-1 rounded cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<!-- Padding top for TopAppBar, Padding bottom for fixed checkout bar -->
+<main class="flex-1 pt-[80px] pb-[160px] px-margin-mobile md:px-margin-desktop w-full max-w-[1440px] mx-auto">
+<!-- Header -->
+<div class="mb-md">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background mb-xs">Combo a la Medida</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Arma tu paquete de equipos para la sesión.</p>
+</div>
+<!-- Inventory List (Bento-ish layout on desktop, stacked on mobile) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-sm">
+<!-- Item 1: Jet Ski -->
+<article class="bg-surface-container/70 backdrop-blur-[12px] border border-white/10 rounded-xl p-sm flex items-center gap-md hover:bg-surface-container/90 transition-all shadow-lg shadow-black/20">
+<!-- Image Box -->
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 relative bg-surface-container-high border border-white/5">
+<img class="w-full h-full object-cover" data-alt="A sleek, high-performance jet ski resting on dark, glossy water at twilight. The scene is illuminated by subtle, cold blue and teal neon accents reflecting off the carbon fiber hull. The overall aesthetic is highly professional, cinematic, and embodies a dark-mode, high-tech command center vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy2iGFO2BO7FVKgl2EFo11mJ2WGv-TliSjHgJ5BUv2ucgCxdgm1Y6LnYb-uRFuPbRZ4PKlESPIeJnOIvwryDUbBOT5DOQr0qegRTrSyB9gIUFLVqQO3B5sQ2cHA0zFIAHHe_n75BHPyfacRN6YFRc9pH4-O2qeuP4CY1hpmQ8WliRoRakp5wWpOZ5q5OsArJC6siinGhBI8HFdrsv4a5pYf_luJLdubaJRP_16yJQ-e7rDlTAJZoDkXV6pxIAnq9p1NZKhJX77obhp"/>
+<!-- Subtle inner glow overlay -->
+<div class="absolute inset-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]"></div>
+</div>
+<!-- Info -->
+<div class="flex-1">
+<h2 class="font-title-md text-title-md text-on-surface mb-xs">Jet Ski</h2>
+<div class="inline-flex items-center gap-xs bg-primary-container/20 border border-primary/30 px-2 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono text-label-mono text-primary uppercase">3 Libres</span>
+</div>
+</div>
+<!-- Controls -->
+<div class="flex items-center gap-xs shrink-0 bg-surface-container-lowest rounded-full p-1 border border-white/5">
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-variant text-on-surface hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<span class="font-title-md text-title-md text-on-surface w-6 text-center">1</span>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-variant text-on-surface hover:text-primary transition-colors active:scale-95 shadow-[inset_0_0_4px_rgba(87,241,219,0.2)]">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</article>
+<!-- Item 2: Kayak Doble -->
+<article class="bg-surface-container/70 backdrop-blur-[12px] border border-white/10 rounded-xl p-sm flex items-center gap-md hover:bg-surface-container/90 transition-all shadow-lg shadow-black/20">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 relative bg-surface-container-high border border-white/5">
+<img class="w-full h-full object-cover" data-alt="A modern, streamlined double kayak positioned on a perfectly calm, dark surface resembling deep ocean water. The lighting is moody and dramatic with stark highlights emphasizing the bright safety colors against the enveloping navy shadows. The style is pristine, tactical, and aligned with a dark, premium nautical dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbnnHHQHLYWd6ht2v4vb7WQSYE5-PfYe0nX1X9nrXmtPDdKeYEzIsVPG-eyEC9VZMTTh4YlpotNmqcTP_QtgqJ0sneGFtweScPLpd-o-TbljqEiWIOuhhUxKDhp6Ev9Vzr52lsDThr2kgqcwE3KB7U4gw5pJTMMSadsOPpq9o7W8V7Bo_Ww2n6jRym45n_wpqITftCQUSr2k-TNC8vxkmVhp0Kb1gOpie5tOuwJI9QnjdOIyQ8kv2TWZ1Nn-Yq_uOqsLkJ-5hYnMop"/>
+<div class="absolute inset-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]"></div>
+</div>
+<div class="flex-1">
+<h2 class="font-title-md text-title-md text-on-surface mb-xs">Kayak Doble</h2>
+<div class="inline-flex items-center gap-xs bg-primary-container/20 border border-primary/30 px-2 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono text-label-mono text-primary uppercase">8 Libres</span>
+</div>
+</div>
+<div class="flex items-center gap-xs shrink-0 bg-surface-container-lowest rounded-full p-1 border border-white/5">
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container text-on-surface-variant cursor-not-allowed opacity-50">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<span class="font-title-md text-title-md text-on-surface-variant w-6 text-center">0</span>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-variant text-on-surface hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</article>
+<!-- Item 3: Lancha -->
+<article class="bg-surface-container-low/50 backdrop-blur-[12px] border border-white/5 rounded-xl p-sm flex items-center gap-md relative overflow-hidden">
+<!-- Sold Out overlay strip -->
+<div class="absolute inset-y-0 left-0 w-1 bg-error"></div>
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 relative bg-surface-container-high border border-white/5 opacity-60">
+<img class="w-full h-full object-cover grayscale mix-blend-luminosity" data-alt="A heavy-duty speedboat docked in a dimly lit, high-tech marina. The image has a desaturated, slightly obscured quality to signify unavailability. Red warning lights subtly reflect off the dark water. The composition feels industrial, robust, and integrates perfectly into a deep dark-mode UI for equipment tracking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc7LWjRdE3MwIXmzH2kQ_YsNWnpTrtF0HMXBXhiFNFel4MHQSmfVwQ2sT07Xy-2WlqRjgKOqQ5gNdyWGjXw7pIb3lUyUM50eJBbPtlU5xPD1-TBY4AEtI4HCmXfHILy8dxCFty7Pc6B8SfOoy-6Ll0TAAIAVhM_On_EeYGS_cvoGnjSOrLVoz8BAPvIgURB7n8zNWMm-qb8YiuGlmCg7lLV7Bf_m8UtlSAM5g-Ff1EZrKBQXy-EoHClQ_J0W2aoJQmaBs9PSUZ1Hx5"/>
+</div>
+<div class="flex-1 opacity-60">
+<h2 class="font-title-md text-title-md text-on-surface-variant mb-xs">Lancha</h2>
+<div class="inline-flex items-center gap-xs bg-error-container/20 border border-error/30 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-error text-[12px]">block</span>
+<span class="font-label-mono text-label-mono text-error uppercase">Agotado</span>
+</div>
+</div>
+<div class="flex items-center gap-xs shrink-0 bg-surface-container-lowest rounded-full p-1 border border-white/5 opacity-40">
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container text-on-surface-variant cursor-not-allowed">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<span class="font-title-md text-title-md text-on-surface-variant w-6 text-center">0</span>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container text-on-surface-variant cursor-not-allowed">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</article>
+</div>
+</main>
+<!-- Transactional Bottom Bar (Replaces standard BottomNavBar for this task flow) -->
+<div class="fixed bottom-0 w-full z-40 bg-surface-container-high/90 backdrop-blur-[24px] border-t border-white/10 px-margin-mobile py-sm md:py-md shadow-[0_-10px_40px_rgba(0,0,0,0.6)] rounded-t-xl transition-transform duration-300 transform translate-y-0 pb-safe">
+<div class="max-w-[1440px] mx-auto md:px-margin-desktop flex flex-col md:flex-row md:items-center justify-between gap-md">
+<!-- Totals -->
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-xs">Total Estimado</span>
+<div class="flex items-baseline gap-sm">
+<span class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary">$120.00</span>
+<span class="font-title-md text-title-md text-on-surface-variant">/ ₡65,000</span>
+</div>
+</div>
+<!-- Action -->
+<button class="w-full md:w-auto bg-primary hover:bg-primary-fixed text-on-primary font-button text-button uppercase tracking-wider py-sm px-xl rounded-lg shadow-[inset_0_0_8px_rgba(255,255,255,0.3)] hover:shadow-[0_0_20px_rgba(87,241,219,0.4)] transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
+                Confirmar Selección
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

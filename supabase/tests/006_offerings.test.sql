@@ -1,5 +1,5 @@
 begin;
-select plan(21);
+select plan(24);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -104,18 +104,49 @@ select throws_ok(
   'el nombre de un extra no se repite'
 );
 
-insert into combos (id, name, package_price_usd, created_by, updated_by)
-values ('dddddddd-0000-0000-0000-000000000001', 'Paquete pontoon', 150,
+insert into combos (id, name, audience, package_price_usd, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-000000000001', 'Paquete pontoon', 'foreign', 150,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
--- El nombre de un combo es unico en toda la empresa.
+-- El nombre de un combo es unico dentro de su seccion.
 select throws_ok(
-  $$ insert into combos (name, package_price_usd, created_by, updated_by)
-     values ('Paquete pontoon', 175,
+  $$ insert into combos (name, audience, package_price_usd, created_by, updated_by)
+     values ('Paquete pontoon', 'foreign', 175,
              '11111111-1111-1111-1111-111111111111',
              '11111111-1111-1111-1111-111111111111') $$,
   '23505', null,
-  'el nombre de un combo no se repite'
+  'el nombre de un combo no se repite dentro de la misma seccion'
+);
+
+-- Pero el mismo paquete si existe para el otro publico, a otro precio: eso es
+-- justamente para lo que estan las dos secciones.
+select lives_ok(
+  $$ insert into combos (name, audience, package_price_crc, created_by, updated_by)
+     values ('Paquete pontoon', 'national', 75000,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'el mismo nombre se repite en la otra seccion, con su propio precio'
+);
+
+-- Cada seccion cotiza en su moneda y solo en esa. Mezclarlas es exactamente
+-- lo que las dos secciones existen para evitar.
+select throws_ok(
+  $$ insert into combos (name, audience, package_price_usd, created_by, updated_by)
+     values ('Paquete mezclado', 'national', 100,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23514', null,
+  'un combo de nacionales no se cotiza en dolares'
+);
+
+-- Y un combo sin precio no se puede vender.
+select throws_ok(
+  $$ insert into combos (name, audience, created_by, updated_by)
+     values ('Paquete sin precio', 'foreign',
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23514', null,
+  'un combo sin precio es rechazado'
 );
 
 -- Camino feliz de combo_items: cantidad positiva.

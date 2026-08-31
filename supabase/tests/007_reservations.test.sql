@@ -1,5 +1,5 @@
 begin;
-select plan(25);
+select plan(31);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -22,8 +22,8 @@ insert into equipment_units (id, category_id, code, created_by, updated_by)
 values ('bbbbbbbb-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000002', 'LANCHA-1',
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
-insert into combos (id, name, package_price_usd, created_by, updated_by)
-values ('cccccccc-0000-0000-0000-000000000001', 'Paquete kayak', 100,
+insert into combos (id, name, audience, package_price_usd, created_by, updated_by)
+values ('cccccccc-0000-0000-0000-000000000001', 'Paquete kayak', 'foreign', 100,
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
 
 insert into reservations
@@ -160,28 +160,70 @@ select throws_ok(
   'una reserva no puede apuntarse a si misma como padre'
 );
 
--- Al partir una reserva, la hija no puede llevar cobro propio: el cobro se
--- queda entero en la original, a nombre del mismo cliente.
-select throws_ok(
-  $$ insert into reservations
-       (customer_name, people_count, type, starts_at, duration_minutes,
-        parent_reservation_id, agreed_amount_usd, created_by, updated_by)
-     values ('Hija con cobro', 1, 'rental', '2026-09-10 09:00:00+00', 60,
-             'dddddddd-0000-0000-0000-000000000001', 50,
-             '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
-  '23514', null,
-  'una reserva hija no puede llevar cobro propio'
-);
-
--- Camino feliz: la hija nace sin cobro propio en las cuatro columnas.
+-- Camino feliz: la hija nace sin cobro propio. El precio ya no es columna
+-- suya, asi que nacer sin el es simplemente no tener fila en
+-- reservation_pricing.
 select lives_ok(
   $$ insert into reservations
-       (customer_name, people_count, type, starts_at, duration_minutes,
+       (id, customer_name, people_count, type, starts_at, duration_minutes,
         parent_reservation_id, created_by, updated_by)
-     values ('Hija sin cobro', 1, 'rental', '2026-09-10 09:00:00+00', 60,
+     values ('dddddddd-0000-0000-0000-000000000020', 'Hija sin cobro', 1, 'rental',
+             '2026-09-10 09:00:00+00', 60,
              'dddddddd-0000-0000-0000-000000000001',
              '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
   'una reserva hija sin cobro propio se inserta bien'
+);
+
+-- Camino feliz: la reserva original si lleva precio, en su propia tabla.
+select lives_ok(
+  $$ insert into reservation_pricing
+       (reservation_id, list_amount_usd, agreed_amount_usd, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-000000000001', 120, 100,
+             '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
+  'la reserva original lleva su precio en reservation_pricing'
+);
+
+-- Al partir una reserva, la hija no puede llevar cobro propio: el cobro se
+-- queda entero en la original, a nombre del mismo cliente. Antes lo cuidaba
+-- un CHECK sobre reservations; ahora que el precio vive aparte lo cuida el
+-- trigger reservation_pricing_no_split_child, que rechaza P0001 al escribir.
+select throws_ok(
+  $$ insert into reservation_pricing
+       (reservation_id, agreed_amount_usd, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-000000000020', 50,
+             '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
+  'P0001', null,
+  'una reserva hija no puede llevar cobro propio'
+);
+
+-- Tampoco por la puerta de atras: actualizar el precio de una hija que ya
+-- tuviera fila tambien lo rechaza el trigger.
+select throws_ok(
+  $$ update reservation_pricing
+       set reservation_id = 'dddddddd-0000-0000-0000-000000000020'
+     where reservation_id = 'dddddddd-0000-0000-0000-000000000001' $$,
+  'P0001', null,
+  'mover el precio a una reserva hija tambien se rechaza'
+);
+
+-- El precio no sobrevive a su reserva: la llave foranea va con cascade, asi
+-- que ninguna fila de dinero queda huerfana apuntando a una reserva borrada.
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-000000000021', 'Reserva efimera', 1, 'rental',
+        '2026-09-11 09:00:00+00', 60,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+insert into reservation_pricing
+  (reservation_id, agreed_amount_usd, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-000000000021', 75,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+delete from reservations where id = 'dddddddd-0000-0000-0000-000000000021';
+
+select is(
+  (select count(*)::int from reservation_pricing
+     where reservation_id = 'dddddddd-0000-0000-0000-000000000021'),
+  0,
+  'borrar la reserva se lleva su precio por cascade'
 );
 
 -- Un item es una unidad concreta o una categoria con cantidad, nunca las dos.
@@ -282,6 +324,54 @@ select lives_ok(
   $$ update reservations set status = 'cancelled', cancellation_reason = 'Cliente no se presento'
      where id = 'dddddddd-0000-0000-0000-000000000001' $$,
   'cancelar con motivo se acepta'
+);
+
+-- ============================================================
+-- El horometro solo sube (20260828001900)
+-- ============================================================
+
+-- `usage_out` se escribe al despachar y `usage_in` al cerrar, y de esa resta
+-- sale equipment_units.usage_total, el acumulado del que leen el reporte de
+-- horas de uso (US-ADM-028) y el aviso de cambio de aceite (US-OPE-012).
+-- Reproducido contra la aplicacion antes de la restriccion: se desapacho con
+-- 12.5 horas, se cerro con 11, y el acumulado bajo sin una sola queja.
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, created_by, updated_by)
+values ('dddddddd-0000-0000-0000-0000000000f1', 'Horometro', 2, 'rental',
+        '2026-09-05 10:00:00+00', 60,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+select throws_ok(
+  $$ insert into reservation_items
+       (reservation_id, unit_id, usage_out, usage_in, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-0000000000f1',
+             'bbbbbbbb-0000-0000-0000-000000000001', 12.5, 11.0,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  '23514', null,
+  'cerrar con menos horas de las que salio es rechazado'
+);
+
+select lives_ok(
+  $$ insert into reservation_items
+       (reservation_id, unit_id, usage_out, usage_in, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-0000000000f1',
+             'bbbbbbbb-0000-0000-0000-000000000001', 12.5, 12.5,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'cerrar con la misma lectura se acepta: una salida puede no mover el horometro'
+);
+
+-- Despachar sin haber cerrado todavia es el estado normal entre las dos
+-- lecturas, y la restriccion no puede estorbarlo.
+select lives_ok(
+  $$ insert into reservation_items
+       (reservation_id, unit_id, usage_out, created_by, updated_by)
+     values ('dddddddd-0000-0000-0000-0000000000f1',
+             'bbbbbbbb-0000-0000-0000-000000000001', 30.0,
+             '11111111-1111-1111-1111-111111111111',
+             '11111111-1111-1111-1111-111111111111') $$,
+  'una salida despachada y sin cerrar, con lectura de salida y sin la de regreso, se acepta'
 );
 
 select * from finish();

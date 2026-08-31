@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inventario Maestro - Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "tertiary-container": "#5ec9ff",
+                        "surface": "#0b1326",
+                        "background": "#0b1326",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-high": "#222a3d",
+                        "surface-container-lowest": "#060e20",
+                        "primary-fixed-dim": "#3cddc7",
+                        "secondary-fixed": "#ffdad8",
+                        "primary": "#57f1db",
+                        "inverse-primary": "#006b5f",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "tertiary-fixed": "#c4e7ff",
+                        "surface-container-low": "#131b2e",
+                        "secondary-container": "#881d24",
+                        "inverse-on-surface": "#283044",
+                        "surface-bright": "#31394d",
+                        "surface-tint": "#3cddc7",
+                        "on-secondary": "#670211",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#2d3449",
+                        "on-surface-variant": "#bacac5",
+                        "primary-container": "#2dd4bf",
+                        "on-primary-fixed": "#00201c",
+                        "on-tertiary-fixed": "#001e2c",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "on-secondary-container": "#ff9996",
+                        "on-surface": "#dae2fd",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-variant": "#2d3449",
+                        "surface-dim": "#0b1326",
+                        "tertiary": "#afe0ff",
+                        "on-primary": "#003731",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#3c4a46",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-secondary-fixed": "#410006",
+                        "primary-fixed": "#62fae3",
+                        "surface-container": "#171f33",
+                        "on-tertiary": "#00354a",
+                        "on-background": "#dae2fd",
+                        "secondary": "#ffb3b0",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "outline": "#859490",
+                        "on-primary-container": "#00574d",
+                        "on-tertiary-container": "#005371"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "20px",
+                        "xl": "80px",
+                        "xs": "4px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "margin-desktop": "40px",
+                        "sm": "12px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "title-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bg-radial-gradient {
+            background: radial-gradient(circle at top right, rgba(45, 212, 191, 0.1), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(45, 212, 191, 0.05), transparent 40%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen bg-radial-gradient flex overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-surface-container dark:bg-surface-container text-primary dark:text-primary font-title-md text-title-md h-screen sticky left-0 top-0 w-64 flex-col border-r border-white/5 shadow-xl hidden lg:flex py-md z-50">
+<div class="px-md pb-lg">
+<div class="flex items-center gap-sm">
+<img alt="Arenal Logo" class="w-10 h-10 rounded-lg object-cover" data-alt="A minimalist logo for a water sports company, featuring a sleek, modern wave design in neon teal against a dark navy background. The style is clean, corporate, and high-tech, reflecting a premium operational command center aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkQyWzjbeXqTSaZwWBTa7GthKsUBYrogL4QA14nzr6zxr_v0Wj3k9-pTYBNxfQm5M1wLRuMWl95hr4Atdcn1ZgXDeklIvdTfLJVNT4dv2CxPf3_O04R_MH1Gqfifa8oEMA_YOGWNk0Kuq-fsYre0lbNr3KbAbf8aMQymeaZHMqiL3vDPU_aRPP0Kh4poUZQapI81AsDEhm6d6_XvOSJwlYE8WRFcBCARa_1NtNkLLeYp5imUQS-_FIOg"/>
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary">Arenal Ops</h1>
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Command Center</span>
+</div>
+</div>
+</div>
+<div class="px-md pb-md">
+<button class="w-full bg-primary text-on-primary font-button text-button uppercase py-sm px-md rounded-lg hover:bg-primary-fixed transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                New Booking
+            </button>
+</div>
+<ul class="flex-1 overflow-y-auto mt-sm flex flex-col gap-xs">
+<li>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">directions_boat</span>
+                    Fleet
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+                    Reservations
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">badge</span>
+                    Staff
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-sm bg-primary-container/20 text-primary border-l-4 border-primary px-md py-sm hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                    Inventory
+                </a>
+</li>
+</ul>
+<div class="mt-auto border-t border-white/5 pt-sm px-xs">
+<ul class="flex flex-col gap-xs">
+<li>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                        Reports
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm hover:bg-white/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+                        Logout
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar (Web only via logic, but keeping standard layout for canvas context) -->
+<header class="bg-surface/70 dark:bg-surface/70 backdrop-blur-xl text-primary dark:text-primary font-body-base text-body-base w-full sticky top-0 z-40 border-b border-white/10 shadow-sm flex justify-between items-center px-margin-desktop h-20">
+<div class="flex items-center gap-md lg:hidden">
+<span class="material-symbols-outlined text-3xl cursor-pointer">menu</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight">Arenal Ops</h1>
+</div>
+<div class="hidden lg:flex flex-1 items-center max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-high border border-white/10 rounded-full py-2 pl-10 pr-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all placeholder-on-surface-variant" placeholder="Search inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary hover:bg-white/5 transition-colors p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary hover:bg-white/5 transition-colors p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary hover:bg-white/5 transition-colors p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined">help</span>
+</button>
+<img alt="Administrator Profile" class="w-10 h-10 rounded-full object-cover border border-white/10 ml-sm" data-alt="A professional headshot of an administrator wearing a sleek, dark navy polo shirt with a subtle teal logo. The background is a blurred office environment with cool, tech-inspired lighting. The image exudes authority and technical competence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADxJ4U0gBAl3FFeinh0flI1rfVIVBDQLkHOumNkfI4KjPDgjg7hVWw0zBrIlIAilaGDb7nyHjMgkJN24ryTXRodaUvmTyA8GJnfwV1gKvzqLtK9W-u2c7haRA2Y5ZMpt97el9Bo2mAMbzWWcQ-JUbyd1kCZVwz-gu-QU-ORw7tb0jLlODi8Abxe9vFR4zWSKQ0OYrmSvZ0guliAcXVel6lAPdqFmkVpXr2DIyvUW7j_ctfIh9w5wiA6Q"/>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 overflow-y-auto p-margin-desktop">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-lg">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary">Master Inventory</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-2">Real-time asset tracking and maintenance status.</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-transparent border border-outline text-on-surface font-button text-button uppercase py-sm px-md rounded-lg hover:bg-white/5 hover:border-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">filter_list</span>
+                        Advanced Filter
+                    </button>
+<button class="bg-primary text-on-primary font-button text-button uppercase py-sm px-md rounded-lg hover:bg-primary-fixed transition-colors flex items-center gap-2 shadow-[inset_0_0_10px_rgba(255,255,255,0.2)]">
+<span class="material-symbols-outlined">inventory</span>
+                        Start Count
+                    </button>
+</div>
+</div>
+<!-- Summary Cards (Bento Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between hover:bg-surface-container-highest transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">shuffle</span>
+<span class="font-label-mono text-label-mono bg-primary/10 text-primary px-2 py-1 rounded-full">Total Active</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg">142</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Vessels &amp; Vehicles</p>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between hover:bg-surface-container-highest transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-error-container text-3xl group-hover:scale-110 transition-transform">build</span>
+<span class="font-label-mono text-label-mono bg-error-container/20 text-error px-2 py-1 rounded-full">In Shop</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg">8</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Under Maintenance</p>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between hover:bg-surface-container-highest transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-tertiary-container text-3xl group-hover:scale-110 transition-transform">maps_ugc</span>
+<span class="font-label-mono text-label-mono bg-tertiary-container/10 text-tertiary-container px-2 py-1 rounded-full">Safety Gear</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg">350</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Vests &amp; Extinguishers</p>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-md flex flex-col justify-between border-error/50 hover:bg-surface-container-highest transition-colors group relative overflow-hidden">
+<div class="absolute inset-0 bg-error/5 opacity-50"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="material-symbols-outlined text-error text-3xl group-hover:scale-110 transition-transform">warning</span>
+<span class="font-label-mono text-label-mono bg-error/20 text-error px-2 py-1 rounded-full animate-pulse">Critical</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-lg text-headline-lg text-error">12</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Low Stock / Expiring</p>
+</div>
+</div>
+</div>
+<!-- Master Inventory Table -->
+<div class="glass-panel rounded-xl overflow-hidden flex flex-col">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/10 bg-surface-container/50">
+<th class="py-sm px-md font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Category</th>
+<th class="py-sm px-md font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider text-right">Total</th>
+<th class="py-sm px-md font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider text-right">Available</th>
+<th class="py-sm px-md font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider text-right">Maintenance</th>
+<th class="py-sm px-md font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Alerts</th>
+<th class="py-sm px-md font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-base text-body-base">
+<!-- Row 1: Jet Skis -->
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="py-md px-md">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-high flex-shrink-0 border border-white/10">
+<img alt="Jet Ski Category" class="w-full h-full object-cover" data-alt="A high-performance personal watercraft (jet ski) viewed from a low angle, sleek aerodynamic design in deep navy and neon teal colors. The background is a dark studio setup highlighting the glossy finish and robust hardware of the machine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLyYrDKA3URAzuhoe9bbpIGyJIsL1G8N43kQQ_J0v3zBu9nQVPbJRavU1uTWmDoxFHIx6h_oZqyhfHDMokrE9NTMhaLF_uvl8PTpOiONuMfuf-FBs9g3_EVMJ61V-2QOKslysg9P57QKY0FkErX0HPCW8PJJvSHQsgE3s07_WuotlGcAMT0-GqHvvrKQO7RlwyYXKsIV0VAm6hFQZLet8MxlukaNxO9BnzBnk30erv0T3eQYctO2Z7uQ"/>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface font-medium">Jet Skis (PWC)</p>
+<p class="text-sm text-on-surface-variant">Yamaha &amp; Sea-Doo</p>
+</div>
+</div>
+</td>
+<td class="py-md px-md text-right font-label-mono">24</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold">20</span>
+</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant">4</span>
+</td>
+<td class="py-md px-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded border border-white/10 text-sm">
+<span class="material-symbols-outlined text-sm text-tertiary-container">info</span>
+                                        2 Routine Services Due
+                                    </span>
+</td>
+<td class="py-md px-md text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Lanchas -->
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="py-md px-md">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-high flex-shrink-0 border border-white/10">
+<img alt="Speedboats Category" class="w-full h-full object-cover" data-alt="A sleek, modern speedboat in a dark, atmospheric marina setting. The boat features sharp geometric lines, tinted glass, and a metallic teal hull reflecting subtle light, conveying speed and luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7rTqHQ4ko8y2l2dudV_adokWLYy988zMwRLGAWabaxIgwrV68S8jqCLl2I0Xw1dsb_Tt_PLmV5HZeSg4g8rRgzWTASiFh8ZJ_t9XAsq-G5yZE386_eY-AZ05-_iAUtfORUeWGPh5gVArgN5ARgTcC2G_S0FstEI4Yk2P47PkTLl_U826MZixzS3lq_EtsdNFb1_sCMJSh38h2JKFaGyX00B8ckmdbc8CsFf_X5pojAVlYTtrKIeeBog"/>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface font-medium">Speedboats</p>
+<p class="text-sm text-on-surface-variant">Wake &amp; Leisure</p>
+</div>
+</div>
+</td>
+<td class="py-md px-md text-right font-label-mono">12</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold">11</span>
+</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant">1</span>
+</td>
+<td class="py-md px-md">
+<span class="text-on-surface-variant text-sm italic">All Clear</span>
+</td>
+<td class="py-md px-md text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Chalecos (Critical) -->
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group bg-error-container/10">
+<td class="py-md px-md">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-high flex-shrink-0 border border-error/30 relative">
+<img alt="Life Vests Category" class="w-full h-full object-cover opacity-80" data-alt="A stack of professional-grade neoprene life vests in striking teal and black colors. The vests are neatly organized on an industrial rack in a dimly lit gear room, highlighted by a cool, focused spotlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz9T05DZCRB-BkrBYjE2zo7Us7Z9DBlVf7Br8q8YtyCAI4Tu3QJLf4n6qpPQyEeVIRPmMU-psyyqJBC5AEdfxBYOrzK0HJwJEWyRmuGRCWZq6Of5BwTh5OEYE3QkJy1vqvycxy2LNXjTcx9kj7Tf2asxlhsBnjTlAPvMaJX7GcxbxOJZd1hymvNzbF7_Xjq-9_XjFH30-72ujsQ6EPfqOXANg8j74DF7032MJEC1Ba3sHVjYLYuVpJSg"/>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface font-medium">Life Vests</p>
+<p class="text-sm text-on-surface-variant">Sizes XS - XXL</p>
+</div>
+</div>
+</td>
+<td class="py-md px-md text-right font-label-mono">250</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center px-2 py-1 rounded bg-error/20 text-error font-bold text-sm">240</span>
+</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant">-</span>
+</td>
+<td class="py-md px-md">
+<span class="inline-flex items-center gap-1 bg-error/10 border border-error/50 px-2 py-1 rounded text-error text-sm font-medium">
+<span class="material-symbols-outlined text-sm">warning</span>
+                                        Low Stock: Size L (Critical)
+                                    </span>
+</td>
+<td class="py-md px-md text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Extintores -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-md px-md">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-high flex-shrink-0 border border-white/10">
+<img alt="Extinguishers Category" class="w-full h-full object-cover" data-alt="A marine-grade fire extinguisher mounted on a dark carbon-fiber wall. The cylinder is a deep red with metallic silver nozzles, shot in dramatic, moody lighting to emphasize safety and industrial strength." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMr0UL_tVOwdouEmsbKorGSy1j0w9w1Jwxple7s98SSyn3q4-aCcj2hQagVdWoyRDrqUQplTTvnsjh8r6oGuGZSIdjRa5iS1J5n5AqRVWx0p1Rm3MWvwWYsANXW29q1foHn8dzO4cUk-olg3eEfFlY2SOUWe4SHrQp7SPOumrXBqCJ9AleKUYdtjE-WxIykNqmzRA4WQyntX2jbcGyopIY2l4vNDuE6PYOL683dv2L7X9TaReYnQEANA"/>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface font-medium">Fire Extinguishers</p>
+<p class="text-sm text-on-surface-variant">Marine Grade ABC</p>
+</div>
+</div>
+</td>
+<td class="py-md px-md text-right font-label-mono">45</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold">45</span>
+</td>
+<td class="py-md px-md text-right">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant">-</span>
+</td>
+<td class="py-md px-md">
+<span class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded border border-white/10 text-sm">
+<span class="material-symbols-outlined text-sm text-secondary-fixed">schedule</span>
+                                        8 Expiring next month
+                                    </span>
+</td>
+<td class="py-md px-md text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</body></html>

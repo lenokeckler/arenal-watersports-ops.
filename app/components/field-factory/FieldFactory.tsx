@@ -6,13 +6,13 @@ import {
   STRING,
   INPUT_TYPES,
   DISPLAY_NAME,
-  ICON_PATHS,
-  ICON_ALTS,
+  ARIA_LABEL,
+  MATERIAL_ICON_NAME,
   BUTTON,
 } from "@/app/constants";
 import { useFieldFactoryViewModel } from "./hooks/useFieldFactoryViewModel";
 import Button from "../button/Button";
-import Icon from "../icons/icon/Icon";
+import MaterialIcon from "../icons/material-icon/MaterialIcon";
 
 const FieldFactory = forwardRef<
   HTMLInputElement,
@@ -235,23 +235,27 @@ const FieldFactory = forwardRef<
             <Button
               type="button"
               variant={BUTTON.BASE}
+              aria-label={ARIA_LABEL.TOGGLE_PASSWORD_VISIBILITY}
               className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center focus:ring-2 focus:ring-sky-blue focus:outline-none cursor-pointer"
               onClick={toggleVisibility}
               tabIndex={0}
             >
-              <Icon
-                src={
+              {/*
+               * `Icon` (next/image) pointed at `/icons/eye.svg` /
+               * `/icons/eye-off.svg`, which never existed under `public/`
+               * (there is no `public/icons/` directory at all) and 404'd on
+               * every password field in the project. `MaterialIcon` is the
+               * self-hosted ligature font already used elsewhere in this
+               * module (see `MaterialIcon.tsx`), so it cannot 404 on a bad
+               * connection the way a missing static asset can.
+               */}
+              <MaterialIcon
+                name={
                   isVisible
-                    ? ICON_PATHS.EYE_VISIBLE
-                    : ICON_PATHS.EYE_HIDDEN
+                    ? MATERIAL_ICON_NAME.VISIBILITY_OFF
+                    : MATERIAL_ICON_NAME.VISIBILITY
                 }
-                alt={
-                  isVisible
-                    ? ICON_ALTS.EYE_VISIBLE
-                    : ICON_ALTS.EYE_HIDDEN
-                }
-                size={20}
-                className="cursor-pointer"
+                className="!text-[20px] cursor-pointer"
               />
             </Button>
           </div>

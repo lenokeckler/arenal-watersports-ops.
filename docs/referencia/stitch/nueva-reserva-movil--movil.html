@@ -1,0 +1,365 @@
+<!DOCTYPE html><html class="dark" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nueva Reserva - Arenal Ops</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#57f1db",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "inverse-surface": "#dae2fd",
+                      "surface-container-highest": "#2d3449",
+                      "on-tertiary-fixed": "#001e2c",
+                      "outline": "#859490",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "on-error": "#690005",
+                      "inverse-primary": "#006b5f",
+                      "on-secondary": "#670211",
+                      "surface-container": "#171f33",
+                      "outline-variant": "#3c4a46",
+                      "tertiary": "#afe0ff",
+                      "error": "#ffb4ab",
+                      "on-background": "#dae2fd",
+                      "tertiary-fixed": "#c4e7ff",
+                      "secondary": "#ffb3b0",
+                      "on-primary-fixed": "#00201c",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed": "#410006",
+                      "on-surface-variant": "#bacac5",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-container": "#00574d",
+                      "surface-container-low": "#131b2e",
+                      "surface-variant": "#2d3449",
+                      "surface-bright": "#31394d",
+                      "on-primary": "#003731",
+                      "on-secondary-container": "#ff9996",
+                      "surface-dim": "#0b1326",
+                      "inverse-on-surface": "#283044",
+                      "on-tertiary": "#00354a",
+                      "secondary-container": "#881d24",
+                      "primary-container": "#2dd4bf",
+                      "primary-fixed": "#62fae3",
+                      "on-tertiary-container": "#005371",
+                      "surface": "#0b1326",
+                      "surface-tint": "#3cddc7",
+                      "background": "#0b1326",
+                      "on-primary-fixed-variant": "#005047",
+                      "tertiary-container": "#5ec9ff",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "surface-container-lowest": "#060e20",
+                      "primary-fixed-dim": "#3cddc7",
+                      "error-container": "#93000a",
+                      "secondary-fixed": "#ffdad8",
+                      "on-surface": "#dae2fd",
+                      "on-secondary-fixed-variant": "#881d24"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "lg": "48px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "margin-desktop": "40px",
+                      "sm": "12px",
+                      "base": "8px",
+                      "xs": "4px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ambient-bg {
+            background: radial-gradient(circle at 50% -20%, rgba(87, 241, 219, 0.15), transparent 60%), #020617;
+        }
+
+        .input-glow:focus {
+            box-shadow: inset 0 0 0 1px #57f1db, 0 0 10px rgba(87, 241, 219, 0.2);
+            border-color: #57f1db;
+            outline: none;
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base ambient-bg min-h-screen flex flex-col selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile py-sm w-full z-50 bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl docked full-width top-0 sticky shadow-sm md:hidden border-none relative">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0">
+<img class="w-full h-full object-cover" data-alt="A stylized, minimalist logo for a water sports company named 'Arenal Water Sports', featuring a sleek wave or abstract boat shape in bright teal against a dark navy background. The design is modern, professional, and suited for a high-end application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdQ0GpBDFItZknldakRI7GQ8Um-9kTXcZPgBPRHh34sRSGlUF0AkRSuAdNQxMug9qkI7Cod8obh_HbNSS3Kj_O6T-i0oQH-vnrARlP5Bc5KzDxKqbwszvMbIAHus1ekTH2CHKhuIsW0u5Su3qnLEiuzAjZH5-PBpicAfCuOBpXac5GGbUn4AdG6ojx-GmGuSXO1lxBGPvy78FU9dgiMsMqy5WUPjkPXXuSbMILwg4YafgwRsGnbk7Oow">
+</div>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface dark:text-on-surface tracking-tight">Arenal Ops</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/10 transition-colors text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<!-- Subtle shadow/gradient separator instead of border -->
+<div class="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto pb-[90px] pt-sm px-margin-mobile flex flex-col gap-md">
+<!-- Header -->
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-xs">Nueva Reserva</h1>
+<p class="text-on-surface-variant text-sm">Configure los detalles del servicio.</p>
+</div>
+<!-- Tipo de Servicio -->
+<section class="glass-panel rounded-xl p-sm flex flex-col gap-sm">
+<h2 class="font-title-md text-title-md text-on-surface">Tipo de Servicio</h2>
+<div class="grid grid-cols-2 gap-sm">
+<!-- Renta Button (Selected State) -->
+<button class="relative overflow-hidden rounded-lg bg-surface-container-highest border border-primary text-primary py-sm px-base flex flex-col items-center justify-center gap-xs group transition-all duration-300" type="button">
+<div class="absolute inset-0 bg-primary/10"></div>
+<span class="material-symbols-outlined z-10" data-icon="sailing" style="font-variation-settings: 'FILL' 1;">sailing</span>
+<span class="font-button text-button z-10">Renta</span>
+</button>
+<!-- Tour Button (Unselected State) -->
+<button class="relative overflow-hidden rounded-lg bg-surface-container border border-white/10 text-on-surface-variant hover:text-on-surface py-sm px-base flex flex-col items-center justify-center gap-xs group transition-all duration-300 hover:bg-surface-container-highest hover:border-white/20" type="button">
+<span class="material-symbols-outlined z-10" data-icon="explore" style="font-variation-settings: 'FILL' 0;">explore</span>
+<span class="font-button text-button z-10">Tour</span>
+</button>
+</div>
+</section>
+<!-- Form Details -->
+<section class="glass-panel rounded-xl p-sm flex flex-col gap-md">
+<!-- Cliente -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="clienteName">Nombre del Cliente</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<input class="w-full bg-surface-container-low border border-white/10 rounded-lg py-sm pl-xl pr-sm text-on-surface placeholder:text-outline-variant focus:ring-0 input-glow transition-all" id="clienteName" placeholder="Ej. Juan Pérez" type="text">
+</div>
+</div>
+<!-- Equipo Selector (Horizontal Scroll) -->
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-end mb-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Equipo Seleccionado</label>
+<span class="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">1 seleccionado</span>
+</div>
+<div class="flex overflow-x-auto gap-sm hide-scrollbar pb-xs -mx-sm px-sm snap-x">
+<!-- Jet Ski - Selected -->
+<div class="shrink-0 w-32 relative rounded-lg overflow-hidden border border-primary snap-start">
+<div class="absolute inset-0 bg-primary/20 z-10 pointer-events-none"></div>
+<div class="absolute top-2 right-2 z-20 text-primary bg-background/80 rounded-full w-5 h-5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="h-24 w-full bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern jet ski in bright teal and dark grey colors, photographed from a dynamic low angle on calm dark water. High resolution, dramatic lighting, conveying speed and premium quality. Deep navy blue background tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8rCo7t7KmvINroRT2YUrDX-5ncoMQNYksCxW0pGc-4WBZN4lbr6UW622f25dxFlB9krLn93CDjifcKfxmrZgnqgQqD1z8eO-TCg91JVnFeNRwCV1IR7ldKdXgvxkGejosHKC2EifuboGDeC7fQnI7i5LsQ_pbkPvKWGnk2vidTZHh6MW9m8GpFCOiiVY6uF8NwtmdNarzN7kIXl47-qTYi4Mqzo21-YEfWZWbwDUBU7dDPMDWssshMg">
+</div>
+<div class="p-2 bg-surface-container-highest backdrop-blur-md relative z-10">
+<p class="font-button text-button text-on-surface truncate">Yamaha FX</p>
+<p class="text-[10px] text-primary">Disponible</p>
+</div>
+</div>
+<!-- Kayak -->
+<div class="shrink-0 w-32 relative rounded-lg overflow-hidden border border-white/10 opacity-70 hover:opacity-100 transition-opacity snap-start">
+<div class="h-24 w-full bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A bright yellow professional ocean kayak resting on a wooden dock against a backdrop of deep blue water. High quality, sharp focus, vibrant colors contrasting with the dark sophisticated theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlhLth2q5VaH7g9bmzTFqUoTiYT0xSft6U-XEUq3u5-MPmZw-aa5ZtDe21r_29doX3TlHaoFRDZPtbsHDvThCJmuETVHPoJ3wbVbM4JQk6rj-Br1juska2hwu5Dnkt1oMs6_Vvi9Tz7ebgndVnBHqqHLf2u00jKPHkh7dZbb0ZUK0Qx0iMVZAnMSTC7iWHZoG8Xb8IJanEvZqItp4V-zOq33D_mg9v7lVgQsN752xeIBLyFp0QrZkMKQ">
+</div>
+<div class="p-2 bg-surface-container backdrop-blur-md">
+<p class="font-button text-button text-on-surface truncate">Kayak Doble</p>
+<p class="text-[10px] text-on-surface-variant">Disponible</p>
+</div>
+</div>
+<!-- SUP -->
+<div class="shrink-0 w-32 relative rounded-lg overflow-hidden border border-white/10 opacity-70 hover:opacity-100 transition-opacity snap-start">
+<div class="h-24 w-full bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A pristine white and teal stand up paddleboard lying on dark sand near the water's edge. Dramatic lighting highlights the texture of the board. Premium water sports equipment vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_zDaeVlFTsVnHpaVgfligKEtdP8-_76_jDo72D4curZ5_xXYdoqkMhJAkA0UEk2NbFJZLqTMUahNt_DuYn3oW8UosE1ybcKI-HMBbM09s5QTCnL5uDbL16zqAurRzmXF3NHPIHGI11jCBu5N8OqXDFe0bx7BzD3KGTXja6esdnbusTs3XijhkgPcBMrTT2jLuMtFdHVy3nq_tt_yTT-KkB5-RxV6wx1JNPc0FDxJ1p5fVGtB7IN4pOQ">
+</div>
+<div class="p-2 bg-surface-container backdrop-blur-md">
+<p class="font-button text-button text-on-surface truncate">SUP Board</p>
+<p class="text-[10px] text-on-surface-variant">Disponible</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Duración (Time Picker Grid) -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Duración</label>
+<div class="grid grid-cols-3 gap-xs">
+<button class="bg-surface-container border border-white/10 rounded-lg py-2 text-center hover:bg-surface-container-highest transition-colors" type="button">
+<span class="font-button text-button text-on-surface-variant">30 min</span>
+</button>
+<button class="bg-primary/20 border border-primary rounded-lg py-2 text-center relative overflow-hidden" type="button">
+<span class="font-button text-button text-primary relative z-10">1 hora</span>
+</button>
+<button class="bg-surface-container border border-white/10 rounded-lg py-2 text-center hover:bg-surface-container-highest transition-colors" type="button">
+<span class="font-button text-button text-on-surface-variant">2 horas</span>
+</button>
+</div>
+</div>
+<!-- Precio Estimado -->
+<div class="flex justify-between items-center pt-sm mt-xs border-t border-white/10">
+<span class="text-on-surface-variant">Total Estimado</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">$120.00</span>
+</div>
+</section>
+<!-- Action Buttons -->
+<div class="flex gap-sm mt-sm">
+<button class="flex-1 bg-transparent border border-outline text-on-surface rounded-lg py-md font-button text-button uppercase tracking-wide hover:bg-surface-container-highest transition-colors" type="button">
+                Cancelar
+            </button>
+<button class="flex-[2] bg-primary text-on-primary rounded-lg py-md font-button text-button uppercase tracking-wide hover:bg-primary-fixed transition-all shadow-[0_0_15px_rgba(87,241,219,0.3)] hover:shadow-[0_0_20px_rgba(87,241,219,0.5)] relative overflow-hidden group" type="button">
+<span class="relative z-10">Confirmar Reserva</span>
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full rounded-t-xl z-50 bg-surface/80 dark:bg-surface-container-low/80 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.3)] md:hidden border-none relative">
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+<div class="flex justify-around items-center h-[72px] pb-safe px-xs">
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+<span class="font-label-mono text-label-mono text-[10px] truncate w-full text-center">Tablero</span>
+</a>
+<!-- Active Tab: Nueva -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed scale-110 transition-transform w-16 relative" href="#">
+<!-- Active Indicator Glow -->
+<div class="absolute -top-2 w-8 h-1 bg-primary rounded-full shadow-[0_0_8px_#57f1db]"></div>
+<span class="material-symbols-outlined mb-1" data-icon="add_circle" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-mono text-label-mono text-[10px] truncate w-full text-center font-bold">Nueva</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="sailing">sailing</span>
+<span class="font-label-mono text-label-mono text-[10px] truncate w-full text-center">Equipos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="group">group</span>
+<span class="font-label-mono text-label-mono text-[10px] truncate w-full text-center">Usuarios</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="history">history</span>
+<span class="font-label-mono text-label-mono text-[10px] truncate w-full text-center">Historial</span>
+</a>
+</div>
+</nav>
+</body></html>

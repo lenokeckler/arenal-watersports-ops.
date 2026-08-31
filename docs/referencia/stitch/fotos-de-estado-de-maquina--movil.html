@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AQUAMGR - Fotos de Estado</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts (Hanken Grotesk & JetBrains Mono) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#93000a",
+                      "surface-variant": "#2d3449",
+                      "primary": "#57f1db",
+                      "surface-container-lowest": "#060e20",
+                      "primary-container": "#2dd4bf",
+                      "on-tertiary-fixed": "#001e2c",
+                      "on-surface-variant": "#bacac5",
+                      "inverse-on-surface": "#283044",
+                      "surface-container-high": "#222a3d",
+                      "on-secondary": "#670211",
+                      "outline-variant": "#3c4a46",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed": "#c4e7ff",
+                      "surface-container": "#171f33",
+                      "on-primary-fixed": "#00201c",
+                      "surface-dim": "#0b1326",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "on-surface": "#dae2fd",
+                      "surface-bright": "#31394d",
+                      "on-tertiary-container": "#005371",
+                      "on-primary-fixed-variant": "#005047",
+                      "inverse-surface": "#dae2fd",
+                      "on-error-container": "#ffdad6",
+                      "secondary": "#ffb3b0",
+                      "on-primary-container": "#00574d",
+                      "on-primary": "#003731",
+                      "on-secondary-fixed": "#410006",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "primary-fixed-dim": "#3cddc7",
+                      "secondary-container": "#881d24",
+                      "on-secondary-container": "#ff9996",
+                      "primary-fixed": "#62fae3",
+                      "background": "#0b1326",
+                      "surface-container-highest": "#2d3449",
+                      "surface": "#0b1326",
+                      "on-error": "#690005",
+                      "on-background": "#dae2fd",
+                      "secondary-fixed": "#ffdad8",
+                      "on-tertiary": "#00354a",
+                      "outline": "#859490",
+                      "tertiary-container": "#5ec9ff",
+                      "inverse-primary": "#006b5f",
+                      "tertiary": "#afe0ff",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "surface-tint": "#3cddc7",
+                      "surface-container-low": "#131b2e",
+                      "secondary-fixed-dim": "#ffb3b0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "xs": "4px",
+                      "margin-mobile": "16px",
+                      "sm": "12px",
+                      "base": "8px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "lg": "48px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "title-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "button": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "button": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Hide scrollbar for horizontal scrolling containers */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Modal transitions */
+        #photo-modal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-out;
+        }
+        #photo-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #modal-image {
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #photo-modal.active #modal-image {
+            transform: scale(1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-base antialiased pb-xl md:pb-0 overflow-x-hidden relative">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-outline-variant/20 shadow-md flex items-center justify-between px-margin-mobile h-16 md:hidden">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="waves">waves</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tighter">AQUAMGR</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<!-- Simulated Avatar -->
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="person">person</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[88px] px-margin-mobile flex flex-col gap-md max-w-[1440px] mx-auto md:pt-md">
+<!-- Header & Controls -->
+<section class="flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<h1 class="font-title-md text-title-md text-on-surface">Fotos de Estado</h1>
+<button class="bg-primary text-on-primary font-button text-button uppercase px-4 py-2 rounded-full flex items-center gap-xs shadow-[0_0_15px_rgba(87,241,219,0.3)] hover:shadow-[0_0_20px_rgba(87,241,219,0.5)] transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="add_a_photo" style="font-variation-settings: 'FILL' 1;">add_a_photo</span>
+                    Añadir Foto
+                </button>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-sm overflow-x-auto no-scrollbar pb-1">
+<div class="flex items-center gap-1 text-on-surface-variant mr-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+</div>
+<button class="whitespace-nowrap px-4 py-[6px] rounded-full bg-primary/10 border border-primary text-primary font-label-mono text-label-mono shadow-[inset_0_0_8px_rgba(87,241,219,0.2)]">Hoy</button>
+<button class="whitespace-nowrap px-4 py-[6px] rounded-full bg-surface-variant/40 border border-outline-variant/30 text-on-surface-variant font-label-mono text-label-mono hover:bg-surface-variant/60 transition-colors">Ayer</button>
+<button class="whitespace-nowrap px-4 py-[6px] rounded-full bg-surface-variant/40 border border-outline-variant/30 text-on-surface-variant font-label-mono text-label-mono hover:bg-surface-variant/60 transition-colors">Esta Semana</button>
+<button class="whitespace-nowrap px-4 py-[6px] rounded-full bg-surface-variant/40 border border-outline-variant/30 text-on-surface-variant font-label-mono text-label-mono hover:bg-surface-variant/60 transition-colors">Octubre</button>
+</div>
+</section>
+<!-- Gallery Grid (2 Columns Mobile) -->
+<section class="grid grid-cols-2 gap-sm pb-lg">
+<!-- Photo Item 1 -->
+<div class="relative rounded-xl overflow-hidden aspect-[4/5] bg-surface-container-low cursor-pointer group shadow-lg border border-outline-variant/10 hover:border-primary/50 transition-all duration-300" onclick="openPhotoModal(this)">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Close-up photograph of a sleek teal and black jet ski hull being inspected in a dimly lit, high-tech marine maintenance bay. Deep navy blue background illuminated by cool, crisp white overhead lighting and bright cyan accent lights reflecting off the wet fiberglass surface. Professional, technical, hyper-realistic, dark mode aesthetic with sharp focus on a minor scuff mark." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCURgIWLJgxRV3L_YoAsW_prMYdnIbHSoE5y_-erYp3IqlH2n2TA8LARKvZUKRDQLAaCvsBXajvqf0B2F7_1wYrRBokfl-ph05N-gk67daunTt0qEc8VCQiykxGvYAqMEzDydtjw1mcA7V5ZjkLAC2kFVbOvnjVjDFHI-kXJmpg_CpUmoZYDzqG2ywvg0Jj2Ixu_BJa-HTmeYOQ1qzVwyHoiTvGY_zStOtHW6GGTGmlusDuaIYKO_dKRQg7buig0yJf_4nK2BSn1gub"/>
+<!-- Glass Overlay -->
+<div class="absolute bottom-0 w-full p-2 bg-surface/80 backdrop-blur-md border-t border-outline-variant/20 flex flex-col justify-end group-hover:bg-surface-container/90 transition-colors">
+<p class="font-label-mono text-[10px] text-on-surface-variant leading-tight truncate">24/10/2023 - Marcos P.</p>
+</div>
+<!-- Interactive Glow -->
+<div class="absolute inset-0 pointer-events-none rounded-xl group-hover:shadow-[inset_0_0_0_1px_#57f1db] transition-shadow duration-300"></div>
+</div>
+<!-- Photo Item 2 -->
+<div class="relative rounded-xl overflow-hidden aspect-[4/5] bg-surface-container-low cursor-pointer group shadow-lg border border-outline-variant/10 hover:border-primary/50 transition-all duration-300" onclick="openPhotoModal(this)">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Detailed macro shot of a metallic marine engine component with subtle condensation water droplets. Set against a pitch-black background with soft, glowing teal edge lighting illuminating the intricate mechanical details. High contrast, technical precision, modern glassmorphism aesthetic context, ultra-sharp focus on a diagnostic sensor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjy0KUyTmytyK0sidgDYyQTmhk736EzQSAZbZXYjzwSx8a2N_o8kcA-K-GgVS_g_lcExLyPrQrPwCKnyHRykCpxDH70xcn-IKlrOV8GDgKHoVtZdhrGPxPL8IpnDmSqco6KTh9Ch-NNS-Ox2vgHC4rp_caxAWqBhf7WF8tvOylXw1gS4jkRE1-ZO-B-jVlkiRDfGveIIGPqonBy7N0kzx5yopB9WjsyVcrofOCgXIQFDZchOJaV-iN39zJ0X412SWr-_9d64xkmQci"/>
+<div class="absolute bottom-0 w-full p-2 bg-surface/80 backdrop-blur-md border-t border-outline-variant/20 flex flex-col justify-end group-hover:bg-surface-container/90 transition-colors">
+<p class="font-label-mono text-[10px] text-on-surface-variant leading-tight truncate">24/10/2023 - Elena S.</p>
+</div>
+<div class="absolute inset-0 pointer-events-none rounded-xl group-hover:shadow-[inset_0_0_0_1px_#57f1db] transition-shadow duration-300"></div>
+</div>
+<!-- Photo Item 3 -->
+<div class="relative rounded-xl overflow-hidden aspect-[4/5] bg-surface-container-low cursor-pointer group shadow-lg border border-outline-variant/10 hover:border-primary/50 transition-all duration-300" onclick="openPhotoModal(this)">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Row of premium dark grey and bright teal neoprene life vests hanging on a heavy-duty rack in a dark, tactical equipment storage room. Cool blue ambient lighting cascades from above, with a hint of coral red warning light reflecting softly in the background. Structured, organized, professional water sports gear, cinematic dark lighting style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAL_L6556oVEjZrWU4e4C3qBZuo66_jIfVUQpi-5tg8dD1SUvmJo8WyG6Y5JYL9G9nTNpN4ukvM45MIswLCWNIwee-GcSoMyenWkmZWtUvjhQNVdbgO5j2Bw1_RlPD9hOu6xf5sv9cQ3vwZXgYrekQZs7uyaI9Zrwudghqc54UOR40IQO6S418uISjbLYNi3tJhtCHjEpxqS6Oy8GnWQaYxWdX1vvDzvraZy31oT727NkKHeBeeR8f3vv_XYtmDm_KJL5Vyhg_kBDF"/>
+<div class="absolute top-2 right-2 bg-error/20 border border-error/50 rounded-full w-4 h-4 flex items-center justify-center backdrop-blur-sm z-10">
+<div class="w-1.5 h-1.5 rounded-full bg-error"></div>
+</div>
+<div class="absolute bottom-0 w-full p-2 bg-surface/80 backdrop-blur-md border-t border-outline-variant/20 flex flex-col justify-end group-hover:bg-surface-container/90 transition-colors">
+<p class="font-label-mono text-[10px] text-on-surface-variant leading-tight truncate">23/10/2023 - Marcos P.</p>
+</div>
+<div class="absolute inset-0 pointer-events-none rounded-xl group-hover:shadow-[inset_0_0_0_1px_#57f1db] transition-shadow duration-300"></div>
+</div>
+<!-- Photo Item 4 -->
+<div class="relative rounded-xl overflow-hidden aspect-[4/5] bg-surface-container-low cursor-pointer group shadow-lg border border-outline-variant/10 hover:border-primary/50 transition-all duration-300" onclick="openPhotoModal(this)">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Close-up of a damaged, bright orange kayak paddle resting on a dark slate floor wet with sea water. Dark, moody lighting setup emphasizing the rough texture of the scratch against the smooth carbon fiber shaft. Professional equipment repair assessment context, high resolution, sharp details, deep contrast, modern maritime aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3haoy7DzuCTstwNcJr7HpK9IWlUQYlENQnHWwhKTW8w09VsJYqLf7MsLXEYTe0JuQ2uW-jKrqFzAV3ttXNJdL7AIyoaaNH9MaRZ5zPk-exMPVBCiUmv1SsWJZx4MykxfM3p5QrgUymOgcnM6BESMvsbB5AV4x36xrF--Y0K_HyiIC9LxCdezLbziiXosBfZButcUrPxg1XZfPbjpC7AEgs7qpwuitG8kKGH4wwAHVK-Ixaxyrs4jX1bkeCUcsWKNlHjR2Sl7WZiKS"/>
+<div class="absolute bottom-0 w-full p-2 bg-surface/80 backdrop-blur-md border-t border-outline-variant/20 flex flex-col justify-end group-hover:bg-surface-container/90 transition-colors">
+<p class="font-label-mono text-[10px] text-on-surface-variant leading-tight truncate">23/10/2023 - Ana V.</p>
+</div>
+<div class="absolute inset-0 pointer-events-none rounded-xl group-hover:shadow-[inset_0_0_0_1px_#57f1db] transition-shadow duration-300"></div>
+</div>
+<!-- Photo Item 5 -->
+<div class="relative rounded-xl overflow-hidden aspect-[4/5] bg-surface-container-low cursor-pointer group shadow-lg border border-outline-variant/10 hover:border-primary/50 transition-all duration-300" onclick="openPhotoModal(this)">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A rugged waterproof tablet mounted on a boat console, displaying a digital operations map. The screen glows brightly in a very dark, low-light marine environment. Deep shadowy background with reflections of the glowing cyan map interface on the surrounding wet black plastic surfaces. High-tech, operational command center vibe, focused on the hardware." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdgN4cPhw6TZ3tKumxSHRMjog_Q_3v6D5Ft-_z08DJDBl1QWrb3XRBg-68pPJVsX8377zteoOeP1RVdVm8enISpkzXz3Q7tRTTnNP0nxZf5NjChxl_2xvj3LpBGp-tGYIZioSjTRIIS4WZEzAbrPBA1fg_sMpuN05qHEzn8xOm2racKBDvvyYq-jAKMOVeEd4sEDLP8qAC1yrwU31Oyiqsa9MA8C6mukDrL2lbDZr4dr_HujVHH5A74201n8XKO5cmB1G1_IDpRxb3"/>
+<div class="absolute bottom-0 w-full p-2 bg-surface/80 backdrop-blur-md border-t border-outline-variant/20 flex flex-col justify-end group-hover:bg-surface-container/90 transition-colors">
+<p class="font-label-mono text-[10px] text-on-surface-variant leading-tight truncate">22/10/2023 - Elena S.</p>
+</div>
+<div class="absolute inset-0 pointer-events-none rounded-xl group-hover:shadow-[inset_0_0_0_1px_#57f1db] transition-shadow duration-300"></div>
+</div>
+<!-- Photo Item 6 -->
+<div class="relative rounded-xl overflow-hidden aspect-[4/5] bg-surface-container-low cursor-pointer group shadow-lg border border-outline-variant/10 hover:border-primary/50 transition-all duration-300 flex items-center justify-center">
+<!-- Skeleton/Loading state for variety -->
+<div class="absolute inset-0 bg-surface-variant/20 animate-pulse"></div>
+<span class="material-symbols-outlined text-outline/40 text-4xl relative z-10" data-icon="image">image</span>
+<div class="absolute bottom-0 w-full p-2 bg-surface/80 backdrop-blur-md border-t border-outline-variant/20 flex flex-col justify-end">
+<div class="h-2 w-2/3 bg-outline-variant/30 rounded animate-pulse mb-1"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Full Screen Photo Modal -->
+<div class="fixed inset-0 z-[100] flex flex-col bg-background/95 backdrop-blur-2xl" id="photo-modal">
+<!-- Top Bar Actions -->
+<div class="flex items-center justify-between p-4 bg-gradient-to-b from-black/60 to-transparent">
+<button class="w-10 h-10 rounded-full bg-surface-variant/50 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-variant/80 transition-colors" onclick="closePhotoModal()">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-variant/50 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-variant/80 transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-variant/50 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-error hover:bg-error/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Image Container -->
+<div class="flex-1 flex items-center justify-center p-4 overflow-hidden">
+<img alt="Full view" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-outline-variant/20" id="modal-image" src=""/>
+</div>
+<!-- Info Bar (Glass Overlay Bottom) -->
+<div class="p-6 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/20">
+<p class="font-label-mono text-label-mono text-primary mb-2" id="modal-info"></p>
+<p class="font-body-base text-body-base text-on-surface-variant">Revisión rutinaria de estado de equipos antes de la apertura.</p>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container-low/70 dark:bg-surface-container-low/70 backdrop-blur-xl border-t border-outline-variant/10 shadow-2xl flex justify-around items-center h-20 px-2 pb-safe md:hidden">
+<!-- Reservations (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 w-16 h-16 rounded-xl">
+<span class="material-symbols-outlined mb-1" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-mono text-[10px] leading-none text-center">Reservations</span>
+</button>
+<!-- Operations (Active - Based on 'Status Photos' context) -->
+<button class="flex flex-col items-center justify-center text-primary fill-primary hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 w-16 h-16 rounded-xl relative">
+<div class="absolute inset-0 bg-primary/10 rounded-xl blur-md"></div>
+<span class="material-symbols-outlined mb-1 relative z-10" data-icon="speed" style="font-variation-settings: 'FILL' 1;">speed</span>
+<span class="font-label-mono text-[10px] leading-none text-center font-bold relative z-10">Operations</span>
+</button>
+<!-- Inventory (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 w-16 h-16 rounded-xl">
+<span class="material-symbols-outlined mb-1" data-icon="kayaking">kayaking</span>
+<span class="font-label-mono text-[10px] leading-none text-center">Inventory</span>
+</button>
+<!-- Admin (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/30 active:scale-90 transition-transform duration-200 w-16 h-16 rounded-xl">
+<span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
+<span class="font-label-mono text-[10px] leading-none text-center">Admin</span>
+</button>
+</nav>
+<script>
+        // Simple Modal Logic
+        function openPhotoModal(cardElement) {
+            const img = cardElement.querySelector('img');
+            const info = cardElement.querySelector('p').innerText;
+            
+            if(!img) return; // Ignore if skeleton clicked
+
+            const modal = document.getElementById('photo-modal');
+            const modalImg = document.getElementById('modal-image');
+            const modalInfo = document.getElementById('modal-info');
+
+            modalImg.src = img.src;
+            modalInfo.innerText = info;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling under modal
+        }
+
+        function closePhotoModal() {
+            const modal = document.getElementById('photo-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body></html>

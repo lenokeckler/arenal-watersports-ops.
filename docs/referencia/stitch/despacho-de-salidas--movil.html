@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Despacho de Equipos - Arenal Ops</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#00201c",
+                      "on-error-container": "#ffdad6",
+                      "secondary-fixed": "#ffdad8",
+                      "background": "#0b1326",
+                      "primary-fixed": "#62fae3",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#005371",
+                      "on-secondary-fixed": "#410006",
+                      "primary-fixed-dim": "#3cddc7",
+                      "outline-variant": "#3c4a46",
+                      "on-primary-container": "#00574d",
+                      "surface-dim": "#0b1326",
+                      "inverse-on-surface": "#283044",
+                      "on-tertiary": "#00354a",
+                      "on-primary": "#003731",
+                      "on-error": "#690005",
+                      "surface": "#0b1326",
+                      "tertiary-fixed-dim": "#7bd0ff",
+                      "secondary": "#ffb3b0",
+                      "on-secondary-fixed-variant": "#881d24",
+                      "surface-container-high": "#222a3d",
+                      "primary-container": "#2dd4bf",
+                      "surface-variant": "#2d3449",
+                      "surface-container-low": "#131b2e",
+                      "inverse-primary": "#006b5f",
+                      "tertiary": "#afe0ff",
+                      "surface-container-highest": "#2d3449",
+                      "on-secondary": "#670211",
+                      "surface-bright": "#31394d",
+                      "secondary-container": "#881d24",
+                      "tertiary-container": "#5ec9ff",
+                      "surface-tint": "#3cddc7",
+                      "error-container": "#93000a",
+                      "primary": "#57f1db",
+                      "surface-container": "#171f33",
+                      "on-tertiary-fixed-variant": "#004c69",
+                      "outline": "#859490",
+                      "on-surface-variant": "#bacac5",
+                      "on-surface": "#dae2fd",
+                      "on-background": "#dae2fd",
+                      "on-primary-fixed-variant": "#005047",
+                      "on-tertiary-fixed": "#001e2c",
+                      "secondary-fixed-dim": "#ffb3b0",
+                      "on-secondary-container": "#ff9996",
+                      "surface-container-lowest": "#060e20",
+                      "inverse-surface": "#dae2fd",
+                      "tertiary-fixed": "#c4e7ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "base": "8px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "xs": "4px",
+                      "sm": "12px",
+                      "lg": "48px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "title-md": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "button": ["Hanken Grotesk"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "label-mono": ["JetBrains Mono"],
+                      "body-base": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                      "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                      "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                      "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                      "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #020617; /* Deepest navy foundation */
+            background-image: radial-gradient(circle at top right, rgba(19, 27, 46, 0.8), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(19, 27, 46, 0.6), transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .inner-glow:focus-within {
+            box-shadow: inset 0 0 0 1px #57f1db, 0 0 12px rgba(87, 241, 219, 0.15);
+            border-color: transparent;
+        }
+        /* Custom scrollbar for horizontal lists */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background font-body-base pb-32 antialiased selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="bg-surface-container/70 backdrop-blur-xl border-b border-white/10 shadow-md docked full-width top-0 sticky z-50 flex justify-between items-center px-margin-mobile h-16 w-full">
+<button class="text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-150 p-2 -ml-2 rounded-full">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">
+            Arenal Ops
+        </div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/20 shadow-sm flex items-center justify-center bg-surface-variant">
+<!-- Simulated Avatar trailing -->
+<span class="material-symbols-outlined text-on-surface-variant text-sm">person</span>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="w-full max-w-3xl mx-auto px-margin-mobile pt-md pb-xl flex flex-col gap-md">
+<!-- Header Section -->
+<div class="flex flex-col gap-xs">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Operaciones Activas</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Despacho de Equipos</h1>
+</div>
+<!-- Horizontal Queue: Por Despachar -->
+<section class="flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-title-md text-title-md-mobile text-on-surface">Por Despachar Hoy</h2>
+<span class="bg-surface-container text-primary font-label-mono text-label-mono px-2 py-1 rounded-full border border-primary/20">3 Pendientes</span>
+</div>
+<div class="flex gap-sm overflow-x-auto hide-scrollbar pb-2 -mx-margin-mobile px-margin-mobile">
+<!-- Selected Reservation Card -->
+<button class="flex-none w-64 glass-panel rounded-xl p-4 text-left relative overflow-hidden ring-1 ring-primary/50 shadow-[0_0_15px_rgba(87,241,219,0.1)] transition-all">
+<div class="absolute top-0 right-0 w-16 h-16 bg-primary/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-mono text-label-mono text-primary">09:00 AM</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-mono text-[10px] border border-primary/30 uppercase">Activo</span>
+</div>
+<h3 class="font-title-md text-title-md-mobile text-on-surface truncate">Grupo Ramirez</h3>
+<p class="text-sm text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[16px]">sailing</span> Jet Ski Tour
+                    </p>
+</button>
+<!-- Unselected Reservation Card 1 -->
+<button class="flex-none w-64 glass-panel rounded-xl p-4 text-left opacity-70 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-mono text-label-mono text-on-surface-variant">10:30 AM</span>
+</div>
+<h3 class="font-title-md text-title-md-mobile text-on-surface truncate">Familia Smith</h3>
+<p class="text-sm text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[16px]">kayaking</span> Kayak Doble
+                    </p>
+</button>
+<!-- Unselected Reservation Card 2 -->
+<button class="flex-none w-64 glass-panel rounded-xl p-4 text-left opacity-70 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-mono text-label-mono text-on-surface-variant">13:15 PM</span>
+</div>
+<h3 class="font-title-md text-title-md-mobile text-on-surface truncate">Tour Fotográfico</h3>
+<p class="text-sm text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[16px]">directions_boat</span> Lancha P.
+                    </p>
+</button>
+</div>
+</section>
+<!-- Dispatch Detail Form (Active Item) -->
+<section class="glass-panel rounded-2xl p-md flex flex-col gap-md relative overflow-hidden mt-sm shadow-xl">
+<!-- Subtle gradient glow behind form -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container/50 to-transparent pointer-events-none"></div>
+<!-- Assigned Entities Info -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md relative z-10">
+<!-- Equipment Info -->
+<div class="flex gap-sm items-center bg-surface-container-low rounded-xl p-sm border border-white/5">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-surface shadow-inner relative">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern high-performance jet ski resting on a dock, illuminated by dramatic, moody cinematic lighting. The scene is set in a dark, atmospheric marine environment reflecting a high-stakes, real-time operations aesthetic. Deep navy backgrounds contrast with crisp, high-definition details of the personal watercraft, capturing a sense of speed, readiness, and technological sophistication." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-O40PxdPRL0bRePTCGSMfm0Ch5impHEJrlQI4K-4otXBQE4X80UABOPX-T_9NurhuXDz2yKbFB8AJAKibnHRSgvglVR_OcSlGwW5XZqN0_mNWOoXqzNJwg7FzMThDYPBxt0UOoqN41i8CxQF_SRBxdDKQgUaohQxey6_xbTOz0BFN-jqiZnpf5Dm7-RWnlK-03hlXbLwzCbybFmB4vDhCXDbgfyntLzEMHOosFvYrEZOSYZQK-hrXaA"/>
+<div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Equipo Asignado</span>
+<span class="font-title-md text-title-md-mobile text-on-surface">Yamaha FX SVHO</span>
+<span class="text-xs text-primary bg-primary/10 px-1.5 py-0.5 rounded mt-1 inline-block w-fit">ID: JS-04</span>
+</div>
+</div>
+<!-- Guide Info -->
+<div class="flex gap-sm items-center bg-surface-container-low rounded-xl p-sm border border-white/5">
+<div class="w-16 h-16 rounded-full overflow-hidden shrink-0 bg-surface shadow-inner relative border-2 border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a professional water sports guide wearing a sleek, dark technical uniform. The lighting is dramatic and cinematic, with cool blue and teal rim lights emphasizing a focused, authoritative expression. The background is a dark, abstract blurred marina setting, aligning with a premium, high-tech operations management dashboard aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpUkzyxko7-gsIJYBq_7OLUUE9hIxvAuW4IpQ9t96QY-7nRNYyLbDA9xxIdSMvpUMwE1pQ6489J5_cZi83rBz44h5X-uoydoA09yg-brVoH5K-kR3NHhX0r8_iOUCLLB_rERBjlQpn8ZhFG0UoYOJvGwyo3Ceni8SWJegG9HZlS4EDjGu93ydefVJi6fWLw-DBFRNSes9XD3C-cGfbswjR2G-EmJAM4dlT1BjrNDdHI5hWz27wTUg9Tg"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Guía Asignado</span>
+<span class="font-title-md text-title-md-mobile text-on-surface">Carlos M.</span>
+<div class="flex items-center gap-1 text-xs text-on-surface-variant mt-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary">radio</span> Ch: 4
+                        </div>
+</div>
+</div>
+</div>
+<hr class="border-white/5 my-2"/>
+<!-- Data Entry Fields -->
+<div class="flex flex-col gap-md relative z-10">
+<h3 class="font-title-md text-title-md-mobile text-on-surface">Registro de Salida</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Fuel Input -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant ml-1" for="gasolina">Gasolina Inicial (%)</label>
+<div class="relative inner-glow rounded-xl transition-all duration-200">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">local_gas_station</span>
+</div>
+<input class="w-full bg-surface-container-low border border-outline-variant text-on-surface font-body-base rounded-xl py-3 pl-10 pr-4 placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-0 appearance-none bg-transparent block w-full" id="gasolina" placeholder="100" type="number"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+<span class="text-on-surface-variant font-label-mono text-sm">%</span>
+</div>
+</div>
+</div>
+<!-- Hours/Mileage Input -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-on-surface-variant ml-1" for="horas">Horas de Motor</label>
+<div class="relative inner-glow rounded-xl transition-all duration-200">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">timer</span>
+</div>
+<input class="w-full bg-surface-container-low border border-outline-variant text-on-surface font-body-base rounded-xl py-3 pl-10 pr-4 placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-0 appearance-none bg-transparent block w-full" id="horas" placeholder="1245.5" step="0.1" type="number"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+<span class="text-on-surface-variant font-label-mono text-sm">h</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="mt-sm pt-sm relative z-10">
+<button class="w-full bg-primary hover:bg-primary-fixed text-on-primary-fixed font-button text-button uppercase tracking-wider py-4 rounded-xl shadow-[0_4px_20px_rgba(87,241,219,0.3)] hover:shadow-[0_6px_25px_rgba(87,241,219,0.5)] transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    Confirmar Despacho
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container-high/80 dark:bg-surface-container-highest/80 backdrop-blur-2xl border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] docked full-width bottom-0 rounded-t-xl fixed left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe block md:hidden">
+<!-- Item 1: Reservas (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 rounded-xl p-2 transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-mono text-[10px] tracking-wide">Reservas</span>
+</a>
+<!-- Item 2: Ops (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary rounded-xl px-4 py-1 shadow-[inset_0_0_10px_rgba(87,241,219,0.2)] scale-90 transition-all duration-200 w-16 pointer-events-none" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">sailing</span>
+<span class="font-label-mono text-[10px] tracking-wide font-bold">Ops</span>
+</a>
+<!-- Item 3: Inventario (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 rounded-xl p-2 transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1">inventory_2</span>
+<span class="font-label-mono text-[10px] tracking-wide">Inventario</span>
+</a>
+<!-- Item 4: Admin (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-variant/50 rounded-xl p-2 transition-all w-16" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-mono text-[10px] tracking-wide">Admin</span>
+</a>
+</nav>
+<!-- Safe area padding for standalone mobile web apps -->
+<style>
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .pb-safe {
+                padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</body></html>

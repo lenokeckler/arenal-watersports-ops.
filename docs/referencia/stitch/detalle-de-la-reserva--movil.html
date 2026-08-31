@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detalle de la Reserva - Lake Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#00354a",
+                        "tertiary-container": "#5ec9ff",
+                        "on-primary-fixed": "#00201c",
+                        "primary": "#57f1db",
+                        "inverse-on-surface": "#283044",
+                        "surface": "#0b1326",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#c4e7ff",
+                        "surface-container": "#171f33",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary-container": "#005371",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-secondary-fixed": "#410006",
+                        "on-primary": "#003731",
+                        "on-background": "#dae2fd",
+                        "outline-variant": "#3c4a46",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "surface-dim": "#0b1326",
+                        "primary-fixed": "#62fae3",
+                        "tertiary": "#afe0ff",
+                        "secondary-container": "#881d24",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-variant": "#2d3449",
+                        "on-surface-variant": "#bacac5",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#00574d",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "inverse-primary": "#006b5f",
+                        "surface-bright": "#31394d",
+                        "surface-tint": "#3cddc7",
+                        "on-surface": "#dae2fd",
+                        "primary-fixed-dim": "#3cddc7",
+                        "on-secondary": "#670211",
+                        "secondary-fixed": "#ffdad8",
+                        "on-secondary-container": "#ff9996",
+                        "outline": "#859490",
+                        "surface-container-highest": "#2d3449",
+                        "on-tertiary-fixed": "#001e2c",
+                        "primary-container": "#2dd4bf",
+                        "surface-container-high": "#222a3d",
+                        "secondary": "#ffb3b0",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "background": "#0b1326",
+                        "surface-container-low": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "gutter": "20px",
+                        "base": "8px",
+                        "md": "24px",
+                        "margin-desktop": "40px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "lg": "48px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "button": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-hover:hover {
+            box-shadow: inset 0 0 0 2px var(--tw-colors-primary);
+            background: rgba(30, 41, 59, 0.9);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-base antialiased min-h-screen flex flex-col items-center">
+<!-- Mobile Container (Max 390px for preview, fluid in production) -->
+<div class="w-full max-w-[390px] min-h-screen flex flex-col relative overflow-hidden bg-background">
+<!-- Background Gradient Effects -->
+<div class="absolute inset-0 z-0 pointer-events-none">
+<div class="absolute top-0 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-0 right-0 w-[300px] h-[300px] bg-tertiary-container/5 rounded-full blur-[80px] translate-x-1/3 translate-y-1/3"></div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full max-w-[390px] z-50 bg-surface/70 dark:bg-surface-dim/70 backdrop-blur-md shadow-sm border-b border-white/10">
+<div class="flex items-center justify-between px-margin-mobile h-16">
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform p-2 -ml-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_back</span>
+</button>
+<div class="font-display-lg text-title-md text-primary tracking-tight">Lake Arenal Ops</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/10 flex items-center justify-center bg-surface-container">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">person</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto z-10 pt-20 pb-32 px-margin-mobile flex flex-col gap-md">
+<!-- Header Section -->
+<section class="flex flex-col gap-base">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-mono text-label-mono text-primary mb-xs">#RES-4902</p>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Familia Rodriguez</h1>
+<p class="text-on-surface-variant font-body-base text-sm mt-1 flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">group</span>
+                            4 personas
+                        </p>
+</div>
+<div class="bg-primary-container/20 text-primary border border-primary/30 px-3 py-1 rounded-full font-label-mono text-label-mono uppercase tracking-wider flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                        Agendada
+                    </div>
+</div>
+<div class="mt-sm glass-card rounded-lg p-sm">
+<div class="flex justify-between items-center text-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">event</span>
+<span class="text-on-surface font-title-md text-[16px]">24 Oct 2023 | 10:00 AM</span>
+</div>
+</div>
+<div class="mt-2 text-on-surface-variant font-label-mono text-label-mono flex justify-between items-center">
+<span>Duración: 1.5h</span>
+<span>Regreso: <strong class="text-on-surface">11:30 AM</strong></span>
+</div>
+</div>
+</section>
+<!-- Equipo Comprometido -->
+<section class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<h2 class="font-title-md text-title-md text-on-surface border-b border-white/10 pb-2 mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container">shuffle</span>
+                    Equipo Comprometido
+                </h2>
+<div class="flex flex-col gap-sm">
+<!-- Unit 1 -->
+<div class="flex justify-between items-center bg-surface-container-low p-sm rounded-lg border border-white/5">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded bg-surface flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-on-surface-variant">directions_boat</span>
+</div>
+<div>
+<p class="font-label-mono text-label-mono text-tertiary-container">JET-01</p>
+<p class="text-on-surface text-sm">Jet Ski (Sea-Doo Spark)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<!-- Unit 2 -->
+<div class="flex justify-between items-center bg-surface-container-low p-sm rounded-lg border border-white/5">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded bg-surface flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-on-surface-variant">directions_boat</span>
+</div>
+<div>
+<p class="font-label-mono text-label-mono text-tertiary-container">JET-02</p>
+<p class="text-on-surface text-sm">Jet Ski (Sea-Doo Spark)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<div class="mt-2 pt-2 border-t border-white/5 flex flex-wrap gap-2">
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-xs font-label-mono flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">kayaking</span> 2 Kayaks Dobles
+                         </span>
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-xs font-label-mono flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">cloud_download</span> 4 Chalecos (Talla L)
+                         </span>
+</div>
+</div>
+</section>
+<!-- Extras -->
+<section class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<h2 class="font-title-md text-title-md text-on-surface border-b border-white/10 pb-2 mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container">add_shopping_cart</span>
+                    Extras
+                </h2>
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-center text-sm text-on-surface-variant p-2 hover:bg-white/5 rounded transition-colors">
+<span>Tabla Wakeboard</span>
+<span class="text-on-surface">$25.00</span>
+</div>
+<div class="flex justify-between items-center text-sm text-on-surface-variant p-2 hover:bg-white/5 rounded transition-colors">
+<span>Tubo Inflable</span>
+<span class="text-on-surface">$15.00</span>
+</div>
+</div>
+</section>
+<!-- Guías -->
+<section class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<h2 class="font-title-md text-title-md text-on-surface border-b border-white/10 pb-2 mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container">support_agent</span>
+                    Guías
+                </h2>
+<div class="grid grid-cols-2 gap-sm">
+<div class="flex items-center gap-sm bg-surface-container-low p-2 rounded-lg border border-white/5">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant text-xs font-bold border border-white/10">CM</div>
+<div>
+<p class="text-sm text-on-surface leading-tight">Carlos M.</p>
+<p class="text-[10px] text-primary uppercase tracking-wider font-label-mono">Interno</p>
+</div>
+</div>
+<div class="flex items-center gap-sm bg-surface-container-low p-2 rounded-lg border border-white/5">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant text-xs font-bold border border-white/10">LG</div>
+<div>
+<p class="text-sm text-on-surface leading-tight">Luis G.</p>
+<p class="text-[10px] text-tertiary-container uppercase tracking-wider font-label-mono">Externo</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Cobro -->
+<section class="glass-card rounded-xl p-md flex flex-col gap-sm">
+<h2 class="font-title-md text-title-md text-on-surface border-b border-white/10 pb-2 mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container">payments</span>
+                    Cobro
+                </h2>
+<div class="space-y-3 font-label-mono text-sm">
+<div class="flex justify-between text-on-surface-variant">
+<span>Total:</span>
+<span class="text-on-surface">$120.00 / ₡65,000</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Cobrado:</span>
+<span class="text-primary">$60.00 / ₡0</span>
+</div>
+<div class="flex justify-between text-on-surface-variant border-t border-white/5 pt-2">
+<span>Pendiente:</span>
+<span class="text-error font-bold">$60.00 / ₡65,000</span>
+</div>
+<div class="bg-surface-container p-3 rounded-lg mt-4 border border-white/5 space-y-2 text-xs">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Método:</span>
+<span class="text-on-surface">SINPE / Tarjeta</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Depósito:</span>
+<span class="text-tertiary-container">$200.00 (Pendiente)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Audit -->
+<footer class="mt-lg text-center px-4 border-t border-white/10 pt-4">
+<p class="font-label-mono text-[10px] text-on-surface-variant/60 leading-relaxed">
+                    Creado por: maria.g (22/10 09:15)<br/>
+                    Modificado por: allan (23/10 14:20)
+                </p>
+</footer>
+</main>
+<!-- BottomNavBar (Transaction Actions) -->
+<nav class="fixed bottom-0 w-full max-w-[390px] z-50 bg-surface-container-lowest/80 dark:bg-surface-container-lowest/80 backdrop-blur-xl border-t border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] pb-safe rounded-t-xl">
+<div class="flex justify-around items-center h-20 px-2 gap-1">
+<!-- Modificar (Ghost) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors flex-1 py-2 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined mb-1 text-[20px]">edit_calendar</span>
+<span class="font-label-mono text-[10px]">Modificar</span>
+</button>
+<!-- Dividir (Ghost) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors flex-1 py-2 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined mb-1 text-[20px]">call_split</span>
+<span class="font-label-mono text-[10px]">Dividir</span>
+</button>
+<!-- Posponer (Ghost) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors flex-1 py-2 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined mb-1 text-[20px]">schedule</span>
+<span class="font-label-mono text-[10px]">Posponer</span>
+</button>
+<!-- Cancelar (Action/Coral) -->
+<button class="flex flex-col items-center justify-center text-error hover:bg-error/10 rounded-lg flex-1 py-2 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined mb-1 text-[20px]">cancel</span>
+<span class="font-label-mono text-[10px]">Cancelar</span>
+</button>
+</div>
+</nav>
+</div>
+</body></html>

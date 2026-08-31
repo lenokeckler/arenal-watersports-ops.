@@ -1,5 +1,5 @@
 begin;
-select plan(39);
+select plan(47);
 
 -- ============================================================
 -- Fixtures
@@ -71,8 +71,8 @@ select lives_ok(
 );
 
 select lives_ok(
-  $$ insert into combos (id, name, package_price_usd)
-     values ('cccccccc-0000-0000-0000-000000000001', 'Paquete Familiar', 300) $$,
+  $$ insert into combos (id, name, audience, package_price_usd)
+     values ('cccccccc-0000-0000-0000-000000000001', 'Paquete Familiar', 'foreign', 300) $$,
   'administracion crea combos'
 );
 
@@ -122,7 +122,7 @@ select throws_ok(
 );
 
 select throws_ok(
-  $$ insert into combos (name, package_price_usd) values ('Combo No Autorizado', 100) $$,
+  $$ insert into combos (name, audience, package_price_usd) values ('Combo No Autorizado', 'foreign', 100) $$,
   '42501', null,
   'reservas no crea combos'
 );
@@ -187,6 +187,29 @@ select lives_ok(
   'reservas registra un cobro'
 );
 
+-- El precio de la reserva salio de `reservations` y vive en
+-- reservation_pricing, con el mismo alcance que los depositos: quien vende
+-- lo fija, lo ve y lo puede acordar distinto.
+select lives_ok(
+  $$ insert into reservation_pricing
+       (reservation_id, list_amount_usd, agreed_amount_usd)
+     values ('dddddddd-0000-0000-0000-000000000001', 480, 400) $$,
+  'reservas fija el precio de la reserva'
+);
+
+select is(
+  (select count(*)::int from reservation_pricing),
+  1,
+  'reservas si ve el precio de la reserva'
+);
+
+with u as (
+     update reservation_pricing set agreed_amount_usd = 350
+     where reservation_id = 'dddddddd-0000-0000-0000-000000000001'
+     returning 1
+)
+select is((select count(*)::int from u), 1, 'reservas acuerda un precio distinto');
+
 -- ============================================================
 -- Operaciones: ve precios y su reserva, nunca el dinero de un cliente
 -- ============================================================
@@ -235,6 +258,15 @@ select is(
   'operaciones no ve los depositos'
 );
 
+-- El precio de una reserva concreta es dinero de un cliente, no catalogo
+-- pegado en la oficina: por eso salio de `reservations`, donde operaciones
+-- lo leia junto a la reserva que despacha.
+select is(
+  (select count(*)::int from reservation_pricing),
+  0,
+  'operaciones no ve el precio de la reserva'
+);
+
 select throws_ok(
   $$ insert into reservation_charges (reservation_id, kind, amount, currency, payment_method)
      values ('dddddddd-0000-0000-0000-000000000001', 'tariff', 10, 'USD', 'Efectivo') $$,
@@ -253,6 +285,20 @@ select throws_ok(
   '42501', null,
   'operaciones no inserta depositos'
 );
+
+select throws_ok(
+  $$ insert into reservation_pricing (reservation_id, agreed_amount_usd)
+     values ('dddddddd-0000-0000-0000-000000000001', 10) $$,
+  '42501', null,
+  'operaciones no escribe el precio de la reserva'
+);
+
+with u as (
+     update reservation_pricing set agreed_amount_usd = 1
+     where reservation_id = 'dddddddd-0000-0000-0000-000000000001'
+     returning 1
+)
+select is((select count(*)::int from u), 0, 'operaciones no cambia el precio acordado');
 
 with u as (
      update deposits set amount = 999
@@ -299,7 +345,7 @@ select throws_ok(
   'operaciones no crea extras'
 );
 select throws_ok(
-  $$ insert into combos (name, package_price_usd) values ('Combo No Autorizado', 100) $$,
+  $$ insert into combos (name, audience, package_price_usd) values ('Combo No Autorizado', 'foreign', 100) $$,
   '42501', null,
   'operaciones no crea combos'
 );
@@ -322,6 +368,25 @@ select is(
   (select count(*)::int from reservations),
   0,
   'quien no tiene area asignada no ve reservas'
+);
+
+select is(
+  (select count(*)::int from reservation_pricing),
+  0,
+  'quien no tiene area asignada no ve el precio de la reserva'
+);
+
+-- ============================================================
+-- Administracion, de vuelta: el precio que fijo reservas si lo ve
+-- ============================================================
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
+
+select is(
+  (select count(*)::int from reservation_pricing),
+  1,
+  'administracion ve el precio que fijo reservas'
 );
 
 select * from finish();

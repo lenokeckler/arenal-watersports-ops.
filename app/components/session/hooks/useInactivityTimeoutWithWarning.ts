@@ -7,7 +7,9 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
-import { createBrowserSupabaseClient } from "@/app/services";
+// Deep import on purpose — see `useLoginFormViewModel.ts`: the barrel
+// bundles the server client (`next/headers`) together with this one.
+import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import {
   BROWSER_EVENTS,
   PATHS,
@@ -53,6 +55,15 @@ export const useInactivityTimeoutWithWarning = ({
     lastActivityRef.current = Date.now();
     setShowWarning(false);
     clearAllTimeouts();
+
+    // `timeoutMinutes <= 0` is how `SESSION_CONFIG.WORKDAY` (section 5 of
+    // the access module design: 7:00–19:00 never expires from inactivity)
+    // spells "disabled" — never arm a timer at all. Without this guard, 0
+    // minutes becomes a 0ms `setTimeout`, which fires immediately and logs
+    // out a worker the instant the workday config is even requested.
+    if (timeoutMinutes <= 0) {
+      return;
+    }
 
     warningRef.current = setTimeout(
       () => {
@@ -105,6 +116,10 @@ export const useInactivityTimeoutWithWarning = ({
     lastActivityRef.current = Date.now();
     setShowWarning(false);
     clearAllTimeouts();
+
+    if (timeoutMinutes <= 0) {
+      return;
+    }
 
     warningRef.current = setTimeout(
       () => {

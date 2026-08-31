@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Guías de la Salida</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#dae2fd",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-primary": "#003731",
+                        "secondary-fixed": "#ffdad8",
+                        "primary-container": "#2dd4bf",
+                        "surface": "#0b1326",
+                        "tertiary": "#afe0ff",
+                        "on-surface": "#dae2fd",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#00574d",
+                        "on-tertiary-fixed": "#001e2c",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#31394d",
+                        "on-error": "#690005",
+                        "on-background": "#dae2fd",
+                        "surface-container-low": "#131b2e",
+                        "surface-tint": "#3cddc7",
+                        "surface-container": "#171f33",
+                        "on-primary-fixed": "#00201c",
+                        "on-tertiary": "#00354a",
+                        "surface-variant": "#2d3449",
+                        "tertiary-container": "#5ec9ff",
+                        "secondary-container": "#881d24",
+                        "background": "#0b1326",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "inverse-on-surface": "#283044",
+                        "on-surface-variant": "#bacac5",
+                        "primary": "#57f1db",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "outline": "#859490",
+                        "surface-container-highest": "#2d3449",
+                        "on-secondary-container": "#ff9996",
+                        "surface-dim": "#0b1326",
+                        "on-tertiary-container": "#005371",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#3cddc7",
+                        "on-secondary-fixed-variant": "#881d24",
+                        "primary-fixed": "#62fae3",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-container-high": "#222a3d",
+                        "secondary": "#ffb3b0",
+                        "on-secondary-fixed": "#410006",
+                        "tertiary-fixed": "#c4e7ff",
+                        "outline-variant": "#3c4a46",
+                        "inverse-primary": "#006b5f",
+                        "surface-container-lowest": "#060e20",
+                        "on-secondary": "#670211"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "md": "24px",
+                        "margin-desktop": "40px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "margin-mobile": "16px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-base": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            background-image: radial-gradient(circle at 50% 0%, theme('colors.surface-container-high') 0%, transparent 60%);
+            color: theme('colors.on-background');
+            font-family: 'Hanken Grotesk', sans-serif;
+        }
+        
+        /* Glassmorphism effects */
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-input {
+            background-color: rgba(11, 19, 38, 0.8);
+            border: 1px solid theme('colors.outline-variant');
+            transition: all 0.2s ease;
+        }
+        
+        .glass-input:focus-within {
+            border-color: theme('colors.primary');
+            box-shadow: 0 0 0 1px theme('colors.primary'), inset 0 0 8px rgba(87, 241, 219, 0.2);
+        }
+
+        /* Inner glow for active elements */
+        .inner-glow-teal {
+            box-shadow: inset 0 0 12px rgba(87, 241, 219, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col md:hidden">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface/70 backdrop-blur-md dark:bg-surface/70 border-b border-white/10 shadow-sm shadow-md">
+<div class="flex justify-between items-center px-margin-mobile py-sm w-full">
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-variant/50 transition-colors active:scale-95 duration-200 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile tracking-tight text-on-surface">Guías de la Salida</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col px-margin-mobile py-md gap-md overflow-y-auto">
+<!-- Search Bar -->
+<div class="glass-input rounded-lg flex items-center px-sm py-3">
+<span class="material-symbols-outlined text-on-surface-variant mr-3" data-icon="search">search</span>
+<input class="w-full bg-transparent border-none text-on-surface focus:ring-0 font-body-base text-body-base p-0 placeholder:text-on-surface-variant/70" placeholder="Buscar guía..." type="text"/>
+</div>
+<!-- Guías Asignados (Up to 2) -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-end">
+<h2 class="font-title-md text-title-md text-tertiary">Guías Asignados <span class="font-label-mono text-label-mono text-on-surface-variant ml-2">(1/2)</span></h2>
+</div>
+<div class="flex flex-col gap-base">
+<!-- Assigned Guide 1 -->
+<div class="glass-card rounded-xl p-sm flex items-center justify-between inner-glow-teal">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/50 relative">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a confident Hispanic male water sports instructor in his 30s, wearing a dark navy rash guard. He is smiling slightly. The lighting is bright and clear, reflecting a sunny outdoor environment, but the background is a soft, blurred deep navy to match a modern UI aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgK1osd-FgK4rBYRVtd1YBbXUAUg04JXh3slZ0TKsDXlSQd9gl25C9bJM3m0DWV3G5IWdDNpG4NdE7CRFeP_JRjMTo5sVAdi9Xty4y994fxkcNYzHKYk6VewbWsP-dzUwQvRKeKiASkefr85oL2AvGD7H5R0CptN8A7G2K5enSmIj3ySf8JVvrzQqNNb_JK7-6YDwURlDY9UaUdmGsci5tg1laREQKH13BRAC3d-7iK0V5vcLZ--GiCDtbVvzkvVWYm0ctRlggpOVT"/>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Carlos Mateo</span>
+<span class="font-label-mono text-label-mono text-primary uppercase">Guía Principal</span>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-error-container/20 text-error hover:bg-error-container/40 transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Empty Slot placeholder -->
+<div class="rounded-xl p-sm flex items-center justify-center border border-dashed border-outline-variant/50 h-[72px]">
+<span class="font-label-mono text-label-mono text-on-surface-variant/50 uppercase">Espacio Disponible</span>
+</div>
+</div>
+</section>
+<!-- Personal Disponible -->
+<section class="flex flex-col gap-sm mt-sm">
+<h2 class="font-title-md text-title-md text-tertiary">Personal Disponible</h2>
+<div class="flex flex-col gap-base">
+<!-- Available Guide 1 -->
+<div class="glass-card rounded-xl p-sm flex items-center justify-between cursor-pointer hover:bg-surface-variant/50 transition-colors active:scale-95 duration-200">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant relative">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an athletic female water sports guide in her 20s. She has wet hair pulled back, wearing a black wetsuit top. The lighting is crisp and modern, set against a dark, moody studio background consistent with a high-end dark mode UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN3wOq--ov9546Vjj9FtthzS8MuBuOK_UhvY97ccCRjNH0lxPFS27xYDNua8dgCkT7fHLb6HA7q-N913MGF6BmEmh5nWYtDC2-XsGcQNg8hD4LPaeM87ajI-xzmIfUAI8igLK-YVutLIwSZlYm8A7Rw-Cjt1DKgr39h7kZjObI8bTyoQ0QpnDP8mMYKAPTYN83jEvkEWQdFrdnE8UGLb8VdmOWslAQDHSueQvxQ8VUvJrnPim6iHMbHx0WhiiNy6PJvZw3oXV1VcoH"/>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Lucia Vega</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-[2px] rounded-full bg-primary-container/10 border border-primary/30 font-label-mono text-[10px] text-primary uppercase tracking-widest">Guía Interno</span>
+</div>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-bright text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+<!-- Available Guide 2 -->
+<div class="glass-card rounded-xl p-sm flex items-center justify-between cursor-pointer hover:bg-surface-variant/50 transition-colors active:scale-95 duration-200">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant relative">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an older, experienced male sailing instructor in his 50s with a sun-weathered face. He is wearing a dark blue polo shirt. The image has high contrast, cinematic lighting against a deep navy background, fitting a premium, technical operations dashboard style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5zb02utqMiTGu0BzNQPRWUlttQmqd2bc2PAvWqQhH7dx_DKwNROJbYq-3lu8PelFzTN5x8eJRzGq9jqA9EcUipmPt8_qd_Rtg_sK4QSPH34Rh0-HsxpSFIU59m5wfz1LSEFp4YvrHu8P1gt84A5k2pCbqoAT_zwU7VrazfEAbTAygFjRAPRASH-oEZ9D24dMRrguEbMMNNKN5i6opdP--uLa8WdoK9G_wQRVRzIc2-2GtkmUbGMg92eVeoVW8PJb0yAW3-AdA8aS-"/>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Javier Ortiz</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-[2px] rounded-full bg-tertiary-container/10 border border-tertiary/30 font-label-mono text-[10px] text-tertiary uppercase tracking-widest">Guía Externo</span>
+</div>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-bright text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action Area (Pinned) -->
+<div class="w-full p-margin-mobile bg-surface-container/80 backdrop-blur-xl border-t border-white/10 mt-auto shadow-[0_-4px_20px_rgba(0,0,0,0.4)]">
+<button class="w-full py-4 rounded-lg border border-primary text-primary font-button text-button uppercase tracking-widest hover:bg-primary/10 transition-colors active:scale-95 duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+            Registrar guía externo
+        </button>
+</div>
+</body></html>

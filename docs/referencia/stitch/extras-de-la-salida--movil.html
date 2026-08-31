@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Extras de la Salida - Arenal Ops</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#005371",
+                        "on-secondary": "#670211",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "surface-tint": "#3cddc7",
+                        "on-tertiary-fixed": "#001e2c",
+                        "secondary-fixed": "#ffdad8",
+                        "outline-variant": "#3c4a46",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-secondary-container": "#ff9996",
+                        "background": "#0b1326",
+                        "on-secondary-fixed": "#410006",
+                        "on-primary-container": "#00574d",
+                        "surface-dim": "#0b1326",
+                        "secondary": "#ffb3b0",
+                        "on-surface-variant": "#bacac5",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-tertiary": "#00354a",
+                        "on-background": "#dae2fd",
+                        "surface-variant": "#2d3449",
+                        "on-primary-fixed": "#00201c",
+                        "secondary-container": "#881d24",
+                        "primary-fixed-dim": "#3cddc7",
+                        "on-primary-fixed-variant": "#005047",
+                        "inverse-on-surface": "#283044",
+                        "surface-container": "#171f33",
+                        "surface": "#0b1326",
+                        "inverse-primary": "#006b5f",
+                        "on-error": "#690005",
+                        "primary-fixed": "#62fae3",
+                        "error": "#ffb4ab",
+                        "primary-container": "#2dd4bf",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#5ec9ff",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-highest": "#2d3449",
+                        "outline": "#859490",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#003731",
+                        "surface-bright": "#31394d",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "tertiary": "#afe0ff",
+                        "surface-container-high": "#222a3d",
+                        "primary": "#57f1db",
+                        "surface-container-low": "#131b2e",
+                        "on-secondary-fixed-variant": "#881d24"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "sm": "12px",
+                        "margin-desktop": "40px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "lg": "48px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "button": ["Hanken Grotesk"],
+                        "label-mono": ["JetBrains Mono"],
+                        "body-base": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "title-md": ["20px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "button": ["14px", { "lineHeight": "1.0", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background: radial-gradient(circle at top right, #171f33, #0b1326 60%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-hover:hover {
+            box-shadow: inset 0 0 4px 2px #57f1db;
+            background: rgba(45, 212, 191, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased pb-[144px]"> <!-- Padding for fixed bottom bar + nav -->
+<!-- TopAppBar -->
+<header class="bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl border-b border-white/10 dark:border-white/5 shadow-sm docked full-width top-0 sticky flex justify-between items-center px-margin-mobile py-sm w-full z-50">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/20">
+<img alt="Arenal Water Sports Logo" class="w-full h-full object-cover" data-alt="A small, stylized logo icon for a water sports company, featuring abstract waves and a sun rendered in deep navy and bright teal tones. Clean, modern, scalable vector style, professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8GtC1N2bnvck5CdAbLFnmssjxFM2r3X_RxSlteG1sdk1dmF-Jt65QZcsN4xwC-1FXew8PkdE6tK_UR5UEkknHipN_JmdRi6AZJBi8uawBmenx22X3lh_CxKw7L62cW76FuBlJxhdtayrzCHp0W19Qrn_t6MwLQWOYZfWct73BRThnToo32UtJo1-cLZ0rN7YfSYAIILunvLDzYPtkfbFSbkWX0bmJ61qxhLRTy0n-q1X63bP0HJm9tZaGF0wDwFTV5tVXOxb4i0gd"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface dark:text-on-surface">Arenal Ops</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/10 transition-colors text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="px-margin-mobile py-md">
+<div class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-xs">Extras de la Salida</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Selecciona equipamiento adicional para lanchas.</p>
+</div>
+<!-- Extras List -->
+<div class="flex flex-col gap-sm">
+<!-- Item 1: Tabla de Wakeboard -->
+<div class="glass-panel rounded-xl p-sm flex items-start gap-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 border border-white/10 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A high-quality, product-style photograph of a modern wakeboard standing upright against a dark, atmospheric studio background with subtle teal rim lighting. The wakeboard has sleek, aggressive graphics and bindings attached." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGxA-DsZPtPBg-f4Kr9U4ksg7IFdRYsYSiImVERQ-uo0KXSH22d8rh0eF5lI4s1pwsb1_Pn2ljzFUKXkHfsbSQYWKVTIlUxFlq0SxgLm68fk61cBSxmMPrmncjS-ngkirFmoFn1ZT92qVoZVu0V1C0DsTVAIZUT6q0OKfXo3VQqFCPxUcP1B20mo_AG_WEDDcLU0ykgXfprqIot9vmdNg2WvgVHoI3eodWiFYV7DsP23DRnM00d4opHxUF20cBWeZO-1AqxDgA6mg7"/>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-title-md text-title-md text-primary mb-1 truncate">Tabla de Wakeboard</h3>
+<div class="flex flex-col gap-0.5 mb-2">
+<span class="font-label-mono text-label-mono text-on-surface">$25.00</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">₡13,500</span>
+</div>
+<div class="inline-flex items-center gap-1 bg-surface-container px-2 py-1 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-[14px] text-tertiary">info</span>
+<span class="font-label-mono text-label-mono text-tertiary">Ocupa 2 chalecos</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-between h-full bg-surface-container-low rounded-lg border border-white/10 shrink-0">
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary/10 rounded-t-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<span class="font-label-mono text-label-mono w-8 text-center py-1 border-y border-white/5">0</span>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 rounded-b-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+</div>
+<!-- Item 2: Tubo Inflable -->
+<div class="glass-panel rounded-xl p-sm flex items-start gap-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 border border-white/10 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A high-quality, product-style photograph of a bright, multi-person inflatable towable water tube. It sits in a dark studio setting with dramatic lighting highlighting its durable material and handles. Deep navy background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgIIqV3NM03KJNji1ykYVz4XYZv84w6h_sYJd2UrA8h8wYQFz-VxAwT6MkYXNYSKwXBZAgP6yYVycmnUEqagWBopne3zbP8BGect77JXtCHT6ztZTS5wbjfRtYmPYLabGou6r7lWf-yt2niLYF02yR29A76VrX0ko5WgvyLigI8MQqwwJndleSmuJSqlNY3m94qmstfGffKIf0D6QHRJQSjQUxfKdhVXjOZRDaZ78hgtMEFXxy3AYrmiG4-x5EZATeq7yjw3yvTqOd"/>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-title-md text-title-md text-primary mb-1 truncate">Tubo Inflable</h3>
+<div class="flex flex-col gap-0.5 mb-2">
+<span class="font-label-mono text-label-mono text-on-surface">$15.00</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">₡8,100</span>
+</div>
+<!-- No notes for this one based on prompt -->
+</div>
+<div class="flex flex-col items-center justify-between h-full bg-surface-container-low rounded-lg border border-white/10 shrink-0">
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary/10 rounded-t-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<span class="font-label-mono text-label-mono w-8 text-center py-1 border-y border-white/5">0</span>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 rounded-b-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+</div>
+<!-- Item 3: Esquí Acuático -->
+<div class="glass-panel rounded-xl p-sm flex items-start gap-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 border border-white/10 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A pair of professional water skis leaning against a wall in a sleek, dark storage room. Atmospheric lighting casts soft reflections on the glossy finish of the skis. High-end equipment feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHPjl6kl0ozY03nGCM_M6M_xr2UEDmvb3eNS-jIa8e5xZQiB_NFh2xFloSVFIMtNAC0BJxzAnFHFUOPhpX58kj42zA5GNBOemtVyz_kLSRtrnRlKqWClmqH_Q0tCiaAH_G-0nJKAXg-GlU6rkpEPnBuu3cYYwTyO-pOa7ja590FZ9ByrDnNjPW1MzfCwGrGhY39M5QqG924FWm4cpbxgLRxbdIuLTSLHvPFgKKQ8uJhYOhPE0gaYdw0d7iuCstG2ryoHfrPeHElwKM"/>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-title-md text-title-md text-primary mb-1 truncate">Esquí Acuático</h3>
+<div class="flex flex-col gap-0.5 mb-2">
+<span class="font-label-mono text-label-mono text-on-surface">$20.00</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">₡10,800</span>
+</div>
+<div class="inline-flex items-center gap-1 bg-surface-container px-2 py-1 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-[14px] text-tertiary">info</span>
+<span class="font-label-mono text-label-mono text-tertiary">Ocupa 1 remo</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-between h-full bg-surface-container-low rounded-lg border border-white/10 shrink-0">
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary/10 rounded-t-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<span class="font-label-mono text-label-mono w-8 text-center py-1 border-y border-white/5">0</span>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 rounded-b-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Summary Bar -->
+<div class="fixed bottom-[72px] w-full glass-panel border-t border-white/10 px-margin-mobile py-sm z-40 flex justify-between items-center shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+<div>
+<span class="font-label-mono text-label-mono text-on-surface-variant block mb-0.5 uppercase tracking-wider">Total Extras</span>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-primary font-bold leading-none">$0.00</span>
+<span class="font-label-mono text-label-mono text-tertiary-fixed-dim leading-none mt-1">₡0</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary font-button text-button uppercase px-md py-3 rounded-lg hover:bg-primary-fixed-dim transition-colors shadow-lg shadow-primary/20">
+            Confirmar
+        </button>
+</div>
+<!-- BottomNavBar -->
+<!-- Note: "Nueva" is likely the active state as this is adding extras to a new outing -->
+<nav class="bg-surface/80 dark:bg-surface-container-low/80 backdrop-blur-md fixed bottom-0 w-full rounded-t-xl z-50 border-t border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] flex justify-around items-center h-[72px] pb-safe px-xs">
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">dashboard</span>
+<span class="font-label-mono text-label-mono text-[10px]">Tablero</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed scale-110 transition-transform opacity-80 duration-150 relative">
+<div class="absolute inset-0 bg-primary/10 rounded-full blur-md -z-10"></div>
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-mono text-label-mono text-[10px] font-bold">Nueva</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">sailing</span>
+<span class="font-label-mono text-label-mono text-[10px]">Equipos</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">group</span>
+<span class="font-label-mono text-label-mono text-[10px]">Usuarios</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">history</span>
+<span class="font-label-mono text-label-mono text-[10px]">Historial</span>
+</button>
+</nav>
+</body></html>
