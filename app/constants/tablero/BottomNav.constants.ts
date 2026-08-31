@@ -12,7 +12,14 @@ import {
  * The fixed bottom bar (US-TAB-004, US-TAB-005): board, calendar,
  * inventory, history, — reservas only — the day's revenue (US-RES-032,
  * which operaciones must not see because it never needs money to do its
- * work) and — operations only — the price list (US-TAB-010). `VISIBLE_IN` only decides which icons render for the
+ * work) and — operations only — the price list (US-TAB-010).
+ *
+ * The inventory icon points at two different screens on purpose:
+ * administración reads the flat catalogue of `/inventario` (US-TAB-001),
+ * while operaciones works from `/operaciones/inventario` (US-OPE-021),
+ * which is the same single registry seen category by category and with the
+ * counting and status actions that only operaciones performs.
+ * `VISIBLE_IN` only decides which icons render for the
  * active mode; it grants nothing by itself (US-TAB-007) — every route it
  * points at is still gated by the database policies for whatever that
  * screen does.
@@ -24,6 +31,7 @@ export const BOTTOM_NAV_ITEM_ID = {
   HISTORY: "history",
   INVENTORY: "inventory",
   OPERATIONS: "operations",
+  OPERATIONS_INVENTORY: "operations-inventory",
   PRICES: "prices",
   REVENUE: "revenue",
 } as const;
@@ -67,10 +75,14 @@ export const BOTTOM_NAV = {
       ICON: MATERIAL_ICON_NAME.INVENTORY_2,
       ID: BOTTOM_NAV_ITEM_ID.INVENTORY,
       LABEL: "Inventario",
-      VISIBLE_IN: [
-        WORK_AREA.ADMINISTRATION,
-        WORK_AREA.OPERATIONS,
-      ],
+      VISIBLE_IN: [WORK_AREA.ADMINISTRATION],
+    },
+    {
+      HREF: PATHS.OPERATIONS.INVENTORY,
+      ICON: MATERIAL_ICON_NAME.INVENTORY_2,
+      ID: BOTTOM_NAV_ITEM_ID.OPERATIONS_INVENTORY,
+      LABEL: "Inventario",
+      VISIBLE_IN: [WORK_AREA.OPERATIONS],
     },
     {
       HREF: PATHS.COMMON.HISTORY,

@@ -325,3 +325,8 @@ export {
 } from "./operaciones/MaintenanceScreen.constants";
 export { DAMAGE_REPORTS_SCREEN } from "./operaciones/DamageReportsScreen.constants";
 export { UNIT_CORRECTION_SCREEN } from "./operaciones/UnitCorrectionScreen.constants";
+export { RETENTION } from "./operaciones/Retention.constants";
+export { OPERATIONS_INVENTORY_SCREEN } from "./operaciones/OperationsInventoryScreen.constants";
+export { INVENTORY_COUNT_SCREEN } from "./operaciones/InventoryCountScreen.constants";
+export { INVENTORY_ALERTS_SCREEN } from "./operaciones/InventoryAlertsScreen.constants";
+export { OPERATIONS_ERROR } from "./operaciones/OperationsError.constants";

@@ -68,6 +68,7 @@ export const useStockMovementLog = (
     setMovements((current) => [
       {
         createdAt: data.created_at,
+        createdBy: adminWorkerId,
         fromAvailable: previous.quantityAvailable,
         fromDamaged: previous.quantityDamaged,
         fromInRepair: previous.quantityInRepair,
