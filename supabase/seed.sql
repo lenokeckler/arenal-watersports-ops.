@@ -90,12 +90,18 @@ values
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
 -- ---------------- Unidades ----------------
--- Cuatro jet skis, tal como los tiene la empresa.
+-- Cuatro jet skis y ocho cuadraciclos, tal como los tiene la empresa.
 insert into equipment_units (category_id, code, created_by, updated_by)
 select c.id, 'JET-0' || n,
        '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'
 from equipment_categories c, generate_series(1, 4) n
 where c.name = 'Jet Ski';
+
+insert into equipment_units (category_id, code, created_by, updated_by)
+select c.id, 'CUAD-0' || n,
+       '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'
+from equipment_categories c, generate_series(1, 8) n
+where c.name = 'Cuadraciclo';
 
 -- Las dos lanchas. No admiten los mismos extras, por eso llevan codigo propio.
 insert into equipment_units (category_id, code, created_by, updated_by)

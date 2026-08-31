@@ -2,7 +2,11 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { PATHS, STORE_SLICES } from "@/app/constants";
+import {
+  BOTTOM_NAV,
+  PATHS,
+  STORE_SLICES,
+} from "@/app/constants";
 import type { WorkArea } from "@/app/constants";
 // Deep import on purpose — see `useLoginFormViewModel.ts`.
 import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
@@ -118,17 +122,30 @@ export const useWorkAreaSwitcherViewModel =
         .finally(() => router.replace(PATHS.ACCESS.LOGIN));
     };
 
+    // Las pantallas donde todavia no hay una sesion legitima. En el ingreso
+    // el control llegaba a mostrarse: cuando el proxy expulsa a una cuenta
+    // bloqueada, el cliente todavia cree que hay usuario y pintaba un boton
+    // de cerrar sesion sobre el formulario de ingreso.
+    const isCredentialScreen =
+      pathname === PATHS.ACCESS.LOGIN ||
+      pathname === PATHS.ACCESS.PASSWORD_RECOVERY;
+
     return {
       activeArea,
       availableAreas,
       handleLogout,
       handleSelectArea,
-      isVisible: hasActiveUser,
-      // The work-mode selector already is the full-screen version of this
-      // choice — showing the compact switcher's mode buttons on top of it
-      // would just duplicate the same three cards in miniature.
+      isVisible: hasActiveUser && !isCredentialScreen,
+      // El selector de modo a pantalla completa ya es la version grande de
+      // esta misma eleccion, asi que duplicarlo en miniatura encima sobra.
+      // Y en el resto de `/acceso` no se ofrece cambiar de modo: el primer
+      // ingreso es obligatorio desde cualquier ruta (US-ACC-003), asi que
+      // ofrecer ahi un cambio de modo solo invita a un rebote — y peor,
+      // escribiria `last_work_area` con la contrasena todavia sin cambiar.
       showModeButtons:
         availableAreas.length > 1 &&
-        pathname !== PATHS.ACCESS.WORK_MODE,
+        !pathname.startsWith(
+          BOTTOM_NAV.ACCESS_SECTION_PREFIX
+        ),
     };
   };

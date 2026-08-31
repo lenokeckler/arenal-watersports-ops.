@@ -1,7 +1,14 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import {
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import {
   ACCESS_AUTH,
   ACCESS_ERROR,
@@ -53,7 +60,9 @@ const reportLoginAttempt = async (
   try {
     const response = await fetch(API.ROUTES.LOGIN_ATTEMPT, {
       body: JSON.stringify({ outcome, username }),
-      headers: { [API.HEADERS.CONTENT_TYPE]: API.HEADERS.JSON },
+      headers: {
+        [API.HEADERS.CONTENT_TYPE]: API.HEADERS.JSON,
+      },
       method: API.METHODS.POST,
     });
 
@@ -86,102 +95,126 @@ const reportLoginAttempt = async (
  * `POST /api/acceso/intento`, and leaves every redirect decision to the
  * proxy (`proxy.ts`); this hook only navigates on success.
  */
-export const useLoginFormViewModel = (): LoginFormViewModel => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+export const useLoginFormViewModel =
+  (): LoginFormViewModel => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
-  const [username, setUsername] = useState<string>(STRING.Empty);
-  const [password, setPassword] = useState<string>(STRING.Empty);
-  const [usernameError, setUsernameError] =
-    useState<Nullable<string>>(null);
-  const [passwordError, setPasswordError] =
-    useState<Nullable<string>>(null);
-  const [isSubmitting, setIsSubmitting] =
-    useState<boolean>(false);
+    const [username, setUsername] = useState<string>(
+      STRING.Empty
+    );
+    const [password, setPassword] = useState<string>(
+      STRING.Empty
+    );
+    const [usernameError, setUsernameError] =
+      useState<Nullable<string>>(null);
+    const [passwordError, setPasswordError] =
+      useState<Nullable<string>>(null);
+    const [isSubmitting, setIsSubmitting] =
+      useState<boolean>(false);
 
-  const queryReason = searchParams.get(ACCESS_ERROR_QUERY.PARAM);
-  const bannerMessage = isBannerErrorKey(queryReason)
-    ? ACCESS_ERROR_MESSAGE[queryReason]
-    : null;
+    const queryReason = searchParams.get(
+      ACCESS_ERROR_QUERY.PARAM
+    );
+    const bannerMessage = isBannerErrorKey(queryReason)
+      ? ACCESS_ERROR_MESSAGE[queryReason]
+      : null;
 
-  const handleUsernameChange = (
-    event: ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ): void => {
-    setUsername(event.target.value);
-    setUsernameError(null);
-  };
+    const handleUsernameChange = (
+      event: ChangeEvent<
+        | HTMLInputElement
+        | HTMLSelectElement
+        | HTMLTextAreaElement
+      >
+    ): void => {
+      setUsername(event.target.value);
+      setUsernameError(null);
+    };
 
-  const handlePasswordChange = (
-    event: ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ): void => {
-    setPassword(event.target.value);
-    setPasswordError(null);
-  };
+    const handlePasswordChange = (
+      event: ChangeEvent<
+        | HTMLInputElement
+        | HTMLSelectElement
+        | HTMLTextAreaElement
+      >
+    ): void => {
+      setPassword(event.target.value);
+      setPasswordError(null);
+    };
 
-  const setCredentialsError = (message: string): void => {
-    setUsernameError(message);
-    setPasswordError(message);
-  };
+    const setCredentialsError = (message: string): void => {
+      setUsernameError(message);
+      setPasswordError(message);
+    };
 
-  const attemptSignIn = async (): Promise<void> => {
-    setIsSubmitting(true);
+    const attemptSignIn = async (): Promise<void> => {
+      setIsSubmitting(true);
 
-    const supabase = createBrowserSupabaseClient();
-    const email = `${username}${ACCESS_AUTH.SYNTHETIC_EMAIL_DOMAIN}`;
+      const supabase = createBrowserSupabaseClient();
+      const email = `${username}${ACCESS_AUTH.SYNTHETIC_EMAIL_DOMAIN}`;
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+      const { error } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-    if (!error) {
-      await reportLoginAttempt(
+      if (!error) {
+        await reportLoginAttempt(
+          username,
+          LOGIN_ATTEMPT_OUTCOME.SUCCESS
+        );
+        // Se limpia antes de navegar, y no despues, porque puede que no
+        // haya un "despues": `signInWithPassword` no sabe nada de
+        // `worker_status`, asi que para una cuenta bloqueada la
+        // autenticacion tiene exito y es el proxy quien rechaza, cierra
+        // la sesion y devuelve a esta misma ruta. Como la ruta no cambia,
+        // el componente nunca se desmonta, y dejar la bandera puesta
+        // dejaba el boton deshabilitado con "Loading..." para siempre,
+        // sin forma de reintentar sin recargar. Reproducido bloqueando
+        // una cuenta desde administracion.
+        setIsSubmitting(false);
+        router.replace(PATHS.COMMON.DASHBOARD);
+        return;
+      }
+
+      const attemptResult = await reportLoginAttempt(
         username,
-        LOGIN_ATTEMPT_OUTCOME.SUCCESS
+        LOGIN_ATTEMPT_OUTCOME.FAILURE
       );
-      router.replace(PATHS.COMMON.DASHBOARD);
-      return;
-    }
 
-    const attemptResult = await reportLoginAttempt(
+      setCredentialsError(
+        attemptResult?.isBlocked
+          ? ACCESS_ERROR_MESSAGE.BLOCKED_ATTEMPTS
+          : ACCESS_ERROR_MESSAGE.INVALID_CREDENTIALS
+      );
+      setIsSubmitting(false);
+    };
+
+    const handleSubmit = (
+      event: FormEvent<HTMLFormElement>
+    ): void => {
+      event.preventDefault();
+
+      if (!username.trim() || !password) {
+        setCredentialsError(
+          ACCESS_ERROR_MESSAGE.INVALID_CREDENTIALS
+        );
+        return;
+      }
+
+      void attemptSignIn();
+    };
+
+    return {
+      bannerMessage,
+      handlePasswordChange,
+      handleSubmit,
+      handleUsernameChange,
+      isSubmitting,
+      password,
+      passwordError,
       username,
-      LOGIN_ATTEMPT_OUTCOME.FAILURE
-    );
-
-    setCredentialsError(
-      attemptResult?.isBlocked
-        ? ACCESS_ERROR_MESSAGE.BLOCKED_ATTEMPTS
-        : ACCESS_ERROR_MESSAGE.INVALID_CREDENTIALS
-    );
-    setIsSubmitting(false);
+      usernameError,
+    };
   };
-
-  const handleSubmit = (
-    event: FormEvent<HTMLFormElement>
-  ): void => {
-    event.preventDefault();
-
-    if (!username.trim() || !password) {
-      setCredentialsError(ACCESS_ERROR_MESSAGE.INVALID_CREDENTIALS);
-      return;
-    }
-
-    void attemptSignIn();
-  };
-
-  return {
-    bannerMessage,
-    handlePasswordChange,
-    handleSubmit,
-    handleUsernameChange,
-    isSubmitting,
-    password,
-    passwordError,
-    username,
-    usernameError,
-  };
-};
