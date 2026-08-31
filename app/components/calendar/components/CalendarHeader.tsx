@@ -9,11 +9,18 @@ import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 
 interface CalendarHeaderProps {
   canCreate: boolean;
+  /** US-RES-013: only reservas with `registro_guias_externos`. */
+  canCreateExternalGuide: boolean;
 }
 
-/** US-RES-001/US-RES-002: title plus the entry point into US-RES-004. */
+/**
+ * US-RES-001/US-RES-002/US-RES-013: title plus the entry points into
+ * US-RES-004 (new reservation) and, when the worker holds the mark, into
+ * the temporary external-guide account.
+ */
 const CalendarHeader = ({
   canCreate,
+  canCreateExternalGuide,
 }: CalendarHeaderProps): JSX.Element => (
   <header className="mx-auto mb-lg flex max-w-6xl flex-wrap items-center justify-between gap-sm">
     <div className="flex items-center gap-sm">
@@ -33,15 +40,29 @@ const CalendarHeader = ({
       </div>
     </div>
 
-    {canCreate && (
-      <Link
-        href={PATHS.RESERVATIONS.NEW}
-        className="flex min-h-12 items-center gap-2 rounded-lg bg-primary px-md py-sm font-button text-button uppercase text-on-primary-fixed shadow-md transition-transform duration-200 active:scale-95"
-      >
-        <MaterialIcon name={MATERIAL_ICON_NAME.ADD} />
-        {CALENDAR_SCREEN.NEW_RESERVATION}
-      </Link>
-    )}
+    <div className="flex items-center gap-sm">
+      {canCreateExternalGuide && (
+        <Link
+          href={PATHS.RESERVATIONS.EXTERNAL_GUIDE_NEW}
+          className="flex min-h-12 items-center gap-2 rounded-lg border border-white/10 bg-surface-container-high px-md py-sm font-button text-button uppercase text-on-surface transition-transform duration-200 active:scale-95"
+        >
+          <MaterialIcon
+            name={MATERIAL_ICON_NAME.PERSON_ADD}
+          />
+          {CALENDAR_SCREEN.NEW_EXTERNAL_GUIDE}
+        </Link>
+      )}
+
+      {canCreate && (
+        <Link
+          href={PATHS.RESERVATIONS.NEW}
+          className="flex min-h-12 items-center gap-2 rounded-lg bg-primary px-md py-sm font-button text-button uppercase text-on-primary-fixed shadow-md transition-transform duration-200 active:scale-95"
+        >
+          <MaterialIcon name={MATERIAL_ICON_NAME.ADD} />
+          {CALENDAR_SCREEN.NEW_RESERVATION}
+        </Link>
+      )}
+    </div>
   </header>
 );
 

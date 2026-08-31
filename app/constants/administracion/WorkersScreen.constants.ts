@@ -35,11 +35,13 @@ export const WORKERS_SCREEN = {
 } as const;
 
 /**
- * `/administracion/trabajadores/nuevo` (US-ADM-001, US-ADM-005). One form
- * covers both cases the database allows on insert: administración creating
- * any worker, and — enforced server-side, not shown here yet because no
- * Reservas screen exists in this dispatch — reservas with the
- * `registro_guias_externos` mark creating a temporary external guide.
+ * `/administracion/trabajadores/nuevo` and `/reservas/guia-externo/nuevo`
+ * (US-ADM-001, US-ADM-005, US-RES-013). One form covers both cases the
+ * database allows on insert: administración creating any worker, and —
+ * enforced server-side — reservas with the `registro_guias_externos` mark
+ * creating a temporary external guide through the same route, with
+ * `restrictToExternalGuide` hiding the role picker and the toggle since
+ * that path can only ever produce a guide.
  */
 export const WORKER_FORM_SCREEN = {
   ERROR: {
@@ -58,18 +60,25 @@ export const WORKER_FORM_SCREEN = {
   FULL_NAME_PLACEHOLDER: "Ej. Juan Pérez",
   NATIONAL_ID_LABEL: "Cédula",
   NATIONAL_ID_PLACEHOLDER: "Ej. 1-2345-6789",
+  PERSONAL_EMAIL_LABEL: "Correo personal (opcional)",
+  PERSONAL_EMAIL_PLACEHOLDER: "correo@ejemplo.com",
   ROLE_LABEL: "Rol base",
   SUBMIT: "Crear trabajador",
   SUCCESS: {
+    BACK_TO_CALENDAR: "Volver al calendario",
     COPY: "Copiar",
     TEMPORARY_PASSWORD_LABEL: "Contraseña temporal",
     TITLE: "Trabajador creado",
+    USERNAME_LABEL: "Nombre de usuario",
     VIEW_WORKER: "Ver trabajador",
     WARNING:
       "Esta contraseña solo se muestra una vez. Entréguesela a la persona: deberá cambiarla en su primer ingreso.",
   },
   TITLE: "Nuevo trabajador",
+  TITLE_EXTERNAL_GUIDE: "Nueva cuenta temporal de guía externo",
   USERNAME_HINT: "Solo minúsculas, sin espacios ni acentos.",
+  USERNAME_IS_NATIONAL_ID_HINT:
+    "El usuario es la cédula: nadie tiene que inventar ni recordar uno nuevo.",
   USERNAME_LABEL: "Nombre de usuario",
   USERNAME_PLACEHOLDER: "juan.perez",
 } as const;

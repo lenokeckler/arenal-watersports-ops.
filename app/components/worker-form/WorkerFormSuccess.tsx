@@ -1,22 +1,40 @@
 import type { JSX } from "react";
 import { MATERIAL_ICON_NAME, PATHS, WORKER_FORM_SCREEN } from "@/app/constants";
+import type { Nullable } from "@/app/types";
 import Link from "@/app/components/link/Link";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 
 interface WorkerFormSuccessProps {
   onCopyTemporaryPassword: () => void;
+  /**
+   * US-RES-013: reservas cannot open `/administracion/trabajadores/*` —
+   * that link would just redirect it away, so it points back at the
+   * calendar instead of the worker detail admin screen sees. Defaults to
+   * `false` for `WorkerDetail`'s reset-password reuse of this same shell.
+   */
+  restrictToExternalGuide?: boolean;
   temporaryPassword: string;
+  /**
+   * US-RES-013: shown only on worker creation, where the username is the
+   * cédula the creator chose for an external guide, not something they
+   * typed and can recall. `WorkerDetail`'s password-reset reuse of this
+   * shell has no reason to repeat a username the worker already has.
+   */
+  username?: Nullable<string>;
   workerId: string;
 }
 
 /**
  * Shown once, right after `POST /api/administracion/trabajadores`
- * succeeds (US-ADM-001): the only moment the temporary password is ever
- * visible — the route never stores it and no screen can show it again.
+ * succeeds (US-ADM-001, US-RES-013): the only moment the temporary
+ * password is ever visible — the route never stores it and no screen can
+ * show it again.
  */
 const WorkerFormSuccess = ({
   onCopyTemporaryPassword,
+  restrictToExternalGuide = false,
   temporaryPassword,
+  username,
   workerId,
 }: WorkerFormSuccessProps): JSX.Element => (
   <div className="flex flex-col gap-md rounded-xl border border-primary/30 bg-primary/5 p-md">
@@ -26,6 +44,17 @@ const WorkerFormSuccess = ({
         {WORKER_FORM_SCREEN.SUCCESS.TITLE}
       </span>
     </div>
+
+    {username && (
+      <div className="flex flex-col gap-1">
+        <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">
+          {WORKER_FORM_SCREEN.SUCCESS.USERNAME_LABEL}
+        </span>
+        <span className="font-label-mono text-title-md tracking-wider text-on-surface">
+          {username}
+        </span>
+      </div>
+    )}
 
     <div className="flex flex-col gap-1">
       <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">
@@ -50,10 +79,16 @@ const WorkerFormSuccess = ({
     </p>
 
     <Link
-      href={PATHS.ADMIN.WORKER_DETAIL(workerId)}
+      href={
+        restrictToExternalGuide
+          ? PATHS.RESERVATIONS.CALENDAR
+          : PATHS.ADMIN.WORKER_DETAIL(workerId)
+      }
       className="flex min-h-12 w-full items-center justify-center rounded-lg bg-primary px-md font-button text-button uppercase text-on-primary-fixed transition-all hover:brightness-110"
     >
-      {WORKER_FORM_SCREEN.SUCCESS.VIEW_WORKER}
+      {restrictToExternalGuide
+        ? WORKER_FORM_SCREEN.SUCCESS.BACK_TO_CALENDAR
+        : WORKER_FORM_SCREEN.SUCCESS.VIEW_WORKER}
     </Link>
   </div>
 );

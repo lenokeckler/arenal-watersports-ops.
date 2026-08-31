@@ -18,13 +18,17 @@ import type { CalendarProps } from "./models/CalendarProps.interface";
 const Calendar = ({
   allowedViews,
   canCreate,
+  canCreateExternalGuide,
   range,
   referenceDate,
   reservations,
   view,
 }: CalendarProps): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
-    <CalendarHeader canCreate={canCreate} />
+    <CalendarHeader
+      canCreate={canCreate}
+      canCreateExternalGuide={canCreateExternalGuide}
+    />
 
     <main className="mx-auto flex max-w-6xl flex-col gap-md">
       <div className="flex flex-wrap items-center justify-between gap-sm">

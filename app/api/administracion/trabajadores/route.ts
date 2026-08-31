@@ -22,6 +22,11 @@ export interface CreateWorkerRequestBody {
   fullName: string;
   isExternalGuide: boolean;
   nationalId: string | null;
+  /**
+   * US-RES-013: optional for an external guide;
+   * `workers_admin_needs_email` still requires it for administración.
+   */
+  personalEmail: string | null;
   username: string;
 }
 
@@ -46,8 +51,13 @@ const isValidBody = (
     return false;
   }
 
-  const { fullName, username, baseRole, isExternalGuide } =
-    body as Record<string, unknown>;
+  const {
+    fullName,
+    username,
+    baseRole,
+    isExternalGuide,
+    personalEmail,
+  } = body as Record<string, unknown>;
 
   return (
     typeof fullName === "string" &&
@@ -56,19 +66,22 @@ const isValidBody = (
     username.trim().length > 0 &&
     typeof baseRole === "string" &&
     VALID_BASE_ROLES.includes(baseRole as WorkArea) &&
-    typeof isExternalGuide === "boolean"
+    typeof isExternalGuide === "boolean" &&
+    (personalEmail === null ||
+      typeof personalEmail === "string")
   );
 };
 
 /**
- * `POST /api/administracion/trabajadores` (US-ADM-001, US-ADM-005). Writes
- * to `auth.users`, so this can only ever run behind the service role, on
- * the server (`api-mutation-standards` / the module brief's "creating a
- * worker needs the service role"). The service role bypasses RLS
- * entirely, so the same shape `workers_insert` enforces at the database —
- * administración can create anyone, reservas with the
+ * `POST /api/administracion/trabajadores` (US-ADM-001, US-ADM-005,
+ * US-RES-013). Writes to `auth.users`, so this can only ever run behind
+ * the service role, on the server (`api-mutation-standards` / the module
+ * brief's "creating a worker needs the service role"). The service role
+ * bypasses RLS entirely, so the same shape `workers_insert` enforces at
+ * the database — administración can create anyone, reservas with the
  * `registro_guias_externos` mark can only create a temporary external
- * guide — is re-checked here by hand before anything is written.
+ * guide — is re-checked here by hand before anything is written. Reused
+ * as-is by `/reservas/guia-externo/nuevo` through the same `WorkerForm`.
  */
 export const POST = async (
   request: Request
@@ -127,6 +140,7 @@ export const POST = async (
 
   const username = body.username.trim().toLowerCase();
   const fullName = body.fullName.trim();
+  const personalEmail = body.personalEmail?.trim() || null;
   const temporaryPassword = generateTemporaryPassword();
   const syntheticEmail = `${username}${ACCESS_AUTH.SYNTHETIC_EMAIL_DOMAIN}`;
 
@@ -157,6 +171,7 @@ export const POST = async (
       is_external_guide: isExternalGuide,
       must_change_password: true,
       national_id: nationalId,
+      personal_email: personalEmail,
       updated_by: caller.id,
       username,
     });

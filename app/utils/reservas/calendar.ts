@@ -13,6 +13,8 @@ export interface CalendarReservation {
   customerName: string;
   endsAt: string;
   equipmentSummary: string[];
+  /** US-RES-014: who is on the tour, shown right on the calendar card. */
+  guideNames: string[];
   id: string;
   startsAt: string;
   status: ReservationStatus;
@@ -70,7 +72,8 @@ export const fetchCalendarReservations = async (
          quantity,
          category:equipment_categories!reservation_items_category_id_fkey(name),
          unit:equipment_units(code, category:equipment_categories(name))
-       )`
+       ),
+       reservation_guides(worker:workers!reservation_guides_worker_id_fkey(full_name))`
     )
     .in("status", CALENDAR_RESERVATION_STATUSES)
     .lt("starts_at", endsAt)
@@ -90,6 +93,9 @@ export const fetchCalendarReservations = async (
       .filter((summary): summary is string =>
         Boolean(summary)
       ),
+    guideNames: (reservation.reservation_guides ?? [])
+      .map((guide) => guide.worker?.full_name ?? null)
+      .filter((name): name is string => Boolean(name)),
     id: reservation.id,
     startsAt: reservation.starts_at,
     status: reservation.status,

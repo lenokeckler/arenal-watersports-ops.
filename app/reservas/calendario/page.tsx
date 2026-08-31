@@ -10,6 +10,7 @@ import {
 } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services";
 import { requireWorkerWithAreas } from "@/app/utils/reservas/access";
+import { fetchWorkerPermissionState } from "@/app/utils/administracion/workerPermissions";
 import { resolveCalendarRange } from "@/app/utils/reservas/calendarRange";
 import { fetchCalendarReservations } from "@/app/utils/reservas/calendar";
 import Calendar from "@/app/components/calendar/Calendar";
@@ -26,18 +27,20 @@ const VALID_VIEWS: readonly string[] = ALL_CALENDAR_VIEWS;
 
 /**
  * `/reservas/calendario` (US-RES-001, US-RES-002, US-RES-003's entry
- * point). Reachable by reservas, operaciones and administración —
- * `allowedViews` narrows what operaciones can pick to day/week
- * (US-RES-001), it does not change what the database returns.
+ * point, and US-RES-013's entry point). Reachable by reservas, operaciones
+ * and administración — `allowedViews` narrows what operaciones can pick to
+ * day/week (US-RES-001), it does not change what the database returns.
  */
 const CalendarPage = async ({
   searchParams,
 }: CalendarPageParams): Promise<JSX.Element> => {
   const supabase = await createServerSupabaseClient();
-  const { areas } = await requireWorkerWithAreas(supabase, [
-    WORK_AREA.RESERVATIONS,
-    WORK_AREA.OPERATIONS,
-  ]);
+  const { areas, workerId } = await requireWorkerWithAreas(
+    supabase,
+    [WORK_AREA.RESERVATIONS, WORK_AREA.OPERATIONS]
+  );
+  const { isExternalGuideRegistrar } =
+    await fetchWorkerPermissionState(supabase, workerId);
 
   const resolvedParams = await searchParams;
   const referenceDate = resolvedParams.date
@@ -75,6 +78,7 @@ const CalendarPage = async ({
     <Calendar
       allowedViews={allowedViews}
       canCreate={hasReservationsArea}
+      canCreateExternalGuide={isExternalGuideRegistrar}
       range={range}
       referenceDate={referenceDate}
       reservations={reservations}

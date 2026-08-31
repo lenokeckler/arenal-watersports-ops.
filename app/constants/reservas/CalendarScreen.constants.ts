@@ -9,10 +9,11 @@ export const WEEKDAYS_LABEL_MONO: readonly string[] = [
   "Dom",
 ];
 
-/** `/reservas/calendario` (US-RES-001, US-RES-002). */
+/** `/reservas/calendario` (US-RES-001, US-RES-002, US-RES-013). */
 export const CALENDAR_SCREEN = {
   EMPTY_STATE: "No hay reservas agendadas en este período.",
   ICON: "calendar_month",
+  NEW_EXTERNAL_GUIDE: "Guía externo",
   NEW_RESERVATION: "Nueva reserva",
   SUBTITLE:
     "Qué hay agendado, a qué hora y con qué equipo.",
