@@ -1,5 +1,5 @@
 begin;
-select plan(33);
+select plan(38);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -438,6 +438,67 @@ select ok(
   = '2026-09-05 12:00:00+00'::timestamptz,
   'returns_at refleja el fin mas tardio de los despachos activos, no el mas cercano'
 );
+
+-- ============================ Seguridad de filas de la vista ============================
+
+-- unit_current_state se creo sin security_invoker y por eso evaluaba el RLS
+-- como su dueno (postgres) en vez de como quien la consulta, dejando ver
+-- reservation_id y returns_at a quien no tiene politica de select sobre
+-- reservations ni sobre reservation_items. 20260828001550 lo corrige y esto
+-- lo fija.
+--
+-- Ismael es de operaciones y si tiene esa politica. Diego entra como
+-- operaciones y se le retira su unica area para representar a quien no tiene
+-- ninguna: ni reservas, ni operaciones, ni administracion.
+insert into auth.users (id, email) values
+  ('22222222-2222-2222-2222-222222222222', 'ops@arenal.local'),
+  ('44444444-4444-4444-4444-444444444444', 'diego@arenal.local');
+
+insert into workers (id, username, full_name, base_role) values
+  ('22222222-2222-2222-2222-222222222222', 'ismael', 'Ismael', 'operaciones'),
+  ('44444444-4444-4444-4444-444444444444', 'diego', 'Diego', 'operaciones');
+
+delete from worker_areas
+ where worker_id = '44444444-4444-4444-4444-444444444444' and area = 'operaciones';
+
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"44444444-4444-4444-4444-444444444444","role":"authenticated"}';
+
+select is(
+  (select count(*)::int from unit_current_state
+   where id = 'bbbbbbbb-0000-0000-0000-000000000001'),
+  1,
+  'units_select es abierto a cualquier autenticado, asi que la fila de la unidad sigue visible sin area'
+);
+select ok(
+  (select reservation_id from unit_current_state
+   where id = 'bbbbbbbb-0000-0000-0000-000000000001') is null,
+  'sin area, la vista ya no entrega el identificador de la reserva despachada'
+);
+select ok(
+  (select returns_at from unit_current_state
+   where id = 'bbbbbbbb-0000-0000-0000-000000000001') is null,
+  'sin area, la vista ya no entrega la hora de regreso de la reserva despachada'
+);
+select is(
+  (select effective_status from unit_current_state
+   where id = 'bbbbbbbb-0000-0000-0000-000000000001'),
+  'available',
+  'sin la reserva a la vista, la unidad se reporta disponible: menos informacion, nunca informacion ajena'
+);
+
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}';
+
+select is(
+  (select reservation_id from unit_current_state
+   where id = 'bbbbbbbb-0000-0000-0000-000000000001'),
+  'dddddddd-0000-0000-0000-000000000001'::uuid,
+  'operaciones si tiene politica sobre reservations, asi que la vista le sigue mostrando el despacho activo'
+);
+
+reset role;
 
 select * from finish();
 rollback;

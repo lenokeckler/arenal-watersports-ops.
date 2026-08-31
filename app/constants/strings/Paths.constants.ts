@@ -8,12 +8,36 @@ export const PATHS = {
   },
   ADMIN: {
     CATEGORIES: "/administracion/categorias",
+    CATEGORY_DETAIL: (categoryId: string): string =>
+      `/administracion/categorias/${categoryId}`,
+    CATEGORY_NEW: "/administracion/categorias/nueva",
+    COMBO_DETAIL: (comboId: string): string =>
+      `/administracion/combos/${comboId}`,
+    COMBO_NEW: "/administracion/combos/nueva",
     COMBOS: "/administracion/combos",
+    EXTRA_DETAIL: (extraId: string): string =>
+      `/administracion/extras/${extraId}`,
+    EXTRA_NEW: "/administracion/extras/nueva",
     EXTRAS: "/administracion/extras",
+    RATE_DETAIL: (tariffId: string): string =>
+      `/administracion/tarifas/${tariffId}`,
+    RATE_NEW: "/administracion/tarifas/nueva",
     RATES: "/administracion/tarifas",
     REPORTS: "/administracion/reportes",
     ROOT: "/administracion",
+    UNIT_CATEGORY: (categoryId: string): string =>
+      `/administracion/unidades/${categoryId}`,
+    UNIT_DETAIL: (
+      categoryId: string,
+      unitId: string
+    ): string =>
+      `/administracion/unidades/${categoryId}/${unitId}`,
+    UNIT_NEW: (categoryId: string): string =>
+      `/administracion/unidades/${categoryId}/nueva`,
     UNITS: "/administracion/unidades",
+    WORKER_DETAIL: (workerId: string): string =>
+      `/administracion/trabajadores/${workerId}`,
+    WORKER_NEW: "/administracion/trabajadores/nuevo",
     WORKERS: "/administracion/trabajadores",
   },
   COMMON: {

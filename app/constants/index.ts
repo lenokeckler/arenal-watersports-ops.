@@ -6,6 +6,11 @@ export {
 } from "@/app/components/image/constants";
 export { ERRORS } from "./errors/Errors.constant";
 export {
+  ERROR_SCREEN,
+  GLOBAL_ERROR_SCREEN,
+} from "./errors/ErrorScreen.constants";
+export { NOT_FOUND_SCREEN } from "./errors/NotFoundScreen.constants";
+export {
   ICON_HEADER_TYPE,
   ICON_ALTS,
   ICON_PATHS,
@@ -111,9 +116,11 @@ export {
 } from "./acceso/ChangePassword.constants";
 export {
   WORKER_STATUS,
+  WORKER_STATUS_LABEL,
   type WorkerStatus,
 } from "./acceso/WorkerStatus.constants";
 export {
+  LOGIN_ATTEMPT_MESSAGE,
   LOGIN_ATTEMPT_OUTCOME,
   type LoginAttemptOutcome,
 } from "./acceso/LoginAttempt.constants";
@@ -133,9 +140,7 @@ export {
   type PasswordRecoveryStep,
 } from "./acceso/PasswordRecoveryScreen.constants";
 export { EMAIL_CONFIG } from "./email/Email.constants";
-export {
-  WORK_MODE_SCREEN,
-} from "./acceso/WorkModeScreen.constants";
+export { WORK_MODE_SCREEN } from "./acceso/WorkModeScreen.constants";
 export {
   EQUIPMENT_UNIT_STATUS,
   EQUIPMENT_UNIT_STATUS_BADGE,
@@ -179,4 +184,69 @@ export { PAGINATION_CONTROL } from "./tablero/PaginationControl.constants";
 export { HISTORY_SCREEN } from "./tablero/HistoryScreen.constants";
 export { PRICE_LIST_SCREEN } from "./tablero/PriceListScreen.constants";
 export { INVENTORY_SCREEN } from "./tablero/InventoryScreen.constants";
-export { REALTIME, REALTIME_TABLE } from "./tablero/Realtime.constants";
+export {
+  REALTIME,
+  REALTIME_TABLE,
+} from "./tablero/Realtime.constants";
+export {
+  WORKER_MARK,
+  WORKER_MARK_LABEL,
+  WORKER_MARK_DESCRIPTION,
+  type WorkerMark,
+} from "./acceso/WorkerMark.constants";
+export {
+  USAGE_METRIC,
+  USAGE_METRIC_LABEL,
+  type UsageMetric,
+} from "./administracion/UsageMetric.constants";
+export {
+  CATEGORY_STATUS,
+  CATEGORY_STATUS_LABEL,
+  type CategoryStatus,
+} from "./administracion/CategoryStatus.constants";
+export { ADMIN_HUB_SCREEN } from "./administracion/AdminHubScreen.constants";
+export {
+  WORKERS_SCREEN,
+  WORKER_FORM_SCREEN,
+  WORKER_DETAIL_SCREEN,
+} from "./administracion/WorkersScreen.constants";
+export {
+  CATEGORIES_SCREEN,
+  CATEGORY_FORM_SCREEN,
+} from "./administracion/CategoriesScreen.constants";
+export { TEMPORARY_PASSWORD } from "./numbers/TemporaryPassword.constants";
+export {
+  PERMISSION_KIND,
+  type PermissionKind,
+} from "./administracion/PermissionKind.constants";
+export {
+  UNIT_STATUS,
+  UNIT_STATUS_LABEL,
+  EDITABLE_UNIT_STATUSES,
+  type UnitStatus,
+} from "./administracion/UnitStatus.constants";
+export {
+  UNITS_HUB_SCREEN,
+  UNIT_LIST_SCREEN,
+} from "./administracion/UnitsScreen.constants";
+export { UNIT_FORM_SCREEN } from "./administracion/UnitFormScreen.constants";
+export { STOCK_FORM_SCREEN } from "./administracion/StockScreen.constants";
+export {
+  EXTRAS_SCREEN,
+  EXTRA_FORM_SCREEN,
+} from "./administracion/ExtrasScreen.constants";
+export {
+  COMBOS_SCREEN,
+  COMBO_FORM_SCREEN,
+} from "./administracion/CombosScreen.constants";
+export {
+  RATES_SCREEN,
+  RATE_FORM_SCREEN,
+} from "./administracion/RatesScreen.constants";
+export { MONEY_LABEL } from "./strings/Money.constants";
+export {
+  DEPOSIT_STATUS,
+  DEPOSIT_STATUS_LABEL,
+  type DepositStatus,
+} from "./administracion/DepositStatus.constants";
+export { REPORTS_SCREEN } from "./administracion/ReportsScreen.constants";

@@ -1,0 +1,28 @@
+-- unit_current_state se creo en 20260828001000_availability.sql y se
+-- reemplazo en 20260828001050_availability_fixes.sql sin declarar
+-- security_invoker. Por omision Postgres deja security_invoker en false, asi
+-- que la vista evaluaba la seguridad por fila con los privilegios de su
+-- dueno (postgres, superusuario) y no con los de quien la consulta: el RLS
+-- de las tablas que lee quedaba sin aplicar.
+--
+-- Lo que eso dejaba escapar: equipment_units.units_select es abierto a
+-- cualquier autenticado (qual = true), asi que las columnas de la unidad no
+-- filtraban nada nuevo. Pero reservations_select e items_select exigen
+-- has_area('reservas') or has_area('operaciones') or is_admin(), y la vista
+-- expone reservation_id y returns_at derivados justamente de esas dos
+-- tablas. Un trabajador sin ninguna de esas areas leia por la vista el
+-- identificador y la hora de fin de cada reserva despachada — datos que sus
+-- propias politicas le niegan si consulta las tablas de frente.
+--
+-- US-TAB-007 lo pide explicitamente: la restriccion no se queda en esconder
+-- botones, el servidor rechaza la operacion aunque se intente por otro
+-- camino. Una vista que salta el RLS es exactamente ese otro camino.
+--
+-- Las siete vistas de 20260828001500_reports.sql ya nacieron con
+-- security_invoker = true; esta es la unica que faltaba. category_availability
+-- y unit_conflicts no necesitan nada: son funciones, y una funcion sin
+-- security definer ya corre con los privilegios de quien la llama.
+--
+-- alter view basta y es preferible a recrearla: no cambia la definicion ni
+-- las dependencias, solo como se evalua el RLS.
+alter view unit_current_state set (security_invoker = true);

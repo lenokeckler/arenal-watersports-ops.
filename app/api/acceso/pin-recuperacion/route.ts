@@ -3,19 +3,28 @@ import type { SuccessResponse } from "@/app/utils/response/models/SuccessRespons
 import type { ErrorResponse } from "@/app/utils/response/models/ErrorResponse.interface";
 import Response from "@/app/utils/response/Response";
 import { createServiceRoleSupabaseClient } from "@/app/services";
-import { PASSWORD_RECOVERY, PASSWORD_RECOVERY_MESSAGE } from "@/app/constants";
+import {
+  PASSWORD_RECOVERY,
+  PASSWORD_RECOVERY_MESSAGE,
+  PASSWORD_RECOVERY_SCREEN,
+} from "@/app/constants";
 import { RECOVERY_EMAIL } from "@/app/constants/email/EmailTemplates.constants";
 import {
   generateRecoveryPin,
   hashRecoveryPin,
 } from "@/app/utils/acceso/passwordRecoveryPin";
 import { sendMail } from "@/app/utils/email/sendMail";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { logServerError } from "@/app/utils/logging/logServerError";
 
 export interface PasswordRecoveryPinRequestBody {
   username: string;
 }
 
-export type PasswordRecoveryPinResponseData = Record<string, never>;
+export type PasswordRecoveryPinResponseData = Record<
+  string,
+  never
+>;
 
 const isValidBody = (
   body: unknown
@@ -26,7 +35,10 @@ const isValidBody = (
 
   const { username } = body as Record<string, unknown>;
 
-  return typeof username === "string" && username.trim().length > 0;
+  return (
+    typeof username === "string" &&
+    username.trim().length > 0
+  );
 };
 
 /**
@@ -39,10 +51,12 @@ const issuePin = async (
   workerId: string,
   personalEmail: string
 ): Promise<void> => {
-  const serviceRoleClient = createServiceRoleSupabaseClient();
+  const serviceRoleClient =
+    createServiceRoleSupabaseClient();
   const pin = generateRecoveryPin();
   const expiresAt = new Date(
-    Date.now() + PASSWORD_RECOVERY.PIN_EXPIRY_MINUTES * 60 * 1000
+    Date.now() +
+      PASSWORD_RECOVERY.PIN_EXPIRY_MINUTES * 60 * 1000
   ).toISOString();
 
   const { error: insertError } = await serviceRoleClient
@@ -84,7 +98,8 @@ export const POST = async (
   request: Request
 ): Promise<
   NextResponse<
-    SuccessResponse<PasswordRecoveryPinResponseData> | ErrorResponse
+    | SuccessResponse<PasswordRecoveryPinResponseData>
+    | ErrorResponse
   >
 > => {
   let body: unknown;
@@ -92,26 +107,45 @@ export const POST = async (
   try {
     body = await request.json();
   } catch {
-    return Response.badRequest("Cuerpo de la solicitud inválido.");
+    return Response.badRequest(
+      "Cuerpo de la solicitud inválido."
+    );
   }
 
   if (!isValidBody(body)) {
-    return Response.badRequest("Cuerpo de la solicitud inválido.");
+    return Response.badRequest(
+      "Cuerpo de la solicitud inválido."
+    );
   }
 
-  const serviceRoleClient = createServiceRoleSupabaseClient();
-  const { data: worker } = await serviceRoleClient
-    .from("workers")
-    .select("id, personal_email")
-    .eq("username", body.username.trim().toLowerCase())
-    .maybeSingle();
+  try {
+    const serviceRoleClient =
+      createServiceRoleSupabaseClient();
+    const { data: worker, error } = await serviceRoleClient
+      .from("workers")
+      .select("id, personal_email")
+      .eq("username", body.username.trim().toLowerCase())
+      .maybeSingle();
+    throwIfSupabaseError(
+      error,
+      "acceso.pinRecuperacion.fetchWorker"
+    );
 
-  if (worker?.personal_email) {
-    await issuePin(worker.id, worker.personal_email);
+    if (worker?.personal_email) {
+      await issuePin(worker.id, worker.personal_email);
+    }
+
+    return Response.success<PasswordRecoveryPinResponseData>(
+      {},
+      PASSWORD_RECOVERY_MESSAGE.PIN_REQUEST_GENERIC
+    );
+  } catch (error) {
+    // A Supabase failure here must not be interpreted as "the account does
+    // not exist" — it fails closed and visibly (a 500 logged server-side)
+    // instead of silently skipping the PIN and reporting success.
+    logServerError(error);
+    return Response.internalError(
+      PASSWORD_RECOVERY_SCREEN.ERROR.GENERIC
+    );
   }
-
-  return Response.success<PasswordRecoveryPinResponseData>(
-    {},
-    PASSWORD_RECOVERY_MESSAGE.PIN_REQUEST_GENERIC
-  );
 };

@@ -6,6 +6,7 @@ import {
   type ReservationType,
 } from "@/app/constants";
 import type { Nullable } from "@/app/types";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface HistoryFilters {
   categoryId: Nullable<string>;
@@ -51,8 +52,19 @@ const resolveReservationIdsForCategory = async (
       .from("reservation_items")
       .select("reservation_id")
       .eq("category_id", categoryId),
-    supabase.from("equipment_units").select("id").eq("category_id", categoryId),
+    supabase
+      .from("equipment_units")
+      .select("id")
+      .eq("category_id", categoryId),
   ]);
+  throwIfSupabaseError(
+    directItems.error,
+    "history.resolveReservationIdsForCategory.directItems"
+  );
+  throwIfSupabaseError(
+    units.error,
+    "history.resolveReservationIdsForCategory.units"
+  );
 
   const unitIds = (units.data ?? []).map((unit) => unit.id);
 
@@ -62,13 +74,18 @@ const resolveReservationIdsForCategory = async (
           .from("reservation_items")
           .select("reservation_id")
           .in("unit_id", unitIds)
-      : { data: [] };
+      : { data: [], error: null };
+  throwIfSupabaseError(
+    unitItems.error,
+    "history.resolveReservationIdsForCategory.unitItems"
+  );
 
   return Array.from(
     new Set(
-      [...(directItems.data ?? []), ...(unitItems.data ?? [])].map(
-        (item) => item.reservation_id
-      )
+      [
+        ...(directItems.data ?? []),
+        ...(unitItems.data ?? []),
+      ].map((item) => item.reservation_id)
     )
   );
 };
@@ -86,10 +103,11 @@ export const fetchHistoryPage = async (
   let matchingReservationIds: Nullable<string[]> = null;
 
   if (filters.categoryId) {
-    matchingReservationIds = await resolveReservationIdsForCategory(
-      supabase,
-      filters.categoryId
-    );
+    matchingReservationIds =
+      await resolveReservationIdsForCategory(
+        supabase,
+        filters.categoryId
+      );
     if (matchingReservationIds.length === 0) {
       return { rows: [], totalCount: 0 };
     }
@@ -125,41 +143,52 @@ export const fetchHistoryPage = async (
   }
 
   const from = (page - 1) * pageSize;
-  const { data, count } = await query.range(from, from + pageSize - 1);
+  const { data, count, error } = await query.range(
+    from,
+    from + pageSize - 1
+  );
+  throwIfSupabaseError(error, "history.fetchHistoryPage");
 
-  const rows: HistoryRow[] = (data ?? []).map((reservation) => {
-    const equipmentNames = Array.from(
-      new Set(
-        (reservation.reservation_items ?? [])
-          .map(
-            (item) =>
-              item.category?.name ?? item.unit?.category?.name ?? null
-          )
-          .filter((name): name is string => Boolean(name))
-      )
-    );
-    const guideNames = Array.from(
-      new Set(
-        (reservation.reservation_guides ?? [])
-          .map((guide) => guide.worker?.full_name ?? null)
-          .filter((name): name is string => Boolean(name))
-      )
-    );
+  const rows: HistoryRow[] = (data ?? []).map(
+    (reservation) => {
+      const equipmentNames = Array.from(
+        new Set(
+          (reservation.reservation_items ?? [])
+            .map(
+              (item) =>
+                item.category?.name ??
+                item.unit?.category?.name ??
+                null
+            )
+            .filter((name): name is string => Boolean(name))
+        )
+      );
+      const guideNames = Array.from(
+        new Set(
+          (reservation.reservation_guides ?? [])
+            .map((guide) => guide.worker?.full_name ?? null)
+            .filter((name): name is string => Boolean(name))
+        )
+      );
 
-    return {
-      attendedBy: reservation.created_by_worker?.full_name ?? "",
-      code: reservation.code,
-      createdBy: reservation.created_by_worker?.full_name ?? "",
-      customerName: reservation.customer_name,
-      equipmentNames,
-      guideNames,
-      id: reservation.id,
-      startsAt: reservation.starts_at,
-      status: reservation.status,
-      type: reservation.type,
-      updatedBy: reservation.updated_by_worker?.full_name ?? "",
-    };
-  });
+      return {
+        attendedBy:
+          reservation.created_by_worker?.full_name ?? "",
+        code: reservation.code,
+        createdBy:
+          reservation.created_by_worker?.full_name ?? "",
+        customerName: reservation.customer_name,
+        equipmentNames,
+        guideNames,
+        id: reservation.id,
+        startsAt: reservation.starts_at,
+        status: reservation.status,
+        type: reservation.type,
+        updatedBy:
+          reservation.updated_by_worker?.full_name ?? "",
+      };
+    }
+  );
 
   return { rows, totalCount: count ?? 0 };
 };

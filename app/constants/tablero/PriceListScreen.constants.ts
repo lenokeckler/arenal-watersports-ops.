@@ -9,7 +9,6 @@ export const PRICE_LIST_SCREEN = {
   COMBOS_TITLE: "Combos",
   EXTRAS_EMPTY: "No hay extras activos.",
   EXTRAS_TITLE: "Extras",
-  NO_PRICE: "Sin precio",
   SUBTITLE:
     "Catálogo de tarifas, extras y combos. Solo lectura.",
   TARIFFS_EMPTY: "No hay tarifas activas.",

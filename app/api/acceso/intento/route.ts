@@ -7,12 +7,15 @@ import {
   createServiceRoleSupabaseClient,
 } from "@/app/services";
 import {
+  LOGIN_ATTEMPT_MESSAGE,
   LOGIN_ATTEMPT_OUTCOME,
   type LoginAttemptOutcome,
   WORK_AREA,
   WORKER_STATUS,
 } from "@/app/constants";
 import { evaluateLoginAttempt } from "@/app/utils/acceso/loginAttempt";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { logServerError } from "@/app/utils/logging/logServerError";
 
 export interface LoginAttemptRequestBody {
   outcome: LoginAttemptOutcome;
@@ -36,7 +39,10 @@ const isValidBody = (
     return false;
   }
 
-  const { username, outcome } = body as Record<string, unknown>;
+  const { username, outcome } = body as Record<
+    string,
+    unknown
+  >;
 
   return (
     typeof username === "string" &&
@@ -65,7 +71,8 @@ const resetOwnFailedAttempts = async (
     return;
   }
 
-  const serviceRoleClient = createServiceRoleSupabaseClient();
+  const serviceRoleClient =
+    createServiceRoleSupabaseClient();
 
   await serviceRoleClient
     .from("workers")
@@ -84,37 +91,54 @@ const resetOwnFailedAttempts = async (
 const recordFailedAttempt = async (
   username: string
 ): Promise<LoginAttemptResponseData> => {
-  const serviceRoleClient = createServiceRoleSupabaseClient();
+  const serviceRoleClient =
+    createServiceRoleSupabaseClient();
 
-  const { data: worker } = await serviceRoleClient
-    .from("workers")
-    .select("id, failed_attempts")
-    .eq("username", username)
-    .maybeSingle();
+  const { data: worker, error: workerError } =
+    await serviceRoleClient
+      .from("workers")
+      .select("id, failed_attempts")
+      .eq("username", username)
+      .maybeSingle();
+  throwIfSupabaseError(
+    workerError,
+    "acceso.intento.recordFailedAttempt.worker"
+  );
 
   if (!worker) {
     return NEUTRAL_RESULT;
   }
 
-  const { data: administrationMembership } =
-    await serviceRoleClient
-      .from("worker_areas")
-      .select("worker_id")
-      .eq("worker_id", worker.id)
-      .eq("area", WORK_AREA.ADMINISTRATION)
-      .maybeSingle();
+  const {
+    data: administrationMembership,
+    error: membershipError,
+  } = await serviceRoleClient
+    .from("worker_areas")
+    .select("worker_id")
+    .eq("worker_id", worker.id)
+    .eq("area", WORK_AREA.ADMINISTRATION)
+    .maybeSingle();
+  throwIfSupabaseError(
+    membershipError,
+    "acceso.intento.recordFailedAttempt.membership"
+  );
 
   const nextFailedAttempts = worker.failed_attempts + 1;
-  const { isBlocked, recoveryAvailable } = evaluateLoginAttempt({
-    failedAttempts: nextFailedAttempts,
-    isAdministrationAccount: Boolean(administrationMembership),
-  });
+  const { isBlocked, recoveryAvailable } =
+    evaluateLoginAttempt({
+      failedAttempts: nextFailedAttempts,
+      isAdministrationAccount: Boolean(
+        administrationMembership
+      ),
+    });
 
   await serviceRoleClient
     .from("workers")
     .update({
       failed_attempts: nextFailedAttempts,
-      ...(isBlocked ? { status: WORKER_STATUS.BLOCKED } : {}),
+      ...(isBlocked
+        ? { status: WORKER_STATUS.BLOCKED }
+        : {}),
     })
     .eq("id", worker.id);
 
@@ -133,7 +157,8 @@ export const POST = async (
   request: Request
 ): Promise<
   NextResponse<
-    SuccessResponse<LoginAttemptResponseData> | ErrorResponse
+    | SuccessResponse<LoginAttemptResponseData>
+    | ErrorResponse
   >
 > => {
   let body: unknown;
@@ -154,15 +179,28 @@ export const POST = async (
 
   const { username, outcome } = body;
 
-  if (outcome === LOGIN_ATTEMPT_OUTCOME.SUCCESS) {
-    await resetOwnFailedAttempts(username);
+  try {
+    if (outcome === LOGIN_ATTEMPT_OUTCOME.SUCCESS) {
+      await resetOwnFailedAttempts(username);
+
+      return Response.success<LoginAttemptResponseData>(
+        NEUTRAL_RESULT
+      );
+    }
+
+    const result = await recordFailedAttempt(username);
 
     return Response.success<LoginAttemptResponseData>(
-      NEUTRAL_RESULT
+      result
+    );
+  } catch (error) {
+    // A Supabase failure here must never be interpreted as "the account
+    // does not exist" or resolve as if the attempt were neutral — it fails
+    // closed and visibly (a 500 the client already treats as a failed
+    // attempt) instead of closed and silent.
+    logServerError(error);
+    return Response.internalError(
+      LOGIN_ATTEMPT_MESSAGE.ERROR.GENERIC
     );
   }
-
-  const result = await recordFailedAttempt(username);
-
-  return Response.success<LoginAttemptResponseData>(result);
 };

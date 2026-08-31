@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
 import { TRACKING_MODE } from "@/app/constants";
+import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { resolveEquipmentImage } from "./equipmentImage";
 
 export interface BoardCategory {
@@ -25,12 +26,18 @@ const AVAILABLE_EFFECTIVE_STATUS = "available";
  */
 const NOW_WINDOW_MINUTES = 1;
 
-const nowWindow = (): { endsAt: string; startsAt: string } => {
+const nowWindow = (): {
+  endsAt: string;
+  startsAt: string;
+} => {
   const startsAt = new Date();
   const endsAt = new Date(
     startsAt.getTime() + NOW_WINDOW_MINUTES * 60_000
   );
-  return { endsAt: endsAt.toISOString(), startsAt: startsAt.toISOString() };
+  return {
+    endsAt: endsAt.toISOString(),
+    startsAt: startsAt.toISOString(),
+  };
 };
 
 /**
@@ -42,19 +49,27 @@ const nowWindow = (): { endsAt: string; startsAt: string } => {
 export const fetchBoardCategories = async (
   supabase: SupabaseClient<Database>
 ): Promise<BoardCategory[]> => {
-  const { data: categories } = await supabase
-    .from("equipment_categories")
-    .select("id, name, tracking_mode")
-    .eq("is_reservable", true)
-    .eq("status", "active")
-    .order("name");
+  const { data: categories, error: categoriesError } =
+    await supabase
+      .from("equipment_categories")
+      .select("id, name, tracking_mode")
+      .eq("is_reservable", true)
+      .eq("status", "active")
+      .order("name");
+  throwIfSupabaseError(
+    categoriesError,
+    "board.fetchBoardCategories.categories"
+  );
 
   if (!categories || categories.length === 0) {
     return [];
   }
 
   const byUnitIds = categories
-    .filter((category) => category.tracking_mode === TRACKING_MODE.BY_UNIT)
+    .filter(
+      (category) =>
+        category.tracking_mode === TRACKING_MODE.BY_UNIT
+    )
     .map((category) => category.id);
 
   const unitCountsByCategory = new Map<
@@ -63,22 +78,33 @@ export const fetchBoardCategories = async (
   >();
 
   if (byUnitIds.length > 0) {
-    const { data: units } = await supabase
-      .from("unit_current_state")
-      .select("category_id, effective_status, recorded_status")
-      .in("category_id", byUnitIds)
-      .neq("recorded_status", DECOMMISSIONED);
+    const { data: units, error: unitsError } =
+      await supabase
+        .from("unit_current_state")
+        .select(
+          "category_id, effective_status, recorded_status"
+        )
+        .in("category_id", byUnitIds)
+        .neq("recorded_status", DECOMMISSIONED);
+    throwIfSupabaseError(
+      unitsError,
+      "board.fetchBoardCategories.units"
+    );
 
     for (const unit of units ?? []) {
       if (!unit.category_id) {
         continue;
       }
-      const current = unitCountsByCategory.get(unit.category_id) ?? {
+      const current = unitCountsByCategory.get(
+        unit.category_id
+      ) ?? {
         free: 0,
         total: 0,
       };
       current.total += 1;
-      if (unit.effective_status === AVAILABLE_EFFECTIVE_STATUS) {
+      if (
+        unit.effective_status === AVAILABLE_EFFECTIVE_STATUS
+      ) {
         current.free += 1;
       }
       unitCountsByCategory.set(unit.category_id, current);
@@ -88,7 +114,8 @@ export const fetchBoardCategories = async (
   const { startsAt, endsAt } = nowWindow();
 
   const byQuantityCategories = categories.filter(
-    (category) => category.tracking_mode === TRACKING_MODE.BY_QUANTITY
+    (category) =>
+      category.tracking_mode === TRACKING_MODE.BY_QUANTITY
   );
 
   const quantityCountsByCategory = new Map<
@@ -98,13 +125,17 @@ export const fetchBoardCategories = async (
 
   await Promise.all(
     byQuantityCategories.map(async (category) => {
-      const { data: availability } = await supabase.rpc(
-        "category_availability",
-        {
-          p_category_id: category.id,
-          p_ends_at: endsAt,
-          p_starts_at: startsAt,
-        }
+      const {
+        data: availability,
+        error: availabilityError,
+      } = await supabase.rpc("category_availability", {
+        p_category_id: category.id,
+        p_ends_at: endsAt,
+        p_starts_at: startsAt,
+      });
+      throwIfSupabaseError(
+        availabilityError,
+        "board.fetchBoardCategories.availability"
       );
       const row = availability?.[0];
       quantityCountsByCategory.set(category.id, {

@@ -5,7 +5,7 @@ import {
   RESERVATION_TYPE_LABEL,
 } from "@/app/constants";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
-import PriceAmounts from "./components/PriceAmounts";
+import PriceAmounts from "@/app/components/price-amounts/PriceAmounts";
 import type { PriceListProps } from "./models/PriceListProps.interface";
 
 const NO_ROWS = 0;
