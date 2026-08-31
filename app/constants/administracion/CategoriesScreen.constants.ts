@@ -11,7 +11,8 @@ export const CATEGORIES_SCREEN = {
     STATUS: "Estado",
     TRACKING_MODE: "Modalidad",
   },
-  EMPTY_STATE: "No hay categorías que coincidan con los filtros.",
+  EMPTY_STATE:
+    "No hay categorías que coincidan con los filtros.",
   FILTER: {
     ALL_MODES: "Todas",
     ALL_STATUSES: "Todas",
@@ -37,14 +38,16 @@ export const CATEGORIES_SCREEN = {
  */
 export const CATEGORY_FORM_SCREEN = {
   ALERT: {
-    EXPIRY_DAYS_LABEL: "Avisar con cuántos días de anticipación",
+    EXPIRY_DAYS_LABEL:
+      "Avisar con cuántos días de anticipación",
     MIN_QUANTITY_LABEL: "Cantidad mínima antes de avisar",
     TITLE: "Avisos",
   },
   BEHAVIOR: {
     CAN_BE_DAMAGED: "Se puede dañar",
     CONSUMES_FUEL: "Consume gasolina",
-    DEFAULT_DURATION_LABEL: "Duración por defecto de una salida (minutos)",
+    DEFAULT_DURATION_LABEL:
+      "Duración por defecto de una salida (minutos)",
     GUIDE_ONLY: "Solo sale con guía",
     HAS_CONDITION_PHOTOS: "Lleva fotos de estado",
     HAS_MOTOR: "Lleva motor",
@@ -59,7 +62,8 @@ export const CATEGORY_FORM_SCREEN = {
   },
   DELETE: {
     BUTTON: "Eliminar categoría",
-    CONFIRM: "Esta categoría no tiene registros. ¿Eliminarla?",
+    CONFIRM:
+      "Esta categoría no tiene registros. ¿Eliminarla?",
   },
   DEPOSIT: {
     CRC_LABEL: "Depósito en colones",
@@ -68,7 +72,8 @@ export const CATEGORY_FORM_SCREEN = {
   },
   EDIT_TITLE: "Editar categoría",
   ERROR: {
-    GENERIC: "No se pudo guardar la categoría. Revise los datos.",
+    GENERIC:
+      "No se pudo guardar la categoría. Revise los datos.",
     NAME_REQUIRED: "El nombre es obligatorio.",
     NAME_TAKEN: "Ya existe una categoría con ese nombre.",
   },

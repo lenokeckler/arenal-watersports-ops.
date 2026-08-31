@@ -6,23 +6,16 @@ import {
   createServerSupabaseClient,
   createServiceRoleSupabaseClient,
 } from "@/app/services";
-import {
-  ACCESS_AUTH,
-  WORK_AREA,
-  WORKER_STATUS,
-} from "@/app/constants";
+import { WORK_AREA, WORKER_STATUS } from "@/app/constants";
 import { fetchWorkerPermissionState } from "@/app/utils/administracion/workerPermissions";
-import {
-  buildRetiredEmail,
-  buildRetiredUsername,
-} from "@/app/utils/administracion/retiredWorker";
 import { generateTemporaryPassword } from "@/app/utils/generators/temporaryPassword";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { logServerError } from "@/app/utils/logging/logServerError";
 
-const GENERIC_ERROR = "No se pudo eliminar el trabajador.";
+const GENERIC_ERROR =
+  "No se pudo dar de baja al trabajador.";
 
-/** Cien anos: la cuenta no vuelve, y Supabase exige una duracion. */
+/** Cien anos. Recontratar lo levanta; mientras tanto, no se entra. */
 const RETIRED_BAN_DURATION = "876000h";
 
 export type DeleteWorkerResponseData = Record<
@@ -35,28 +28,26 @@ interface RouteParams {
 }
 
 /**
- * `DELETE /api/administracion/trabajadores/[workerId]`: la persona dejo de
- * trabajar aqui y su perfil deja de existir.
+ * `DELETE /api/administracion/trabajadores/[workerId]`: se dio de baja a la
+ * persona. Pierde el acceso y sale del panel, pero su cuenta se guarda
+ * entera por si vuelve.
  *
- * No es un `delete` de la fila y no puede serlo: 36 llaves foraneas apuntan
- * a `workers` y casi todas son `no action`, asi que Postgres lo rechazaria
- * en cuanto la persona haya firmado cualquier cosa — y eso es exactamente lo
- * que hay que conservar. Lo que se elimina es todo lo que hace un perfil:
+ * No borra nada de la ficha a proposito. Si la recontratan tiene que poder
+ * entrar con la misma cuenta que tenia, con sus mismas areas y marcas, asi
+ * que el correo, la cedula, el nombre de usuario y los permisos se quedan
+ * donde estan. Lo unico que se corta es el acceso:
  *
- * 1. La cuenta de `auth.users` queda inutilizable. No se borra porque no se
- *    puede: `workers.id` la referencia con `on delete restrict`, y la fila
- *    de trabajador es justamente la que tiene que sobrevivir. Asi que se
- *    neutraliza — se le pone una contrasena aleatoria que nadie conoce, se
- *    banea, y se le cambia el correo sintetico para liberar el del nombre
- *    de usuario. El efecto es el mismo: no se vuelve a entrar con ella.
- * 2. Las areas y las marcas, para que no quede ningun permiso colgando.
- * 3. Los PIN de recuperacion pendientes.
- * 4. Los datos personales: correo, cedula, caducidad, ultimo modo. El
- *    nombre de usuario se libera tambien, porque es unico y alguien nuevo
- *    puede necesitarlo.
+ * 1. La cuenta de `auth.users` se banea y se le pone una contrasena
+ *    aleatoria que nadie conoce. No se borra porque no se puede —
+ *    `workers.id` la referencia con `on delete restrict` — pero tampoco
+ *    hace falta: asi no se entra ni con la clave vieja.
+ * 2. `deleted_at` la saca de todas las listas del panel; queda solo bajo el
+ *    filtro de ex trabajadores.
+ * 3. Los PIN de recuperacion pendientes se borran: uno vivo dejaria
+ *    recuperar la cuenta de alguien que ya no trabaja aqui.
  *
- * Sobrevive el identificador y el nombre completo, que es lo unico que el
- * historial necesita para seguir diciendo quien hizo que (RNF-023).
+ * El historial no se toca en ningun caso: sigue firmando con su nombre
+ * (RNF-023).
  *
  * `DELETE` sigue revocado para `authenticated` a nivel de base, asi que esto
  * va con service role, igual que la creacion.
@@ -90,13 +81,13 @@ export const DELETE = async (
 
   if (!isAdmin) {
     return Response.forbidden(
-      "No tiene permiso para eliminar trabajadores."
+      "No tiene permiso para dar de baja trabajadores."
     );
   }
 
   if (workerId === caller.id) {
     return Response.forbidden(
-      "No puede eliminar su propia cuenta."
+      "No puede darse de baja a sí mismo."
     );
   }
 
@@ -109,7 +100,7 @@ export const DELETE = async (
         .maybeSingle();
     throwIfSupabaseError(
       workerError,
-      "administracion.eliminarTrabajador.fetchWorker"
+      "administracion.darDeBaja.fetchWorker"
     );
 
     if (!worker || worker.deleted_at) {
@@ -120,27 +111,9 @@ export const DELETE = async (
     // devuelve un mensaje entendible en vez de un error de base.
     if (worker.base_role === WORK_AREA.ADMINISTRATION) {
       return Response.forbidden(
-        "La cuenta de administración no se elimina."
+        "La cuenta de administración no se da de baja."
       );
     }
-
-    const { error: areasError } = await serviceRoleClient
-      .from("worker_areas")
-      .delete()
-      .eq("worker_id", workerId);
-    throwIfSupabaseError(
-      areasError,
-      "administracion.eliminarTrabajador.areas"
-    );
-
-    const { error: marksError } = await serviceRoleClient
-      .from("worker_marks")
-      .delete()
-      .eq("worker_id", workerId);
-    throwIfSupabaseError(
-      marksError,
-      "administracion.eliminarTrabajador.marks"
-    );
 
     const { error: pinsError } = await serviceRoleClient
       .from("password_reset_pins")
@@ -148,7 +121,7 @@ export const DELETE = async (
       .eq("worker_id", workerId);
     throwIfSupabaseError(
       pinsError,
-      "administracion.eliminarTrabajador.pins"
+      "administracion.darDeBaja.pins"
     );
 
     // Los datos personales se van antes que la cuenta: si la fila no se
@@ -159,18 +132,13 @@ export const DELETE = async (
       .from("workers")
       .update({
         deleted_at: new Date().toISOString(),
-        expires_at: null,
-        last_work_area: null,
-        national_id: null,
-        personal_email: null,
         status: WORKER_STATUS.BLOCKED,
         updated_by: caller.id,
-        username: buildRetiredUsername(workerId),
       })
       .eq("id", workerId);
     throwIfSupabaseError(
       updateError,
-      "administracion.eliminarTrabajador.update"
+      "administracion.darDeBaja.update"
     );
 
     const { error: authError } =
@@ -178,10 +146,6 @@ export const DELETE = async (
         workerId,
         {
           ban_duration: RETIRED_BAN_DURATION,
-          email: buildRetiredEmail(
-            workerId,
-            ACCESS_AUTH.SYNTHETIC_EMAIL_DOMAIN
-          ),
           password: generateTemporaryPassword(),
         }
       );

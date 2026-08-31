@@ -20,16 +20,21 @@ interface WorkerListTableProps {
 
 const NO_ROWS = 0;
 
-const isExternalGuideActive = (worker: WorkerListRow): boolean =>
+const isExternalGuideActive = (
+  worker: WorkerListRow
+): boolean =>
   worker.status === WORKER_STATUS.ACTIVE &&
-  (!worker.expiresAt || new Date(worker.expiresAt) > new Date());
+  (!worker.expiresAt ||
+    new Date(worker.expiresAt) > new Date());
 
 /**
  * The worker listing (US-ADM-011): name, username, base role, additional
  * areas, marks, expiry and status, one page at a time. Every row links
  * into the detail screen where areas, marks and the account actions live.
  */
-const WorkerListTable = ({ rows }: WorkerListTableProps): JSX.Element => {
+const WorkerListTable = ({
+  rows,
+}: WorkerListTableProps): JSX.Element => {
   if (rows.length === NO_ROWS) {
     return (
       <p className="font-body-base text-body-base text-on-surface-variant">
@@ -64,7 +69,10 @@ const WorkerListTable = ({ rows }: WorkerListTableProps): JSX.Element => {
             <th className="px-md py-sm font-label-mono text-label-mono uppercase text-on-surface-variant">
               {WORKERS_SCREEN.COLUMN.STATUS}
             </th>
-            <th className="px-md py-sm" aria-hidden />
+            <th
+              className="px-md py-sm"
+              aria-hidden
+            />
           </tr>
         </thead>
         <tbody className="font-body-base text-body-base">
@@ -75,7 +83,9 @@ const WorkerListTable = ({ rows }: WorkerListTableProps): JSX.Element => {
             >
               <td className="px-md py-sm text-on-surface">
                 <Link
-                  href={PATHS.ADMIN.WORKER_DETAIL(worker.id)}
+                  href={PATHS.ADMIN.WORKER_DETAIL(
+                    worker.id
+                  )}
                   className="hover:text-primary"
                 >
                   {worker.fullName}
@@ -102,7 +112,9 @@ const WorkerListTable = ({ rows }: WorkerListTableProps): JSX.Element => {
               <td className="px-md py-sm text-on-surface-variant">
                 {worker.marks.length > NO_ROWS
                   ? worker.marks
-                      .map((mark) => WORKER_MARK_LABEL[mark])
+                      .map(
+                        (mark) => WORKER_MARK_LABEL[mark]
+                      )
                       .join(STRING.COMMA_SPACE)
                   : WORKERS_SCREEN.NO_MARKS}
               </td>
@@ -116,8 +128,10 @@ const WorkerListTable = ({ rows }: WorkerListTableProps): JSX.Element => {
                     }
                   >
                     {isExternalGuideActive(worker)
-                      ? WORKERS_SCREEN.EXTERNAL_GUIDE_STATUS.ACTIVE
-                      : WORKERS_SCREEN.EXTERNAL_GUIDE_STATUS.EXPIRED}
+                      ? WORKERS_SCREEN.EXTERNAL_GUIDE_STATUS
+                          .ACTIVE
+                      : WORKERS_SCREEN.EXTERNAL_GUIDE_STATUS
+                          .EXPIRED}
                   </Badge>
                 ) : (
                   STRING.N_A
@@ -136,10 +150,14 @@ const WorkerListTable = ({ rows }: WorkerListTableProps): JSX.Element => {
               </td>
               <td className="px-md py-sm text-right">
                 <Link
-                  href={PATHS.ADMIN.WORKER_DETAIL(worker.id)}
+                  href={PATHS.ADMIN.WORKER_DETAIL(
+                    worker.id
+                  )}
                   className="text-on-surface-variant hover:text-primary"
                 >
-                  <MaterialIcon name={MATERIAL_ICON_NAME.CHEVRON_RIGHT} />
+                  <MaterialIcon
+                    name={MATERIAL_ICON_NAME.CHEVRON_RIGHT}
+                  />
                 </Link>
               </td>
             </tr>

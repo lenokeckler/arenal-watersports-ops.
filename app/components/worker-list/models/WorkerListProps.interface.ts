@@ -1,4 +1,7 @@
-import type { WorkersFilters, WorkerListRow } from "@/app/utils/administracion/workers";
+import type {
+  WorkersFilters,
+  WorkerListRow,
+} from "@/app/utils/administracion/workers";
 
 export interface WorkerListProps {
   filters: WorkersFilters;

@@ -9,6 +9,7 @@ import {
   STRING,
   WORK_AREA,
   WORKER_DETAIL_SCREEN,
+  WORKER_FORM_SCREEN,
   WORKER_STATUS,
   type ApiMethod,
   type WorkArea,
@@ -20,6 +21,7 @@ import {
 // client build.
 import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import type { Nullable } from "@/app/types";
+import type { RehireWorkerResponseData } from "@/app/api/administracion/trabajadores/[workerId]/recontratar/route";
 import type { WorkerPermissionRequestBody } from "@/app/api/administracion/trabajadores/[workerId]/permisos/route";
 import type { ResetWorkerPasswordResponseData } from "@/app/api/administracion/trabajadores/[workerId]/contrasena-temporal/route";
 import type { WorkerDetailProps } from "../models/WorkerDetailProps.interface";
@@ -90,6 +92,16 @@ export const useWorkerDetailViewModel = ({
   const [resetPasswordResult, setResetPasswordResult] =
     useState<Nullable<string>>(null);
   const [isBusy, setIsBusy] = useState<boolean>(false);
+  /**
+   * El panel de contrasena temporal lo abren dos acciones distintas —
+   * reponerla y recontratar— y su titulo tiene que decir cual fue. No se
+   * puede deducir del estado del trabajador: recontratar ya lo dejo activo
+   * para cuando el panel aparece.
+   */
+  const [passwordPanelTitle, setPasswordPanelTitle] =
+    useState<string>(
+      WORKER_FORM_SCREEN.SUCCESS.RESET_TITLE
+    );
 
   const isAdminAccount =
     worker.baseRole === WORK_AREA.ADMINISTRATION;
@@ -265,6 +277,42 @@ export const useWorkerDetailViewModel = ({
    * queda. Al terminar se vuelve a la lista, porque esta ficha ya no
    * existe: `fetchWorkerDetail` filtra los perfiles eliminados.
    */
+  /**
+   * La persona volvio. Vuelve a su misma cuenta, con sus mismas areas y
+   * marcas: lo unico que cambia es que recupera el acceso, con una
+   * contrasena temporal nueva. Se reutiliza el mismo panel que muestra la
+   * contrasena tras reponerla, porque es exactamente la misma entrega.
+   */
+  const handleRehire = (): void => {
+    setIsBusy(true);
+    setActionError(null);
+    setResetPasswordResult(null);
+
+    void postJson<RehireWorkerResponseData>(
+      API.ROUTES.WORKER_REHIRE(worker.id),
+      API.METHODS.POST,
+      {}
+    ).then((result) => {
+      setIsBusy(false);
+      if (!result.ok || !result.data) {
+        setActionError(
+          result.error ??
+            WORKER_DETAIL_SCREEN.ERROR.ACTION_FAILED
+        );
+        return;
+      }
+      setWorker((current) => ({
+        ...current,
+        deletedAt: null,
+      }));
+      setStatus(WORKER_STATUS.ACTIVE);
+      setPasswordPanelTitle(
+        WORKER_FORM_SCREEN.SUCCESS.REHIRE_TITLE
+      );
+      setResetPasswordResult(result.data.temporaryPassword);
+    });
+  };
+
   const handleConfirmDelete = (): void => {
     setIsBusy(true);
     setActionError(null);
@@ -305,6 +353,9 @@ export const useWorkerDetailViewModel = ({
         );
         return;
       }
+      setPasswordPanelTitle(
+        WORKER_FORM_SCREEN.SUCCESS.RESET_TITLE
+      );
       setResetPasswordResult(result.data.temporaryPassword);
     });
   };
@@ -321,12 +372,14 @@ export const useWorkerDetailViewModel = ({
     handleExtendExpiry,
     handleReactivate,
     handleRemoveArea,
+    handleRehire,
     handleRequestDelete,
     handleResetPassword,
     handleToggleMark,
     isAdminAccount,
     isBusy,
     isConfirmingDelete,
+    passwordPanelTitle,
     resetPasswordResult,
     status,
     worker,

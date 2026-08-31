@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
-import { PAGINATION, WORK_AREA, WORKER_STATUS, type WorkArea, type WorkerStatus } from "@/app/constants";
+import {
+  PAGINATION,
+  WORK_AREA,
+  WORKER_STATUS,
+  type WorkArea,
+  type WorkerStatus,
+  WORKER_SCOPE,
+  type WorkerScope,
+} from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services";
 import { requireAdminWorker } from "@/app/utils/administracion/requireAdminWorker";
 import { fetchWorkersPage } from "@/app/utils/administracion/workers";
@@ -14,14 +22,19 @@ interface WorkersPageParams {
   searchParams: Promise<{
     page?: string;
     role?: string;
+    scope?: string;
     search?: string;
     status?: string;
   }>;
 }
 
 const FIRST_PAGE = 1;
-const VALID_ROLES: readonly string[] = Object.values(WORK_AREA);
-const VALID_STATUSES: readonly string[] = Object.values(WORKER_STATUS);
+const VALID_ROLES: readonly string[] =
+  Object.values(WORK_AREA);
+const VALID_STATUSES: readonly string[] =
+  Object.values(WORKER_STATUS);
+const VALID_SCOPES: readonly string[] =
+  Object.values(WORKER_SCOPE);
 
 /**
  * `/administracion/trabajadores` (US-ADM-011). Same server-resolved
@@ -35,13 +48,21 @@ const WorkersPage = async ({
   await requireAdminWorker(supabase);
 
   const resolvedParams = await searchParams;
-  const page = Math.max(Number(resolvedParams.page) || FIRST_PAGE, FIRST_PAGE);
+  const page = Math.max(
+    Number(resolvedParams.page) || FIRST_PAGE,
+    FIRST_PAGE
+  );
   const filters = {
     role: VALID_ROLES.includes(resolvedParams.role ?? "")
       ? (resolvedParams.role as WorkArea)
       : null,
+    scope: VALID_SCOPES.includes(resolvedParams.scope ?? "")
+      ? (resolvedParams.scope as WorkerScope)
+      : WORKER_SCOPE.CURRENT,
     search: resolvedParams.search ?? null,
-    status: VALID_STATUSES.includes(resolvedParams.status ?? "")
+    status: VALID_STATUSES.includes(
+      resolvedParams.status ?? ""
+    )
       ? (resolvedParams.status as WorkerStatus)
       : null,
   };

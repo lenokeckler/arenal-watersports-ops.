@@ -11,7 +11,8 @@ export const EXTRAS_SCREEN = {
     PRICE: "Precio",
     STATUS: "Estado",
   },
-  EMPTY_STATE: "No hay extras que coincidan con los filtros.",
+  EMPTY_STATE:
+    "No hay extras que coincidan con los filtros.",
   FILTER: {
     ALL_STATUSES: "Todos",
     APPLY: "Buscar",
@@ -47,11 +48,13 @@ export const EXTRA_FORM_SCREEN = {
   },
   DELETE: {
     BUTTON: "Eliminar extra",
-    CONFIRM: "Este extra nunca se usó en una reserva. ¿Eliminarlo?",
+    CONFIRM:
+      "Este extra nunca se usó en una reserva. ¿Eliminarlo?",
   },
   EDIT_TITLE: "Editar extra",
   ERROR: {
-    GENERIC: "No se pudo guardar el extra. Revise los datos.",
+    GENERIC:
+      "No se pudo guardar el extra. Revise los datos.",
     NAME_REQUIRED: "El nombre es obligatorio.",
     NAME_TAKEN: "Ya existe un extra con ese nombre.",
     OCCUPIES_QUANTITY_REQUIRED:

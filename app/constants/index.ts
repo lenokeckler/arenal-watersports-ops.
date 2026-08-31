@@ -212,6 +212,11 @@ export {
   WORKER_DETAIL_SCREEN,
 } from "./administracion/WorkersScreen.constants";
 export {
+  WORKER_SCOPE,
+  WORKER_SCOPE_LABEL,
+  type WorkerScope,
+} from "./administracion/WorkerScope.constants";
+export {
   CATEGORIES_SCREEN,
   CATEGORY_FORM_SCREEN,
 } from "./administracion/CategoriesScreen.constants";

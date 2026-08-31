@@ -3,12 +3,16 @@ import type { Database, Nullable } from "@/app/types";
 import type {
   WorkArea,
   WorkerMark,
+  WorkerScope,
   WorkerStatus,
 } from "@/app/constants";
+import { WORKER_SCOPE } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface WorkersFilters {
   role: Nullable<WorkArea>;
+  /** A quien lista el panel: la gente de la empresa o los ex trabajadores. */
+  scope: WorkerScope;
   search: Nullable<string>;
   status: Nullable<WorkerStatus>;
 }
@@ -16,6 +20,8 @@ export interface WorkersFilters {
 export interface WorkerListRow {
   additionalAreas: WorkArea[];
   baseRole: WorkArea;
+  /** Cuando se le dio de baja. Nulo mientras siga en la empresa. */
+  deletedAt: Nullable<string>;
   expiresAt: Nullable<string>;
   fullName: string;
   id: string;
@@ -43,7 +49,7 @@ export interface WorkerDetail extends WorkerListRow {
 // `fetchWorkersPage` silently swallowed into an empty list. Both embeds
 // below pin the `worker_id` side of the relationship.
 const WORKER_SELECT =
-  "id, username, full_name, base_role, status, is_external_guide, " +
+  "id, username, full_name, base_role, status, is_external_guide, deleted_at, " +
   "national_id, expires_at, created_at, " +
   "worker_areas!worker_areas_worker_id_fkey(area), " +
   "worker_marks!worker_marks_worker_id_fkey(mark)";
@@ -51,6 +57,7 @@ const WORKER_SELECT =
 interface WorkerQueryRow {
   base_role: WorkArea;
   created_at: string;
+  deleted_at: Nullable<string>;
   expires_at: Nullable<string>;
   full_name: string;
   id: string;
@@ -70,6 +77,7 @@ const toWorkerRow = (
     .filter((area) => area !== row.base_role),
   baseRole: row.base_role,
   createdAt: row.created_at,
+  deletedAt: row.deleted_at,
   expiresAt: row.expires_at,
   fullName: row.full_name,
   id: row.id,
@@ -97,10 +105,14 @@ export const fetchWorkersPage = async (
   let query = supabase
     .from("workers")
     .select(WORKER_SELECT, { count: "exact" })
-    // Un perfil eliminado ya no es una cuenta: la fila solo sobrevive para
-    // que la firma de lo que esa persona hizo siga teniendo nombre.
-    .is("deleted_at", null)
     .order("full_name");
+
+  // Una cuenta dada de baja no estorba en el panel, pero tampoco se pierde:
+  // vive bajo su propio filtro por si a la persona la recontratan.
+  query =
+    filters.scope === WORKER_SCOPE.FORMER
+      ? query.not("deleted_at", "is", null)
+      : query.is("deleted_at", null);
 
   if (filters.role) {
     query = query.eq("base_role", filters.role);
@@ -142,7 +154,6 @@ export const fetchWorkerDetail = async (
     .from("workers")
     .select(WORKER_SELECT)
     .eq("id", workerId)
-    .is("deleted_at", null)
     .maybeSingle();
   throwIfSupabaseError(error, "workers.fetchWorkerDetail");
 

@@ -43,6 +43,8 @@ export const API = {
     WORKERS: "/api/administracion/trabajadores",
     WORKER_DETAIL: (workerId: string): string =>
       `/api/administracion/trabajadores/${workerId}`,
+    WORKER_REHIRE: (workerId: string): string =>
+      `/api/administracion/trabajadores/${workerId}/recontratar`,
   },
 } as const;
 

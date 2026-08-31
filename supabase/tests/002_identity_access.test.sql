@@ -73,36 +73,36 @@ set local request.jwt.claims to '{"sub":"44444444-4444-4444-4444-444444444444","
 select ok(not has_area('operaciones'), 'un guia externo vencido pierde el area el instante que pasa su fecha');
 
 -- ============================================================
--- Eliminar un perfil (20260828001950)
+-- Dar de baja y recontratar (20260828001950 / 20260828002000)
 -- ============================================================
 
--- Un `delete` de verdad no es posible: 36 llaves foraneas apuntan a
--- `workers` y casi todas son `no action`, asi que la fila sobrevive con
--- `deleted_at` puesto para que la firma de lo que la persona hizo siga
--- teniendo nombre. Lo que se elimina es todo lo demas, y eso lo hace la
--- ruta de servidor. Aqui van las dos reglas que ninguna ruta puede saltarse.
+-- Dar de baja no borra nada: la cuenta se guarda entera y sin acceso, por si
+-- a la persona la recontratan. `deleted_at` es lo que la saca del panel; el
+-- acceso lo corta la ruta de servidor baneando la cuenta de auth.
 reset role;
 
 select throws_ok(
   $$ update workers set deleted_at = now()
      where id = '11111111-1111-1111-1111-111111111111' $$,
   'P0001', 'La cuenta de administracion no se elimina',
-  'la cuenta de administracion no se puede eliminar'
+  'la cuenta de administracion no se puede dar de baja'
 );
 
 select lives_ok(
   $$ update workers set deleted_at = now()
      where id = '22222222-2222-2222-2222-222222222222' $$,
-  'cualquier otra cuenta si se puede eliminar'
+  'cualquier otra cuenta si se puede dar de baja'
 );
 
--- Un perfil eliminado no vuelve. Quien regrese a la empresa entra con una
--- cuenta nueva, no reviviendo la vieja con sus areas y marcas de entonces.
-select throws_ok(
+-- Y vuelve si la recontratan: la cuenta se guardo entera justamente para
+-- eso, con sus areas y sus marcas intactas. Lo unico que la ruta de
+-- servidor hace aparte es devolverle el acceso con una contrasena temporal
+-- nueva, porque nadie deberia volver a entrar con la clave que tenia el dia
+-- que se fue.
+select lives_ok(
   $$ update workers set deleted_at = null
      where id = '22222222-2222-2222-2222-222222222222' $$,
-  'P0001', 'Un perfil eliminado no se reactiva: cree una cuenta nueva',
-  'un perfil eliminado no se puede reactivar'
+  'a un ex trabajador se le puede recontratar sobre su misma cuenta'
 );
 
 select * from finish();

@@ -18,6 +18,7 @@ export interface WorkerDetailViewModel {
   handleExpiresAtDraftChange: (value: string) => void;
   handleReactivate: () => void;
   handleRemoveArea: (area: WorkArea) => void;
+  handleRehire: () => void;
   handleRequestDelete: () => void;
   handleResetPassword: () => void;
   handleToggleMark: (
@@ -27,6 +28,7 @@ export interface WorkerDetailViewModel {
   isAdminAccount: boolean;
   isBusy: boolean;
   isConfirmingDelete: boolean;
+  passwordPanelTitle: string;
   resetPasswordResult: Nullable<string>;
   status: WorkerStatus;
   worker: WorkerDetail;

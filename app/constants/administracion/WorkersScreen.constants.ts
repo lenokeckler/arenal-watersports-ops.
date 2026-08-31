@@ -22,6 +22,7 @@ export const WORKERS_SCREEN = {
     EXPIRED: "Inhabilitada",
   },
   FILTER: {
+    SCOPE: "Mostrar",
     ALL_ROLES: "Todos",
     ALL_STATUSES: "Todos",
     APPLY: "Buscar",
@@ -76,6 +77,7 @@ export const WORKER_FORM_SCREEN = {
     // El mismo panel sirve para el alta y para reponer la contrasena de
     // alguien que ya existe; decir "Trabajador creado" en el segundo caso
     // es sencillamente falso.
+    REHIRE_TITLE: "Trabajador recontratado",
     RESET_TITLE: "Contraseña temporal repuesta",
     TITLE: "Trabajador creado",
     USERNAME_LABEL: "Nombre de usuario",
@@ -104,11 +106,14 @@ export const WORKER_FORM_SCREEN = {
  */
 export const WORKER_DETAIL_SCREEN = {
   ACTIONS: {
-    DELETE: "Eliminar trabajador",
+    DELETE: "Dar de baja",
     DELETE_CANCEL: "Cancelar",
-    DELETE_CONFIRM: "Sí, eliminar",
+    DELETE_CONFIRM: "Sí, dar de baja",
     DELETE_WARNING:
-      "El perfil desaparece: se borra la cuenta, los permisos y los datos personales, y la persona no vuelve a entrar. Lo que hizo se conserva en el historial con su nombre. No se puede deshacer.",
+      "La persona pierde el acceso y sale del panel, pero su cuenta se guarda entera. Si vuelve, la recontrata desde el filtro de ex trabajadores y entra con esta misma cuenta y sus mismos permisos.",
+    FORMER_NOTE:
+      "Esta persona ya no trabaja aquí. Su cuenta está guardada con sus áreas y sus marcas: al recontratarla vuelve tal como estaba, con una contraseña temporal nueva.",
+    REHIRE: "Recontratar",
     BLOCK: "Bloquear cuenta",
     EXTEND_EXPIRY: "Extender caducidad",
     REACTIVATE: "Reactivar cuenta",

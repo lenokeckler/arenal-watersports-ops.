@@ -6,6 +6,8 @@ import {
   WORKER_STATUS,
   WORKER_STATUS_LABEL,
   WORKERS_SCREEN,
+  WORKER_SCOPE,
+  WORKER_SCOPE_LABEL,
 } from "@/app/constants";
 import type { WorkersFilters } from "@/app/utils/administracion/workers";
 
@@ -34,7 +36,9 @@ const WorkerListFilters = ({
       <input
         type="search"
         name="search"
-        placeholder={WORKERS_SCREEN.FILTER.SEARCH_PLACEHOLDER}
+        placeholder={
+          WORKERS_SCREEN.FILTER.SEARCH_PLACEHOLDER
+        }
         defaultValue={filters.search ?? STRING.Empty}
         className={FIELD_CLASS_NAME}
       />
@@ -49,12 +53,35 @@ const WorkerListFilters = ({
         defaultValue={filters.role ?? STRING.Empty}
         className={FIELD_CLASS_NAME}
       >
-        <option value={STRING.Empty}>{WORKERS_SCREEN.FILTER.ALL_ROLES}</option>
+        <option value={STRING.Empty}>
+          {WORKERS_SCREEN.FILTER.ALL_ROLES}
+        </option>
         {Object.values(WORK_AREA).map((role) => (
-          <option key={role} value={role}>
+          <option
+            key={role}
+            value={role}
+          >
             {WORK_AREA_LABEL[role]}
           </option>
         ))}
+      </select>
+    </label>
+
+    <label className="flex flex-col gap-1">
+      <span className="font-label-mono text-label-mono text-on-surface-variant">
+        {WORKERS_SCREEN.FILTER.SCOPE}
+      </span>
+      <select
+        name="scope"
+        defaultValue={filters.scope}
+        className={FIELD_CLASS_NAME}
+      >
+        <option value={WORKER_SCOPE.CURRENT}>
+          {WORKER_SCOPE_LABEL[WORKER_SCOPE.CURRENT]}
+        </option>
+        <option value={WORKER_SCOPE.FORMER}>
+          {WORKER_SCOPE_LABEL[WORKER_SCOPE.FORMER]}
+        </option>
       </select>
     </label>
 

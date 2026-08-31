@@ -10,7 +10,8 @@ export const USAGE_METRIC = {
   KILOMETERS: "kilometers",
 } as const;
 
-export type UsageMetric = (typeof USAGE_METRIC)[keyof typeof USAGE_METRIC];
+export type UsageMetric =
+  (typeof USAGE_METRIC)[keyof typeof USAGE_METRIC];
 
 export const USAGE_METRIC_LABEL = {
   [USAGE_METRIC.ENGINE_HOURS]: "Horas de motor",

@@ -59,7 +59,9 @@ const WorkerList = ({
         href={PATHS.ADMIN.WORKER_NEW}
         className="flex min-h-12 items-center gap-2 rounded-lg bg-primary px-md font-button text-button uppercase text-on-primary-fixed transition-all hover:brightness-110"
       >
-        <MaterialIcon name={MATERIAL_ICON_NAME.PERSON_ADD} />
+        <MaterialIcon
+          name={MATERIAL_ICON_NAME.PERSON_ADD}
+        />
         {WORKERS_SCREEN.ADD_BUTTON}
       </Link>
     </header>
@@ -71,25 +73,39 @@ const WorkerList = ({
       {totalPages > FIRST_PAGE && (
         <nav className="mt-md flex items-center justify-between gap-md">
           <Link
-            href={buildPageHref(filters, Math.max(page - 1, FIRST_PAGE))}
+            href={buildPageHref(
+              filters,
+              Math.max(page - 1, FIRST_PAGE)
+            )}
             className={`flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-white/10 px-md text-on-surface-variant transition-colors hover:text-primary ${
-              page <= FIRST_PAGE ? "pointer-events-none opacity-40" : ""
+              page <= FIRST_PAGE
+                ? "pointer-events-none opacity-40"
+                : ""
             }`}
           >
-            <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_BACK} />
+            <MaterialIcon
+              name={MATERIAL_ICON_NAME.ARROW_BACK}
+            />
             {PAGINATION_CONTROL.PREVIOUS}
           </Link>
           <span className="font-label-mono text-label-mono text-on-surface-variant">
             {PAGINATION_CONTROL.PAGE_OF(page, totalPages)}
           </span>
           <Link
-            href={buildPageHref(filters, Math.min(page + 1, totalPages))}
+            href={buildPageHref(
+              filters,
+              Math.min(page + 1, totalPages)
+            )}
             className={`flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-white/10 px-md text-on-surface-variant transition-colors hover:text-primary ${
-              page >= totalPages ? "pointer-events-none opacity-40" : ""
+              page >= totalPages
+                ? "pointer-events-none opacity-40"
+                : ""
             }`}
           >
             {PAGINATION_CONTROL.NEXT}
-            <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_FORWARD} />
+            <MaterialIcon
+              name={MATERIAL_ICON_NAME.ARROW_FORWARD}
+            />
           </Link>
         </nav>
       )}

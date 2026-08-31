@@ -6,7 +6,6 @@ import {
   PATHS,
   WORK_AREA_LABEL,
   WORKER_DETAIL_SCREEN,
-  WORKER_FORM_SCREEN,
   WORKER_STATUS,
   WORKER_STATUS_LABEL,
 } from "@/app/constants";
@@ -42,12 +41,14 @@ const WorkerDetail = ({
     handleExtendExpiry,
     handleReactivate,
     handleRemoveArea,
+    handleRehire,
     handleRequestDelete,
     handleResetPassword,
     handleToggleMark,
     isAdminAccount,
     isBusy,
     isConfirmingDelete,
+    passwordPanelTitle,
     resetPasswordResult,
     status,
     worker,
@@ -104,7 +105,7 @@ const WorkerDetail = ({
             }}
             showViewWorkerLink={false}
             temporaryPassword={resetPasswordResult}
-            title={WORKER_FORM_SCREEN.SUCCESS.RESET_TITLE}
+            title={passwordPanelTitle}
             workerId={worker.id}
           />
         )}
@@ -142,6 +143,8 @@ const WorkerDetail = ({
             status={status}
 
             canDelete={!isAdminAccount}
+            isFormerWorker={worker.deletedAt !== null}
+            onRehire={handleRehire}
             isConfirmingDelete={isConfirmingDelete}
             onCancelDelete={handleCancelDelete}
             onConfirmDelete={handleConfirmDelete}
