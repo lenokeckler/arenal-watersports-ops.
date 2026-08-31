@@ -36,6 +36,7 @@ const ReservationCharges = ({
   } = useReservationChargesViewModel({
     context,
     movements,
+    proposal,
   });
 
   return (

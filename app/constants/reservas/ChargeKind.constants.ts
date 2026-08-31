@@ -17,3 +17,9 @@ export const CHARGE_KIND_LABEL = {
   [CHARGE_KIND.EXTRA_TIME]: "Tiempo adicional",
   [CHARGE_KIND.TARIFF]: "Tarifa",
 } as const satisfies Record<ChargeKind, string>;
+
+/** Screen order: the tariff first, the exception second. */
+export const CHARGE_KIND_ORDER = [
+  CHARGE_KIND.TARIFF,
+  CHARGE_KIND.EXTRA_TIME,
+] as const satisfies readonly ChargeKind[];

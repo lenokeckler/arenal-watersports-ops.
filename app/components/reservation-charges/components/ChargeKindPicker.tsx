@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import {
   CHARGE_KIND,
   CHARGE_KIND_LABEL,
+  CHARGE_KIND_ORDER,
   RESERVATION_CHARGES_SCREEN,
   type ChargeKind,
 } from "@/app/constants";
@@ -32,7 +33,7 @@ const ChargeKindPicker = ({
       {RESERVATION_CHARGES_SCREEN.CHARGE_FORM.KIND_LABEL}
     </span>
     <div className="flex gap-sm">
-      {Object.values(CHARGE_KIND).map((kind) => (
+      {CHARGE_KIND_ORDER.map((kind) => (
         <button
           key={kind}
           type="button"

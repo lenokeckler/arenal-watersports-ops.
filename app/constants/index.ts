@@ -281,6 +281,7 @@ export {
 export {
   CHARGE_KIND,
   CHARGE_KIND_LABEL,
+  CHARGE_KIND_ORDER,
   type ChargeKind,
 } from "./reservas/ChargeKind.constants";
 export {

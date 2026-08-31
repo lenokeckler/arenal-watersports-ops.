@@ -31,7 +31,8 @@ export const RESERVATION_CHARGES_SCREEN = {
   DEPOSIT: {
     AMOUNT_LABEL: "Monto del depósito",
     CURRENCY_LABEL: "Moneda",
-    EMPTY: "Esta salida no lleva depósito de garantía.",
+    EMPTY:
+      "Todavía no se ha registrado un depósito para esta salida. Si no llevó, no registre ninguno.",
     ERROR: {
       AMOUNT_REQUIRED:
         "Escriba el monto del depósito recibido.",

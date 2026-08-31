@@ -21,9 +21,10 @@ const SINGLE_CURRENCY = 1;
 export const useReservationChargesViewModel = ({
   context,
   movements,
+  proposal,
 }: Pick<
   ReservationChargesProps,
-  "context" | "movements"
+  "context" | "movements" | "proposal"
 >): ReservationChargesViewModel => {
   const router = useRouter();
 
@@ -37,6 +38,23 @@ export const useReservationChargesViewModel = ({
   const currenciesInPlay = new Set(
     movements.charges.map((charge) => charge.currency)
   );
+
+  // US-RES-026: a renta or a tour stores no price of its own — only the
+  // combo flow writes `list_amount_*` — so without this fallback "cuánto
+  // falta" would read "—" on the most ordinary reservation there is. The
+  // catalog proposal *is* the list price (tariff by duration), so it fills
+  // that column. A split child is left out on purpose: its tariff stayed
+  // whole on the original reservation (US-RES-019), so it owes nothing.
+  const listAmounts = {
+    crc: context.isSplitChild
+      ? context.listAmountCrc
+      : (context.listAmountCrc ??
+        proposal.tariffAmounts.crc),
+    usd: context.isSplitChild
+      ? context.listAmountUsd
+      : (context.listAmountUsd ??
+        proposal.tariffAmounts.usd),
+  };
 
   return {
     canRegisterDeposit:
@@ -52,10 +70,7 @@ export const useReservationChargesViewModel = ({
         usd: context.agreedAmountUsd,
       },
       charges: movements.charges,
-      listAmounts: {
-        crc: context.listAmountCrc,
-        usd: context.listAmountUsd,
-      },
+      listAmounts,
       refunds: movements.refunds,
     }),
   };
