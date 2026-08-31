@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   MATERIAL_ICON_NAME,
@@ -33,7 +34,7 @@ const PendingDepositRow = ({
     <div className="flex items-center gap-sm">
       <span className="font-label-mono text-label-mono text-primary">
         {CURRENCY_LABEL[deposit.currency]}
-        {deposit.amount.toFixed(2)}
+        {formatAmount(deposit.amount)}
       </span>
       <Link
         href={PATHS.RESERVATIONS.CHARGES_BY_ID(

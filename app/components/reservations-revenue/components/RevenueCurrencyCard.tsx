@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   RESERVATIONS_REVENUE_SCREEN,
@@ -37,19 +38,19 @@ const RevenueCurrencyCard = ({
     </span>
     <AmountLine
       label={RESERVATIONS_REVENUE_SCREEN.GROSS_LABEL}
-      value={row.grossAmount.toFixed(2)}
+      value={formatAmount(row.grossAmount)}
     />
     <AmountLine
       label={RESERVATIONS_REVENUE_SCREEN.REFUNDS_LABEL}
-      value={`-${row.refundsAmount.toFixed(2)}`}
+      value={`-${formatAmount(row.refundsAmount)}`}
     />
     <AmountLine
       label={RESERVATIONS_REVENUE_SCREEN.RETAINED_LABEL}
-      value={`+${row.retainedAmount.toFixed(2)}`}
+      value={`+${formatAmount(row.retainedAmount)}`}
     />
     <span className="flex justify-between border-t border-white/10 pt-1 font-title-md text-title-md text-on-surface">
       {RESERVATIONS_REVENUE_SCREEN.NET_LABEL}
-      <span>{row.netAmount.toFixed(2)}</span>
+      <span>{formatAmount(row.netAmount)}</span>
     </span>
   </div>
 );

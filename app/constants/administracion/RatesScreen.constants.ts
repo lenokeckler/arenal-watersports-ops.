@@ -28,7 +28,7 @@ export const RATES_SCREEN = {
 export const RATE_FORM_SCREEN = {
   AMOUNT: {
     CRC_LABEL: "Monto en colones",
-    HINT: "Registre el monto en la moneda en la que se cobra (US-ADM-024).",
+    HINT: "Registre el monto en la moneda en la que se cobra.",
     TITLE: "Monto",
     USD_LABEL: "Monto en dólares",
   },
@@ -39,7 +39,8 @@ export const RATE_FORM_SCREEN = {
       "Registre el monto en dólares o en colones.",
     CATEGORY_TYPE_TAKEN:
       "Ya existe una tarifa para esa categoría y ese tipo de salida.",
-    GENERIC: "No se pudo guardar la tarifa. Revise los datos.",
+    GENERIC:
+      "No se pudo guardar la tarifa. Revise los datos.",
   },
   NEW_TITLE: "Nueva tarifa",
   SUBMIT: "Guardar tarifa",

@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_CODE,
   REPORTS_SCREEN,
@@ -69,7 +70,7 @@ const ReservationsTrendSection = ({
             label: point.day.slice(DAY_LABEL_LENGTH),
             value: point.netAmount,
           }))}
-          formatValue={(value) => value.toFixed(2)}
+          formatValue={(value) => formatAmount(value)}
         />
       ) : null;
     })}

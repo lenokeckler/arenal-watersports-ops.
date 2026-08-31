@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   INPUT_TYPES,
@@ -70,19 +71,23 @@ const RevenueSummarySection = ({
             </span>
             <span className="flex justify-between font-body-base text-body-base text-on-surface-variant">
               {REPORTS_SCREEN.REVENUE.GROSS_LABEL}
-              <span>{row.grossAmount.toFixed(2)}</span>
+              <span>{formatAmount(row.grossAmount)}</span>
             </span>
             <span className="flex justify-between font-body-base text-body-base text-on-surface-variant">
               {REPORTS_SCREEN.REVENUE.REFUNDS_LABEL}
-              <span>-{row.refundsAmount.toFixed(2)}</span>
+              <span>
+                -{formatAmount(row.refundsAmount)}
+              </span>
             </span>
             <span className="flex justify-between font-body-base text-body-base text-on-surface-variant">
               {REPORTS_SCREEN.REVENUE.RETAINED_LABEL}
-              <span>+{row.retainedAmount.toFixed(2)}</span>
+              <span>
+                +{formatAmount(row.retainedAmount)}
+              </span>
             </span>
             <span className="flex justify-between border-t border-white/10 pt-1 font-title-md text-title-md text-on-surface">
               {REPORTS_SCREEN.REVENUE.NET_LABEL}
-              <span>{row.netAmount.toFixed(2)}</span>
+              <span>{formatAmount(row.netAmount)}</span>
             </span>
           </div>
         ))}

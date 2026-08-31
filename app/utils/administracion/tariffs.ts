@@ -103,6 +103,10 @@ export const fetchAvailableTariffOptions = async (
         .from("equipment_categories")
         .select("id, name")
         .eq("status", CATEGORY_STATUS.ACTIVE)
+        // Solo lo que se alquila lleva tarifa. Sin este filtro la pantalla
+        // ofrecia cobrar una renta de botiquin, de chaleco o de extintor:
+        // esas categorias existen para contarse, no para venderse.
+        .eq("is_reservable", true)
         .order("name"),
       supabase.from("tariffs").select("category_id, type"),
     ]);

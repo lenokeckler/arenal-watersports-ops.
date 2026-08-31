@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_CODE,
   MATERIAL_ICON_NAME,
@@ -71,7 +72,7 @@ const ReservationsRevenue = ({
             emptyState={
               RESERVATIONS_REVENUE_SCREEN.NO_CHART_DATA
             }
-            formatValue={(value) => value.toFixed(2)}
+            formatValue={(value) => formatAmount(value)}
             points={revenueRange
               .filter(
                 (point) => point.currency === currency

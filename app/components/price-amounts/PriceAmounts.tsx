@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_CODE,
   CURRENCY_LABEL,
@@ -26,10 +27,16 @@ const PriceAmounts = ({
 }: PriceAmountsProps): JSX.Element => {
   const amounts: Amount[] = [];
   if (amountUsd !== null && amountUsd !== undefined) {
-    amounts.push({ currency: CURRENCY_CODE.USD, value: amountUsd });
+    amounts.push({
+      currency: CURRENCY_CODE.USD,
+      value: amountUsd,
+    });
   }
   if (amountCrc !== null && amountCrc !== undefined) {
-    amounts.push({ currency: CURRENCY_CODE.CRC, value: amountCrc });
+    amounts.push({
+      currency: CURRENCY_CODE.CRC,
+      value: amountCrc,
+    });
   }
 
   if (amounts.length === NO_AMOUNTS) {
@@ -43,9 +50,12 @@ const PriceAmounts = ({
   return (
     <span className="flex flex-col items-end gap-0.5 font-label-mono text-label-mono">
       {amounts.map((amount) => (
-        <span key={amount.currency} className="text-primary">
+        <span
+          key={amount.currency}
+          className="text-primary"
+        >
           {CURRENCY_LABEL[amount.currency]}
-          {amount.value.toFixed(2)}
+          {formatAmount(amount.value)}
         </span>
       ))}
     </span>

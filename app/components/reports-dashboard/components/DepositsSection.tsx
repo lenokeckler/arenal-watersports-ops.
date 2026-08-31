@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   REPORTS_SCREEN,
@@ -39,9 +40,9 @@ const DepositList = ({
             </span>
             <span className="font-label-mono text-label-mono text-primary">
               {CURRENCY_LABEL[deposit.currency]}
-              {(
+              {formatAmount(
                 deposit.retainedAmount ?? deposit.amount
-              ).toFixed(2)}
+              )}
             </span>
           </div>
           {showReason && deposit.retentionReason && (

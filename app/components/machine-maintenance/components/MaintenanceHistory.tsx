@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   MAINTENANCE_RECORD_SCREEN,
@@ -25,7 +26,7 @@ const formatCost = (
     return MAINTENANCE_RECORD_SCREEN.HISTORY.NO_COST;
   }
 
-  return `${CURRENCY_LABEL[costCurrency]}${costAmount}`;
+  return `${CURRENCY_LABEL[costCurrency]}${formatAmount(costAmount)}`;
 };
 
 /**

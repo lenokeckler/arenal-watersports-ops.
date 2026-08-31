@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   REPORTS_SCREEN,
@@ -61,7 +62,7 @@ const MaintenanceCostSection = ({
                 </td>
                 <td className="py-sm text-right text-on-surface">
                   {CURRENCY_LABEL[row.currency]}
-                  {row.totalCost.toFixed(2)}
+                  {formatAmount(row.totalCost)}
                 </td>
                 <td className="py-sm text-right text-on-surface-variant">
                   {row.recordsCount}
