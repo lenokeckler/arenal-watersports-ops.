@@ -20,7 +20,7 @@ values (
   'authenticated', 'authenticated', 'admin@arenal.local',
   extensions.crypt('Arenal.2026', extensions.gen_salt('bf')), now(),
   '', '', '', '',
-  '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb, now(), now()
+  jsonb_build_object('provider', 'email', 'providers', jsonb_build_array('email')), '{}'::jsonb, now(), now()
 )
 on conflict do nothing;
 
@@ -39,9 +39,12 @@ values (
 )
 on conflict do nothing;
 
+-- El correo es el de la empresa, no el de una persona: a esta direccion le
+-- llega el PIN cuando administracion pierde la contrasena, y esa cuenta
+-- sobrevive a quien la use hoy.
 insert into workers (id, username, full_name, personal_email, base_role, must_change_password)
-values ('00000000-0000-0000-0000-000000000001', 'admin', 'Leno',
-        'lenokeckler13@gmail.com', 'administracion', true)
+values ('00000000-0000-0000-0000-000000000001', 'admin', 'Administración',
+        'arenalwatersports@gmail.com', 'administracion', true)
 on conflict do nothing;
 
 -- ---------------- Categorias ----------------
@@ -76,21 +79,26 @@ values
 -- Llevadas por cantidad y no reservables: viven en el inventario, se cuentan.
 insert into equipment_categories
   (name, tracking_mode, is_reservable, alert_min_quantity, alert_expiry_days,
-   created_by, updated_by)
+   group_name, created_by, updated_by)
 values
-  ('Chaleco',   'by_quantity', false, 5,    null,
+  ('Chaleco',   'by_quantity', false, 5,    null, null,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Remo',      'by_quantity', false, 4,    null,
+  -- Los remos se cuentan por separado porque no son intercambiables: si falta
+  -- uno importa saber si era de kayak o de paddleboard. Comparten grupo para
+  -- que el inventario no los liste como dos renglones sueltos.
+  ('Remo de kayak',       'by_quantity', false, 4, null, 'Remo',
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Extintor',  'by_quantity', false, null, 30,
+  ('Remo de paddleboard', 'by_quantity', false, 4, null, 'Remo',
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Botiquin',  'by_quantity', false, null, 30,
+  ('Extintor',  'by_quantity', false, null, 30, null,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Parrilla',  'by_quantity', false, null, null,
+  ('Botiquin',  'by_quantity', false, null, 30, null,
+   '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
+  ('Parrilla',  'by_quantity', false, null, null, null,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
   -- La tabla de wake nunca se alquila sola: va con la lancha Bennington y se
   -- pide como extra. Sigue siendo inventario porque hay dos y se cuentan.
-  ('Tabla de wake', 'by_quantity', false, null, null,
+  ('Tabla de wake', 'by_quantity', false, null, null, null,
    '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
 -- ---------------- Unidades ----------------
@@ -115,15 +123,22 @@ from equipment_categories c, (values ('PONTOON'), ('BENNINGTON')) as v(code)
 where c.name = 'Lancha';
 
 -- ---------------- Stock ----------------
--- Seis kayaks dobles y tres individuales, del inventario anterior. El resto
--- arranca en cero: administracion registra las cantidades reales desde la
--- aplicacion, que para eso es un CRUD.
+-- Cantidades reales contadas por la empresa. Los dos botiquines de las lanchas
+-- y los tres de bodega van juntos: el sistema lleva una sola cantidad por
+-- categoria, no por ubicacion.
 insert into equipment_stock (category_id, quantity_available, updated_by)
 select c.id,
        case c.name
-         when 'Kayak doble'      then 6
-         when 'Kayak individual' then 3
-         when 'Tabla de wake'    then 2
+         when 'Chaleco'             then 35
+         when 'Parrilla'            then 1
+         when 'Kayak doble'         then 6
+         when 'Kayak individual'    then 3
+         when 'Paddleboard'         then 9
+         when 'Remo de kayak'       then 22
+         when 'Remo de paddleboard' then 15
+         when 'Extintor'            then 5
+         when 'Botiquin'            then 5
+         when 'Tabla de wake'       then 2
          else 0
        end,
        '00000000-0000-0000-0000-000000000001'
