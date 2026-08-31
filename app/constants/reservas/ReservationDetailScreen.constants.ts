@@ -26,7 +26,11 @@ export const RESERVATION_DETAIL_SCREEN = {
     TITLE: "Cancelar reserva",
   },
   CHARGES: {
+    AGREED: "Precio acordado",
+    CHARGED: "Cobrado",
     EMPTY: "Sin cobro registrado",
+    LIST: "Precio de lista",
+    MANAGE: "Cobro y depósitos",
     TITLE: "Estado del cobro",
   },
   EDIT: {

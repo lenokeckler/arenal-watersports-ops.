@@ -61,11 +61,15 @@ export const PATHS = {
   },
   RESERVATIONS: {
     CALENDAR: "/reservas/calendario",
+    CHARGES_BY_ID: (reservationId: string): string =>
+      `/reservas/cobros/${reservationId}`,
+    DEPOSITS: "/reservas/depositos",
     DETAIL: "/reservas/detalle",
     DETAIL_BY_ID: (reservationId: string): string =>
       `/reservas/detalle/${reservationId}`,
     EXTERNAL_GUIDE_NEW: "/reservas/guia-externo/nuevo",
     NEW: "/reservas/nueva",
+    REVENUE: "/reservas/ingresos",
     ROOT: "/reservas",
   },
 } as const;

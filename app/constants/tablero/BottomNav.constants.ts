@@ -7,8 +7,9 @@ import { WORK_AREA, type WorkArea } from "@/app/constants/acceso/WorkArea.consta
 
 /**
  * The fixed bottom bar (US-TAB-004, US-TAB-005): board, calendar,
- * inventory, history, and — operations only — the price list
- * (US-TAB-010). `VISIBLE_IN` only decides which icons render for the
+ * inventory, history, — reservas only — the day's revenue (US-RES-032,
+ * which operaciones must not see because it never needs money to do its
+ * work) and — operations only — the price list (US-TAB-010). `VISIBLE_IN` only decides which icons render for the
  * active mode; it grants nothing by itself (US-TAB-007) — every route it
  * points at is still gated by the database policies for whatever that
  * screen does.
@@ -20,6 +21,7 @@ export const BOTTOM_NAV_ITEM_ID = {
   HISTORY: "history",
   INVENTORY: "inventory",
   PRICES: "prices",
+  REVENUE: "revenue",
 } as const;
 
 export type BottomNavItemId =
@@ -63,6 +65,13 @@ export const BOTTOM_NAV = {
         WORK_AREA.OPERATIONS,
         WORK_AREA.RESERVATIONS,
       ],
+    },
+    {
+      HREF: PATHS.RESERVATIONS.REVENUE,
+      ICON: MATERIAL_ICON_NAME.PAYMENTS,
+      ID: BOTTOM_NAV_ITEM_ID.REVENUE,
+      LABEL: "Ingresos",
+      VISIBLE_IN: [WORK_AREA.RESERVATIONS],
     },
     {
       HREF: PATHS.COMMON.PRICES,

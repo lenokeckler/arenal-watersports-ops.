@@ -23,6 +23,7 @@ import type { ReservationDetailProps } from "./models/ReservationDetailProps.int
  * browser-side writes.
  */
 const ReservationDetail = ({
+  canSeeMoney,
   reservation,
   workerId,
 }: ReservationDetailProps): JSX.Element => {
@@ -52,9 +53,11 @@ const ReservationDetail = ({
         <ReservationDetailGuides
           guideNames={reservation.guideNames}
         />
-        <ReservationDetailPayment
-          chargeTotals={reservation.chargeTotals}
-        />
+        {canSeeMoney && (
+          <ReservationDetailPayment
+            reservation={reservation}
+          />
+        )}
       </main>
 
       <ReservationDetailActions

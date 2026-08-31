@@ -21,6 +21,9 @@ export interface ReservationChargeTotals {
 }
 
 export interface ReservationDetail {
+  /** US-RES-009/US-RES-010: the price agreed when the combo was sold. */
+  agreedAmountCrc: Nullable<number>;
+  agreedAmountUsd: Nullable<number>;
   cancellationReason: Nullable<string>;
   chargeTotals: ReservationChargeTotals;
   code: string;
@@ -34,6 +37,9 @@ export interface ReservationDetail {
   guideNames: string[];
   id: string;
   items: ReservationDetailItem[];
+  /** US-RES-009: the catalog price the reservation started from. */
+  listAmountCrc: Nullable<number>;
+  listAmountUsd: Nullable<number>;
   peopleCount: number;
   startsAt: string;
   status: ReservationStatus;
@@ -97,6 +103,8 @@ export const fetchReservationDetail = async (
           `id, code, customer_name, people_count, starts_at, ends_at,
          duration_minutes, type, status, cancellation_reason, dispatched_at,
          created_at, updated_at,
+         list_amount_usd, list_amount_crc,
+         agreed_amount_usd, agreed_amount_crc,
          combo:combos(name),
          created_by_worker:workers!reservations_created_by_fkey(full_name),
          updated_by_worker:workers!reservations_updated_by_fkey(full_name),
@@ -130,6 +138,8 @@ export const fetchReservationDetail = async (
   }
 
   return {
+    agreedAmountCrc: reservation.agreed_amount_crc,
+    agreedAmountUsd: reservation.agreed_amount_usd,
     cancellationReason: reservation.cancellation_reason,
     chargeTotals: sumChargesByCurrency(
       chargesResult.data ?? []
@@ -159,6 +169,8 @@ export const fetchReservationDetail = async (
         label: labelForItem(item),
       })
     ),
+    listAmountCrc: reservation.list_amount_crc,
+    listAmountUsd: reservation.list_amount_usd,
     peopleCount: reservation.people_count,
     startsAt: reservation.starts_at,
     status: reservation.status,

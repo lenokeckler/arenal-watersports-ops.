@@ -13,6 +13,11 @@ import {
   fetchRetainedDeposits,
   fetchUnitUsageReport,
 } from "@/app/utils/administracion/reports";
+import {
+  addDays,
+  resolveRevenueDay,
+  toUtcIsoDay,
+} from "@/app/utils/reports/revenueDay";
 import ReportsDashboard from "@/app/components/reports-dashboard/ReportsDashboard";
 
 export const metadata: Metadata = {
@@ -25,15 +30,6 @@ interface ReportsPageParams {
 
 const DAILY_TREND_WINDOW_DAYS = 14;
 const MONTHLY_TREND_WINDOW_MONTHS = 6;
-const ISO_DATE_LENGTH = 10;
-const DAY_VALID_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-
-/** UTC "today", matching the `at time zone 'UTC'` convention every report view uses. */
-const toUtcIsoDate = (date: Date): string =>
-  date.toISOString().slice(0, ISO_DATE_LENGTH);
-
-const addDays = (date: Date, days: number): Date =>
-  new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
 
 const addMonthsAtDayOne = (
   date: Date,
@@ -61,23 +57,22 @@ const ReportsPage = async ({
 
   const resolvedParams = await searchParams;
   const today = new Date();
-  const todayIso = toUtcIsoDate(today);
-  const selectedDay = DAY_VALID_PATTERN.test(
-    resolvedParams.dia ?? ""
-  )
-    ? (resolvedParams.dia as string)
-    : todayIso;
+  const todayIso = toUtcIsoDay(today);
+  const selectedDay = resolveRevenueDay(
+    resolvedParams.dia,
+    todayIso
+  );
 
-  const dailyRangeStart = toUtcIsoDate(
+  const dailyRangeStart = toUtcIsoDay(
     addDays(today, -(DAILY_TREND_WINDOW_DAYS - 1))
   );
-  const monthlyRangeStart = toUtcIsoDate(
+  const monthlyRangeStart = toUtcIsoDay(
     addMonthsAtDayOne(
       today,
       -(MONTHLY_TREND_WINDOW_MONTHS - 1)
     )
   );
-  const monthlyRangeEnd = toUtcIsoDate(
+  const monthlyRangeEnd = toUtcIsoDay(
     addMonthsAtDayOne(today, 0)
   );
 
