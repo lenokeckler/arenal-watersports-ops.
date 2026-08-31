@@ -1,6 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   MATERIAL_ICON_NAME,
@@ -18,7 +19,6 @@ type RefundSectionProps = Pick<
   "context" | "movements" | "workerId"
 > & { onSaved: () => void };
 
-const AMOUNT_DECIMALS = 2;
 const TEXTAREA_CLASS =
   "w-full resize-none rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 const TEXTAREA_ROWS = 2;
@@ -60,9 +60,7 @@ const RefundSection = (
         {RESERVATION_CHARGES_SCREEN.REFUND.AMOUNT_PREVIEW}
         <span className="text-primary">
           {CURRENCY_LABEL[viewModel.currency]}
-          {viewModel.computedAmount.toFixed(
-            AMOUNT_DECIMALS
-          )}
+          {formatAmount(viewModel.computedAmount)}
         </span>
       </p>
       <label className="flex flex-col gap-1">

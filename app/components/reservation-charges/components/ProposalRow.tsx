@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   RESERVATION_CHARGES_SCREEN,
@@ -13,8 +14,6 @@ interface ProposalRowProps {
   label: string;
   onUse: () => void;
 }
-
-const AMOUNT_DECIMALS = 2;
 
 /**
  * US-RES-023/US-RES-029: what the catalog suggests, and one tap to take
@@ -40,7 +39,7 @@ const ProposalRow = ({
       <div className="flex items-center gap-sm">
         <span className="font-label-mono text-label-mono text-primary">
           {CURRENCY_LABEL[currency]}
-          {amount.toFixed(AMOUNT_DECIMALS)}
+          {formatAmount(amount)}
         </span>
         <button
           type="button"

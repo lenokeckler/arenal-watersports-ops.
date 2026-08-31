@@ -110,3 +110,44 @@ export const insertReservationPricing = async (
     "reservas.reservationPricing.insertReservationPricing"
   );
 };
+
+/**
+ * US-RES-024/US-RES-025: fija lo que se acordo cobrar, en una moneda o en
+ * las dos.
+ *
+ * Es lo que hace que "cuanto falta" signifique algo en una reserva del
+ * momento: sin un acordado, cada moneda queda en "—" para siempre y nadie
+ * sabe si el cliente ya termino de pagar. Y con las dos monedas puestas —el
+ * cliente que paga 100 dolares y 50 mil colones— cada una se salda contra lo
+ * acordado en esa misma moneda, que es lo unico honesto cuando el sistema no
+ * maneja tipo de cambio.
+ *
+ * Va como `upsert` sobre `reservation_id` porque la fila puede no existir
+ * todavia: solo el flujo de combos la crea al reservar.
+ */
+export const saveAgreedAmounts = async (
+  supabase: SupabaseClient<Database>,
+  reservationId: string,
+  agreed: {
+    crc: Nullable<number>;
+    usd: Nullable<number>;
+  },
+  workerId: string
+): Promise<void> => {
+  const { error } = await supabase
+    .from("reservation_pricing")
+    .upsert(
+      {
+        agreed_amount_crc: agreed.crc,
+        agreed_amount_usd: agreed.usd,
+        created_by: workerId,
+        reservation_id: reservationId,
+        updated_by: workerId,
+      },
+      { onConflict: "reservation_id" }
+    );
+  throwIfSupabaseError(
+    error,
+    "reservas.reservationPricing.saveAgreedAmounts"
+  );
+};

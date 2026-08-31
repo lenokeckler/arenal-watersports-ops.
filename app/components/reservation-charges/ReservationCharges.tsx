@@ -2,6 +2,7 @@
 
 import type { JSX } from "react";
 import ReservationChargesHeader from "./components/ReservationChargesHeader";
+import AgreedAmountSection from "./components/AgreedAmountSection";
 import ChargeSummarySection from "./components/ChargeSummarySection";
 import ExtraTimeSection from "./components/ExtraTimeSection";
 import ChargeFormSection from "./components/ChargeFormSection";
@@ -49,6 +50,16 @@ const ReservationCharges = ({
           isSplitChild={context.isSplitChild}
           rows={summaryRows}
         />
+        {/* La hija de una division no lleva precio propio (US-RES-019). */}
+        {!context.isSplitChild && (
+          <AgreedAmountSection
+            agreedCrc={context.agreedAmountCrc}
+            agreedUsd={context.agreedAmountUsd}
+            onSaved={handleSaved}
+            reservationId={context.id}
+            workerId={workerId}
+          />
+        )}
         <ExtraTimeSection
           minutes={proposal.extraTimeMinutes}
         />

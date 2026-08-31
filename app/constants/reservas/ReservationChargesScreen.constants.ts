@@ -5,6 +5,16 @@
  * one total (US-RES-025).
  */
 export const RESERVATION_CHARGES_SCREEN = {
+  AGREED: {
+    CRC_LABEL: "Acordado en colones",
+    ERROR: {
+      GENERIC: "No se pudo guardar el precio acordado.",
+    },
+    HINT: "Puede acordar una moneda o las dos: un cliente puede pagar cien dólares y cincuenta mil colones por la misma salida. Cada moneda se salda contra lo acordado en ella misma, porque el sistema no convierte.",
+    SUBMIT: "Guardar precio acordado",
+    TITLE: "Precio acordado",
+    USD_LABEL: "Acordado en dólares",
+  },
   BACK_TO_DETAIL: "Volver al detalle",
   CHARGE_FORM: {
     ADJUST_HINT:

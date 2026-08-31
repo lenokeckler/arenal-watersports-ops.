@@ -18,6 +18,8 @@ const SINGLE_CURRENCY = 1;
  * patching state by hand, so the figures on screen always come back from
  * the database rather than from an optimistic guess about money.
  */
+const NO_DEPOSITS = 0;
+
 export const useReservationChargesViewModel = ({
   context,
   movements,
@@ -58,8 +60,14 @@ export const useReservationChargesViewModel = ({
   };
 
   return {
+    // Una salida lleva un deposito, no varios. Se miraba solo si habia uno
+    // *retenido*, asi que apenas se resolvia —devuelto o retenido— la
+    // pantalla volvia a ofrecer registrar otro, incluso sobre una reserva ya
+    // cancelada. Lo que importa es si la reserva ya tiene deposito, en
+    // cualquier estado.
     canRegisterDeposit:
-      !context.isSplitChild && heldDeposit === null,
+      !context.isSplitChild &&
+      movements.deposits.length === NO_DEPOSITS,
     canResolveDeposit: heldDeposit !== null && isSettled,
     handleSaved: () => router.refresh(),
     heldDeposit,

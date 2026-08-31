@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CHARGE_KIND_LABEL,
   CURRENCY_LABEL,
@@ -14,8 +15,6 @@ interface MovementsSectionProps {
 }
 
 const NO_MOVEMENTS = 0;
-const AMOUNT_DECIMALS = 2;
-
 interface MovementLineProps {
   amount: string;
   detail: string;
@@ -68,7 +67,7 @@ const MovementsSection = ({
           {movements.charges.map((charge) => (
             <MovementLine
               key={charge.id}
-              amount={`${CURRENCY_LABEL[charge.currency]}${charge.amount.toFixed(AMOUNT_DECIMALS)}`}
+              amount={`${CURRENCY_LABEL[charge.currency]}${formatAmount(charge.amount)}`}
               detail={`${charge.paymentMethod} · ${charge.createdByName} · ${formatShortDate(charge.createdAt)}`}
               title={CHARGE_KIND_LABEL[charge.kind]}
             />
@@ -76,7 +75,7 @@ const MovementsSection = ({
           {movements.refunds.map((refund) => (
             <MovementLine
               key={refund.id}
-              amount={`-${CURRENCY_LABEL[refund.currency]}${refund.amount.toFixed(AMOUNT_DECIMALS)}`}
+              amount={`-${CURRENCY_LABEL[refund.currency]}${formatAmount(refund.amount)}`}
               detail={`${refund.reason} · ${refund.createdByName} · ${formatShortDate(refund.createdAt)}`}
               title={RESERVATION_CHARGES_SCREEN.MOVEMENTS.REFUND_LABEL(
                 refund.percentage

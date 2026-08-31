@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   DEPOSIT_STATUS_LABEL,
@@ -10,8 +11,6 @@ import type { DepositRecord } from "@/app/utils/reservas/reservationMovementReco
 interface DepositHistoryListProps {
   deposits: DepositRecord[];
 }
-
-const AMOUNT_DECIMALS = 2;
 
 /** US-RES-030: every deposit of this reservation and how it ended. */
 const DepositHistoryList = ({
@@ -29,16 +28,15 @@ const DepositHistoryList = ({
           </Badge>
           <span className="font-label-mono text-label-mono text-primary">
             {CURRENCY_LABEL[deposit.currency]}
-            {deposit.amount.toFixed(AMOUNT_DECIMALS)}
+            {formatAmount(deposit.amount)}
           </span>
         </div>
         {deposit.retentionReason && (
           <span className="font-label-mono text-label-mono text-on-surface-variant">
             {CURRENCY_LABEL[deposit.currency]}
-            {(deposit.retainedAmount ?? 0).toFixed(
-              AMOUNT_DECIMALS
-            )}{" "}
-            · {deposit.retentionReason}
+            {formatAmount(
+              deposit.retainedAmount ?? 0
+            )} · {deposit.retentionReason}
           </span>
         )}
         {deposit.resolvedByName && (

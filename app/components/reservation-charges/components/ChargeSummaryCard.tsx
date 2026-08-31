@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { formatAmount } from "@/app/utils/money/formatAmount";
 import {
   CURRENCY_LABEL,
   RESERVATION_CHARGES_SCREEN,
@@ -11,8 +12,6 @@ interface ChargeSummaryCardProps {
 }
 
 const NO_AMOUNT_TEXT = "—";
-const AMOUNT_DECIMALS = 2;
-
 const SummaryLine = ({
   label,
   value,
@@ -25,7 +24,7 @@ const SummaryLine = ({
     <span>
       {value === null
         ? NO_AMOUNT_TEXT
-        : value.toFixed(AMOUNT_DECIMALS)}
+        : formatAmount(value)}
     </span>
   </span>
 );
@@ -71,7 +70,7 @@ const ChargeSummaryCard = ({
     />
     <span className="flex justify-between border-t border-white/10 pt-1 font-title-md text-title-md text-on-surface">
       {RESERVATION_CHARGES_SCREEN.SUMMARY.NET}
-      <span>{row.netAmount.toFixed(AMOUNT_DECIMALS)}</span>
+      <span>{formatAmount(row.netAmount)}</span>
     </span>
   </div>
 );
