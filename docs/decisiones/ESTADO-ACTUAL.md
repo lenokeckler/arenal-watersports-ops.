@@ -161,8 +161,9 @@ pasan los cinco. 68 rutas en el build.
 
 ## Dónde se quedó el trabajo
 
-**Rama activa: `feat/modulo-operaciones`**, sacada de `develop`. Acceso,
-Tablero, Administración y Reservas ya están mezclados en `develop`.
+**Rama activa: `develop`**, sincronizada con GitHub. Acceso, Tablero,
+Administración, Reservas y Operaciones están todos mezclados ahí. Los 56
+commits del trabajo de esta sesión ya están subidos.
 
 Reservas y Operaciones se construyeron en seis despachos, uno a la vez —
 nunca dos agentes en paralelo, porque los dos verifican contra la misma base
@@ -265,15 +266,67 @@ npm run db:start
 npm run dev
 ```
 
-### Para salir de local
+### Despliegue: dónde va y qué falta
 
-1. **Credenciales del proyecto de Supabase en la nube.** Todo corre contra la
-   base local; no existe todavía un proyecto en la nube al que subir las
-   migraciones. El bucket `unit-condition-photos` se crea desde una
-   migración, así que va a nacer solo allá.
-2. **Las cantidades reales de remos, extintores y botiquines.** Siguen en cero
-   a propósito. Chalecos y todo lo demás ya se registra desde
-   `/administracion/unidades` y `/operaciones/inventario`.
+El proyecto en la nube ya existe y el esquema ya está allá. Lo que falta es
+sembrar los datos iniciales y conectar Vercel.
+
+**Proyecto de Supabase.** `arenal-watersports-ops`, ref `vzqbwlvheickxscrwvpw`,
+región `us-east-1` (North Virginia), Postgres 17.6.1. La región se eligió a
+mano contra la recomendación del panel, que ofrecía Oregon: el tráfico de
+Costa Rica sale por Miami, y Vercel corre sus funciones en `iad1`, que es esa
+misma región. Base y funciones quedan del lado.
+
+**Las tres opciones del panel están las tres encendidas**, incluida «exponer
+automáticamente nuevas tablas», que Supabase recomienda apagar. Acá tiene que
+estar encendida: las migraciones otorgan permisos explícitos sobre una sola
+tabla, y las otras 24 dependen de los privilegios por defecto. Apagarla deja
+la aplicación entera en «permission denied». No es un hueco porque la cerradura
+de este proyecto no son los permisos sino el RLS: las 25 tablas lo tienen
+activo y un usuario anónimo lee cero filas de reservas, trabajadores y cobros.
+
+**Las 33 migraciones ya están aplicadas.** Se verificó que el esquema remoto
+es idéntico al local comparando una firma md5 de tablas, vistas, funciones,
+enums, políticas y triggers: `c6e8dc292f8fb01386cb4bb7c1adb0ef`, 173 elementos
+de cada lado. Lo único de más allá es `rls_auto_enable`, que agregó Supabase
+por la opción de RLS automático.
+
+**Falta el seed.** Producción sigue con cero filas. Dos intentos fallaron por
+razones de transporte, ya resueltas ambas:
+
+1. Las comillas dobles del literal JSON de `raw_app_meta_data` no sobreviven
+   al pasar el SQL como un solo argumento. Se cambió a `jsonb_build_object`,
+   que usa solo comillas simples. Arreglado en el seed.
+2. El seed aplanado son 5866 caracteres y `npx` pasa por `cmd.exe`, que corta
+   en 8191 contando su propio envoltorio. Hay que correrlo **sentencia por
+   sentencia**; la más grande son 1154 caracteres.
+
+Para sembrar, con el proyecto ya vinculado:
+
+```
+grep -vE "^[[:space:]]*--" supabase/seed.sql | grep -v "^[[:space:]]*$" > seed_produccion.sql
+```
+
+y luego un script de PowerShell que parta ese archivo por `;` y llame
+`npx supabase db query --linked "<sentencia>;"` una vez por cada una. Escribir
+a la base de producción está bloqueado por el clasificador de permisos, así
+que ese script lo corre el dueño en una terminal, no el agente.
+
+**Vercel todavía no se ha tocado.** El código ya está en GitHub (`develop`
+sincronizado). Las variables que hay que cargar allá son las de
+`.env.example`: las tres de Supabase más las cinco de SMTP. `SMTP_FROM` tiene
+un valor por defecto pero en producción hay que ponerla, porque Gmail rechaza
+un remitente que no sea la cuenta autenticada.
+
+**La contraseña del admin es `Arenal.2026` y está en el repo.** El seed marca
+`must_change_password`, así que la aplicación obliga a cambiarla en el primer
+ingreso. Hay que entrar y cambiarla apenas despliegue, antes de repartir
+accesos.
+
+**Sobre secretos:** la contraseña de la base se filtró una vez al chat y al
+historial de PowerShell. Se limpió el historial y el dueño la rotó. La CLI no
+la guarda en `supabase/.temp`. Regla para adelante: contraseñas y llaves nunca
+por chat; el agente abre una terminal y el dueño las escribe ahí.
 
 ### Deudas técnicas conocidas, ninguna bloqueante
 
