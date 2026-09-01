@@ -6,7 +6,7 @@ import type {
   WorkerScope,
   WorkerStatus,
 } from "@/app/constants";
-import { WORKER_SCOPE } from "@/app/constants";
+import { WORK_AREA, WORKER_SCOPE } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface WorkersFilters {
@@ -160,4 +160,25 @@ export const fetchWorkerDetail = async (
   return data
     ? toWorkerRow(data as unknown as WorkerQueryRow)
     : null;
+};
+
+/**
+ * US-ADM-001: whether an administración account already exists.
+ * `workers_single_admin` (the partial unique index in
+ * `20260828000100_foundations.sql`) is what actually guarantees there is
+ * at most one — this only lets the create-worker screen explain that
+ * before the form is filled out and hits that constraint, instead of
+ * showing a raw database error afterward.
+ */
+export const hasAdminAccount = async (
+  supabase: SupabaseClient<Database>
+): Promise<boolean> => {
+  const { count, error } = await supabase
+    .from("workers")
+    .select("id", { count: "exact", head: true })
+    .eq("base_role", WORK_AREA.ADMINISTRATION)
+    .is("deleted_at", null);
+  throwIfSupabaseError(error, "workers.hasAdminAccount");
+
+  return (count ?? 0) > 0;
 };

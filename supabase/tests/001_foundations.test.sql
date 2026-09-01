@@ -1,5 +1,5 @@
 begin;
-select plan(10);
+select plan(11);
 
 select has_type('public', 'work_area', 'existe el tipo work_area');
 select has_table('public', 'workers', 'existe la tabla workers');
@@ -51,6 +51,20 @@ select lives_ok(
   $$ insert into workers (id, username, full_name, base_role)
      values ('22222222-2222-2222-2222-222222222222', 'ismael', 'Ismael', 'operaciones') $$,
   'una cuenta que no es de administracion no exige correo personal'
+);
+
+-- Tampoco se puede llegar a una segunda administracion ascendiendo a
+-- alguien que ya existe: `workers_single_admin` es un indice, y un indice
+-- unico se revisa en cualquier UPDATE que dejaria dos filas cumpliendo su
+-- condicion, no solo en el INSERT que probamos arriba. El correo personal
+-- va en el mismo UPDATE para que el rechazo sea por el indice (23505), no
+-- por `workers_admin_needs_email` (23514).
+select throws_ok(
+  $$ update workers set base_role = 'administracion', personal_email = 'ismael@correo.com'
+     where username = 'ismael' $$,
+  '23505',
+  null,
+  'tampoco se puede ascender a alguien existente a administracion habiendo ya una'
 );
 
 -- El guia externo exige cedula y caducidad.

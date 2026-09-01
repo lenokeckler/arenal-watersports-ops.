@@ -8,12 +8,38 @@ import {
   type WorkArea,
 } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { resolveActiveWorkArea } from "@/app/utils/acceso/workAreas";
 
 export interface ReservationsAccess {
+  /**
+   * US-ACC-011: the mode this worker is actually working in right now,
+   * already clamped to `areas` — null only for the brief window a
+   * multi-area worker without a stored mode yet would be in (`proxy.ts`
+   * sends them to the mode selector before they ever reach a page that
+   * reads this). Screens under `/reservas` and `/operaciones` must gate
+   * mode-sensitive features (what the calendar shows, whether money is
+   * visible, "Nueva reserva") on this, never on `areas` directly — holding
+   * an area is not the same as currently working in it.
+   */
+  activeArea: WorkArea | null;
   areas: WorkArea[];
   lastWorkArea: WorkArea | null;
   workerId: string;
 }
+
+/**
+ * US-ACC-011: reservas-flavored screens (the calendar, a reservation's
+ * money figures, registering an external guide) only behave that way while
+ * the active mode is reservas or administración — holding the reservas
+ * area while working in a different mode does not unlock them, and being
+ * administración never bypasses the mode itself, only what administración
+ * mode allows.
+ */
+export const hasReservationsModeAccess = (
+  activeArea: WorkArea | null
+): boolean =>
+  activeArea === WORK_AREA.RESERVATIONS ||
+  activeArea === WORK_AREA.ADMINISTRATION;
 
 /**
  * Every screen under `/reservas` needs the worker signed in and holding at
@@ -73,9 +99,16 @@ export const requireWorkerWithAreas = async (
     redirect(PATHS.COMMON.DASHBOARD);
   }
 
+  const lastWorkArea =
+    workerResult.data?.last_work_area ?? null;
+
   return {
+    activeArea: resolveActiveWorkArea({
+      areas,
+      lastWorkArea,
+    }),
     areas,
-    lastWorkArea: workerResult.data?.last_work_area ?? null,
+    lastWorkArea,
     workerId: user.id,
   };
 };

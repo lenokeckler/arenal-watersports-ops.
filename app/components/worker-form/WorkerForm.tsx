@@ -12,6 +12,7 @@ import {
   WORK_AREA,
   WORK_AREA_LABEL,
   WORKER_FORM_SCREEN,
+  type WorkArea,
 } from "@/app/constants";
 import Button from "@/app/components/button/Button";
 import FormField from "@/app/components/form-field/FormField";
@@ -31,13 +32,31 @@ const FIELD_CLASS =
 const FIELD_ERROR_CLASS =
   "w-full !rounded-lg !border !border-error/50 !bg-surface-container-low !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-error focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-error/20";
 
-const ROLE_OPTIONS = Object.values(WORK_AREA).map(
-  (role) => ({
-    key: role,
-    label: WORK_AREA_LABEL[role],
-    value: role,
-  })
-);
+interface RoleOption {
+  key: WorkArea;
+  label: string;
+  value: WorkArea;
+}
+
+/**
+ * US-ADM-001: "Administración" drops out of the picker once one already
+ * exists — `adminAccountExists` mirrors `workers_single_admin`, the
+ * database's own guarantee that there is at most one.
+ */
+const buildRoleOptions = (
+  adminAccountExists: boolean
+): RoleOption[] =>
+  Object.values(WORK_AREA)
+    .filter(
+      (role) =>
+        !adminAccountExists ||
+        role !== WORK_AREA.ADMINISTRATION
+    )
+    .map((role) => ({
+      key: role,
+      label: WORK_AREA_LABEL[role],
+      value: role,
+    }));
 
 /**
  * `/administracion/trabajadores/nuevo` and `/reservas/guia-externo/nuevo`
@@ -45,6 +64,7 @@ const ROLE_OPTIONS = Object.values(WORK_AREA).map(
  * `useWorkerFormViewModel`.
  */
 const WorkerForm = ({
+  adminAccountExists = false,
   restrictToExternalGuide = false,
 }: WorkerFormProps): JSX.Element => {
   const {
@@ -166,17 +186,24 @@ const WorkerForm = ({
       )}
 
       {!restrictToExternalGuide && (
-        <FormField
-          id={FIELD_IDS.BASE_ROLE}
-          name={FIELD_IDS.BASE_ROLE}
-          label={WORKER_FORM_SCREEN.ROLE_LABEL}
-          type={INPUT_TYPES.SELECT}
-          options={ROLE_OPTIONS}
-          value={baseRole}
-          onChange={handleBaseRoleChange}
-          disabled={isSubmitting || isExternalGuide}
-          classNameField={FIELD_CLASS}
-        />
+        <div className="flex flex-col gap-xs">
+          <FormField
+            id={FIELD_IDS.BASE_ROLE}
+            name={FIELD_IDS.BASE_ROLE}
+            label={WORKER_FORM_SCREEN.ROLE_LABEL}
+            type={INPUT_TYPES.SELECT}
+            options={buildRoleOptions(adminAccountExists)}
+            value={baseRole}
+            onChange={handleBaseRoleChange}
+            disabled={isSubmitting || isExternalGuide}
+            classNameField={FIELD_CLASS}
+          />
+          {adminAccountExists && (
+            <span className="font-label-mono text-label-mono text-on-surface-variant">
+              {WORKER_FORM_SCREEN.ADMIN_ALREADY_EXISTS_HINT}
+            </span>
+          )}
+        </div>
       )}
 
       {!restrictToExternalGuide && (

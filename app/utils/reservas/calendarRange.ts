@@ -151,6 +151,25 @@ export const resolveCalendarRange = (
 };
 
 /**
+ * Whether `range` already contains "right now" — used to hide the "ir a
+ * hoy" link once it would not move the calendar at all (US-RES-001: the
+ * link was showing on every range, including the one already displaying
+ * today, which reads as a status label instead of an action). Both sides
+ * are real instants already, so no Costa Rica shift is needed here — that
+ * shift is baked into `range.startsAt`/`range.endsAt` by
+ * `resolveCalendarRange`.
+ */
+export const isRangeShowingNow = (
+  range: CalendarRange
+): boolean => {
+  const now = Date.now();
+  return (
+    now >= range.startsAt.getTime() &&
+    now < range.endsAt.getTime()
+  );
+};
+
+/**
  * Every day cell a month grid needs to render, Monday-first, padded to
  * full weeks on both ends so the grid is always a rectangle.
  */

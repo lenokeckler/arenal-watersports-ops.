@@ -3,7 +3,10 @@ import type { JSX } from "react";
 import { notFound } from "next/navigation";
 import { WORK_AREA } from "@/app/constants";
 import { createServerSupabaseClient } from "@/app/services";
-import { requireWorkerWithAreas } from "@/app/utils/reservas/access";
+import {
+  hasReservationsModeAccess,
+  requireWorkerWithAreas,
+} from "@/app/utils/reservas/access";
 import { fetchReservationDetail } from "@/app/utils/reservas/reservationDetail";
 import ReservationDetail from "@/app/components/reservation-detail/ReservationDetail";
 
@@ -19,12 +22,16 @@ interface ReservationDetailPageParams {
  * `/reservas/detalle/[reservationId]` (US-RES-003). Reachable by reservas,
  * operaciones and administración — the same set `reservations_select`
  * already allows, so no worker ever hits a row RLS would have hidden.
+ *
+ * US-ACC-011: `canSeeMoney` reads the active mode, not `areas` — an
+ * account holding reservas while working in operaciones mode sees this
+ * screen exactly as operaciones would, money figures included.
  */
 const ReservationDetailPage = async ({
   params,
 }: ReservationDetailPageParams): Promise<JSX.Element> => {
   const supabase = await createServerSupabaseClient();
-  const { areas, workerId } =
+  const { activeArea, workerId } =
     await requireWorkerWithAreas(supabase, [
       WORK_AREA.RESERVATIONS,
       WORK_AREA.OPERATIONS,
@@ -42,10 +49,7 @@ const ReservationDetailPage = async ({
 
   return (
     <ReservationDetail
-      canSeeMoney={
-        areas.includes(WORK_AREA.RESERVATIONS) ||
-        areas.includes(WORK_AREA.ADMINISTRATION)
-      }
+      canSeeMoney={hasReservationsModeAccess(activeArea)}
       reservation={reservation}
       workerId={workerId}
     />
