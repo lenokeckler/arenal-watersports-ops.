@@ -17,3 +17,13 @@ export const USAGE_METRIC_LABEL = {
   [USAGE_METRIC.ENGINE_HOURS]: "Horas de motor",
   [USAGE_METRIC.KILOMETERS]: "Kilómetros",
 } as const satisfies Record<UsageMetric, string>;
+
+/**
+ * Compact unit abbreviation for a tight read where the full label does not
+ * fit — `/tablero/categoria/[categoryId]`'s unit card shows "222 h" next to
+ * the code and fuel gauge, not "Horas de motor: 222".
+ */
+export const USAGE_METRIC_SUFFIX = {
+  [USAGE_METRIC.ENGINE_HOURS]: "h",
+  [USAGE_METRIC.KILOMETERS]: "km",
+} as const satisfies Record<UsageMetric, string>;

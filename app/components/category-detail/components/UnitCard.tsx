@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import {
+  CATEGORY_DETAIL_SCREEN,
   DEFAULT_CATEGORY_ICON,
   EQUIPMENT_IMAGE_FIT_CLASS,
   EQUIPMENT_IMAGE_TREATMENT,
@@ -12,6 +13,8 @@ import Image from "@/app/components/image/Image";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 import FuelGaugeBar from "@/app/components/fuel-gauge-bar/FuelGaugeBar";
 import { computeTimeRemaining } from "@/app/utils/operaciones/timeRemaining";
+import UnitCardFrame from "./UnitCardFrame";
+import UnitCardSelectionBadge from "./UnitCardSelectionBadge";
 import UnitCardStatusBadge from "./UnitCardStatusBadge";
 import UnitCardOccupiedDetails from "./UnitCardOccupiedDetails";
 import type { UnitCardProps } from "./UnitCardProps.interface";
@@ -27,9 +30,26 @@ import type { UnitCardProps } from "./UnitCardProps.interface";
  * cutouts, so `EQUIPMENT_IMAGE_FIT_CLASS` bleeds and crops them into the
  * square instead of padding them inside it. When occupied, composes
  * `UnitCardOccupiedDetails` for the return countdown and reservation link.
+ *
+ * The fuel gauge and the usage reading (US-OPE-002/US-OPE-020) always
+ * render for a category that carries them, with no reading yet reading as
+ * "Sin lectura" rather than disappearing — this is the screen checked "de
+ * reojo" from the dock, and a half-empty cuadraciclo is exactly what
+ * decides which one goes out next. Hiding either until a reading existed
+ * was a past mistake, not a deliberate declutter: `FuelGaugeBar` itself
+ * already draws the "never read" vs. "read empty" distinction, and
+ * `/operaciones/maquinas` never hid its own gauge either.
+ *
+ * In operaciones mode (US-OPE-002, tablero entry), an available unit
+ * becomes its own tap target — `UnitCardFrame` swaps the wrapping `div` for
+ * a `button` only then, and `UnitCardSelectionBadge` marks whether this one
+ * is picked. Every other state keeps the plain display card.
  */
 const UnitCard = ({
+  isSelectable,
+  isSelected,
   now,
+  onToggleSelect,
   unit,
 }: UnitCardProps): JSX.Element => {
   const status =
@@ -47,8 +67,14 @@ const UnitCard = ({
     unit.imageTreatment ?? EQUIPMENT_IMAGE_TREATMENT.CUTOUT;
 
   return (
-    <div
+    <UnitCardFrame
+      ariaLabel={CATEGORY_DETAIL_SCREEN.SELECT_UNIT(
+        unit.code
+      )}
       className={`flex flex-col overflow-hidden rounded-xl border-2 backdrop-blur-xl ${cardTintClass}`}
+      isSelectable={isSelectable}
+      isSelected={isSelected}
+      onToggleSelect={() => onToggleSelect(unit.id)}
     >
       <div className="relative aspect-square w-full bg-surface-container-lowest">
         {unit.imageSrc ? (
@@ -74,6 +100,9 @@ const UnitCard = ({
           per theme, so this holds in both.
         */}
         <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-background/60 to-transparent" />
+        {isSelectable && (
+          <UnitCardSelectionBadge isSelected={isSelected} />
+        )}
         <UnitCardStatusBadge
           isOverdue={isOverdue}
           status={status}
@@ -96,15 +125,24 @@ const UnitCard = ({
           </span>
         )}
 
-        {typeof unit.fuelLevel === "number" &&
-          typeof unit.fuelMax === "number" && (
-            <FuelGaugeBar
-              level={unit.fuelLevel}
-              max={unit.fuelMax}
-            />
+        {typeof unit.fuelMax === "number" && (
+          <FuelGaugeBar
+            level={unit.fuelLevel}
+            max={unit.fuelMax}
+          />
+        )}
+
+        {unit.usageMetric &&
+          typeof unit.usageTotal === "number" && (
+            <span className="font-label-mono text-label-mono text-on-surface-variant">
+              {CATEGORY_DETAIL_SCREEN.USAGE_READING(
+                unit.usageMetric,
+                unit.usageTotal
+              )}
+            </span>
           )}
       </div>
-    </div>
+    </UnitCardFrame>
   );
 };
 

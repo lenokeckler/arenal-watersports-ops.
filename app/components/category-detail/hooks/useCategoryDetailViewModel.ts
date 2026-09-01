@@ -6,6 +6,7 @@ import { OPERATIONS_NUMBERS } from "@/app/constants";
 import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import { fetchCategoryDetail } from "@/app/utils/tablero/categoryDetail";
 import { useEquipmentRealtimeRefresh } from "@/app/utils/tablero/useEquipmentRealtimeRefresh";
+import { useUnitDispatchViewModel } from "../modals/unit-dispatch/hooks/useUnitDispatchViewModel";
 import type { CategoryDetailProps } from "../models/CategoryDetailProps.interface";
 import type { CategoryDetailViewModel } from "../models/CategoryDetailViewModel.interface";
 
@@ -16,6 +17,11 @@ import type { CategoryDetailViewModel } from "../models/CategoryDetailViewModel.
  * client-side recomputation) whenever a watched table changes. `now` ticks
  * on its own, the same clock `useDispatchBoardViewModel` uses, so a unit
  * card's "libre en X min" moves without a refetch.
+ *
+ * Also composes `useUnitDispatchViewModel` (US-OPE-002, tablero entry):
+ * `refetch` doubles as its `onDispatched`, so a unit just handed off drops
+ * out of "available" the moment the realtime refresh already watches for
+ * lands, with no separate refetch path to keep in sync.
  */
 export const useCategoryDetailViewModel = ({
   categoryId,
@@ -48,5 +54,10 @@ export const useCategoryDetailViewModel = ({
     return () => clearInterval(tick);
   }, []);
 
-  return { detail, now };
+  const dispatch = useUnitDispatchViewModel({
+    categoryId,
+    onDispatched: refetch,
+  });
+
+  return { ...dispatch, detail, now };
 };

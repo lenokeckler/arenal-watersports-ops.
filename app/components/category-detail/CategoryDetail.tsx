@@ -3,14 +3,18 @@
 import type { JSX } from "react";
 import {
   CATEGORY_DETAIL_SCREEN,
+  EQUIPMENT_UNIT_STATUS,
   MATERIAL_ICON_NAME,
   PATHS,
   TRACKING_MODE,
 } from "@/app/constants";
 import Link from "@/app/components/link/Link";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
+import DispatchModal from "@/app/components/pending-dispatch/modals/dispatch/DispatchModal";
 import UnitCard from "./components/UnitCard";
 import QuantityTiles from "./components/QuantityTiles";
+import UnitDispatchBar from "./modals/unit-dispatch/UnitDispatchBar";
+import UnitDispatchReservationPicker from "./modals/unit-dispatch/UnitDispatchReservationPicker";
 import { useCategoryDetailViewModel } from "./hooks/useCategoryDetailViewModel";
 import type { CategoryDetailProps } from "./models/CategoryDetailProps.interface";
 
@@ -18,12 +22,32 @@ const EMPTY_LENGTH = 0;
 
 /**
  * `/tablero/categoria/[categoryId]` (US-TAB-002, US-TAB-003). Presentation
- * only; `useCategoryDetailViewModel` owns the realtime subscription.
+ * only; `useCategoryDetailViewModel` owns the realtime subscription and,
+ * composed inside it, the unit-dispatch flow (US-OPE-002, tablero entry):
+ * `canDispatch` alone decides whether a unit becomes a tap target, so
+ * reservas and administración (outside operaciones mode) see the exact
+ * same read-only board this screen has always been.
  */
 const CategoryDetail = (
   props: CategoryDetailProps
 ): JSX.Element => {
-  const { detail, now } = useCategoryDetailViewModel(props);
+  const { workerId } = props;
+  const {
+    candidateReservations,
+    canDispatch,
+    detail,
+    handleCancelSelection,
+    handleCloseDispatchModal,
+    handleDispatched,
+    handleOpenPicker,
+    handleSelectReservation,
+    handleToggleUnit,
+    isLoadingCandidates,
+    isPickerOpen,
+    now,
+    selectedReservationId,
+    selectedUnitIds,
+  } = useCategoryDetailViewModel(props);
   const units = detail.units ?? [];
 
   return (
@@ -57,13 +81,48 @@ const CategoryDetail = (
             {units.map((unit) => (
               <UnitCard
                 key={unit.id}
+                isSelectable={
+                  canDispatch &&
+                  unit.effectiveStatus ===
+                    EQUIPMENT_UNIT_STATUS.AVAILABLE
+                }
+                isSelected={selectedUnitIds.includes(
+                  unit.id
+                )}
                 now={now}
+                onToggleSelect={handleToggleUnit}
                 unit={unit}
               />
             ))}
           </div>
         )}
       </main>
+
+      {selectedUnitIds.length > EMPTY_LENGTH && (
+        <UnitDispatchBar
+          onCancel={handleCancelSelection}
+          onDispatch={handleOpenPicker}
+          selectedCount={selectedUnitIds.length}
+        />
+      )}
+
+      {isPickerOpen && (
+        <UnitDispatchReservationPicker
+          isLoading={isLoadingCandidates}
+          onClose={handleCancelSelection}
+          onSelect={handleSelectReservation}
+          reservations={candidateReservations}
+        />
+      )}
+
+      {selectedReservationId && (
+        <DispatchModal
+          onClose={handleCloseDispatchModal}
+          onDispatched={handleDispatched}
+          reservationId={selectedReservationId}
+          workerId={workerId}
+        />
+      )}
     </div>
   );
 };

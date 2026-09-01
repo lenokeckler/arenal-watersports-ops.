@@ -3,10 +3,12 @@ import type { Database, Nullable } from "@/app/types";
 import {
   CATEGORY_STATUS,
   UNIT_STATUS,
+  type EquipmentImageTreatment,
   type UnitStatus,
   type UsageMetric,
 } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
+import { resolveEquipmentImage } from "@/app/utils/tablero/equipmentImage";
 
 /** One machine as it reads on `/operaciones/maquinas`, before grouping. */
 export interface MachineListUnit {
@@ -18,6 +20,10 @@ export interface MachineListUnit {
   fuelMax: number;
   hasMotor: boolean;
   id: string;
+  imageAlt: string;
+  imageSrc: Nullable<string>;
+  /** Contained cutout vs. bled photo — `null` when there is no image at all. */
+  imageTreatment: Nullable<EquipmentImageTreatment>;
   impactCount: number;
   isOilChangeDue: boolean;
   status: UnitStatus;
@@ -53,21 +59,31 @@ const MACHINE_LIST_SELECT =
 const toMachineListUnit = (
   row: MachineListQueryRow,
   dueUnitIds: ReadonlySet<string>
-): MachineListUnit => ({
-  categoryId: row.category_id,
-  categoryName: row.equipment_categories.name,
-  code: row.code,
-  consumesFuel: row.equipment_categories.consumes_fuel,
-  fuelLevel: row.fuel_level,
-  fuelMax: row.fuel_max,
-  hasMotor: row.equipment_categories.has_motor,
-  id: row.id,
-  impactCount: row.impact_count,
-  isOilChangeDue: dueUnitIds.has(row.id),
-  status: row.status,
-  usageMetric: row.equipment_categories.usage_metric,
-  usageTotal: row.usage_total,
-});
+): MachineListUnit => {
+  const image = resolveEquipmentImage(
+    row.equipment_categories.name,
+    row.code
+  );
+
+  return {
+    categoryId: row.category_id,
+    categoryName: row.equipment_categories.name,
+    code: row.code,
+    consumesFuel: row.equipment_categories.consumes_fuel,
+    fuelLevel: row.fuel_level,
+    fuelMax: row.fuel_max,
+    hasMotor: row.equipment_categories.has_motor,
+    id: row.id,
+    imageAlt: image?.alt ?? row.equipment_categories.name,
+    imageSrc: image?.src ?? null,
+    imageTreatment: image?.treatment ?? null,
+    impactCount: row.impact_count,
+    isOilChangeDue: dueUnitIds.has(row.id),
+    status: row.status,
+    usageMetric: row.equipment_categories.usage_metric,
+    usageTotal: row.usage_total,
+  };
+};
 
 /**
  * The flat list behind `/operaciones/maquinas` (US-OPE-020): only units

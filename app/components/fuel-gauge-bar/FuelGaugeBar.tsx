@@ -56,10 +56,10 @@ const resolveFuelFillClass = (
  * from `level: 0`'s `FUEL_LEVEL(0, max)` — the fuel line comment on the
  * column itself says it best: "nulo es sin lectura todavia, no vacio".
  * Whether to show this component at all when there is no reading is the
- * caller's call, not this one's: `/operaciones/maquinas` — the screen an
- * operator opens specifically to take a unit's first reading — always
- * renders it, while `/tablero`'s own `UnitCard` still hides it entirely, on
- * purpose, for a screen meant to be read at a glance rather than acted on.
+ * caller's call, not this one's, and both callers always do: hiding it on
+ * `/tablero`'s own `UnitCard` until a reading existed was tried once and
+ * reversed — a half-empty gauge, not just a full or missing one, is exactly
+ * what the dock reads this card for.
  */
 const FuelGaugeBar = ({
   level,
