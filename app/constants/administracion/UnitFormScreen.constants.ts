@@ -8,7 +8,6 @@
 export const UNIT_FORM_SCREEN = {
   CODE_LABEL: "Código",
   CODE_PLACEHOLDER: "Ej. JET-05",
-  CURRENT_FUEL_LABEL: "Gasolina actual (%)",
   DECOMMISSION: {
     BUTTON: "Dar de baja",
     CONFIRM:
@@ -28,6 +27,8 @@ export const UNIT_FORM_SCREEN = {
     GENERIC:
       "No se pudo guardar la unidad. Revise los datos.",
   },
+  FUEL_LEVEL_LABEL: "Gasolina actual (líneas)",
+  FUEL_MAX_LABEL: "Líneas máx",
   NEW_TITLE: "Nueva unidad",
   NEXT_OIL_CHANGE_LABEL:
     "Valor del próximo cambio de aceite",

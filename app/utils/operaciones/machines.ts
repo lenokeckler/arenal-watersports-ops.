@@ -21,7 +21,8 @@ export interface MachineDetail {
   categoryName: string;
   code: string;
   consumesFuel: boolean;
-  currentFuel: Nullable<number>;
+  fuelLevel: Nullable<number>;
+  fuelMax: number;
   hasConditionPhotos: boolean;
   hasMotor: boolean;
   id: string;
@@ -35,7 +36,6 @@ export interface MachineDetail {
 interface MachineQueryRow {
   category_id: string;
   code: string;
-  current_fuel: Nullable<number>;
   equipment_categories: {
     consumes_fuel: boolean;
     has_condition_photos: boolean;
@@ -43,6 +43,8 @@ interface MachineQueryRow {
     name: string;
     usage_metric: Nullable<UsageMetric>;
   };
+  fuel_level: Nullable<number>;
+  fuel_max: number;
   id: string;
   impact_count: number;
   status: UnitStatus;
@@ -56,7 +58,7 @@ interface ServiceStatusQueryRow {
 }
 
 const MACHINE_SELECT =
-  "id, category_id, code, status, current_fuel, usage_total, impact_count, " +
+  "id, category_id, code, status, fuel_level, fuel_max, usage_total, impact_count, " +
   "equipment_categories!inner(name, has_motor, usage_metric, " +
   "consumes_fuel, has_condition_photos)";
 
@@ -82,7 +84,8 @@ const toMachineDetail = (
   categoryName: row.equipment_categories.name,
   code: row.code,
   consumesFuel: row.equipment_categories.consumes_fuel,
-  currentFuel: row.current_fuel,
+  fuelLevel: row.fuel_level,
+  fuelMax: row.fuel_max,
   hasConditionPhotos:
     row.equipment_categories.has_condition_photos,
   hasMotor: row.equipment_categories.has_motor,

@@ -64,7 +64,7 @@ export const RESERVATION_DETAIL_SCREEN = {
   },
   NOT_FOUND: "Esta reserva ya no existe.",
   POSTPONE: {
-    CLOSING_FUEL_LABEL: "Combustible al regresar (%)",
+    CLOSING_FUEL_LABEL: "Combustible al regresar",
     CLOSING_TITLE: "Equipo que sí se usó",
     CLOSING_USAGE_LABEL: "Lectura al regresar",
     DATE_LABEL: "Nueva fecha",

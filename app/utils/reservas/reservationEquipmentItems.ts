@@ -13,6 +13,8 @@ export interface ReservationEquipmentItem {
   id: string;
   quantity: Nullable<number>;
   unitCode: Nullable<string>;
+  /** Cuantas lineas tiene el medidor de esta unidad — el tope de fuelOut/fuelIn. */
+  unitFuelMax: Nullable<number>;
   unitId: Nullable<string>;
   usageMetric: Nullable<UsageMetric>;
   usageOut: Nullable<number>;
@@ -35,6 +37,7 @@ interface ReservationItemRow {
   unit: {
     category: EquipmentCategoryFlags | null;
     code: string;
+    fuel_max: number;
   } | null;
   unit_id: Nullable<string>;
 }
@@ -60,7 +63,7 @@ export const fetchReservationEquipmentItems = async (
          id, name, has_motor, usage_metric, consumes_fuel
        ),
        unit:equipment_units(
-         code,
+         code, fuel_max,
          category:equipment_categories!equipment_units_category_id_fkey(
            id, name, has_motor, usage_metric, consumes_fuel
          )
@@ -86,6 +89,7 @@ export const fetchReservationEquipmentItems = async (
       id: row.id,
       quantity: row.quantity,
       unitCode: row.unit?.code ?? null,
+      unitFuelMax: row.unit?.fuel_max ?? null,
       unitId: row.unit_id,
       usageMetric: category?.usage_metric ?? null,
       usageOut: row.usage_out,

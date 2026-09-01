@@ -7,14 +7,15 @@ import {
   MACHINE_DETAIL_SCREEN,
   PATHS,
   SPINNER_SIZE,
-  STRING,
   UNIT_CORRECTION_SCREEN,
   USAGE_METRIC_LABEL,
 } from "@/app/constants";
 import Button from "@/app/components/button/Button";
 import Spinner from "@/app/components/spinner/Spinner";
 import OperationsScreenShell from "@/app/components/operations-screen-shell/OperationsScreenShell";
+import { parseReadingValue } from "@/app/utils/reservas/equipmentReadingFields";
 import MachineCorrectionField from "./components/MachineCorrectionField";
+import MachineCorrectionFuelField from "./components/MachineCorrectionFuelField";
 import MachineCorrectionStatusPicker from "./components/MachineCorrectionStatusPicker";
 import { useMachineCorrectionViewModel } from "./hooks/useMachineCorrectionViewModel";
 import type { MachineCorrectionProps } from "./models/MachineCorrectionProps.interface";
@@ -48,18 +49,30 @@ const MachineCorrection = ({
     >
       <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
         {machine.consumesFuel && (
-          <MachineCorrectionField
-            currentValue={
-              machine.currentFuel === null
-                ? STRING.N_A
-                : `${machine.currentFuel}%`
-            }
+          <MachineCorrectionFuelField
+            currentFuelLevel={machine.fuelLevel}
+            fuelMax={machine.fuelMax}
             isBusy={isBusy}
-            label={UNIT_CORRECTION_SCREEN.FORM.FUEL_LABEL}
-            onChange={(value) =>
-              handleFieldChange("currentFuel", value)
+            onSelect={(level) =>
+              handleFieldChange("fuelLevel", String(level))
             }
-            value={values.currentFuel}
+            selectedLevel={parseReadingValue(
+              values.fuelLevel
+            )}
+          />
+        )}
+
+        {machine.consumesFuel && (
+          <MachineCorrectionField
+            currentValue={String(machine.fuelMax)}
+            isBusy={isBusy}
+            label={
+              UNIT_CORRECTION_SCREEN.FORM.FUEL_MAX_LABEL
+            }
+            onChange={(value) =>
+              handleFieldChange("fuelMax", value)
+            }
+            value={values.fuelMax}
           />
         )}
 

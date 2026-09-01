@@ -87,7 +87,7 @@ export const useReservationCloseViewModel = ({
       closings: rowsViewModel.rows
         .filter((row) => row.showFuel || row.showUsage)
         .map((row) => ({
-          fuelPercent: parseReadingValue(row.fuelPercent),
+          fuelLevel: parseReadingValue(row.fuelLevel),
           itemId: row.itemId,
           unitId: row.unitId,
           usageReading: parseReadingValue(row.usageReading),

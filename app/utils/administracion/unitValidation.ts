@@ -1,12 +1,14 @@
 import type { Nullable } from "@/app/types";
 import {
+  FUEL_LEVEL_NUMBERS,
   UNIT_FORM_SCREEN,
   type UnitStatus,
 } from "@/app/constants";
 
 export interface UnitFormValues {
   code: string;
-  currentFuel: string;
+  fuelLevel: string;
+  fuelMax: string;
   nextOilChangeAt: string;
   status: UnitStatus;
   usageTotal: string;
@@ -14,11 +16,9 @@ export interface UnitFormValues {
 
 export interface UnitFormErrors {
   code?: string;
-  currentFuel?: string;
+  fuelLevel?: string;
+  fuelMax?: string;
 }
-
-const MAX_FUEL_PERCENTAGE = 100;
-const MIN_FUEL_PERCENTAGE = 0;
 
 const toNullableNumber = (
   rawValue: string
@@ -26,9 +26,11 @@ const toNullableNumber = (
   rawValue.trim() ? Number(rawValue) : null;
 
 /**
- * Mirrors `units_fuel_range` on `equipment_units`
- * (`supabase/migrations/20260828000400_inventory.sql`) so a mistake lands
- * next to the field instead of as a raw database rejection (US-ADM-016).
+ * Mirrors `units_fuel_max_range`/`units_fuel_level_range` on
+ * `equipment_units` (`supabase/migrations/20260828002200_fuel_lines.sql`) so
+ * a mistake lands next to the field instead of as a raw database rejection
+ * (US-ADM-016). `fuelLevel` is validated against `fuelMax` itself — a blank
+ * `fuelMax` falls back to the same default the database writes.
  */
 export const validateUnitForm = (
   values: UnitFormValues
@@ -39,13 +41,23 @@ export const validateUnitForm = (
     errors.code = UNIT_FORM_SCREEN.ERROR.CODE_REQUIRED;
   }
 
-  const fuel = toNullableNumber(values.currentFuel);
+  const fuelMax =
+    toNullableNumber(values.fuelMax) ??
+    FUEL_LEVEL_NUMBERS.DEFAULT_MAX;
   if (
-    typeof fuel === "number" &&
-    (fuel < MIN_FUEL_PERCENTAGE ||
-      fuel > MAX_FUEL_PERCENTAGE)
+    fuelMax < FUEL_LEVEL_NUMBERS.MIN_MAX ||
+    fuelMax > FUEL_LEVEL_NUMBERS.MAX_MAX
   ) {
-    errors.currentFuel = UNIT_FORM_SCREEN.ERROR.GENERIC;
+    errors.fuelMax = UNIT_FORM_SCREEN.ERROR.GENERIC;
+  }
+
+  const fuelLevel = toNullableNumber(values.fuelLevel);
+  if (
+    typeof fuelLevel === "number" &&
+    (fuelLevel < FUEL_LEVEL_NUMBERS.MIN ||
+      fuelLevel > fuelMax)
+  ) {
+    errors.fuelLevel = UNIT_FORM_SCREEN.ERROR.GENERIC;
   }
 
   return errors;
@@ -53,7 +65,8 @@ export const validateUnitForm = (
 
 export interface UnitWritePayload {
   code: string;
-  current_fuel: Nullable<number>;
+  fuel_level: Nullable<number>;
+  fuel_max: number;
   next_oil_change_at: Nullable<number>;
   status: UnitStatus;
   usage_total: number;
@@ -65,7 +78,10 @@ export const buildUnitPayload = (
   values: UnitFormValues
 ): UnitWritePayload => ({
   code: values.code.trim(),
-  current_fuel: toNullableNumber(values.currentFuel),
+  fuel_level: toNullableNumber(values.fuelLevel),
+  fuel_max:
+    toNullableNumber(values.fuelMax) ??
+    FUEL_LEVEL_NUMBERS.DEFAULT_MAX,
   next_oil_change_at: toNullableNumber(
     values.nextOilChangeAt
   ),

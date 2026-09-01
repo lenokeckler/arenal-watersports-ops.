@@ -13,6 +13,7 @@ const baseItem: ReservationCloseEquipmentItem = {
   impactCount: 0,
   quantity: null,
   unitCode: "JS-01",
+  unitFuelMax: 4,
   unitId: "unit-1",
   usageMetric: "engine_hours",
   usageOut: null,

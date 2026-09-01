@@ -41,22 +41,28 @@ export const fetchReservationsById = async (
   return reservationsById;
 };
 
+/** `equipment_units.fuel_level`/`fuel_max` for one unit. */
+export interface UnitFuelReading {
+  fuelLevel: number | null;
+  fuelMax: number;
+}
+
 /**
- * `equipment_units.current_fuel` per unit — only ever called for a
+ * `equipment_units.fuel_level`/`fuel_max` per unit — only ever called for a
  * `consumes_fuel` category, from `unitIds` already scoped to that category.
  */
 export const fetchFuelByUnitId = async (
   supabase: SupabaseClient<Database>,
   unitIds: string[]
-): Promise<Map<string, number | null>> => {
-  const fuelByUnitId = new Map<string, number | null>();
+): Promise<Map<string, UnitFuelReading>> => {
+  const fuelByUnitId = new Map<string, UnitFuelReading>();
   if (unitIds.length === 0) {
     return fuelByUnitId;
   }
 
   const { data: fuelReadings, error } = await supabase
     .from("equipment_units")
-    .select("id, current_fuel")
+    .select("id, fuel_level, fuel_max")
     .in("id", unitIds);
   throwIfSupabaseError(
     error,
@@ -64,7 +70,10 @@ export const fetchFuelByUnitId = async (
   );
 
   for (const unit of fuelReadings ?? []) {
-    fuelByUnitId.set(unit.id, unit.current_fuel);
+    fuelByUnitId.set(unit.id, {
+      fuelLevel: unit.fuel_level,
+      fuelMax: unit.fuel_max,
+    });
   }
   return fuelByUnitId;
 };

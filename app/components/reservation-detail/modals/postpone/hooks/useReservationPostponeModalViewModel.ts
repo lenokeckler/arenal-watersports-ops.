@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
+  FUEL_LEVEL_NUMBERS,
   RESERVATION_DETAIL_SCREEN,
   RESERVATION_STATUS,
   type ReservationStatus,
@@ -23,7 +24,9 @@ import {
 } from "@/app/utils/reservas/postponeReservation";
 
 export interface ClosingFieldState {
-  fuelPercent: string;
+  fuelLevel: string;
+  /** Cuantas lineas tiene el medidor de esta unidad — el tope de `fuelLevel`. */
+  fuelMax: number;
   itemId: string;
   showFuel: boolean;
   showUsage: boolean;
@@ -46,10 +49,7 @@ export interface UseReservationPostponeModalViewModelReturn {
   date: string;
   error: Nullable<string>;
   handleDateChange: (value: string) => void;
-  handleFuelChange: (
-    itemId: string,
-    value: string
-  ) => void;
+  handleFuelChange: (itemId: string, value: string) => void;
   handleSubmit: () => void;
   handleTimeChange: (value: string) => void;
   handleUsageChange: (
@@ -66,8 +66,8 @@ const toClosingReadings = (
   closings: ClosingFieldState[]
 ): UnitClosingReading[] =>
   closings.map((closing) => ({
-    fuelPercent: closing.fuelPercent.trim()
-      ? Number(closing.fuelPercent)
+    fuelLevel: closing.fuelLevel.trim()
+      ? Number(closing.fuelLevel)
       : null,
     itemId: closing.itemId,
     unitId: closing.unitId,
@@ -101,9 +101,8 @@ export const useReservationPostponeModalViewModel = ({
   >([]);
   const [isLoadingClosings, setIsLoadingClosings] =
     useState(status === RESERVATION_STATUS.DISPATCHED);
-  const [error, setError] = useState<Nullable<string>>(
-    null
-  );
+  const [error, setError] =
+    useState<Nullable<string>>(null);
   const [isBusy, setIsBusy] = useState(false);
 
   const isDispatched =
@@ -126,7 +125,10 @@ export const useReservationPostponeModalViewModel = ({
               (item.consumesFuel || item.hasMotor)
           )
           .map((item) => ({
-            fuelPercent: "",
+            fuelLevel: "",
+            fuelMax:
+              item.unitFuelMax ??
+              FUEL_LEVEL_NUMBERS.DEFAULT_MAX,
             itemId: item.id,
             showFuel: item.consumesFuel,
             showUsage: item.hasMotor,
@@ -149,7 +151,7 @@ export const useReservationPostponeModalViewModel = ({
     setClosings((current) =>
       current.map((closing) =>
         closing.itemId === itemId
-          ? { ...closing, fuelPercent: value }
+          ? { ...closing, fuelLevel: value }
           : closing
       )
     );

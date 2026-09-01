@@ -295,12 +295,8 @@ export {
 export { RESERVATION_DETAIL_SCREEN } from "./reservas/ReservationDetailScreen.constants";
 export { NEW_RESERVATION_SCREEN } from "./reservas/NewReservationScreen.constants";
 export { RESERVATION_NUMBERS } from "./reservas/ReservationNumbers.constants";
-export {
-  FUEL_LEVEL_PRESET,
-  FUEL_LEVEL_PRESET_LABEL,
-  FUEL_LEVEL_PRESET_ORDER,
-  type FuelLevelPreset,
-} from "./reservas/FuelLevel.constants";
+export { FUEL_LEVEL_NUMBERS } from "./reservas/FuelLevel.constants";
+export { FUEL_LEVEL_PICKER_SCREEN } from "@/app/components/fuel-level-picker/constants/FuelLevelPickerScreen.constants";
 export {
   COMBO_MODE,
   type ComboMode,

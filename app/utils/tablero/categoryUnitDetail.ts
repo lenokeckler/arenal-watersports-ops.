@@ -5,6 +5,7 @@ import { resolveEquipmentImage } from "./equipmentImage";
 import {
   fetchFuelByUnitId,
   fetchReservationsById,
+  type UnitFuelReading,
 } from "./categoryDetailLookups";
 import type { CategoryDetail } from "./categoryDetail";
 
@@ -57,7 +58,9 @@ export const fetchUnitCategoryDetail = async (
       fetchReservationsById(supabase, reservationIds),
       category.consumes_fuel
         ? fetchFuelByUnitId(supabase, unitIds)
-        : Promise.resolve(new Map<string, number | null>()),
+        : Promise.resolve(
+            new Map<string, UnitFuelReading>()
+          ),
     ]);
 
   return {
@@ -73,14 +76,16 @@ export const fetchUnitCategoryDetail = async (
         category.name,
         unit.code ?? undefined
       );
+      const fuelReading = unit.id
+        ? fuelByUnitId.get(unit.id)
+        : undefined;
 
       return {
         code: unit.code ?? "",
-        currentFuel: unit.id
-          ? (fuelByUnitId.get(unit.id) ?? null)
-          : null,
         customerName: reservation?.customerName ?? null,
         effectiveStatus: unit.effective_status ?? "",
+        fuelLevel: fuelReading?.fuelLevel ?? null,
+        fuelMax: fuelReading?.fuelMax ?? null,
         id: unit.id ?? "",
         imageAlt: image?.alt ?? category.name,
         imageSrc: image?.src ?? null,

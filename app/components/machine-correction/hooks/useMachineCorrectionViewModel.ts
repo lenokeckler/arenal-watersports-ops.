@@ -23,7 +23,8 @@ import type {
 } from "../models/MachineCorrectionViewModel.interface";
 
 const INITIAL_VALUES: MachineCorrectionFormValues = {
-  currentFuel: STRING.Empty,
+  fuelLevel: STRING.Empty,
+  fuelMax: STRING.Empty,
   impactCount: STRING.Empty,
   status: null,
   usageTotal: STRING.Empty,
@@ -34,7 +35,8 @@ const toCorrection = (
   unitId: string,
   workerId: string
 ): UnitCorrection => ({
-  currentFuel: parseReadingValue(values.currentFuel),
+  fuelLevel: parseReadingValue(values.fuelLevel),
+  fuelMax: parseReadingValue(values.fuelMax),
   impactCount: parseReadingValue(values.impactCount),
   status: values.status,
   unitId,

@@ -10,7 +10,8 @@ import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
  * box never wipes a good reading.
  */
 export interface UnitCorrection {
-  currentFuel: Nullable<number>;
+  fuelLevel: Nullable<number>;
+  fuelMax: Nullable<number>;
   impactCount: Nullable<number>;
   status: Nullable<UnitStatus>;
   unitId: string;
@@ -19,7 +20,8 @@ export interface UnitCorrection {
 }
 
 interface UnitCorrectionPatch {
-  current_fuel?: number;
+  fuel_level?: number;
+  fuel_max?: number;
   impact_count?: number;
   status?: UnitStatus;
   updated_by: string;
@@ -30,8 +32,11 @@ const buildCorrectionPatch = (
   correction: UnitCorrection
 ): UnitCorrectionPatch => ({
   updated_by: correction.workerId,
-  ...(correction.currentFuel !== null
-    ? { current_fuel: correction.currentFuel }
+  ...(correction.fuelLevel !== null
+    ? { fuel_level: correction.fuelLevel }
+    : {}),
+  ...(correction.fuelMax !== null
+    ? { fuel_max: correction.fuelMax }
     : {}),
   ...(correction.usageTotal !== null
     ? { usage_total: correction.usageTotal }
@@ -47,7 +52,8 @@ const buildCorrectionPatch = (
 export const hasSomethingToCorrect = (
   correction: UnitCorrection
 ): boolean =>
-  correction.currentFuel !== null ||
+  correction.fuelLevel !== null ||
+  correction.fuelMax !== null ||
   correction.usageTotal !== null ||
   correction.impactCount !== null ||
   correction.status !== null;

@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(16);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -96,13 +96,24 @@ select throws_ok(
   'un impact_count negativo es rechazado'
 );
 
--- El combustible es un porcentaje: no pasa de 100.
+-- El combustible se lee por lineas, no por porcentaje: fuel_max es el tope
+-- fisico del medidor de esa unidad.
 select throws_ok(
-  $$ insert into equipment_units (category_id, code, current_fuel, created_by, updated_by)
-     values ('aaaaaaaa-0000-0000-0000-000000000001', 'JET-03', 150,
+  $$ insert into equipment_units (category_id, code, fuel_max, created_by, updated_by)
+     values ('aaaaaaaa-0000-0000-0000-000000000001', 'JET-03', 25,
              '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
   '23514', null,
-  'un current_fuel fuera de 0-100 es rechazado'
+  'un fuel_max fuera de 1-20 es rechazado'
+);
+
+-- fuel_level nunca queda por encima del propio fuel_max de la unidad, ni al
+-- insertar ni al bajar el maximo despues.
+select throws_ok(
+  $$ insert into equipment_units (category_id, code, fuel_max, fuel_level, created_by, updated_by)
+     values ('aaaaaaaa-0000-0000-0000-000000000001', 'JET-03', 4, 5,
+             '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111') $$,
+  '23514', null,
+  'un fuel_level mayor que fuel_max es rechazado'
 );
 
 -- Las cantidades de equipment_stock nunca quedan negativas.

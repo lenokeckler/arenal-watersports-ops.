@@ -5,7 +5,7 @@ import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 /** US-OPE-003: the departure reading for one motorized/fuel-consuming item. */
 export interface DispatchItemReading {
-  fuelPercent: Nullable<number>;
+  fuelLevel: Nullable<number>;
   itemId: string;
   unitId: string;
   usageReading: Nullable<number>;
@@ -19,7 +19,7 @@ const writeDispatchReading = async (
   const { error } = await supabase
     .from("reservation_items")
     .update({
-      fuel_out: reading.fuelPercent,
+      fuel_out: reading.fuelLevel,
       updated_by: workerId,
       usage_out: reading.usageReading,
     })
@@ -44,12 +44,12 @@ const writeUnitDepartureState = async (
   workerId: string
 ): Promise<void> => {
   const patch: {
-    current_fuel?: number;
+    fuel_level?: number;
     updated_by: string;
     usage_total?: number;
   } = { updated_by: workerId };
-  if (reading.fuelPercent !== null) {
-    patch.current_fuel = reading.fuelPercent;
+  if (reading.fuelLevel !== null) {
+    patch.fuel_level = reading.fuelLevel;
   }
   if (reading.usageReading !== null) {
     patch.usage_total = reading.usageReading;

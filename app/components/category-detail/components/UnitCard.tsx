@@ -87,9 +87,12 @@ const UnitCard = ({
           </span>
         )}
 
-        {unit.currentFuel !== null &&
-          unit.currentFuel !== undefined && (
-            <FuelGaugeBar percent={unit.currentFuel} />
+        {typeof unit.fuelLevel === "number" &&
+          typeof unit.fuelMax === "number" && (
+            <FuelGaugeBar
+              level={unit.fuelLevel}
+              max={unit.fuelMax}
+            />
           )}
       </div>
     </div>

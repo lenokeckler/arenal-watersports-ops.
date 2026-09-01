@@ -57,7 +57,7 @@ export const useReservationCloseRowsViewModel = (
     value: string
   ): void =>
     setRows((current) =>
-      mapRow(current, itemId, { fuelPercent: value })
+      mapRow(current, itemId, { fuelLevel: value })
     );
 
   const handleUsageChange = (

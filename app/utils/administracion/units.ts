@@ -16,7 +16,8 @@ export interface InventoryCategoryRow {
 
 export interface UnitListRow {
   code: string;
-  currentFuel: Nullable<number>;
+  fuelLevel: Nullable<number>;
+  fuelMax: number;
   id: string;
   nextOilChangeAt: Nullable<number>;
   status: UnitStatus;
@@ -37,7 +38,8 @@ interface InventoryCategoryQueryRow {
 
 interface UnitListQueryRow {
   code: string;
-  current_fuel: Nullable<number>;
+  fuel_level: Nullable<number>;
+  fuel_max: number;
   id: string;
   next_oil_change_at: Nullable<number>;
   status: UnitStatus;
@@ -54,7 +56,8 @@ const toUnitListRow = (
   row: UnitListQueryRow
 ): UnitListRow => ({
   code: row.code,
-  currentFuel: row.current_fuel,
+  fuelLevel: row.fuel_level,
+  fuelMax: row.fuel_max,
   id: row.id,
   nextOilChangeAt: row.next_oil_change_at,
   status: row.status,
@@ -109,7 +112,7 @@ export const fetchUnitsForCategory = async (
   const { data, error } = await supabase
     .from("equipment_units")
     .select(
-      "id, code, status, current_fuel, usage_total, next_oil_change_at"
+      "id, code, status, fuel_level, fuel_max, usage_total, next_oil_change_at"
     )
     .eq("category_id", categoryId)
     .neq("status", UNIT_STATUS.DECOMMISSIONED)
@@ -131,7 +134,7 @@ export const fetchUnitDetail = async (
   const { data, error } = await supabase
     .from("equipment_units")
     .select(
-      "id, category_id, code, status, current_fuel, usage_total, " +
+      "id, category_id, code, status, fuel_level, fuel_max, usage_total, " +
         "next_oil_change_at, decommissioned_at, decommission_reason"
     )
     .eq("id", unitId)

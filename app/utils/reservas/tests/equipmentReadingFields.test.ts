@@ -11,6 +11,7 @@ const baseItem: ReservationEquipmentItem = {
   id: "item-1",
   quantity: null,
   unitCode: null,
+  unitFuelMax: null,
   unitId: null,
   usageMetric: null,
   usageOut: null,

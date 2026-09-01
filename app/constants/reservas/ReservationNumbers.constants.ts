@@ -5,9 +5,6 @@
 export const RESERVATION_NUMBERS = {
   /** Debounces the live availability RPC calls while the franja is edited. */
   AVAILABILITY_DEBOUNCE_MS: 400,
-  /** US-RES-020: `equipment_units.current_fuel` is a tank percentage. */
-  FUEL_PERCENT_MAX: 100,
-  FUEL_PERCENT_MIN: 0,
   MIN_DURATION_MINUTES: 1,
   MIN_PEOPLE_COUNT: 1,
   MIN_QUANTITY: 0,

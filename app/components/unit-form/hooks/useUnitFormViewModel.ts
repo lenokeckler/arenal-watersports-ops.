@@ -31,8 +31,8 @@ const toInitialValues = (
   unit: Nullable<UnitDetail>
 ): UnitFormValues => ({
   code: unit?.code ?? STRING.Empty,
-  currentFuel:
-    unit?.currentFuel?.toString() ?? STRING.Empty,
+  fuelLevel: unit?.fuelLevel?.toString() ?? STRING.Empty,
+  fuelMax: unit?.fuelMax?.toString() ?? STRING.Empty,
   nextOilChangeAt:
     unit?.nextOilChangeAt?.toString() ?? STRING.Empty,
   status: unit?.status ?? UNIT_STATUS.AVAILABLE,

@@ -602,9 +602,10 @@ export type Database = {
           code: string;
           created_at: string;
           created_by: string;
-          current_fuel: number | null;
           decommission_reason: string | null;
           decommissioned_at: string | null;
+          fuel_level: number | null;
+          fuel_max: number;
           id: string;
           impact_count: number;
           next_oil_change_at: number | null;
@@ -618,9 +619,10 @@ export type Database = {
           code: string;
           created_at?: string;
           created_by: string;
-          current_fuel?: number | null;
           decommission_reason?: string | null;
           decommissioned_at?: string | null;
+          fuel_level?: number | null;
+          fuel_max?: number;
           id?: string;
           impact_count?: number;
           next_oil_change_at?: number | null;
@@ -634,9 +636,10 @@ export type Database = {
           code?: string;
           created_at?: string;
           created_by?: string;
-          current_fuel?: number | null;
           decommission_reason?: string | null;
           decommissioned_at?: string | null;
+          fuel_level?: number | null;
+          fuel_max?: number;
           id?: string;
           impact_count?: number;
           next_oil_change_at?: number | null;
