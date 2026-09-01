@@ -143,11 +143,18 @@ export { EMAIL_CONFIG } from "./email/Email.constants";
 export { WORK_MODE_SCREEN } from "./acceso/WorkModeScreen.constants";
 export { APP_DRAWER_SCREEN } from "./tablero/AppDrawer.constants";
 export {
+  EQUIPMENT_UNIT_OVERDUE_CARD_TINT,
   EQUIPMENT_UNIT_STATUS,
   EQUIPMENT_UNIT_STATUS_BADGE,
+  EQUIPMENT_UNIT_STATUS_CARD_TINT,
   EQUIPMENT_UNIT_STATUS_LABEL,
   type EquipmentUnitStatus,
 } from "./tablero/EquipmentStatus.constants";
+export {
+  BOARD_CARD_OCCUPANCY,
+  BOARD_CARD_OCCUPANCY_CLASS,
+  type BoardCardOccupancy,
+} from "./tablero/BoardCardOccupancy.constants";
 export {
   TRACKING_MODE,
   TRACKING_MODE_LABEL,

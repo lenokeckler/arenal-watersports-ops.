@@ -1,33 +1,46 @@
 import type { JSX } from "react";
 import {
-  CATEGORY_DETAIL_SCREEN,
   DEFAULT_CATEGORY_ICON,
-  EQUIPMENT_UNIT_STATUS_BADGE,
+  EQUIPMENT_UNIT_OVERDUE_CARD_TINT,
+  EQUIPMENT_UNIT_STATUS_CARD_TINT,
   EQUIPMENT_UNIT_STATUS_LABEL,
-  MATERIAL_ICON_NAME,
-  PATHS,
   type EquipmentUnitStatus,
 } from "@/app/constants";
 import Image from "@/app/components/image/Image";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
-import Badge from "@/app/components/badge/Badge";
-import Link from "@/app/components/link/Link";
-import { formatShortTime } from "@/app/utils/tablero/formatDateTime";
+import { computeTimeRemaining } from "@/app/utils/operaciones/timeRemaining";
+import FuelGaugeBar from "./FuelGaugeBar";
+import UnitCardStatusBadge from "./UnitCardStatusBadge";
+import UnitCardOccupiedDetails from "./UnitCardOccupiedDetails";
 import type { UnitCardProps } from "./UnitCardProps.interface";
 
 /**
  * One unit inside a by_unit category (US-TAB-002), restyled from
- * `docs/referencia/stitch/gestion-de-jet-ski--escritorio.html`. When
- * occupied, shows the return time, the reservation and who has it, with a
- * link into the reservation's detail.
+ * `docs/referencia/stitch/gestion-de-jet-ski--escritorio.html`. The whole
+ * card is tinted by state — bold enough to read from across the dock, not
+ * just the corner badge — and, when occupied, composes
+ * `UnitCardOccupiedDetails` for the return countdown and reservation link.
  */
-const UnitCard = ({ unit }: UnitCardProps): JSX.Element => {
-  const status = unit.effectiveStatus as EquipmentUnitStatus;
-  const badge = EQUIPMENT_UNIT_STATUS_BADGE[status];
+const UnitCard = ({
+  now,
+  unit,
+}: UnitCardProps): JSX.Element => {
+  const status =
+    unit.effectiveStatus as EquipmentUnitStatus;
   const isOccupied = Boolean(unit.reservationId);
+  const timeRemaining =
+    isOccupied && unit.returnsAt
+      ? computeTimeRemaining(unit.returnsAt, now)
+      : null;
+  const isOverdue = timeRemaining?.isOverdue ?? false;
+  const cardTintClass = isOverdue
+    ? EQUIPMENT_UNIT_OVERDUE_CARD_TINT
+    : EQUIPMENT_UNIT_STATUS_CARD_TINT[status];
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface-container-high/40 backdrop-blur-xl">
+    <div
+      className={`flex flex-col overflow-hidden rounded-xl border backdrop-blur-xl ${cardTintClass}`}
+    >
       <div className="relative h-40 bg-surface-container-lowest">
         {unit.imageSrc ? (
           <Image
@@ -44,9 +57,10 @@ const UnitCard = ({ unit }: UnitCardProps): JSX.Element => {
             />
           </div>
         )}
-        <Badge className={`absolute right-sm top-sm ${badge.CLASS_NAME}`} icon={badge.ICON}>
-          {EQUIPMENT_UNIT_STATUS_LABEL[status]}
-        </Badge>
+        <UnitCardStatusBadge
+          isOverdue={isOverdue}
+          status={status}
+        />
       </div>
 
       <div className="flex flex-col gap-xs p-sm">
@@ -55,36 +69,20 @@ const UnitCard = ({ unit }: UnitCardProps): JSX.Element => {
         </span>
 
         {isOccupied ? (
-          <div className="flex flex-col gap-xs font-label-mono text-label-mono text-on-surface-variant">
-            {unit.returnsAt && (
-              <span>
-                {CATEGORY_DETAIL_SCREEN.RETURNS_AT}{" "}
-                {formatShortTime(unit.returnsAt)}
-              </span>
-            )}
-            {unit.customerName && (
-              <span>
-                {CATEGORY_DETAIL_SCREEN.CARRIED_BY}: {unit.customerName}
-              </span>
-            )}
-            {unit.reservationId && (
-              <Link
-                href={PATHS.RESERVATIONS.DETAIL_BY_ID(unit.reservationId)}
-                className="mt-xs inline-flex min-h-10 items-center gap-1 text-primary"
-              >
-                {unit.reservationCode ?? CATEGORY_DETAIL_SCREEN.RESERVATION_LINK}
-                <MaterialIcon
-                  name={MATERIAL_ICON_NAME.CHEVRON_RIGHT}
-                  className="!text-[16px]"
-                />
-              </Link>
-            )}
-          </div>
+          <UnitCardOccupiedDetails
+            timeRemaining={timeRemaining}
+            unit={unit}
+          />
         ) : (
           <span className="font-label-mono text-label-mono text-on-surface-variant">
             {EQUIPMENT_UNIT_STATUS_LABEL[status]}
           </span>
         )}
+
+        {unit.currentFuel !== null &&
+          unit.currentFuel !== undefined && (
+            <FuelGaugeBar percent={unit.currentFuel} />
+          )}
       </div>
     </div>
   );
