@@ -7,6 +7,7 @@ import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 export interface DispatchItemReading {
   fuelPercent: Nullable<number>;
   itemId: string;
+  unitId: string;
   usageReading: Nullable<number>;
 }
 
@@ -30,6 +31,41 @@ const writeDispatchReading = async (
 };
 
 /**
+ * US-OPE-010/US-OPE-011: mirrors the departure reading onto the unit itself
+ * — otherwise the machine's own record keeps showing whatever level the
+ * *previous* close left it at for as long as this trip is out, which is a
+ * false number. Mirrors `closeEquipmentReadings.ts`'s `closeEquipmentUnit`
+ * exactly, just at the other end of the trip: a blank reading still writes
+ * `updated_by`, matching that sibling's behavior.
+ */
+const writeUnitDepartureState = async (
+  supabase: SupabaseClient<Database>,
+  reading: DispatchItemReading,
+  workerId: string
+): Promise<void> => {
+  const patch: {
+    current_fuel?: number;
+    updated_by: string;
+    usage_total?: number;
+  } = { updated_by: workerId };
+  if (reading.fuelPercent !== null) {
+    patch.current_fuel = reading.fuelPercent;
+  }
+  if (reading.usageReading !== null) {
+    patch.usage_total = reading.usageReading;
+  }
+
+  const { error } = await supabase
+    .from("equipment_units")
+    .update(patch)
+    .eq("id", reading.unitId);
+  throwIfSupabaseError(
+    error,
+    "operaciones.dispatchReservation.writeUnitDepartureState"
+  );
+};
+
+/**
  * US-OPE-002/US-OPE-003: the reservation already has everything it needs —
  * this only records the departure fuel/hours for the motorized items
  * (US-OPE-003 applies "solo a las categorías que llevan motor", so
@@ -45,9 +81,10 @@ export const dispatchReservation = async (
   workerId: string
 ): Promise<void> => {
   await Promise.all(
-    readings.map((reading) =>
-      writeDispatchReading(supabase, reading, workerId)
-    )
+    readings.flatMap((reading) => [
+      writeDispatchReading(supabase, reading, workerId),
+      writeUnitDepartureState(supabase, reading, workerId),
+    ])
   );
 
   const { error } = await supabase

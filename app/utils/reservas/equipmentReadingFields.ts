@@ -22,34 +22,56 @@ export interface EquipmentReadingFieldState {
   usageReading: string;
 }
 
+export interface DispatchSheetRow {
+  categoryName: string;
+  itemId: string;
+  /** Solo la llevan las lineas por cantidad — kayaks, paddleboards, etc. */
+  quantity: Nullable<number>;
+  /** Presente solo si la categoria consume gasolina o lleva motor. */
+  reading: Nullable<EquipmentReadingFieldState>;
+  /** Solo la llevan las lineas por unidad. */
+  unitCode: Nullable<string>;
+}
+
 const EMPTY_READING = "";
 
+const buildReadingField = (
+  item: ReservationEquipmentItem
+): EquipmentReadingFieldState => ({
+  departureFuel: item.fuelOut,
+  departureUsage: item.usageOut,
+  fuelPercent: EMPTY_READING,
+  itemId: item.id,
+  showFuel: item.consumesFuel,
+  showUsage: item.hasMotor,
+  unitCode: item.unitCode ?? EMPTY_READING,
+  unitId: item.unitId as string,
+  usageMetric: item.usageMetric,
+  usageReading: EMPTY_READING,
+});
+
 /**
- * Turns a reservation's motorized/fuel-consuming units into blank editable
- * rows for a fuel/hours form — shared by the dispatch sheet (US-OPE-003)
- * and the real close (US-OPE-009). Items without a unit, or whose category
- * needs neither reading, never produce a row.
+ * US-OPE-002/US-OPE-003: one row per item the reservation commits, so the
+ * dispatch sheet is never empty for equipment like kayaks or paddleboards
+ * that take neither gasoline nor an hour reading — they still show their
+ * category and how many go out. A unit that also consumes fuel or has a
+ * motor additionally carries a `reading` (US-OPE-003 applies "solo a las
+ * categorías que llevan motor"); what is *shown* and what takes a *reading*
+ * are two different questions, and this is where they split.
  */
-export const buildEquipmentReadingFields = (
+export const buildDispatchSheetRows = (
   items: ReservationEquipmentItem[]
-): EquipmentReadingFieldState[] =>
-  items
-    .filter(
-      (item) =>
-        item.unitId && (item.consumesFuel || item.hasMotor)
-    )
-    .map((item) => ({
-      departureFuel: item.fuelOut,
-      departureUsage: item.usageOut,
-      fuelPercent: EMPTY_READING,
-      itemId: item.id,
-      showFuel: item.consumesFuel,
-      showUsage: item.hasMotor,
-      unitCode: item.unitCode ?? "",
-      unitId: item.unitId as string,
-      usageMetric: item.usageMetric,
-      usageReading: EMPTY_READING,
-    }));
+): DispatchSheetRow[] =>
+  items.map((item) => ({
+    categoryName: item.categoryName ?? EMPTY_READING,
+    itemId: item.id,
+    quantity: item.quantity,
+    reading:
+      item.unitId && (item.consumesFuel || item.hasMotor)
+        ? buildReadingField(item)
+        : null,
+    unitCode: item.unitCode,
+  }));
 
 /** A blank field means "not read", not zero — this is what tells them apart. */
 export const parseReadingValue = (

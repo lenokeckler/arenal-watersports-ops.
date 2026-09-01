@@ -5,24 +5,31 @@ import {
   EQUIPMENT_VALIDITY,
   RESERVATION_DETAIL_SCREEN,
   RESERVATION_TYPE,
-  TRACKING_MODE,
   type EquipmentValidity,
 } from "@/app/constants";
 // Deep import on purpose — see `useLoginFormViewModel.ts`.
 import { createClient as createBrowserSupabaseClient } from "@/app/services/supabase/client";
 import type { Nullable } from "@/app/types";
-import { toDateOnlyParam, toTimeOnlyParam } from "@/app/utils/reservas/calendarRange";
+import {
+  toDateOnlyParam,
+  toTimeOnlyParam,
+} from "@/app/utils/reservas/calendarRange";
 import type { ReservationDetail } from "@/app/utils/reservas/reservationDetail";
 import type { ReservationEquipmentItem } from "@/app/utils/reservas/reservationEquipmentItems";
 import { updateReservationDetails } from "@/app/utils/reservas/updateReservationDetails";
-import { applyReservationEquipmentEdit } from "@/app/utils/reservas/updateReservationEquipment";
+import {
+  applyReservationEquipmentEdit,
+  buildInitialEquipmentSelection,
+} from "@/app/utils/reservas/updateReservationEquipment";
 import {
   validateNewReservationForm,
   type NewReservationFormErrors,
 } from "@/app/utils/reservas/newReservationValidation";
+import { filterCategoriesForReservationType } from "@/app/utils/reservas/groupCategories";
 import { useReservationDetailsFields } from "@/app/components/reservation-form/hooks/useReservationDetailsFields";
 import { useReservationEquipmentSelection } from "@/app/components/reservation-form/hooks/useReservationEquipmentSelection";
 import { useReservationAvailability } from "@/app/components/reservation-form/hooks/useReservationAvailability";
+import { useReservationFormEquipmentCatalog } from "@/app/components/reservation-form/hooks/useReservationFormEquipmentCatalog";
 import type {
   CandidateUnit,
   ReservableCategory,
@@ -37,24 +44,6 @@ interface UseReservationEditModalFormViewModelParams {
   reservation: ReservationDetail;
   workerId: string;
 }
-
-const buildInitialEquipmentSelection = (
-  originalItems: ReservationEquipmentItem[]
-): {
-  initialQuantities: Record<string, number>;
-  initialSelectedUnitIds: string[];
-} => {
-  const initialQuantities: Record<string, number> = {};
-  const initialSelectedUnitIds: string[] = [];
-  for (const item of originalItems) {
-    if (item.unitId) {
-      initialSelectedUnitIds.push(item.unitId);
-    } else if (item.categoryId && item.quantity) {
-      initialQuantities[item.categoryId] = item.quantity;
-    }
-  }
-  return { initialQuantities, initialSelectedUnitIds };
-};
 
 /**
  * US-RES-018: name, people, franja, duration and equipment for a reservation
@@ -89,33 +78,25 @@ export const useReservationEditModalFormViewModel = ({
 
   const isCombo =
     reservation.type === RESERVATION_TYPE.COMBO;
-  const byQuantityCategories = useMemo(
+  // US-RES-008: a renta never offers guide-only equipment as a replacement
+  // either — same rule `useReservationFormViewModel` applies when the
+  // reservation is first created.
+  const visibleCategories = useMemo(
     () =>
-      categories.filter(
-        (category) =>
-          category.trackingMode ===
-          TRACKING_MODE.BY_QUANTITY
+      filterCategoriesForReservationType(
+        categories,
+        reservation.type
       ),
-    [categories]
+    [categories, reservation.type]
   );
-  const byUnitCategories = useMemo(
-    () =>
-      categories.filter(
-        (category) =>
-          category.trackingMode === TRACKING_MODE.BY_UNIT
-      ),
-    [categories]
+  const {
+    byQuantityCategories,
+    byUnitCategories,
+    candidateUnitsByCategory,
+  } = useReservationFormEquipmentCatalog(
+    visibleCategories,
+    candidateUnits
   );
-  const candidateUnitsByCategory = useMemo(() => {
-    const grouped: Record<string, CandidateUnit[]> = {};
-    for (const unit of candidateUnits) {
-      grouped[unit.categoryId] = [
-        ...(grouped[unit.categoryId] ?? []),
-        unit,
-      ];
-    }
-    return grouped;
-  }, [candidateUnits]);
   const quantityCategoryIds = useMemo(
     () =>
       byQuantityCategories.map((category) => category.id),

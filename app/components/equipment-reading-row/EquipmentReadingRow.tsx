@@ -5,6 +5,8 @@ import {
   RESERVATION_NUMBERS,
   USAGE_METRIC_LABEL,
 } from "@/app/constants";
+import { parseReadingValue } from "@/app/utils/reservas/equipmentReadingFields";
+import FuelLevelPicker from "./components/FuelLevelPicker";
 import type { EquipmentReadingRowProps } from "./models/EquipmentReadingRowProps.interface";
 
 const HINT_CLASS =
@@ -30,12 +32,21 @@ const EquipmentReadingRow = ({
     <span className="font-body-base text-body-base text-on-surface">
       {reading.unitCode}
     </span>
-    <div className="grid grid-cols-1 gap-sm sm:grid-cols-2">
+    <div className="flex flex-col gap-sm">
       {reading.showFuel && (
-        <label className="flex flex-col gap-1">
+        <div className="flex flex-col gap-sm">
           <span className="font-label-mono text-label-mono text-on-surface-variant">
             {fuelLabel}
           </span>
+          <FuelLevelPicker
+            isDisabled={isDisabled}
+            onSelect={(level) =>
+              onFuelChange(reading.itemId, String(level))
+            }
+            selectedLevel={parseReadingValue(
+              reading.fuelPercent
+            )}
+          />
           <input
             type={INPUT_TYPES.NUMBER}
             min={RESERVATION_NUMBERS.FUEL_PERCENT_MIN}
@@ -57,7 +68,7 @@ const EquipmentReadingRow = ({
               )}
             </span>
           )}
-        </label>
+        </div>
       )}
       {reading.showUsage && (
         <label className="flex flex-col gap-1">
