@@ -5,6 +5,7 @@ import {
   NEW_RESERVATION_SCREEN,
 } from "@/app/constants";
 import FormField from "@/app/components/form-field/FormField";
+import DurationField from "@/app/components/duration-field/DurationField";
 import {
   FIELD_CLASS,
   FIELD_ERROR_CLASS,
@@ -112,23 +113,17 @@ const ReservationEditModalFields = ({
       />
     </div>
 
-    <FormField
+    <DurationField
       id={FIELD_IDS.DURATION_MINUTES}
       name={FIELD_IDS.DURATION_MINUTES}
       label={NEW_RESERVATION_SCREEN.DETAILS.DURATION_LABEL}
-      type={INPUT_TYPES.NUMBER}
-      value={values.durationMinutes}
-      onChange={(event) =>
-        onDurationChange(event.target.value)
+      isDisabled={isBusy}
+      valueMinutes={Number(values.durationMinutes)}
+      onChangeMinutes={(minutes) =>
+        onDurationChange(String(minutes))
       }
       error={errors.durationMinutes}
       showErrorText
-      disabled={isBusy}
-      classNameField={
-        errors.durationMinutes
-          ? FIELD_ERROR_CLASS
-          : FIELD_CLASS
-      }
     />
   </div>
 );

@@ -57,8 +57,6 @@ export const RESERVATION_DETAIL_SCREEN = {
       `Creada por ${fullName}`,
     DISPATCHED_AT: "Salió",
     DURATION: "Duración",
-    DURATION_VALUE: (minutes: number): string =>
-      `${minutes} min`,
     PEOPLE_COUNT: "Personas",
     TITLE: "Detalle de la salida",
     UPDATED_BY: (fullName: string): string =>

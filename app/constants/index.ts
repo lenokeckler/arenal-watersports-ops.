@@ -282,6 +282,13 @@ export {
   type CalendarView,
 } from "./reservas/CalendarView.constants";
 export {
+  DURATION_PRESET,
+  DURATION_PRESET_LABEL,
+  DURATION_PRESET_ORDER,
+  type DurationPreset,
+} from "./reservas/DurationPreset.constants";
+export { DURATION_FIELD_SCREEN } from "@/app/components/duration-field/constants/DurationFieldScreen.constants";
+export {
   CALENDAR_SCREEN,
   WEEKDAYS_LABEL_MONO,
 } from "./reservas/CalendarScreen.constants";

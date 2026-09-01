@@ -5,8 +5,6 @@
 export const OPERATIONS_NUMBERS = {
   /** US-OPE-004: how often the "time remaining" countdown re-renders. */
   CLOCK_TICK_MS: 30_000,
-  /** US-OPE-006: quick +/- step for adjusting a dispatched duration. */
-  DURATION_STEP_MINUTES: 15,
   /** US-OPE-013: how many more impacts a unit picked up in this incident. */
   IMPACT_DELTA_MIN: 0,
   MIN_DURATION_MINUTES: 1,

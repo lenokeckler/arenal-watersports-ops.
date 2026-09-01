@@ -1,5 +1,6 @@
 import {
   CALENDAR_VIEW,
+  TIME,
   type CalendarView,
 } from "@/app/constants";
 import type { CalendarRange } from "./calendarRange";
@@ -7,26 +8,34 @@ import type { CalendarRange } from "./calendarRange";
 const LOCALE = "es-CR";
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
+// Pinned to the company's own zone — the server (Vercel's Node runtime)
+// renders in UTC, so formatting without an explicit zone could show the
+// wrong calendar day right around midnight, Costa Rica time.
 const LONG_DATE_FORMAT: Intl.DateTimeFormatOptions = {
   day: "numeric",
   month: "long",
   year: "numeric",
+  timeZone: TIME.CR.TIME_ZONE,
 };
 
 const MONTH_YEAR_FORMAT: Intl.DateTimeFormatOptions = {
   month: "long",
   year: "numeric",
+  timeZone: TIME.CR.TIME_ZONE,
 };
 const MONTH_ONLY_FORMAT: Intl.DateTimeFormatOptions = {
   month: "long",
+  timeZone: TIME.CR.TIME_ZONE,
 };
 const DAY_SHORT_FORMAT: Intl.DateTimeFormatOptions = {
   day: "numeric",
   month: "short",
+  timeZone: TIME.CR.TIME_ZONE,
 };
 const WEEKDAY_FORMAT: Intl.DateTimeFormatOptions = {
   day: "numeric",
   weekday: "long",
+  timeZone: TIME.CR.TIME_ZONE,
 };
 
 const capitalize = (label: string): string =>

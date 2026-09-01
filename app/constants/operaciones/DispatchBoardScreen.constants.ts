@@ -9,7 +9,7 @@ export const DISPATCH_BOARD_SCREEN = {
       "No se pudo ajustar la duración. Intenta de nuevo.",
     EXTENDED_NOTICE:
       "Al extender, reservas decide después si cobra las horas de más.",
-    MINUTES_LABEL: "Duración total (minutos)",
+    MINUTES_LABEL: "Duración total",
     SUBMIT: "Guardar duración",
     TITLE: "Ajustar duración",
   },

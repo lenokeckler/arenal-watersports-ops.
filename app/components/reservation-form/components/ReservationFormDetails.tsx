@@ -3,12 +3,12 @@ import {
   FIELD_IDS,
   INPUT_TYPES,
   NEW_RESERVATION_SCREEN,
-  RESERVATION_NUMBERS,
   RESERVATION_TYPE,
   RESERVATION_TYPE_LABEL,
   type ReservationType,
 } from "@/app/constants";
 import FormField from "@/app/components/form-field/FormField";
+import DurationField from "@/app/components/duration-field/DurationField";
 import type {
   NewReservationFormErrors,
   ReservationDetailsFieldsValues,
@@ -128,41 +128,18 @@ const ReservationFormDetails = ({
       {NEW_RESERVATION_SCREEN.DETAILS.OUT_OF_HOURS_HINT}
     </p>
 
-    <FormField
+    <DurationField
       id={FIELD_IDS.DURATION_MINUTES}
       name={FIELD_IDS.DURATION_MINUTES}
       label={NEW_RESERVATION_SCREEN.DETAILS.DURATION_LABEL}
-      type={INPUT_TYPES.NUMBER}
-      value={values.durationMinutes}
-      onChange={(event) =>
-        onDurationChange(event.target.value)
+      isDisabled={isBusy}
+      valueMinutes={Number(values.durationMinutes)}
+      onChangeMinutes={(minutes) =>
+        onDurationChange(String(minutes))
       }
       error={errors.durationMinutes}
       showErrorText
-      disabled={isBusy}
-      classNameField={
-        errors.durationMinutes
-          ? FIELD_ERROR_CLASS
-          : FIELD_CLASS
-      }
     />
-    <div className="flex gap-xs">
-      {RESERVATION_NUMBERS.DURATION_PRESETS_MINUTES.map(
-        (minutes) => (
-          <button
-            key={minutes}
-            type="button"
-            disabled={isBusy}
-            onClick={() =>
-              onDurationChange(String(minutes))
-            }
-            className="rounded-lg border border-outline-variant px-sm py-1 font-button text-button text-on-surface-variant hover:border-primary/40 hover:text-primary disabled:opacity-50"
-          >
-            {minutes}m
-          </button>
-        )
-      )}
-    </div>
 
     <FormField
       id={FIELD_IDS.RESERVATION_TYPE}

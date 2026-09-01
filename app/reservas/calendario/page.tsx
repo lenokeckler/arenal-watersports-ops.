@@ -11,7 +11,10 @@ import {
 import { createServerSupabaseClient } from "@/app/services";
 import { requireWorkerWithAreas } from "@/app/utils/reservas/access";
 import { fetchWorkerPermissionState } from "@/app/utils/administracion/workerPermissions";
-import { resolveCalendarRange } from "@/app/utils/reservas/calendarRange";
+import {
+  parseDateOnlyParam,
+  resolveCalendarRange,
+} from "@/app/utils/reservas/calendarRange";
 import { fetchCalendarReservations } from "@/app/utils/reservas/calendar";
 import Calendar from "@/app/components/calendar/Calendar";
 
@@ -43,9 +46,12 @@ const CalendarPage = async ({
     await fetchWorkerPermissionState(supabase, workerId);
 
   const resolvedParams = await searchParams;
-  const referenceDate = resolvedParams.date
-    ? new Date(`${resolvedParams.date}T00:00:00`)
-    : new Date();
+  // Reads `?date=` as a Costa Rica calendar day, not the server runtime's
+  // own — `parseDateOnlyParam` is the zone-safe counterpart to
+  // `buildCalendarHref`, which is what wrote this same param.
+  const referenceDate = parseDateOnlyParam(
+    resolvedParams.date
+  );
 
   // US-RES-001/US-RES-004: the same condition decides both how much of the
   // calendar shows and whether "Nueva reserva" appears — `reservations_insert`

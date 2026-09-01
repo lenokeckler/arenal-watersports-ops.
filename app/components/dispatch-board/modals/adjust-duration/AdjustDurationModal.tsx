@@ -5,14 +5,14 @@ import {
   BUTTON,
   BUTTON_TYPES,
   DISPATCH_BOARD_SCREEN,
-  INPUT_TYPES,
+  FIELD_IDS,
   MATERIAL_ICON_NAME,
-  OPERATIONS_NUMBERS,
   SPINNER_SIZE,
 } from "@/app/constants";
 import ActionSheet from "@/app/components/action-sheet/ActionSheet";
 import Button from "@/app/components/button/Button";
 import Spinner from "@/app/components/spinner/Spinner";
+import DurationField from "@/app/components/duration-field/DurationField";
 import { useAdjustDurationModalViewModel } from "./hooks/useAdjustDurationModalViewModel";
 
 interface AdjustDurationModalProps {
@@ -23,9 +23,6 @@ interface AdjustDurationModalProps {
   reservationId: string;
   workerId: string;
 }
-
-const FIELD_CLASS =
-  "w-full rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 /** US-OPE-006: the sheet that changes how long a dispatched reservation still runs. */
 const AdjustDurationModal = ({
@@ -58,24 +55,14 @@ const AdjustDurationModal = ({
       title={DISPATCH_BOARD_SCREEN.ADJUST.TITLE}
     >
       <div className="flex flex-col gap-md">
-        <label className="flex flex-col gap-1">
-          <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">
-            {DISPATCH_BOARD_SCREEN.ADJUST.MINUTES_LABEL}
-          </span>
-          <input
-            type={INPUT_TYPES.NUMBER}
-            min={OPERATIONS_NUMBERS.MIN_DURATION_MINUTES}
-            step={OPERATIONS_NUMBERS.DURATION_STEP_MINUTES}
-            value={durationMinutes}
-            disabled={isBusy}
-            onChange={(event) =>
-              handleDurationChange(
-                Number(event.target.value)
-              )
-            }
-            className={FIELD_CLASS}
-          />
-        </label>
+        <DurationField
+          id={FIELD_IDS.DURATION_MINUTES}
+          name={FIELD_IDS.DURATION_MINUTES}
+          label={DISPATCH_BOARD_SCREEN.ADJUST.MINUTES_LABEL}
+          isDisabled={isBusy}
+          valueMinutes={durationMinutes}
+          onChangeMinutes={handleDurationChange}
+        />
 
         {extendedMinutes > 0 && (
           <p className="rounded-lg border border-primary/20 bg-primary/10 p-sm font-body-base text-[14px] leading-tight text-on-surface">

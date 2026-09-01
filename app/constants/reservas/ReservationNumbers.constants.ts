@@ -5,8 +5,6 @@
 export const RESERVATION_NUMBERS = {
   /** Debounces the live availability RPC calls while the franja is edited. */
   AVAILABILITY_DEBOUNCE_MS: 400,
-  /** Quick-pick buttons next to the free-form duration input. */
-  DURATION_PRESETS_MINUTES: [30, 60, 120] as const,
   /** US-RES-020: `equipment_units.current_fuel` is a tank percentage. */
   FUEL_PERCENT_MAX: 100,
   FUEL_PERCENT_MIN: 0,

@@ -7,6 +7,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    setupFiles: ["./vitest.setup.ts"],
     exclude: ["node_modules", ".next", "docs"],
     // El cliente de Supabase valida la forma de la URL al construirse. Sin
     // esto la prueba fallaría por falta de entorno y no por lo que mide.
