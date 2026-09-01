@@ -68,11 +68,20 @@ export const fetchWorkerAreaState = async (
  *
  * Falling back to the only area they have is not a default dressed up as a
  * choice: with one area there is no choice to make.
+ *
+ * `lastWorkArea` is only honored while it is still one of `state.areas`.
+ * Administración can revoke an area from a worker (`DELETE
+ * /api/administracion/trabajadores/[workerId]/permisos`) without touching
+ * `last_work_area`, so a stored mode can go stale — a mode must never grant
+ * more than the areas currently enabled allow, only restrict within them.
  */
 export const resolveActiveWorkArea = (
   state: WorkerAreaState
 ): WorkArea | null => {
-  if (state.lastWorkArea) {
+  if (
+    state.lastWorkArea &&
+    state.areas.includes(state.lastWorkArea)
+  ) {
     return state.lastWorkArea;
   }
 

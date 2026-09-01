@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { CALENDAR_VIEW } from "@/app/constants";
+import { buildCalendarViewRedirectScript } from "@/app/utils/reservas/calendarViewStorage";
 import CalendarHeader from "./components/CalendarHeader";
 import CalendarViewSwitcher from "./components/CalendarViewSwitcher";
 import CalendarNav from "./components/CalendarNav";
@@ -12,8 +13,12 @@ import type { CalendarProps } from "./models/CalendarProps.interface";
 /**
  * `/reservas/calendario` (US-RES-001, US-RES-002, and the entry point into
  * US-RES-004). A Server Component end to end — view switching and date
- * navigation are plain links carrying `?view=&date=`, so this screen needs
- * no client JavaScript, matching the "one hand, bad signal" mandate.
+ * navigation are plain links carrying `?view=&date=`, matching the "one
+ * hand, bad signal" mandate. The one exception is the inline `<script>`
+ * from `buildCalendarViewRedirectScript`, the same technique the root
+ * layout's theme script uses: it needs no hydration and no client bundle,
+ * it only redirects to the device's last-used view when the URL did not
+ * already name one (US-RES-001's "vuelvo al calendario y dice semana").
  */
 const Calendar = ({
   allowedViews,
@@ -25,6 +30,15 @@ const Calendar = ({
   view,
 }: CalendarProps): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
+    <script
+      dangerouslySetInnerHTML={{
+        __html: buildCalendarViewRedirectScript(
+          view,
+          allowedViews
+        ),
+      }}
+    />
+
     <CalendarHeader
       canCreate={canCreate}
       canCreateExternalGuide={canCreateExternalGuide}

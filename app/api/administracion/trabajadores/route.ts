@@ -8,12 +8,14 @@ import {
 } from "@/app/services";
 import {
   ACCESS_AUTH,
+  FIELD_IDS,
   WORK_AREA,
   WORKER_FORM_SCREEN,
   WORKER_MARK,
   type WorkArea,
 } from "@/app/constants";
 import { fetchWorkerPermissionState } from "@/app/utils/administracion/workerPermissions";
+import { hasAdminAccount } from "@/app/utils/administracion/workers";
 import { generateTemporaryPassword } from "@/app/utils/generators/temporaryPassword";
 
 export interface CreateWorkerRequestBody {
@@ -37,6 +39,11 @@ export interface CreateWorkerResponseData {
 }
 
 const UNIQUE_VIOLATION_CODE = "23505";
+// The partial unique index `workers_single_admin`
+// (`20260828000100_foundations.sql`) is what actually enforces one
+// administración account — named here only to tell its 23505 apart from a
+// taken username's, both of which surface with the same Postgres code.
+const ADMIN_UNIQUE_CONSTRAINT = "workers_single_admin";
 
 const VALID_BASE_ROLES: readonly WorkArea[] = [
   WORK_AREA.ADMINISTRATION,
@@ -158,6 +165,19 @@ export const POST = async (
     : null;
   const expiresAt = isExternalGuide ? body.expiresAt : null;
 
+  // US-ADM-001: fail before creating an `auth.users` row, not after —
+  // `workers_single_admin` would reject the insert below anyway, but only
+  // once an auth user already exists that then has to be rolled back.
+  if (
+    effectiveBaseRole === WORK_AREA.ADMINISTRATION &&
+    (await hasAdminAccount(serviceRoleClient))
+  ) {
+    return Response.badRequest(
+      WORKER_FORM_SCREEN.ERROR.ADMIN_ALREADY_EXISTS,
+      FIELD_IDS.BASE_ROLE
+    );
+  }
+
   const username = body.username.trim().toLowerCase();
   const fullName = body.fullName.trim();
   const personalEmail = body.personalEmail?.trim() || null;
@@ -213,6 +233,23 @@ export const POST = async (
     await serviceRoleClient.auth.admin.deleteUser(
       newWorkerId
     );
+
+    // Both a taken username and a second administración account surface as
+    // the same 23505 — a race with another request landing between the
+    // proactive check above and this insert, since that check cannot lock
+    // against a concurrent write. The constraint name in the message is
+    // the only way to tell them apart.
+    if (
+      workerInsertError?.code === UNIQUE_VIOLATION_CODE &&
+      workerInsertError.message.includes(
+        ADMIN_UNIQUE_CONSTRAINT
+      )
+    ) {
+      return Response.badRequest(
+        WORKER_FORM_SCREEN.ERROR.ADMIN_ALREADY_EXISTS,
+        FIELD_IDS.BASE_ROLE
+      );
+    }
 
     return Response.badRequest(
       workerInsertError?.code === UNIQUE_VIOLATION_CODE

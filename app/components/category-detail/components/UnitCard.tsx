@@ -10,8 +10,8 @@ import {
 } from "@/app/constants";
 import Image from "@/app/components/image/Image";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
+import FuelGaugeBar from "@/app/components/fuel-gauge-bar/FuelGaugeBar";
 import { computeTimeRemaining } from "@/app/utils/operaciones/timeRemaining";
-import FuelGaugeBar from "./FuelGaugeBar";
 import UnitCardStatusBadge from "./UnitCardStatusBadge";
 import UnitCardOccupiedDetails from "./UnitCardOccupiedDetails";
 import type { UnitCardProps } from "./UnitCardProps.interface";

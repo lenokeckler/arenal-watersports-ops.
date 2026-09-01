@@ -6,7 +6,10 @@ import {
 } from "@/app/constants";
 import Link from "@/app/components/link/Link";
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
-import type { CalendarRange } from "@/app/utils/reservas/calendarRange";
+import {
+  isRangeShowingNow,
+  type CalendarRange,
+} from "@/app/utils/reservas/calendarRange";
 import { formatCalendarRangeLabel } from "@/app/utils/reservas/calendarLabels";
 import type { CalendarView } from "@/app/constants";
 import { buildCalendarHref } from "../utils/buildCalendarHref";
@@ -40,16 +43,21 @@ const CalendarNav = ({
       <span className="font-title-md text-title-md text-on-surface">
         {formatCalendarRangeLabel(view, range)}
       </span>
-      <Link
-        href={buildCalendarHref(view, new Date())}
-        className="font-label-mono text-label-mono uppercase text-primary hover:underline"
-      >
-        <MaterialIcon
-          name={MATERIAL_ICON_NAME.TODAY}
-          className="!text-[14px]"
-        />{" "}
-        {CALENDAR_SCREEN.TODAY}
-      </Link>
+      {/* US-RES-001: hidden once the range already shows "right now" —
+          otherwise the link is a no-op that reads as a label claiming this
+          is today, even a week away from it. */}
+      {!isRangeShowingNow(range) && (
+        <Link
+          href={buildCalendarHref(view, new Date())}
+          className="font-label-mono text-label-mono uppercase text-primary hover:underline"
+        >
+          <MaterialIcon
+            name={MATERIAL_ICON_NAME.TODAY}
+            className="!text-[14px]"
+          />{" "}
+          {CALENDAR_SCREEN.GO_TO_TODAY}
+        </Link>
+      )}
     </div>
 
     <Link

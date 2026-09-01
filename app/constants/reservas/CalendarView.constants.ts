@@ -33,3 +33,20 @@ export const OPERATIONS_CALENDAR_VIEWS: readonly CalendarView[] =
 
 export const DEFAULT_CALENDAR_VIEW: CalendarView =
   CALENDAR_VIEW.WEEK;
+
+/**
+ * US-OPE-007: operaciones opens the calendar on today, not the week —
+ * reservas/administración keep `DEFAULT_CALENDAR_VIEW` (week).
+ */
+export const DEFAULT_OPERATIONS_CALENDAR_VIEW: CalendarView =
+  CALENDAR_VIEW.DAY;
+
+/** The `?view=` search param every calendar link and redirect reads/writes. */
+export const CALENDAR_VIEW_QUERY_PARAM = "view";
+
+/**
+ * The `localStorage` key the last-used calendar view is saved under —
+ * device-only, same convention as `THEME_STORAGE_KEY`.
+ */
+export const CALENDAR_VIEW_STORAGE_KEY =
+  "arenal-ops-calendar-view";

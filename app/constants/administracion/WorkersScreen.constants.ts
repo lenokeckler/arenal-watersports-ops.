@@ -46,7 +46,13 @@ export const WORKERS_SCREEN = {
  * that path can only ever produce a guide.
  */
 export const WORKER_FORM_SCREEN = {
+  // Same wording as `WORKER_DETAIL_SCREEN.ADMIN_PROTECTED_NOTE` — one
+  // administración account, explained the same way wherever it comes up.
+  ADMIN_ALREADY_EXISTS_HINT:
+    "Ya existe una cuenta de administración: no se puede crear otra.",
   ERROR: {
+    ADMIN_ALREADY_EXISTS:
+      "Ya existe una cuenta de administración; no se puede crear otra.",
     EXPIRY_REQUIRED:
       "La fecha de caducidad es obligatoria para un guía externo.",
     FULL_NAME_REQUIRED: "El nombre es obligatorio.",

@@ -77,6 +77,33 @@
   --color-tertiary-fixed: #c4e7ff;
   --color-tertiary-fixed-dim: #7bd0ff;
 
+  /*
+   * `EQUIPMENT_UNIT_STATUS_CARD_TINT`/`EQUIPMENT_UNIT_OVERDUE_CARD_TINT`
+   * (`app/constants/tablero/EquipmentStatus.constants.ts`) tint a unit card
+   * bold enough to read "de reojo" from the dock. Not part of the Material
+   * 3 role table above because the two themes need *different alpha on the
+   * same role*, not a different hue: a fix that raised these opacities for
+   * light-theme legibility (commit 78deb24) used one Tailwind opacity
+   * suffix for both themes and washed out dark theme's own, already-correct
+   * cards in the process. Baking each theme's own alpha into the token
+   * itself, the same way the 47 roles above already carry their own hex per
+   * theme, is what lets the component stay a single class in both. Same
+   * base hue as `--color-primary`/`-error`/`-secondary`/`-tertiary`/
+   * `-surface-variant` above, never a new color — only the alpha differs
+   * from those.
+   */
+  --color-card-tint-available-bg: #57f1db1a;
+  --color-card-tint-available-border: #57f1db66;
+  --color-card-tint-damaged-bg: #ffb4ab26;
+  --color-card-tint-damaged-border: #ffb4ab80;
+  --color-card-tint-maintenance-bg: #ffb3b026;
+  --color-card-tint-maintenance-border: #ffb3b080;
+  --color-card-tint-neutral-bg: #2d344999;
+  --color-card-tint-occupied-bg: #afe0ff26;
+  --color-card-tint-occupied-border: #afe0ff80;
+  --color-card-tint-overdue-bg: #ffb3b026;
+  --color-card-tint-overdue-border: #ffb3b099;
+
   /* Fonts — self-hosted through next/font, see app/layout.tsx */
   --font-sans: var(--font-hanken-grotesk);
   --font-mono: var(--font-jetbrains-mono);
@@ -173,9 +200,11 @@
  * and per the CSS cascade-layers spec, unlayered rules always win over
  * layered ones regardless of selector specificity — so this overrides the
  * dark values above unconditionally, in any order, without needing `!
- * important` or a specificity fight. Same 47 names as the dark `@theme`
- * block; no component changes class, because every utility already
- * resolves through `var(--color-*)`.
+ * important` or a specificity fight. Same names as the dark `@theme` block
+ * — the 47 Material 3 roles plus the eleven `--color-card-tint-*` tokens
+ * defined alongside them (see that block's own comment) — so no component
+ * changes class, because every utility already resolves through
+ * `var(--color-*)`.
  *
  * Dark stays the default: no attribute (or any value other than
  * "light") keeps the `@theme` values above in effect.
@@ -228,6 +257,19 @@
   --color-tertiary-container: #c7e7ff;
   --color-tertiary-fixed: #c4e7ff;
   --color-tertiary-fixed-dim: #7bd0ff;
+
+  /* `--color-card-tint-*` — see the dark `@theme` block's own comment. */
+  --color-card-tint-available-bg: #006b5f33;
+  --color-card-tint-available-border: #006b5f99;
+  --color-card-tint-damaged-bg: #ba1a1a40;
+  --color-card-tint-damaged-border: #ba1a1ab3;
+  --color-card-tint-maintenance-bg: #7a520040;
+  --color-card-tint-maintenance-border: #7a5200b3;
+  --color-card-tint-neutral-bg: #d8deeab3;
+  --color-card-tint-occupied-bg: #085d9140;
+  --color-card-tint-occupied-border: #085d91b3;
+  --color-card-tint-overdue-bg: #7a52004d;
+  --color-card-tint-overdue-border: #7a5200;
 }
 
 @keyframes shake {

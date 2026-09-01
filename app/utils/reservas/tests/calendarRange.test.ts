@@ -7,6 +7,7 @@ import {
 } from "vitest";
 import { CALENDAR_VIEW } from "@/app/constants";
 import {
+  isRangeShowingNow,
   parseDateOnlyParam,
   resolveCalendarRange,
   toDateOnlyParam,
@@ -68,6 +69,59 @@ describe("resolveCalendarRange (UTC server runtime)", () => {
     expect(range.startsAt.toISOString()).toBe(
       "2026-08-02T06:00:00.000Z"
     );
+  });
+});
+
+// Same local-constant convention as `calendarLabels.ts`'s own `ONE_DAY_MS`.
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+const FOUR_DAYS = 4;
+
+/**
+ * Regression test for the "Hoy" link (US-RES-001): it must disappear once
+ * the displayed franja already contains right now, and stay visible on
+ * every other franja — the reported bug was that it showed on every
+ * franja, including days and weeks nowhere near today.
+ */
+describe("isRangeShowingNow", () => {
+  it("is true for the day franja that contains right now", () => {
+    const now = new Date();
+    const range = resolveCalendarRange(
+      CALENDAR_VIEW.DAY,
+      now
+    );
+
+    expect(isRangeShowingNow(range)).toBe(true);
+  });
+
+  it("is false for a day franja four days in the future", () => {
+    const fourDaysFromNow = new Date(
+      Date.now() + FOUR_DAYS * ONE_DAY_MS
+    );
+    const range = resolveCalendarRange(
+      CALENDAR_VIEW.DAY,
+      fourDaysFromNow
+    );
+
+    expect(isRangeShowingNow(range)).toBe(false);
+  });
+
+  it("is false for a day franja one day in the past", () => {
+    const yesterday = new Date(Date.now() - ONE_DAY_MS);
+    const range = resolveCalendarRange(
+      CALENDAR_VIEW.DAY,
+      yesterday
+    );
+
+    expect(isRangeShowingNow(range)).toBe(false);
+  });
+
+  it("is true for the week franja that contains right now", () => {
+    const range = resolveCalendarRange(
+      CALENDAR_VIEW.WEEK,
+      new Date()
+    );
+
+    expect(isRangeShowingNow(range)).toBe(true);
   });
 });
 
