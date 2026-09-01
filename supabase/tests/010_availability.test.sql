@@ -1,5 +1,5 @@
 begin;
-select plan(38);
+select plan(46);
 
 insert into auth.users (id, email)
 values ('11111111-1111-1111-1111-111111111111', 'admin@arenal.local');
@@ -437,6 +437,138 @@ select ok(
    where id = 'bbbbbbbb-0000-0000-0000-000000000001')
   = '2026-09-05 12:00:00+00'::timestamptz,
   'returns_at refleja el fin mas tardio de los despachos activos, no el mas cercano'
+);
+
+-- ============================ disponibilidad por unidad (units_are_interchangeable) ============================
+-- Categoria y unidades propias, para no acoplar estos casos a los conteos
+-- que ya arrastran el Jet Ski y sus reservas de arriba.
+insert into equipment_categories
+  (id, name, tracking_mode, is_reservable, has_motor, usage_metric,
+   default_duration_minutes, created_by, updated_by)
+values ('aaaaaaaa-0000-0000-0000-000000000004', 'Moto de agua', 'by_unit', true, true, 'engine_hours', 60,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+insert into equipment_units (id, category_id, code, status, created_by, updated_by)
+values
+  ('eeeeeeee-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000004', 'MA-01', 'available',
+   '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
+  ('eeeeeeee-0000-0000-0000-000000000002', 'aaaaaaaa-0000-0000-0000-000000000004', 'MA-02', 'available',
+   '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
+  ('eeeeeeee-0000-0000-0000-000000000003', 'aaaaaaaa-0000-0000-0000-000000000004', 'MA-03', 'in_maintenance',
+   '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
+  ('eeeeeeee-0000-0000-0000-000000000004', 'aaaaaaaa-0000-0000-0000-000000000004', 'MA-04', 'damaged',
+   '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
+  ('eeeeeeee-0000-0000-0000-000000000006', 'aaaaaaaa-0000-0000-0000-000000000004', 'MA-06', 'in_repair',
+   '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+insert into equipment_units (id, category_id, code, status, decommissioned_at, decommission_reason,
+                              created_by, updated_by)
+values ('eeeeeeee-0000-0000-0000-000000000005', 'aaaaaaaa-0000-0000-0000-000000000004', 'MA-05',
+        'decommissioned', now(), 'fin de vida util',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+-- usable cuenta solo el status registrado 'available': ni de baja, ni danada,
+-- ni en mantenimiento o reparacion cuentan -- el mismo criterio que
+-- unit_current_state ya usa para decir "available".
+select is(
+  (select usable from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-07 09:00:00+00', '2026-09-07 10:00:00+00')),
+  2,
+  'una categoria por unidad cuenta usable con sus unidades available: MA-03 (mantenimiento), MA-04 (danada), MA-05 (de baja) y MA-06 (en reparacion) quedan fuera'
+);
+select is(
+  (select committed from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-07 09:00:00+00', '2026-09-07 10:00:00+00')),
+  0,
+  'sin reservas todavia, nada comprometido'
+);
+select is(
+  (select free from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-07 09:00:00+00', '2026-09-07 10:00:00+00')),
+  2,
+  'libre es igual a usable cuando no hay compromiso'
+);
+
+-- Reserva A: ya despachada con la unidad concreta (MA-01), como queda una
+-- vez que operaciones convierte la linea de cantidad al despachar.
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status, dispatched_at,
+   created_by, updated_by)
+values ('ffffffff-0000-0000-0000-000000000001', 'Ana', 2, 'rental',
+        '2026-09-07 09:00:00+00', 60, 'dispatched', now(),
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+insert into reservation_items (reservation_id, unit_id, created_by, updated_by)
+values ('ffffffff-0000-0000-0000-000000000001', 'eeeeeeee-0000-0000-0000-000000000001',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+-- Reserva B: todavia agendada por cantidad, sin unidad propia -- la forma en
+-- que Reservas la crea para una categoria intercambiable.
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status,
+   created_by, updated_by)
+values ('ffffffff-0000-0000-0000-000000000002', 'Beto', 1, 'rental',
+        '2026-09-07 09:00:00+00', 60, 'scheduled',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+insert into reservation_items (reservation_id, category_id, quantity, created_by, updated_by)
+values ('ffffffff-0000-0000-0000-000000000002', 'aaaaaaaa-0000-0000-0000-000000000004', 1,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+-- Reserva C: una unidad de la misma categoria, pero en una franja que no se
+-- solapa con la consultada -- no debe sumar al compromiso.
+insert into reservations
+  (id, customer_name, people_count, type, starts_at, duration_minutes, status,
+   created_by, updated_by)
+values ('ffffffff-0000-0000-0000-000000000003', 'Carla', 1, 'rental',
+        '2026-09-08 09:00:00+00', 60, 'scheduled',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+insert into reservation_items (reservation_id, unit_id, created_by, updated_by)
+values ('ffffffff-0000-0000-0000-000000000003', 'eeeeeeee-0000-0000-0000-000000000002',
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111');
+
+-- Las dos formas conviven en la misma categoria: la linea por unidad de A
+-- (1) mas la linea por cantidad de B (1) suman el compromiso completo.
+select is(
+  (select committed from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-07 09:00:00+00', '2026-09-07 10:00:00+00')),
+  2,
+  'una linea de unidad y una de cantidad en la misma categoria se suman en committed'
+);
+select is(
+  (select free from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-07 09:00:00+00', '2026-09-07 10:00:00+00')),
+  0,
+  'con las dos formas comprometidas no queda nada libre'
+);
+select is(
+  (select committed from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-08 09:00:00+00', '2026-09-08 10:00:00+00')),
+  1,
+  'la franja sin solape con A ni B solo ve el compromiso de C'
+);
+
+-- p_exclude_reservation excluye tambien una linea por unidad, no solo una
+-- por cantidad: editar la reserva A no debe chocar con su propio compromiso.
+select is(
+  (select committed from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-07 09:00:00+00', '2026-09-07 10:00:00+00',
+     'ffffffff-0000-0000-0000-000000000001')),
+  1,
+  'excluir la reserva A quita su linea de unidad y deja solo la de cantidad de B'
+);
+select is(
+  (select committed from category_availability(
+     'aaaaaaaa-0000-0000-0000-000000000004',
+     '2026-09-07 09:00:00+00', '2026-09-07 10:00:00+00',
+     'ffffffff-0000-0000-0000-000000000002')),
+  1,
+  'excluir la reserva B quita su linea de cantidad y deja solo la de unidad de A'
 );
 
 -- ============================ Seguridad de filas de la vista ============================

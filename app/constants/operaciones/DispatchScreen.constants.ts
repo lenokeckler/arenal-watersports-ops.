@@ -24,6 +24,8 @@ export const DISPATCH_SCREEN = {
     LOCKED_NOTE:
       "El equipo de este combo no se cambia aquí.",
     TITLE: "Confirma el equipo que sale",
+    UNITS_INCOMPLETE_ERROR:
+      "Elige exactamente las unidades comprometidas antes de continuar.",
   },
   FUEL_LABEL: "Gasolina inicial",
   GUIDES_EMPTY: "Sin guía asignado",

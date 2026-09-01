@@ -32,6 +32,12 @@ interface UseDispatchEquipmentStepViewModelParams {
   isCombo: boolean;
   onConfirmed: (items: ReservationEquipmentItem[]) => void;
   originalItems: ReservationEquipmentItem[];
+  /**
+   * US-OPE-002 (tablero entry): units operaciones already tapped on
+   * `CategoryDetail` before picking this reservation — the equipment step
+   * opens with those pre-selected instead of asking again.
+   */
+  preselectedUnitIds: string[];
   reservationEndsAt: string;
   reservationId: string;
   reservationStartsAt: string;
@@ -55,9 +61,28 @@ export interface UseDispatchEquipmentStepViewModelReturn {
   handleToggleUnit: (unitId: string) => void;
   isBusy: boolean;
   quantities: Record<string, number>;
+  requiredUnitQuantities: Record<string, number>;
   selectedUnitIds: string[];
   unitConflicts: Record<string, UnitConflict[]>;
 }
+
+/**
+ * US-OPE-002: whether every by-unit category that owes concrete units
+ * (`requiredUnitQuantities`) has exactly that many selected — a jet ski
+ * agendada as "2" cannot go out with only one picked, and the picker
+ * itself already stops it from getting a third.
+ */
+const hasCompleteUnitAssignment = (
+  requiredUnitQuantities: Record<string, number>,
+  candidateUnitsByCategory: Record<string, CandidateUnit[]>,
+  selectedUnitIds: string[]
+): boolean =>
+  Object.entries(requiredUnitQuantities).every(
+    ([categoryId, requiredQuantity]) =>
+      (candidateUnitsByCategory[categoryId] ?? []).filter(
+        (unit) => selectedUnitIds.includes(unit.id)
+      ).length === requiredQuantity
+  );
 
 /**
  * US-OPE-002: writes the equipment diff while the reservation is still
@@ -87,32 +112,52 @@ const confirmEquipmentChange = async (
   );
 };
 
+/** US-OPE-002: whether the dispatch step requires physical units for this category. */
+const REQUIRE_UNIT_ASSIGNMENT = true;
+
 export const useDispatchEquipmentStepViewModel = ({
   candidateUnits,
   categories,
   isCombo,
   onConfirmed,
   originalItems,
+  preselectedUnitIds,
   reservationEndsAt,
   reservationId,
   reservationStartsAt,
   workerId,
 }: UseDispatchEquipmentStepViewModelParams): UseDispatchEquipmentStepViewModelReturn => {
-  const { initialQuantities, initialSelectedUnitIds } =
-    buildInitialEquipmentSelection(originalItems);
-  const selection = useReservationEquipmentSelection(
-    initialQuantities,
-    initialSelectedUnitIds
-  );
-
+  // US-OPE-002: unlike Reservas' own equipment step, every by-unit category
+  // needs concrete units here, interchangeable or not — fuel, hours and
+  // damage are tracked per machine.
   const {
     byQuantityCategories,
     byUnitCategories,
     candidateUnitsByCategory,
   } = useReservationFormEquipmentCatalog(
     categories,
-    candidateUnits
+    candidateUnits,
+    REQUIRE_UNIT_ASSIGNMENT
   );
+  const byUnitCategoryIds = useMemo(
+    () => byUnitCategories.map((category) => category.id),
+    [byUnitCategories]
+  );
+
+  const {
+    initialQuantities,
+    initialSelectedUnitIds,
+    unitQuantityRequirements,
+  } = buildInitialEquipmentSelection(
+    originalItems,
+    byUnitCategoryIds,
+    preselectedUnitIds
+  );
+  const selection = useReservationEquipmentSelection(
+    initialQuantities,
+    initialSelectedUnitIds
+  );
+
   const quantityCategoryIds = useMemo(
     () =>
       byQuantityCategories.map((category) => category.id),
@@ -138,6 +183,19 @@ export const useDispatchEquipmentStepViewModel = ({
     }
     if (!selection.hasAnySelection) {
       setError(DISPATCH_SCREEN.EQUIPMENT_STEP.EMPTY_ERROR);
+      return;
+    }
+    if (
+      !hasCompleteUnitAssignment(
+        unitQuantityRequirements,
+        candidateUnitsByCategory,
+        selection.selectedUnitIds
+      )
+    ) {
+      setError(
+        DISPATCH_SCREEN.EQUIPMENT_STEP
+          .UNITS_INCOMPLETE_ERROR
+      );
       return;
     }
 
@@ -171,6 +229,7 @@ export const useDispatchEquipmentStepViewModel = ({
     handleToggleUnit: selection.handleToggleUnit,
     isBusy: isWriting || availability.isChecking,
     quantities: selection.quantities,
+    requiredUnitQuantities: unitQuantityRequirements,
     selectedUnitIds: selection.selectedUnitIds,
     unitConflicts: availability.unitConflicts,
   };

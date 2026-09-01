@@ -31,6 +31,7 @@ import { filterCategoriesForReservationType } from "@/app/utils/reservas/groupCa
 import { useReservationDetailsFields } from "./useReservationDetailsFields";
 import { useReservationEquipmentSelection } from "./useReservationEquipmentSelection";
 import { useReservationAvailability } from "./useReservationAvailability";
+import { useReservationFormEquipmentCatalog } from "./useReservationFormEquipmentCatalog";
 import { useReservationComboSelection } from "./useReservationComboSelection";
 import { useReservationExtrasSelection } from "./useReservationExtrasSelection";
 import { useReservationGuidesSelection } from "./useReservationGuidesSelection";
@@ -233,39 +234,23 @@ export const useReservationFormViewModel = ({
       ),
     [categories, details.values.type]
   );
-  const byQuantityCategories = useMemo(
-    () =>
-      visibleCategories.filter(
-        (category) =>
-          category.trackingMode ===
-          TRACKING_MODE.BY_QUANTITY
-      ),
-    [visibleCategories]
-  );
-  const byUnitCategories = useMemo(
-    () =>
-      visibleCategories.filter(
-        (category) =>
-          category.trackingMode === TRACKING_MODE.BY_UNIT
-      ),
-    [visibleCategories]
+  // US-RES-007: Reservas only asks for a quantity or a specific unit based
+  // on `unitsAreInterchangeable` (the hook's default split) — never
+  // `trackingMode` directly, or a jet ski would ask "which one" at booking
+  // time, a decision that belongs to operaciones at the dock.
+  const {
+    byQuantityCategories,
+    byUnitCategories,
+    candidateUnitsByCategory,
+  } = useReservationFormEquipmentCatalog(
+    visibleCategories,
+    candidateUnits
   );
   const quantityCategoryIds = useMemo(
     () =>
       byQuantityCategories.map((category) => category.id),
     [byQuantityCategories]
   );
-  const candidateUnitsByCategory = useMemo(() => {
-    const grouped: Record<string, typeof candidateUnits> =
-      {};
-    for (const unit of candidateUnits) {
-      grouped[unit.categoryId] = [
-        ...(grouped[unit.categoryId] ?? []),
-        unit,
-      ];
-    }
-    return grouped;
-  }, [candidateUnits]);
 
   const availability = useReservationAvailability(
     details.startsAtIso,

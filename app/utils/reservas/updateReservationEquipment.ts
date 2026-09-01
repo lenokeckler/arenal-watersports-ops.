@@ -9,6 +9,15 @@ import {
 export interface InitialEquipmentSelection {
   initialQuantities: Record<string, number>;
   initialSelectedUnitIds: string[];
+  /**
+   * US-OPE-002: how many concrete units still need picking for a category
+   * in `byUnitCategoryIds` whose current commitment is a quantity line —
+   * a jet ski agendada as "2" arrives here as `{ [jetSkiId]: 2 }`, which is
+   * exactly what the dispatch equipment step must collect in units before
+   * it can hand off to `applyReservationEquipmentEdit`. Empty outside
+   * dispatch, where `byUnitCategoryIds` is never passed.
+   */
+  unitQuantityRequirements: Record<string, number>;
 }
 
 /**
@@ -16,20 +25,47 @@ export interface InitialEquipmentSelection {
  * already commits — the edit modal and the dispatch sheet's equipment-
  * confirmation step both start from "what is already there" instead of
  * empty.
+ *
+ * `byUnitCategoryIds` and `preselectedUnitIds` only matter for the dispatch
+ * step (US-OPE-002): a category in `byUnitCategoryIds` needs concrete units
+ * before departure, so its quantity line is left out of `initialQuantities`
+ * (it would otherwise survive untouched in `applyReservationEquipmentEdit`,
+ * alongside the units picked to replace it, double-committing the same
+ * capacity) and its owed count moves to `unitQuantityRequirements` instead.
+ * `preselectedUnitIds` folds in whatever operaciones already tapped on the
+ * tablero before choosing this reservation, so the equipment step opens
+ * with those units already selected instead of asking again.
  */
 export const buildInitialEquipmentSelection = (
-  originalItems: ReservationEquipmentItem[]
+  originalItems: ReservationEquipmentItem[],
+  byUnitCategoryIds: string[] = [],
+  preselectedUnitIds: string[] = []
 ): InitialEquipmentSelection => {
   const initialQuantities: Record<string, number> = {};
-  const initialSelectedUnitIds: string[] = [];
+  const unitQuantityRequirements: Record<string, number> =
+    {};
+  const initialSelectedUnitIds = new Set(
+    preselectedUnitIds
+  );
+
   for (const item of originalItems) {
     if (item.unitId) {
-      initialSelectedUnitIds.push(item.unitId);
+      initialSelectedUnitIds.add(item.unitId);
     } else if (item.categoryId && item.quantity) {
-      initialQuantities[item.categoryId] = item.quantity;
+      if (byUnitCategoryIds.includes(item.categoryId)) {
+        unitQuantityRequirements[item.categoryId] =
+          item.quantity;
+      } else {
+        initialQuantities[item.categoryId] = item.quantity;
+      }
     }
   }
-  return { initialQuantities, initialSelectedUnitIds };
+
+  return {
+    initialQuantities,
+    initialSelectedUnitIds: [...initialSelectedUnitIds],
+    unitQuantityRequirements,
+  };
 };
 
 const insertItems = async (

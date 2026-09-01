@@ -119,6 +119,7 @@ const CategoryDetail = (
         <DispatchModal
           onClose={handleCloseDispatchModal}
           onDispatched={handleDispatched}
+          preselectedUnitIds={selectedUnitIds}
           reservationId={selectedReservationId}
           workerId={workerId}
         />

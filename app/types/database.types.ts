@@ -351,6 +351,7 @@ export type Database = {
           name: string;
           status: Database["public"]["Enums"]["category_status"];
           tracking_mode: Database["public"]["Enums"]["tracking_mode"];
+          units_are_interchangeable: boolean;
           updated_at: string;
           updated_by: string;
           usage_metric:
@@ -376,6 +377,7 @@ export type Database = {
           name: string;
           status?: Database["public"]["Enums"]["category_status"];
           tracking_mode: Database["public"]["Enums"]["tracking_mode"];
+          units_are_interchangeable?: boolean;
           updated_at?: string;
           updated_by: string;
           usage_metric?:
@@ -401,6 +403,7 @@ export type Database = {
           name?: string;
           status?: Database["public"]["Enums"]["category_status"];
           tracking_mode?: Database["public"]["Enums"]["tracking_mode"];
+          units_are_interchangeable?: boolean;
           updated_at?: string;
           updated_by?: string;
           usage_metric?:

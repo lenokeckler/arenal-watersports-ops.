@@ -48,6 +48,11 @@ export const NEW_RESERVATION_SCREEN = {
       `Choca con la reserva ${code} (${startsAt} – ${endsAt})`,
     UNITS_EMPTY:
       "No hay unidades disponibles en esta categoría.",
+    /** US-OPE-002: cuantas unidades concretas lleva elegidas de las que debe. */
+    UNITS_REQUIRED: (
+      selected: number,
+      required: number
+    ): string => `${selected} de ${required} elegidas`,
     WARNING: {
       OVER_CAPACITY: (
         requested: number,
