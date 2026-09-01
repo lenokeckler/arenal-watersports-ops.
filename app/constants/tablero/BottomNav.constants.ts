@@ -46,6 +46,7 @@ export const BOTTOM_NAV_ITEM_ID = {
   CALENDAR: "calendar",
   HISTORY: "history",
   INVENTORY: "inventory",
+  MACHINES: "machines",
   OPERATIONS: "operations",
   OPERATIONS_INVENTORY: "operations-inventory",
   PRICES: "prices",
@@ -152,6 +153,18 @@ export const BOTTOM_NAV = {
       ID: BOTTOM_NAV_ITEM_ID.PRICES,
       LABEL: "Precios",
       SECTION_BY_AREA: {
+        [WORK_AREA.OPERATIONS]:
+          BOTTOM_NAV_SECTION.SECONDARY,
+      },
+    },
+    {
+      HREF: PATHS.OPERATIONS.MACHINES,
+      ICON: MATERIAL_ICON_NAME.SPEED,
+      ID: BOTTOM_NAV_ITEM_ID.MACHINES,
+      LABEL: "Equipos",
+      SECTION_BY_AREA: {
+        [WORK_AREA.ADMINISTRATION]:
+          BOTTOM_NAV_SECTION.SECONDARY,
         [WORK_AREA.OPERATIONS]:
           BOTTOM_NAV_SECTION.SECONDARY,
       },

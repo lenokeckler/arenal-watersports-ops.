@@ -353,6 +353,7 @@ export {
   type PhotoAngle,
 } from "./operaciones/ConditionPhotos.constants";
 export { MACHINE_DETAIL_SCREEN } from "./operaciones/MachineScreen.constants";
+export { OPERATIONS_MACHINES_SCREEN } from "./operaciones/OperationsMachinesScreen.constants";
 export {
   MAINTENANCE_HUB_SCREEN,
   MAINTENANCE_RECORD_SCREEN,

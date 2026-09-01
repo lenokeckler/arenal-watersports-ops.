@@ -41,12 +41,13 @@ const resolveFuelFillClass = (
 };
 
 /**
- * US-TAB-002: a thin read-only fuel gauge for the unit card — glanceable,
- * not editable, one line per line the unit's own gauge physically has
+ * US-TAB-002: a thin read-only fuel gauge — glanceable, not editable, one
+ * line per line the unit's own gauge physically has
  * (`docs/decisiones/vista_mobile3.png`), same segmented read as the
  * interactive `FuelLevelPicker` this mirrors. `FuelLevelPicker` is the
  * dispatch-time input; this only ever renders
- * `equipment_units.fuel_level`/`fuel_max`.
+ * `equipment_units.fuel_level`/`fuel_max`. Promoted out of `category-detail`
+ * once `/operaciones/maquinas` (US-OPE-020) became a second consumer.
  */
 const FuelGaugeBar = ({
   level,
