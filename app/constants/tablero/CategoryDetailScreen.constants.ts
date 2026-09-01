@@ -17,6 +17,7 @@ export const CATEGORY_DETAIL_SCREEN = {
   FUEL_LABEL: "Combustible",
   FUEL_LEVEL: (level: number, max: number): string =>
     `${level}/${max}`,
+  FUEL_NO_READING: "Sin lectura",
   IN_REPAIR: "En reparación",
   IN_USE_NOW: "En uso ahora",
   NOT_FOUND: "Esta categoría no existe o no es reservable.",

@@ -26,6 +26,12 @@ const CARD_CLASS =
  * this unit's category actually tracks, plus whether it is already out of
  * service or due for its oil change. Links straight into the correction
  * form that already exists; there is no intermediate ficha stop here.
+ *
+ * The fuel gauge always renders for a fuel-consuming unit, even with no
+ * reading yet — this is the screen an operator opens specifically to take a
+ * unit's first reading, so hiding the gauge until one exists would hide the
+ * only thing there is to tap. `FuelGaugeBar` itself draws the distinction
+ * between "never read" and "read empty".
  */
 const OperationsMachinesUnitCard = ({
   unit,
@@ -66,13 +72,12 @@ const OperationsMachinesUnitCard = ({
         </div>
       )}
 
-      {unit.consumesFuel &&
-        typeof unit.fuelLevel === "number" && (
-          <FuelGaugeBar
-            level={unit.fuelLevel}
-            max={unit.fuelMax}
-          />
-        )}
+      {unit.consumesFuel && (
+        <FuelGaugeBar
+          level={unit.fuelLevel}
+          max={unit.fuelMax}
+        />
+      )}
 
       {unit.hasMotor && unit.usageMetric && (
         <span className="font-label-mono text-label-mono text-on-surface-variant">

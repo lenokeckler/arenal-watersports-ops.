@@ -75,24 +75,31 @@ export const EQUIPMENT_UNIT_STATUS_BADGE = {
 /**
  * US-TAB-002: the same read as `EQUIPMENT_UNIT_STATUS_BADGE`, but bold
  * enough to tint the whole unit card — a screen checked "de reojo" from the
- * dock needs more than a small corner chip. Same tokens, higher opacity and
- * a visible border, never a new color. Opacities pushed a step further than
- * the badge's own (`docs/decisiones/vista_mobile3.png`): a tile has to read
- * from across the dock, not just up close.
+ * dock needs more than a small corner chip. Same hues as the badge, never a
+ * new color, just bolder.
+ *
+ * Unlike the badge, this does not lean on a Tailwind opacity suffix
+ * (`bg-primary/20`) on top of a shared role token: light and dark need a
+ * *different* alpha on the same hue to both read well, and a suffix applies
+ * equally to whatever `--color-primary` resolves to in either theme. Bumping
+ * the suffix for light theme (commit 78deb24) silently washed out dark
+ * theme's own, already-correct cards along with it. `--color-card-tint-*`
+ * (`app/globals.css`) bakes each theme's own alpha into the token itself, so
+ * this stays one class that reads correctly in both.
  */
 export const EQUIPMENT_UNIT_STATUS_CARD_TINT = {
   [EQUIPMENT_UNIT_STATUS.AVAILABLE]:
-    "border-primary/60 bg-primary/20",
+    "border-card-tint-available-border bg-card-tint-available-bg",
   [EQUIPMENT_UNIT_STATUS.DAMAGED]:
-    "border-error/70 bg-error/25",
+    "border-card-tint-damaged-border bg-card-tint-damaged-bg",
   [EQUIPMENT_UNIT_STATUS.DECOMMISSIONED]:
-    "border-outline-variant bg-surface-variant/70",
+    "border-outline-variant bg-card-tint-neutral-bg",
   [EQUIPMENT_UNIT_STATUS.IN_MAINTENANCE]:
-    "border-secondary/70 bg-secondary/25",
+    "border-card-tint-maintenance-border bg-card-tint-maintenance-bg",
   [EQUIPMENT_UNIT_STATUS.IN_REPAIR]:
-    "border-outline-variant bg-surface-variant/70",
+    "border-outline-variant bg-card-tint-neutral-bg",
   [EQUIPMENT_UNIT_STATUS.OCCUPIED]:
-    "border-tertiary/70 bg-tertiary/25",
+    "border-card-tint-occupied-border bg-card-tint-occupied-bg",
 } as const satisfies Record<EquipmentUnitStatus, string>;
 
 /**
@@ -100,7 +107,9 @@ export const EQUIPMENT_UNIT_STATUS_CARD_TINT = {
  * has passed. Reuses the exact token the dispatch board already assigned to
  * "overdue" (`DISPATCH_BOARD_SCREEN`/`DispatchBoardCard`) so the same state
  * reads the same color everywhere in the app. The boldest tint of the set —
- * an overdue return is the one state that must win the glance.
+ * an overdue return is the one state that must win the glance. Same
+ * per-theme-alpha token as above; in light theme this resolves to a fully
+ * solid border, in dark to a translucent one — see `app/globals.css`.
  */
 export const EQUIPMENT_UNIT_OVERDUE_CARD_TINT =
-  "border-secondary bg-secondary/30";
+  "border-card-tint-overdue-border bg-card-tint-overdue-bg";
