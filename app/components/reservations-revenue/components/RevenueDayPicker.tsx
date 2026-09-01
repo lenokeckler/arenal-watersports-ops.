@@ -30,7 +30,7 @@ const RevenueDayPicker = ({
         type={INPUT_TYPES.DATE}
         name="dia"
         defaultValue={selectedDay}
-        className="min-h-12 rounded-lg border border-white/10 bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none"
+        className="min-h-12 rounded-lg border border-outline-variant bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none"
       />
     </label>
     <button

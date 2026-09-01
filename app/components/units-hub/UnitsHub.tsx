@@ -21,7 +21,7 @@ const UnitsHub = ({
 }: UnitsHubProps): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
     <header className="mx-auto mb-lg flex max-w-6xl items-center gap-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high">
         <MaterialIcon
           name={MATERIAL_ICON_NAME.INVENTORY_2}
           className="!text-[24px] text-primary"
@@ -38,10 +38,10 @@ const UnitsHub = ({
           {UNITS_HUB_SCREEN.EMPTY_STATE}
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-white/10 bg-surface-container/40 backdrop-blur-md">
+        <div className="overflow-x-auto rounded-xl border border-outline-variant bg-surface-container/40 backdrop-blur-md">
           <table className="w-full min-w-[480px] border-collapse text-left">
             <thead>
-              <tr className="border-b border-white/10 bg-surface-container/50">
+              <tr className="border-b border-outline-variant bg-surface-container/50">
                 <th className="px-md py-sm font-label-mono text-label-mono uppercase text-on-surface-variant">
                   {UNITS_HUB_SCREEN.COLUMN.NAME}
                 </th>
@@ -58,7 +58,7 @@ const UnitsHub = ({
               {categories.map((category) => (
                 <tr
                   key={category.id}
-                  className="border-b border-white/5 last:border-b-0 hover:bg-white/5"
+                  className="border-b border-outline-variant/50 last:border-b-0 hover:bg-on-surface/5"
                 >
                   <td className="px-md py-sm text-on-surface">
                     {category.name}

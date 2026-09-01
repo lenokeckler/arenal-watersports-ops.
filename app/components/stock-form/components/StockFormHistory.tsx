@@ -17,7 +17,7 @@ const NO_MOVEMENTS = 0;
 const StockFormHistory = ({
   movements,
 }: StockFormHistoryProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {STOCK_FORM_SCREEN.HISTORY.TITLE}
     </h2>
@@ -27,10 +27,10 @@ const StockFormHistory = ({
         {STOCK_FORM_SCREEN.HISTORY.EMPTY_STATE}
       </p>
     ) : (
-      <div className="overflow-x-auto rounded-lg border border-white/10">
+      <div className="overflow-x-auto rounded-lg border border-outline-variant">
         <table className="w-full min-w-[560px] border-collapse text-left">
           <thead>
-            <tr className="border-b border-white/10 bg-surface-container/50">
+            <tr className="border-b border-outline-variant bg-surface-container/50">
               <th className="px-sm py-2 font-label-mono text-label-mono uppercase text-on-surface-variant">
                 {STOCK_FORM_SCREEN.HISTORY.COLUMN.DATE}
               </th>
@@ -52,7 +52,7 @@ const StockFormHistory = ({
             {movements.map((movement) => (
               <tr
                 key={movement.id}
-                className="border-b border-white/5 last:border-b-0"
+                className="border-b border-outline-variant/50 last:border-b-0"
               >
                 <td className="px-sm py-2 text-on-surface-variant">
                   {formatShortDate(movement.createdAt)}

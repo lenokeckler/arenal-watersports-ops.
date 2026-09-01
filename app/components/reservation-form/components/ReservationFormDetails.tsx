@@ -156,7 +156,7 @@ const ReservationFormDetails = ({
             onClick={() =>
               onDurationChange(String(minutes))
             }
-            className="rounded-lg border border-white/10 px-sm py-1 font-button text-button text-on-surface-variant hover:border-primary/40 hover:text-primary disabled:opacity-50"
+            className="rounded-lg border border-outline-variant px-sm py-1 font-button text-button text-on-surface-variant hover:border-primary/40 hover:text-primary disabled:opacity-50"
           >
             {minutes}m
           </button>

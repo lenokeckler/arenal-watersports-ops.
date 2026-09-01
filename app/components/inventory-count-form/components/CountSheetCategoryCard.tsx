@@ -44,7 +44,7 @@ const CountSheetCategoryCard = ({
     className={`${CARD_CLASS} ${
       state.isConfirmed
         ? "border-primary/40"
-        : "border-white/10"
+        : "border-outline-variant"
     }`}
   >
     <header className="flex items-center gap-sm">
@@ -60,7 +60,7 @@ const CountSheetCategoryCard = ({
         className={`${CONFIRM_CLASS} ${
           state.isConfirmed
             ? "border-primary bg-primary/15 text-primary"
-            : "border-white/10 text-on-surface-variant"
+            : "border-outline-variant text-on-surface-variant"
         }`}
       >
         <MaterialIcon

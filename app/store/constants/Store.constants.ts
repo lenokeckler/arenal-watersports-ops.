@@ -1,4 +1,5 @@
 export const STORE_SLICES = {
+  APP_DRAWER: "appDrawer",
   LANGUAGE: "language",
   SESSION: "session",
   TOAST: "toast",

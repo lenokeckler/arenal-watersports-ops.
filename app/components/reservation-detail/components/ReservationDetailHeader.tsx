@@ -22,7 +22,7 @@ const ReservationDetailHeader = ({
   <header className="mx-auto mb-lg flex max-w-3xl items-center gap-sm">
     <Link
       href={PATHS.RESERVATIONS.CALENDAR}
-      className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-primary"
+      className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high text-on-surface-variant hover:text-primary"
     >
       <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_BACK} />
     </Link>
@@ -42,7 +42,7 @@ const ReservationDetailHeader = ({
         >
           {RESERVATION_STATUS_LABEL[reservation.status]}
         </Badge>
-        <Badge className="border-white/10 bg-surface-container-high text-on-surface-variant">
+        <Badge className="border-outline-variant bg-surface-container-high text-on-surface-variant">
           {RESERVATION_TYPE_LABEL[reservation.type]}
         </Badge>
       </div>

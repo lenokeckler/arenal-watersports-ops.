@@ -34,10 +34,10 @@ const ComboListTable = ({
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/10 bg-surface-container/40 backdrop-blur-md">
+    <div className="overflow-x-auto rounded-xl border border-outline-variant bg-surface-container/40 backdrop-blur-md">
       <table className="w-full min-w-[560px] border-collapse text-left">
         <thead>
-          <tr className="border-b border-white/10 bg-surface-container/50">
+          <tr className="border-b border-outline-variant bg-surface-container/50">
             <th className="px-md py-sm font-label-mono text-label-mono uppercase text-on-surface-variant">
               {COMBOS_SCREEN.COLUMN.NAME}
             </th>
@@ -57,7 +57,7 @@ const ComboListTable = ({
           {rows.map((combo) => (
             <tr
               key={combo.id}
-              className="border-b border-white/5 last:border-b-0 hover:bg-white/5"
+              className="border-b border-outline-variant/50 last:border-b-0 hover:bg-on-surface/5"
             >
               <td className="px-md py-sm text-on-surface">
                 <Link

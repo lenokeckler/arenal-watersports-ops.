@@ -33,7 +33,7 @@ const ReservationDetailActions = ({
   onPostpone,
   onSplit,
 }: ReservationDetailActionsProps): JSX.Element => (
-  <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-surface-container-lowest/90 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+  <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-outline-variant bg-surface-container-lowest/90 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgba(0,0,0,0.4)] backdrop-blur-xl">
     <div className="mx-auto flex h-20 max-w-3xl items-center justify-around gap-1 px-2">
       <button
         type="button"

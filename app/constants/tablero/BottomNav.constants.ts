@@ -9,25 +9,34 @@ import {
 } from "@/app/constants/acceso/WorkArea.constants";
 
 /**
- * The fixed bottom bar (US-TAB-004, US-TAB-005): board, calendar,
- * inventory, history, — reservas only — the day's revenue (US-RES-032,
- * which operaciones must not see because it never needs money to do its
- * work) and — operations only — the price list (US-TAB-010).
+ * The single catalogue of app-shell screens (US-TAB-004 through
+ * US-TAB-007), shared by two consumers: the fixed bottom bar (`BottomNav`,
+ * up to four items per area plus its own "Menú" trigger) and the drawer's
+ * secondary navigation (`AppDrawer`, everything the bar has no room for).
+ * `SECTION_BY_AREA` is the single mark per item both read from — its keys
+ * double as visibility (an area missing from the map never sees this item
+ * at all) and its values decide the bar versus the panel, so the same item
+ * can be primary in one area and secondary in another (history: primary
+ * for administración and reservas, panel-only for operaciones, which needs
+ * the bar for dispatch work instead). This only decides which icons render
+ * for the active mode; it grants nothing by itself (US-TAB-007) — every
+ * route it points at is still gated by the database policies for whatever
+ * that screen does.
  *
  * The inventory icon points at two different screens on purpose:
  * administración reads the flat catalogue of `/inventario` (US-TAB-001),
  * while operaciones works from `/operaciones/inventario` (US-OPE-021),
  * which is the same single registry seen category by category and with the
  * counting and status actions that only operaciones performs.
- * `VISIBLE_IN` only decides which icons render for the
- * active mode; it grants nothing by itself (US-TAB-007) — every route it
- * points at is still gated by the database policies for whatever that
- * screen does.
  */
 /**
- * Las pantallas de `/acceso` no llevan barra: el proxy fuerza el primer
- * ingreso desde cualquier ruta y sin excepcion (US-ACC-003), asi que
- * ofrecer atajos a tablero o inventario ahi solo invita a un rebote.
+ * Las pantallas de `/acceso` no llevan barra ni panel: el proxy fuerza el
+ * primer ingreso desde cualquier ruta y sin excepcion (US-ACC-003), asi que
+ * ofrecer atajos ahi solo invita a un rebote. `/reservas/detalle/:id` tiene
+ * su propia barra de acciones (`ReservationDetailActions`) anclada al mismo
+ * borde inferior — mostrar la barra global ahi la tapaba (bug de diseño,
+ * ambas a `z-30`); esa pantalla ya resuelve su propia navegación primaria,
+ * así que la barra global se oculta en vez de apilar dos.
  */
 const ACCESS_SECTION_PREFIX = "/acceso";
 
@@ -46,89 +55,125 @@ export const BOTTOM_NAV_ITEM_ID = {
 export type BottomNavItemId =
   (typeof BOTTOM_NAV_ITEM_ID)[keyof typeof BOTTOM_NAV_ITEM_ID];
 
+export const BOTTOM_NAV_SECTION = {
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
+} as const;
+
+export type BottomNavSection =
+  (typeof BOTTOM_NAV_SECTION)[keyof typeof BOTTOM_NAV_SECTION];
+
 export const BOTTOM_NAV = {
-  ACCESS_SECTION_PREFIX,
   ARIA_LABEL: "Navegación principal",
+  HIDDEN_ROUTE_PREFIXES: [
+    ACCESS_SECTION_PREFIX,
+    PATHS.RESERVATIONS.DETAIL,
+  ] as const,
   ITEMS: [
     {
       HREF: PATHS.COMMON.DASHBOARD,
       ICON: MATERIAL_ICON_NAME.DASHBOARD,
       ID: BOTTOM_NAV_ITEM_ID.BOARD,
       LABEL: "Tablero",
-      VISIBLE_IN: [
-        WORK_AREA.ADMINISTRATION,
-        WORK_AREA.OPERATIONS,
-        WORK_AREA.RESERVATIONS,
-      ],
+      SECTION_BY_AREA: {
+        [WORK_AREA.ADMINISTRATION]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+        [WORK_AREA.OPERATIONS]: BOTTOM_NAV_SECTION.PRIMARY,
+        [WORK_AREA.RESERVATIONS]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
     {
       HREF: PATHS.RESERVATIONS.CALENDAR,
       ICON: MATERIAL_ICON_NAME.CALENDAR_MONTH,
       ID: BOTTOM_NAV_ITEM_ID.CALENDAR,
       LABEL: "Calendario",
-      VISIBLE_IN: [
-        WORK_AREA.OPERATIONS,
-        WORK_AREA.RESERVATIONS,
-      ],
+      SECTION_BY_AREA: {
+        [WORK_AREA.OPERATIONS]: BOTTOM_NAV_SECTION.PRIMARY,
+        [WORK_AREA.RESERVATIONS]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
     {
       HREF: PATHS.OPERATIONS.ROOT,
       ICON: MATERIAL_ICON_NAME.SAILING,
       ID: BOTTOM_NAV_ITEM_ID.OPERATIONS,
       LABEL: "Operaciones",
-      VISIBLE_IN: [WORK_AREA.OPERATIONS],
+      SECTION_BY_AREA: {
+        [WORK_AREA.OPERATIONS]: BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
     {
       HREF: PATHS.COMMON.INVENTORY,
       ICON: MATERIAL_ICON_NAME.INVENTORY_2,
       ID: BOTTOM_NAV_ITEM_ID.INVENTORY,
       LABEL: "Inventario",
-      VISIBLE_IN: [WORK_AREA.ADMINISTRATION],
+      SECTION_BY_AREA: {
+        [WORK_AREA.ADMINISTRATION]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
     {
       HREF: PATHS.OPERATIONS.INVENTORY,
       ICON: MATERIAL_ICON_NAME.INVENTORY_2,
       ID: BOTTOM_NAV_ITEM_ID.OPERATIONS_INVENTORY,
       LABEL: "Inventario",
-      VISIBLE_IN: [WORK_AREA.OPERATIONS],
+      SECTION_BY_AREA: {
+        [WORK_AREA.OPERATIONS]: BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
     {
       HREF: PATHS.COMMON.HISTORY,
       ICON: MATERIAL_ICON_NAME.HISTORY,
       ID: BOTTOM_NAV_ITEM_ID.HISTORY,
       LABEL: "Historial",
-      VISIBLE_IN: [
-        WORK_AREA.ADMINISTRATION,
-        WORK_AREA.OPERATIONS,
-        WORK_AREA.RESERVATIONS,
-      ],
+      SECTION_BY_AREA: {
+        [WORK_AREA.ADMINISTRATION]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+        [WORK_AREA.OPERATIONS]:
+          BOTTOM_NAV_SECTION.SECONDARY,
+        [WORK_AREA.RESERVATIONS]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
     {
       HREF: PATHS.RESERVATIONS.REVENUE,
       ICON: MATERIAL_ICON_NAME.PAYMENTS,
       ID: BOTTOM_NAV_ITEM_ID.REVENUE,
       LABEL: "Ingresos",
-      VISIBLE_IN: [WORK_AREA.RESERVATIONS],
+      SECTION_BY_AREA: {
+        [WORK_AREA.RESERVATIONS]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
     {
       HREF: PATHS.COMMON.PRICES,
       ICON: MATERIAL_ICON_NAME.ATTACH_MONEY,
       ID: BOTTOM_NAV_ITEM_ID.PRICES,
       LABEL: "Precios",
-      VISIBLE_IN: [WORK_AREA.OPERATIONS],
+      SECTION_BY_AREA: {
+        [WORK_AREA.OPERATIONS]:
+          BOTTOM_NAV_SECTION.SECONDARY,
+      },
     },
     {
       HREF: PATHS.ADMIN.ROOT,
       ICON: MATERIAL_ICON_NAME.ADMIN_PANEL_SETTINGS,
       ID: BOTTOM_NAV_ITEM_ID.ADMIN,
       LABEL: "Administración",
-      VISIBLE_IN: [WORK_AREA.ADMINISTRATION],
+      SECTION_BY_AREA: {
+        [WORK_AREA.ADMINISTRATION]:
+          BOTTOM_NAV_SECTION.PRIMARY,
+      },
     },
   ] as const satisfies ReadonlyArray<{
     HREF: string;
     ICON: MaterialIconName;
     ID: BottomNavItemId;
     LABEL: string;
-    VISIBLE_IN: readonly WorkArea[];
+    SECTION_BY_AREA: Partial<
+      Record<WorkArea, BottomNavSection>
+    >;
   }>,
+  MENU_LABEL: "Menú",
 } as const;

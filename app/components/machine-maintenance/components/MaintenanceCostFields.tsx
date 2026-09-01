@@ -19,7 +19,7 @@ interface MaintenanceCostFieldsProps {
 }
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 const CURRENCY_CLASS =
   "min-h-12 w-16 rounded-lg border font-button text-button uppercase transition-colors disabled:opacity-60";
 
@@ -67,7 +67,7 @@ const MaintenanceCostFields = ({
               className={`${CURRENCY_CLASS} ${
                 currency === costCurrency
                   ? "border-primary bg-primary/15 text-primary"
-                  : "border-white/10 text-on-surface-variant"
+                  : "border-outline-variant text-on-surface-variant"
               }`}
             >
               {CURRENCY_LABEL[currency]}

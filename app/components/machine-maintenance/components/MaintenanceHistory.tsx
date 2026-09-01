@@ -15,7 +15,7 @@ interface MaintenanceHistoryProps {
 const NO_RECORDS = 0;
 
 const CARD_CLASS =
-  "flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low p-sm";
+  "flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low p-sm";
 
 const formatCost = (
   record: MaintenanceRecordRow
@@ -56,7 +56,7 @@ const MaintenanceHistory = ({
             <span className="font-body-base text-body-base text-on-surface">
               {record.workType}
             </span>
-            <Badge className="border-white/10 text-on-surface-variant">
+            <Badge className="border-outline-variant text-on-surface-variant">
               {record.isExternal
                 ? MAINTENANCE_RECORD_SCREEN.HISTORY.EXTERNAL
                 : MAINTENANCE_RECORD_SCREEN.HISTORY

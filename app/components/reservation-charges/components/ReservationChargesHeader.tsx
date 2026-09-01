@@ -23,7 +23,7 @@ const ReservationChargesHeader = ({
     <Link
       href={PATHS.RESERVATIONS.DETAIL_BY_ID(context.id)}
       aria-label={RESERVATION_CHARGES_SCREEN.BACK_TO_DETAIL}
-      className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-primary"
+      className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high text-on-surface-variant hover:text-primary"
     >
       <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_BACK} />
     </Link>

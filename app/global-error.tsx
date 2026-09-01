@@ -12,7 +12,7 @@ interface GlobalErrorPageProps {
 /**
  * Next.js App Router convention: the only boundary reached when the root
  * layout itself fails (`app/layout.tsx` — `ReduxProvider`,
- * `WorkdaySessionProvider`, `WorkAreaSwitcher`, `BottomNav`). It replaces
+ * `WorkdaySessionProvider`, `AppDrawer`, `BottomNav`). It replaces
  * the root layout entirely while active, so — per Next.js's own rule for
  * this file — it renders its own `<html>`/`<body>` and imports
  * `globals.css` directly instead of relying on the layout that just
@@ -27,7 +27,7 @@ const GlobalErrorPage = ({
 }: GlobalErrorPageProps): JSX.Element => (
   <html lang="es">
     <body className="flex min-h-screen items-center justify-center bg-background px-margin-mobile text-on-background">
-      <div className="flex w-full max-w-form flex-col items-center gap-md rounded-xl border border-white/10 bg-surface-container/70 p-lg text-center shadow-xl">
+      <div className="flex w-full max-w-form flex-col items-center gap-md rounded-xl border border-outline-variant bg-surface-container/70 p-lg text-center shadow-xl">
         <h1 className="text-headline-lg-mobile font-semibold text-on-surface">
           {GLOBAL_ERROR_SCREEN.TITLE}
         </h1>

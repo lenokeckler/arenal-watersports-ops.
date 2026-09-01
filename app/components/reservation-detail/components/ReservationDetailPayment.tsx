@@ -45,7 +45,7 @@ const PriceLine = ({
 const ReservationDetailPayment = ({
   reservation,
 }: ReservationDetailPaymentProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {RESERVATION_DETAIL_SCREEN.CHARGES.TITLE}
     </h2>
@@ -61,7 +61,7 @@ const ReservationDetailPayment = ({
       label={RESERVATION_DETAIL_SCREEN.CHARGES.AGREED}
     />
 
-    <div className="flex items-start justify-between gap-sm border-t border-white/10 pt-sm">
+    <div className="flex items-start justify-between gap-sm border-t border-outline-variant pt-sm">
       <span className="font-body-base text-body-base text-on-surface-variant">
         {RESERVATION_DETAIL_SCREEN.CHARGES.CHARGED}
       </span>
@@ -82,7 +82,7 @@ const ReservationDetailPayment = ({
       href={PATHS.RESERVATIONS.CHARGES_BY_ID(
         reservation.id
       )}
-      className="flex min-h-14 items-center justify-between rounded-lg border border-white/10 px-sm font-button text-button uppercase text-on-surface hover:border-primary/40 hover:text-primary"
+      className="flex min-h-14 items-center justify-between rounded-lg border border-outline-variant px-sm font-button text-button uppercase text-on-surface hover:border-primary/40 hover:text-primary"
     >
       {RESERVATION_DETAIL_SCREEN.CHARGES.MANAGE}
       <MaterialIcon

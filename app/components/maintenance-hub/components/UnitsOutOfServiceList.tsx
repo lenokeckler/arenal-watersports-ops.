@@ -17,7 +17,7 @@ interface UnitsOutOfServiceListProps {
 const NO_UNITS = 0;
 
 const CARD_CLASS =
-  "flex min-h-14 items-center gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm";
+  "flex min-h-14 items-center gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm";
 
 /**
  * US-OPE-017: everything currently out of availability. The board stops
@@ -58,7 +58,7 @@ const UnitsOutOfServiceList = ({
               {unit.categoryName}
             </span>
           </div>
-          <Badge className="ml-auto border-white/10 text-on-surface-variant">
+          <Badge className="ml-auto border-outline-variant text-on-surface-variant">
             {UNIT_STATUS_LABEL[unit.status]}
           </Badge>
         </Link>

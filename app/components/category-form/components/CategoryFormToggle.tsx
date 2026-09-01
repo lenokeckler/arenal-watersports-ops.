@@ -21,7 +21,7 @@ const CategoryFormToggle = ({
   label,
   onChange,
 }: CategoryFormToggleProps): JSX.Element => (
-  <label className="flex items-start gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+  <label className="flex items-start gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
     <input
       type={INPUT_TYPES.CHECKBOX}
       checked={checked}

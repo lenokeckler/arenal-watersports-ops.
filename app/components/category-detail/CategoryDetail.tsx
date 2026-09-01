@@ -20,8 +20,10 @@ const EMPTY_LENGTH = 0;
  * `/tablero/categoria/[categoryId]` (US-TAB-002, US-TAB-003). Presentation
  * only; `useCategoryDetailViewModel` owns the realtime subscription.
  */
-const CategoryDetail = (props: CategoryDetailProps): JSX.Element => {
-  const { detail } = useCategoryDetailViewModel(props);
+const CategoryDetail = (
+  props: CategoryDetailProps
+): JSX.Element => {
+  const { detail, now } = useCategoryDetailViewModel(props);
   const units = detail.units ?? [];
 
   return (
@@ -30,7 +32,9 @@ const CategoryDetail = (props: CategoryDetailProps): JSX.Element => {
         href={PATHS.COMMON.DASHBOARD}
         className="mb-md inline-flex min-h-12 items-center gap-1 text-on-surface-variant transition-colors hover:text-primary"
       >
-        <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_BACK} />
+        <MaterialIcon
+          name={MATERIAL_ICON_NAME.ARROW_BACK}
+        />
         {CATEGORY_DETAIL_SCREEN.BACK_TO_BOARD}
       </Link>
 
@@ -41,7 +45,8 @@ const CategoryDetail = (props: CategoryDetailProps): JSX.Element => {
       </header>
 
       <main className="mx-auto max-w-6xl">
-        {detail.trackingMode === TRACKING_MODE.BY_QUANTITY && detail.stock ? (
+        {detail.trackingMode ===
+          TRACKING_MODE.BY_QUANTITY && detail.stock ? (
           <QuantityTiles stock={detail.stock} />
         ) : units.length === EMPTY_LENGTH ? (
           <p className="font-body-base text-body-base text-on-surface-variant">
@@ -50,7 +55,11 @@ const CategoryDetail = (props: CategoryDetailProps): JSX.Element => {
         ) : (
           <div className="grid grid-cols-1 gap-md sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {units.map((unit) => (
-              <UnitCard key={unit.id} unit={unit} />
+              <UnitCard
+                key={unit.id}
+                now={now}
+                unit={unit}
+              />
             ))}
           </div>
         )}

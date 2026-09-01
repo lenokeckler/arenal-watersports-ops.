@@ -18,7 +18,7 @@ interface MachineDetailHeaderProps {
 }
 
 const BACK_CLASS =
-  "flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-primary";
+  "flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high text-on-surface-variant hover:text-primary";
 
 /** The machine's identity: which one it is and where it stands right now. */
 const MachineDetailHeader = ({
@@ -45,7 +45,7 @@ const MachineDetailHeader = ({
       </span>
     </div>
 
-    <Badge className="ml-auto border-white/10 text-on-surface-variant">
+    <Badge className="ml-auto border-outline-variant text-on-surface-variant">
       {UNIT_STATUS_LABEL[status]}
     </Badge>
   </header>

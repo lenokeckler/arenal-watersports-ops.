@@ -22,7 +22,7 @@ const CalendarViewSwitcher = ({
   referenceDate,
   view,
 }: CalendarViewSwitcherProps): JSX.Element => (
-  <div className="flex rounded-lg border border-white/10 bg-surface-container-high p-1">
+  <div className="flex rounded-lg border border-outline-variant bg-surface-container-high p-1">
     {allowedViews.map((candidateView) => (
       <Link
         key={candidateView}

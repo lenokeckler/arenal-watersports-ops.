@@ -18,8 +18,8 @@ import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
  */
 const NotFoundPage = (): JSX.Element => (
   <main className="flex min-h-screen flex-col items-center justify-center gap-lg bg-background px-margin-mobile py-margin-mobile text-center text-on-surface md:px-margin-desktop">
-    <div className="flex w-full max-w-form flex-col items-center gap-md rounded-xl border border-white/10 bg-surface-container/70 p-lg shadow-xl backdrop-blur-md">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-surface-container-high">
+    <div className="flex w-full max-w-form flex-col items-center gap-md rounded-xl border border-outline-variant bg-surface-container/70 p-lg shadow-xl backdrop-blur-md">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-outline-variant bg-surface-container-high">
         <MaterialIcon
           name={NOT_FOUND_SCREEN.ICON}
           className="!text-[32px] text-primary"

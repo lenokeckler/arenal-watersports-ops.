@@ -141,12 +141,20 @@ export {
 } from "./acceso/PasswordRecoveryScreen.constants";
 export { EMAIL_CONFIG } from "./email/Email.constants";
 export { WORK_MODE_SCREEN } from "./acceso/WorkModeScreen.constants";
+export { APP_DRAWER_SCREEN } from "./tablero/AppDrawer.constants";
 export {
+  EQUIPMENT_UNIT_OVERDUE_CARD_TINT,
   EQUIPMENT_UNIT_STATUS,
   EQUIPMENT_UNIT_STATUS_BADGE,
+  EQUIPMENT_UNIT_STATUS_CARD_TINT,
   EQUIPMENT_UNIT_STATUS_LABEL,
   type EquipmentUnitStatus,
 } from "./tablero/EquipmentStatus.constants";
+export {
+  BOARD_CARD_OCCUPANCY,
+  BOARD_CARD_OCCUPANCY_CLASS,
+  type BoardCardOccupancy,
+} from "./tablero/BoardCardOccupancy.constants";
 export {
   TRACKING_MODE,
   TRACKING_MODE_LABEL,
@@ -179,7 +187,9 @@ export { CATEGORY_DETAIL_SCREEN } from "./tablero/CategoryDetailScreen.constants
 export {
   BOTTOM_NAV,
   BOTTOM_NAV_ITEM_ID,
+  BOTTOM_NAV_SECTION,
   type BottomNavItemId,
+  type BottomNavSection,
 } from "./tablero/BottomNav.constants";
 export { PAGINATION_CONTROL } from "./tablero/PaginationControl.constants";
 export { HISTORY_SCREEN } from "./tablero/HistoryScreen.constants";
@@ -279,6 +289,12 @@ export { RESERVATION_DETAIL_SCREEN } from "./reservas/ReservationDetailScreen.co
 export { NEW_RESERVATION_SCREEN } from "./reservas/NewReservationScreen.constants";
 export { RESERVATION_NUMBERS } from "./reservas/ReservationNumbers.constants";
 export {
+  FUEL_LEVEL_PRESET,
+  FUEL_LEVEL_PRESET_LABEL,
+  FUEL_LEVEL_PRESET_ORDER,
+  type FuelLevelPreset,
+} from "./reservas/FuelLevel.constants";
+export {
   COMBO_MODE,
   type ComboMode,
 } from "./reservas/ComboMode.constants";
@@ -311,6 +327,10 @@ export { OPERATIONS_NUMBERS } from "./operaciones/OperationsNumbers.constants";
 export { DISPATCH_BOARD_SCREEN } from "./operaciones/DispatchBoardScreen.constants";
 export { DISPATCH_SCREEN } from "./operaciones/DispatchScreen.constants";
 export {
+  DISPATCH_STEP,
+  type DispatchStep,
+} from "./operaciones/DispatchStep.constants";
+export {
   DAMAGE_CAUSE,
   DAMAGE_CAUSE_LABEL,
   type DamageCause,
@@ -341,3 +361,11 @@ export { OPERATIONS_INVENTORY_SCREEN } from "./operaciones/OperationsInventorySc
 export { INVENTORY_COUNT_SCREEN } from "./operaciones/InventoryCountScreen.constants";
 export { INVENTORY_ALERTS_SCREEN } from "./operaciones/InventoryAlertsScreen.constants";
 export { OPERATIONS_ERROR } from "./operaciones/OperationsError.constants";
+export {
+  DEFAULT_THEME,
+  THEME,
+  THEME_ATTRIBUTE,
+  THEME_OPTION,
+  THEME_STORAGE_KEY,
+  type Theme,
+} from "./theme/Theme.constants";

@@ -23,10 +23,10 @@ const InventoryTable = ({ rows }: InventoryTableProps): JSX.Element => {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/10 bg-surface-container/40 backdrop-blur-md">
+    <div className="overflow-x-auto rounded-xl border border-outline-variant bg-surface-container/40 backdrop-blur-md">
       <table className="w-full min-w-[640px] border-collapse text-left">
         <thead>
-          <tr className="border-b border-white/10 bg-surface-container/50">
+          <tr className="border-b border-outline-variant bg-surface-container/50">
             <th className="px-md py-sm font-label-mono text-label-mono uppercase text-on-surface-variant">
               {INVENTORY_SCREEN.COLUMN.CATEGORY}
             </th>
@@ -49,7 +49,7 @@ const InventoryTable = ({ rows }: InventoryTableProps): JSX.Element => {
         </thead>
         <tbody className="font-body-base text-body-base">
           {rows.map((row) => (
-            <tr key={row.id} className="border-b border-white/5 last:border-b-0">
+            <tr key={row.id} className="border-b border-outline-variant/50 last:border-b-0">
               <td className="px-md py-sm text-on-surface">{row.name}</td>
               <td className="px-md py-sm text-on-surface-variant">
                 {TRACKING_MODE_LABEL[row.trackingMode]}

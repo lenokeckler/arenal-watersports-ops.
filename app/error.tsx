@@ -38,7 +38,7 @@ const ErrorPage = ({
   reset,
 }: ErrorPageProps): JSX.Element => (
   <main className="flex min-h-screen flex-col items-center justify-center gap-lg bg-background px-margin-mobile py-margin-mobile text-center text-on-surface md:px-margin-desktop">
-    <div className="flex w-full max-w-form flex-col items-center gap-md rounded-xl border border-white/10 bg-surface-container/70 p-lg shadow-xl backdrop-blur-md">
+    <div className="flex w-full max-w-form flex-col items-center gap-md rounded-xl border border-outline-variant bg-surface-container/70 p-lg shadow-xl backdrop-blur-md">
       <div className="flex h-16 w-16 items-center justify-center rounded-full border border-error/30 bg-error-container/20">
         <MaterialIcon
           name={ERROR_SCREEN.ICON}
@@ -70,7 +70,7 @@ const ErrorPage = ({
         </Button>
         <Link
           href={PATHS.COMMON.DASHBOARD}
-          className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg border border-white/10 px-md text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary"
+          className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg border border-outline-variant px-md text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary"
         >
           <MaterialIcon
             name={MATERIAL_ICON_NAME.ARROW_BACK}

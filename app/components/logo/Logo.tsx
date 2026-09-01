@@ -19,7 +19,7 @@ const Logo = ({ src, alt, onClick }: LogoProps) => (
         className="object-contain"
       />
     </div>
-    <span className="absolute left-[60px] sm:left-[80px] top-1/2 -translate-y-1/2 text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
+    <span className="absolute left-[60px] sm:left-[80px] top-1/2 -translate-y-1/2 text-lg sm:text-2xl font-bold text-on-surface flex items-center gap-2">
       {LOGO.ARENAL}
     </span>
   </Link>

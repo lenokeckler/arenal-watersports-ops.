@@ -22,7 +22,7 @@ const PendingDispatchCard = ({
   onDispatch,
   reservation,
 }: PendingDispatchCardProps): JSX.Element => (
-  <div className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container-high/40 p-sm backdrop-blur-xl">
+  <div className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container-high/40 p-sm backdrop-blur-xl">
     <div className="flex items-start justify-between">
       <div className="flex items-center gap-xs">
         <MaterialIcon

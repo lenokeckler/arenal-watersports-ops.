@@ -55,7 +55,7 @@ const RateForm = (props: RateFormProps): JSX.Element => {
 
   return (
     <form
-      className="flex flex-col gap-md rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md"
+      className="flex flex-col gap-md rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md"
       onSubmit={handleSubmit}
       noValidate
     >
@@ -66,7 +66,7 @@ const RateForm = (props: RateFormProps): JSX.Element => {
       )}
 
       {isEditMode ? (
-        <div className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+        <div className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
           <span className="font-label-mono text-label-mono text-on-surface-variant">
             {RATE_FORM_SCREEN.CATEGORY_LABEL}
           </span>

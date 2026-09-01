@@ -1,15 +1,7 @@
-import type { BottomNavItemId } from "@/app/constants";
-import type { MaterialIconName } from "@/app/components/icons/material-icon/constants";
-
-export interface BottomNavVisibleItem {
-  href: string;
-  icon: MaterialIconName;
-  id: BottomNavItemId;
-  isActive: boolean;
-  label: string;
-}
+import type { BottomNavAreaItem } from "@/app/utils/tablero/bottomNavItems";
 
 export interface BottomNavViewModel {
+  handleOpenMenu: () => void;
   isVisible: boolean;
-  items: BottomNavVisibleItem[];
+  items: BottomNavAreaItem[];
 }

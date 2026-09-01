@@ -5,6 +5,7 @@ export const KEYBOARD = {
   ARROW_LEFT: "ArrowLeft",
   ESCAPE: "Escape",
   EXIT: "exit",
+  TAB: "Tab",
 } as const;
 
 export type Keyboard =

@@ -47,12 +47,12 @@ const ReservationFormGuides = ({
               className={`flex items-center gap-2 rounded-full border px-sm py-1 font-label-mono text-label-mono transition-colors disabled:opacity-50 ${
                 isSelected
                   ? "border-primary bg-primary/20 text-primary"
-                  : "border-white/10 text-on-surface-variant hover:border-primary/40"
+                  : "border-outline-variant text-on-surface-variant hover:border-primary/40"
               }`}
             >
               {guide.fullName}
               {guide.isExternalGuide && (
-                <span className="rounded-full border border-white/10 px-1 text-[10px] uppercase opacity-70">
+                <span className="rounded-full border border-outline-variant px-1 text-[10px] uppercase opacity-70">
                   {
                     NEW_RESERVATION_SCREEN.GUIDES
                       .EXTERNAL_BADGE

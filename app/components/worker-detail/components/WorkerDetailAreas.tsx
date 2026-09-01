@@ -29,7 +29,7 @@ const WorkerDetailAreas = ({
   onAddArea,
   onRemoveArea,
 }: WorkerDetailAreasProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {WORKER_DETAIL_SCREEN.AREAS.TITLE}
     </h2>
@@ -73,7 +73,7 @@ const WorkerDetailAreas = ({
             type="button"
             disabled={isBusy}
             onClick={() => onAddArea(area)}
-            className="flex min-h-10 items-center gap-1 rounded-full border border-white/10 px-sm text-on-surface-variant hover:border-primary/40 hover:text-primary disabled:opacity-50"
+            className="flex min-h-10 items-center gap-1 rounded-full border border-outline-variant px-sm text-on-surface-variant hover:border-primary/40 hover:text-primary disabled:opacity-50"
           >
             <MaterialIcon
               name={MATERIAL_ICON_NAME.ADD}

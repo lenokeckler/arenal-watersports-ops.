@@ -31,7 +31,7 @@ const DepositList = ({
       {rows.map((deposit) => (
         <li
           key={deposit.id}
-          className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+          className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
         >
           <div className="flex items-center justify-between">
             <span className="font-body-base text-body-base text-on-surface">
@@ -66,7 +66,7 @@ const DepositsSection = ({
   pendingDeposits,
   retainedDeposits,
 }: DepositsSectionProps): JSX.Element => (
-  <section className="flex flex-col gap-md rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-md rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {REPORTS_SCREEN.DEPOSITS.TITLE}
     </h2>

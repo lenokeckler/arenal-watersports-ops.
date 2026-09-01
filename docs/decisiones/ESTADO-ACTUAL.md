@@ -1,6 +1,6 @@
 # Estado actual — retomar desde aquí
 
-Última actualización: 2026-08-31.
+Última actualización: 2026-09-01.
 
 Este archivo existe para que el trabajo se pueda retomar mañana, o desde otra
 máquina, o por otra persona, sin depender de que nadie recuerde nada. Si algo
@@ -160,6 +160,68 @@ pasan los cinco. 68 rutas en el build.
 ---
 
 ## Dónde se quedó el trabajo
+
+### Lo que salió de usar la aplicación de verdad
+
+Con la aplicación ya desplegada, el dueño la revisó y pidió siete cambios. Todos están hechos y
+verificados en el navegador, no solo compilando. Lo interesante es que **casi nada era una regla
+nueva**: eran historias ya escritas que se habían implementado a medias.
+
+- **El botón de cerrar sesión vivía en una píldora flotante arriba a la derecha, a `z-40`**, encima
+  del botón "Agregar" que pintan siete pantallas en esa misma esquina. Fallar por un centímetro
+  cerraba la sesión sin preguntar nada. Ahora hay un panel lateral con la identidad, el selector de
+  área con su nombre escrito, el perfil y un cierre de sesión que pregunta una vez.
+- **`/perfil` era inalcanzable**: nada en la interfaz enlazaba ahí, y como es donde se cambia la
+  contraseña propia, ningún trabajador podía cambiarla sin escribir la URL de memoria.
+- **La hoja de despacho salía vacía para kayaks y paddleboards**, porque filtraba a lo que tuviera
+  motor o gasolina. El operador no veía ni qué estaba entregando.
+- **No se podía cambiar el equipo al despachar.** Pasa todos los días: el cliente reservó paddleboard,
+  pide kayak por radio, y el muelle le da otra cosa. Ahora se confirma el equipo antes de marcar la
+  reserva como despachada, mientras sigue en `scheduled`, así ninguna policy ni guarda de estado tuvo
+  que moverse.
+- **La gasolina volvió a los cuartos que pedía la maqueta** (`docs/referencia/stitch/gasolina-y-horas-al-despachar--movil.html`),
+  conservando el campo numérico para valores exactos.
+- **El despacho no escribía la gasolina de la unidad**, solo la de la reserva: durante toda la salida
+  la ficha de la máquina mostraba el nivel del cierre anterior.
+- **El tablero no decía qué estaba en el agua**, que es justo la pregunta que el WhatsApp existía para
+  contestar. Y las categorías por cantidad no tenían ninguna noción de "en uso ahora": tres kayaks en
+  el lago y el tablero seguía ofreciendo nueve.
+
+### Tres errores del mismo tipo, que solo aparecen usando la aplicación
+
+Cada vez que una pantalla mostró **dos números calculados con reglas distintas**, se contradijeron.
+Ninguno lo atrapaba el compilador ni los tests.
+
+1. `libres` salía de `category_availability`, que razona por **ventana horaria**; `en uso` salía del
+   **estado** de la reserva. Una salida que se pasó de la hora "liberaba" equipo que seguía en el lago.
+2. Lo mismo un nivel más abajo: "3 disponibles / 3 en uso" sobre un stock de 3.
+3. Y `unit_current_state` (por unidad) ya razonaba por estado, mientras las categorías por cantidad
+   razonaban por tiempo — las dos formas de llevar inventario contestaban distinto a la misma pregunta.
+
+La regla que quedó: **una unidad despachada nunca cuenta como libre, aunque su franja haya vencido**, y
+`libres + en uso` nunca supera el total. `category_availability` **no se tocó**: el formulario de
+reservas pregunta "¿puedo agendar a las 3?", y ahí razonar por ventana sí es lo correcto.
+
+### La regla de guía, aplicada en tres lugares
+
+`US-RES-008` dice que una renta nunca lleva equipo que solo sale con guía. Estaba aplicada solo en el
+formulario de nueva reserva. El paso de sustitución del despacho la ignoraba (defecto nuevo) y el
+modal de edición también (defecto anterior). Ahora los tres usan
+`filterCategoriesForReservationType`, para que la próxima pantalla que ofrezca equipo la herede en vez
+de olvidarla.
+
+### El tema claro
+
+Ver `docs/decisiones/tema-claro.md`. Lo caro no fue la paleta: `border-white/10` y `/5` aparecían
+**313 veces en 178 archivos** y son el borde por defecto de toda tarjeta, panel y modal. Blanco puro
+sobre fondo claro no se ve, así que sin ese reemplazo el tema claro no servía de nada.
+
+La preferencia se guarda **por dispositivo**, no por cuenta: el mismo trabajador usa el teléfono al sol
+y la computadora bajo techo.
+
+**Pendiente de verificación humana:** el contraste al sol. WCAG no modela reflejo de pantalla, por eso
+la paleta apunta a 6:1 y 7:1 en vez del mínimo de 4.5:1, pero eso hay que probarlo afuera.
+
 
 **Rama activa: `develop`**, sincronizada con GitHub. Acceso, Tablero,
 Administración, Reservas y Operaciones están todos mezclados ahí. Los 56

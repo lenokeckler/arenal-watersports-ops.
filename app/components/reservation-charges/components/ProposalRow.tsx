@@ -32,7 +32,7 @@ const ProposalRow = ({
       {RESERVATION_CHARGES_SCREEN.CHARGE_FORM.NO_PROPOSAL}
     </p>
   ) : (
-    <div className="flex items-center justify-between gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-2">
+    <div className="flex items-center justify-between gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-2">
       <span className="font-label-mono text-label-mono text-on-surface-variant">
         {label}
       </span>

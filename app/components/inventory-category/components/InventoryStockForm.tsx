@@ -16,7 +16,7 @@ import type {
 } from "../hooks/useStockAdjustmentViewModel";
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 const LABEL_CLASS =
   "font-label-mono text-label-mono uppercase text-on-surface-variant";
 
@@ -52,7 +52,7 @@ const InventoryStockForm = ({
   isBusy,
   values,
 }: StockAdjustmentViewModel): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {OPERATIONS_INVENTORY_SCREEN.DETAIL.QUANTITY_TITLE}
     </h2>

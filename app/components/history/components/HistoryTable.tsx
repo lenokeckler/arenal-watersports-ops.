@@ -25,10 +25,10 @@ const HistoryTable = ({ rows }: HistoryTableProps): JSX.Element => {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/10 bg-surface-container/40 backdrop-blur-md">
+    <div className="overflow-x-auto rounded-xl border border-outline-variant bg-surface-container/40 backdrop-blur-md">
       <table className="w-full min-w-[720px] border-collapse text-left">
         <thead>
-          <tr className="border-b border-white/10 bg-surface-container/50">
+          <tr className="border-b border-outline-variant bg-surface-container/50">
             <th className="px-md py-sm font-label-mono text-label-mono uppercase text-on-surface-variant">
               {HISTORY_SCREEN.COLUMN.CUSTOMER_NAME}
             </th>
@@ -53,7 +53,7 @@ const HistoryTable = ({ rows }: HistoryTableProps): JSX.Element => {
           {rows.map((row) => (
             <tr
               key={row.id}
-              className="border-b border-white/5 last:border-b-0"
+              className="border-b border-outline-variant/50 last:border-b-0"
             >
               <td className="px-md py-sm text-on-surface">
                 {row.customerName}

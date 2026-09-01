@@ -41,7 +41,7 @@ const ExtraList = ({
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
     <header className="mx-auto mb-lg flex max-w-6xl flex-wrap items-center justify-between gap-sm">
       <div className="flex items-center gap-sm">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high">
           <MaterialIcon
             name={MATERIAL_ICON_NAME.WAVES}
             className="!text-[24px] text-primary"
@@ -72,7 +72,7 @@ const ExtraList = ({
               filters,
               Math.max(page - 1, FIRST_PAGE)
             )}
-            className={`flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-white/10 px-md text-on-surface-variant transition-colors hover:text-primary ${
+            className={`flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-outline-variant px-md text-on-surface-variant transition-colors hover:text-primary ${
               page <= FIRST_PAGE
                 ? "pointer-events-none opacity-40"
                 : ""
@@ -89,7 +89,7 @@ const ExtraList = ({
               filters,
               Math.min(page + 1, totalPages)
             )}
-            className={`flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-white/10 px-md text-on-surface-variant transition-colors hover:text-primary ${
+            className={`flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-outline-variant px-md text-on-surface-variant transition-colors hover:text-primary ${
               page >= totalPages
                 ? "pointer-events-none opacity-40"
                 : ""

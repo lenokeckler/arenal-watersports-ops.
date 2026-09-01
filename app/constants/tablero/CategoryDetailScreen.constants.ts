@@ -8,9 +8,18 @@ export const CATEGORY_DETAIL_SCREEN = {
   BACK_TO_BOARD: "Volver al tablero",
   CARRIED_BY: "Lleva",
   DAMAGED: "Dañados",
-  EMPTY_UNITS: "Esta categoría todavía no tiene unidades registradas.",
+  EMPTY_UNITS:
+    "Esta categoría todavía no tiene unidades registradas.",
+  FREE_IN_MINUTES: (minutes: number): string =>
+    `Libre en ${minutes} min`,
+  FUEL_LABEL: "Combustible",
+  FUEL_PERCENT: (percent: number): string => `${percent}%`,
   IN_REPAIR: "En reparación",
+  IN_USE_NOW: "En uso ahora",
   NOT_FOUND: "Esta categoría no existe o no es reservable.",
+  OVERDUE_BADGE: "Vencida",
+  OVERDUE_BY_MINUTES: (minutes: number): string =>
+    `${minutes} min de retraso`,
   QUANTITY_AVAILABLE: "Disponibles",
   RESERVATION_LINK: "Ver reserva",
   RETURNS_AT: "Regresa a las",

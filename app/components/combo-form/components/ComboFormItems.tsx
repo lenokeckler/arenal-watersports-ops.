@@ -90,7 +90,7 @@ const ComboFormItems = ({
               {items.map((item) => (
                 <li
                   key={item.categoryId}
-                  className="flex items-center gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+                  className="flex items-center gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
                 >
                   <span className="flex-1 font-body-base text-body-base text-on-surface">
                     {item.categoryName}
@@ -114,7 +114,7 @@ const ComboFormItems = ({
                         );
                       }
                     }}
-                    className="w-20 rounded-lg border border-white/10 bg-surface-container px-sm py-1 text-right text-on-surface"
+                    className="w-20 rounded-lg border border-outline-variant bg-surface-container px-sm py-1 text-right text-on-surface"
                   />
                   <button
                     type="button"
@@ -187,7 +187,7 @@ const ComboFormItems = ({
                 type="button"
                 disabled={isBusy}
                 onClick={() => handleSubmitDraft(onAddItem)}
-                className="min-h-12 rounded-lg border border-white/10 px-md font-button text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                className="min-h-12 rounded-lg border border-outline-variant px-md font-button text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {COMBO_FORM_SCREEN.ITEMS.ADD_BUTTON}
               </button>

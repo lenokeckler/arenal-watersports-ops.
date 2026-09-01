@@ -39,7 +39,7 @@ const SummaryLine = ({
 const ChargeSummaryCard = ({
   row,
 }: ChargeSummaryCardProps): JSX.Element => (
-  <div className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low p-sm">
+  <div className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low p-sm">
     <span className="font-title-md text-title-md text-primary">
       {CURRENCY_LABEL[row.currency]}
       {row.currency}
@@ -68,7 +68,7 @@ const ChargeSummaryCard = ({
       label={RESERVATION_CHARGES_SCREEN.SUMMARY.PENDING}
       value={row.pendingAmount}
     />
-    <span className="flex justify-between border-t border-white/10 pt-1 font-title-md text-title-md text-on-surface">
+    <span className="flex justify-between border-t border-outline-variant pt-1 font-title-md text-title-md text-on-surface">
       {RESERVATION_CHARGES_SCREEN.SUMMARY.NET}
       <span>{formatAmount(row.netAmount)}</span>
     </span>

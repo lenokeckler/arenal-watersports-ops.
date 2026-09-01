@@ -36,7 +36,7 @@ const Pagination = ({
         variant={BUTTON.BASE}
         disabled={!canGoPrevious}
         onClick={() => onPageChange(page - INDEX.FIRST)}
-        className="flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-white/10 px-md text-on-surface-variant transition-colors hover:enabled:text-primary disabled:opacity-40"
+        className="flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-outline-variant px-md text-on-surface-variant transition-colors hover:enabled:text-primary disabled:opacity-40"
       >
         <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_BACK} />
         {PAGINATION_CONTROL.PREVIOUS}
@@ -51,7 +51,7 @@ const Pagination = ({
         variant={BUTTON.BASE}
         disabled={!canGoNext}
         onClick={() => onPageChange(page + INDEX.FIRST)}
-        className="flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-white/10 px-md text-on-surface-variant transition-colors hover:enabled:text-primary disabled:opacity-40"
+        className="flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-outline-variant px-md text-on-surface-variant transition-colors hover:enabled:text-primary disabled:opacity-40"
       >
         {PAGINATION_CONTROL.NEXT}
         <MaterialIcon name={MATERIAL_ICON_NAME.ARROW_FORWARD} />

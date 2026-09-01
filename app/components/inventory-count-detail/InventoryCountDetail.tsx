@@ -32,7 +32,7 @@ const InventoryCountDetail = ({
     title={INVENTORY_COUNT_SCREEN.DETAIL.TITLE}
   >
     {count.notes && (
-      <section className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low p-sm">
+      <section className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low p-sm">
         <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">
           {INVENTORY_COUNT_SCREEN.DETAIL.NOTES_TITLE}
         </span>

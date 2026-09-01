@@ -66,7 +66,7 @@ const ReservationFormEquipment = ({
           // las dos cantidades sin buscarlas en renglones separados.
           <div
             key={group.label}
-            className="flex flex-col gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+            className="flex flex-col gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
           >
             <span className="font-body-base text-body-base text-on-surface">
               {group.label}

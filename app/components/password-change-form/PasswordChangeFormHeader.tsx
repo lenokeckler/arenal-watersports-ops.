@@ -21,7 +21,7 @@ const PasswordChangeFormHeader = ({
   copy,
 }: PasswordChangeFormHeaderProps): JSX.Element => (
   <div className="mb-md flex flex-col items-center text-center">
-    <div className="relative mb-sm h-20 w-20 overflow-hidden rounded-full border border-white/5 bg-surface-container-low/50 p-2 shadow-inner">
+    <div className="relative mb-sm h-20 w-20 overflow-hidden rounded-full border border-outline-variant/50 bg-surface-container-low/50 p-2 shadow-inner">
       <Image
         src={IMAGES_PATHS.ARENAL_LOGO}
         alt={IMAGE_ALTS.ARENAL_LOGO}

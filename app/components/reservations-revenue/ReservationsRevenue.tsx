@@ -30,7 +30,7 @@ const ReservationsRevenue = ({
 }: ReservationsRevenueProps): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
     <header className="mx-auto mb-lg flex max-w-3xl items-center gap-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high">
         <MaterialIcon
           name={MATERIAL_ICON_NAME.PAYMENTS}
           className="!text-[24px] text-primary"
@@ -47,7 +47,7 @@ const ReservationsRevenue = ({
     </header>
 
     <main className="mx-auto flex max-w-3xl flex-col gap-md">
-      <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+      <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
         <RevenueDayPicker selectedDay={selectedDay} />
         {rows.length === NO_ROWS ? (
           <p className="font-body-base text-body-base text-on-surface-variant">
@@ -65,7 +65,7 @@ const ReservationsRevenue = ({
         )}
       </section>
 
-      <section className="flex flex-col gap-md rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+      <section className="flex flex-col gap-md rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
         {Object.values(CURRENCY_CODE).map((currency) => (
           <SimpleBarChart
             key={currency}
@@ -88,7 +88,7 @@ const ReservationsRevenue = ({
 
       <Link
         href={PATHS.RESERVATIONS.DEPOSITS}
-        className="flex min-h-14 items-center justify-between rounded-xl border border-white/10 bg-surface-container/40 px-md font-body-base text-body-base text-on-surface backdrop-blur-md hover:border-primary/40"
+        className="flex min-h-14 items-center justify-between rounded-xl border border-outline-variant bg-surface-container/40 px-md font-body-base text-body-base text-on-surface backdrop-blur-md hover:border-primary/40"
       >
         {RESERVATIONS_REVENUE_SCREEN.DEPOSITS_LINK}
         <MaterialIcon

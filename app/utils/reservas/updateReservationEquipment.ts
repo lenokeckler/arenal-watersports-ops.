@@ -6,6 +6,32 @@ import {
   type ReservationEquipmentItem,
 } from "@/app/utils/reservas/reservationEquipmentItems";
 
+export interface InitialEquipmentSelection {
+  initialQuantities: Record<string, number>;
+  initialSelectedUnitIds: string[];
+}
+
+/**
+ * US-RES-018/US-OPE-002: seeds an equipment picker from what a reservation
+ * already commits — the edit modal and the dispatch sheet's equipment-
+ * confirmation step both start from "what is already there" instead of
+ * empty.
+ */
+export const buildInitialEquipmentSelection = (
+  originalItems: ReservationEquipmentItem[]
+): InitialEquipmentSelection => {
+  const initialQuantities: Record<string, number> = {};
+  const initialSelectedUnitIds: string[] = [];
+  for (const item of originalItems) {
+    if (item.unitId) {
+      initialSelectedUnitIds.push(item.unitId);
+    } else if (item.categoryId && item.quantity) {
+      initialQuantities[item.categoryId] = item.quantity;
+    }
+  }
+  return { initialQuantities, initialSelectedUnitIds };
+};
+
 const insertItems = async (
   supabase: SupabaseClient<Database>,
   reservationId: string,

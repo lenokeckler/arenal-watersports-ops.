@@ -14,9 +14,25 @@ export const DISPATCH_SCREEN = {
     "No se pudo despachar la reserva. Intenta de nuevo.",
   CONFIRM_SUBMIT: "Confirmar despacho",
   EMPTY: "No hay reservas pendientes de despachar hoy.",
+  /** US-OPE-002: the equipment-confirmation step, before any reading is asked for. */
+  EQUIPMENT_STEP: {
+    CONTINUE: "Continuar",
+    EMPTY_ERROR:
+      "Selecciona al menos un equipo para despachar.",
+    ERROR:
+      "No se pudo actualizar el equipo. Intenta de nuevo.",
+    LOCKED_NOTE:
+      "El equipo de este combo no se cambia aquí.",
+    TITLE: "Confirma el equipo que sale",
+  },
   FUEL_LABEL: "Gasolina inicial (%)",
   GUIDES_EMPTY: "Sin guía asignado",
   MODAL_TITLE: "Despachar reserva",
+  /** Una linea por cantidad sin unidad propia — kayaks, paddleboards, etc. */
+  QUANTITY_ROW: (
+    categoryName: string,
+    quantity: number
+  ): string => `${categoryName} × ${quantity}`,
   TITLE: "Reservas pendientes de despachar",
   TODAY_BADGE: "HOY",
   USAGE_LABEL: "Horas de motor",

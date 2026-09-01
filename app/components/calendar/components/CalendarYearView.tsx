@@ -40,7 +40,7 @@ const CalendarYearView = ({
             CALENDAR_VIEW.MONTH,
             monthStart
           )}
-          className="flex flex-col gap-1 rounded-xl border border-white/10 bg-surface-container/40 p-md transition-colors hover:border-primary/40"
+          className="flex flex-col gap-1 rounded-xl border border-outline-variant bg-surface-container/40 p-md transition-colors hover:border-primary/40"
         >
           <span className="font-title-md text-title-md text-on-surface">
             {formatMonthLabel(monthStart)}

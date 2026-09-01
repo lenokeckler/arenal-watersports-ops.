@@ -26,7 +26,7 @@ interface ReservationPostponeModalProps {
 }
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 /** US-RES-020: reschedules a reservation, closing its equipment first if it was already dispatched. */
 const ReservationPostponeModal = ({

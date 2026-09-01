@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PATHS, WORK_MODE_SCREEN, type WorkArea } from "@/app/constants";
+import {
+  PATHS,
+  WORK_MODE_SCREEN,
+  type WorkArea,
+} from "@/app/constants";
 // Deep import on purpose — see `useLoginFormViewModel.ts`: the barrel
 // bundles the server client (`next/headers`) together with this one and
 // breaks the client build.
@@ -17,8 +21,8 @@ import type { WorkModeFormViewModel } from "../models/WorkModeFormViewModel.inte
  * All the logic behind `WorkModeForm` (US-ACC-011): picking a card writes
  * `workers.last_work_area` (RLS lets a worker update their own row, same
  * as `must_change_password` in `usePasswordChangeFormViewModel`) and
- * mirrors it into the `workArea` Redux slice so the always-visible
- * `WorkAreaSwitcher` reflects the choice immediately, without a reload.
+ * mirrors it into the `workArea` Redux slice so the always-reachable
+ * `AppDrawer` reflects the choice immediately, without a reload.
  * `proxy.ts` owns the redirect rule that sends a worker here in the first
  * place — this hook only navigates on success, it does not re-decide when
  * this screen should appear.
@@ -33,7 +37,8 @@ export const useWorkModeFormViewModel = ({
     useState<Nullable<WorkArea>>(null);
   const [errorMessage, setErrorMessage] =
     useState<Nullable<string>>(null);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] =
+    useState<boolean>(false);
 
   useEffect(() => {
     dispatch(
@@ -55,27 +60,29 @@ export const useWorkModeFormViewModel = ({
 
     const supabase = createBrowserSupabaseClient();
 
-    void supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (!user) {
-        router.replace(PATHS.ACCESS.LOGIN);
-        return;
-      }
+    void supabase.auth
+      .getUser()
+      .then(async ({ data: { user } }) => {
+        if (!user) {
+          router.replace(PATHS.ACCESS.LOGIN);
+          return;
+        }
 
-      const { error } = await supabase
-        .from("workers")
-        .update({ last_work_area: area })
-        .eq("id", user.id);
+        const { error } = await supabase
+          .from("workers")
+          .update({ last_work_area: area })
+          .eq("id", user.id);
 
-      if (error) {
-        setErrorMessage(WORK_MODE_SCREEN.ERROR);
-        setIsSubmitting(false);
-        setSelectedArea(null);
-        return;
-      }
+        if (error) {
+          setErrorMessage(WORK_MODE_SCREEN.ERROR);
+          setIsSubmitting(false);
+          setSelectedArea(null);
+          return;
+        }
 
-      dispatch(workAreaActions.setActiveArea(area));
-      router.replace(PATHS.COMMON.DASHBOARD);
-    });
+        dispatch(workAreaActions.setActiveArea(area));
+        router.replace(PATHS.COMMON.DASHBOARD);
+      });
   };
 
   const handleLogout = (): void => {

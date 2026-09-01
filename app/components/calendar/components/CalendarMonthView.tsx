@@ -33,7 +33,7 @@ const CalendarMonthView = ({
     day.getMonth() === monthStart.getMonth();
 
   return (
-    <div className="grid grid-cols-7 gap-1 rounded-xl border border-white/10 bg-surface-container/40 p-sm">
+    <div className="grid grid-cols-7 gap-1 rounded-xl border border-outline-variant bg-surface-container/40 p-sm">
       {WEEKDAYS_LABEL_MONO.map((weekdayLabel) => (
         <span
           key={weekdayLabel}
@@ -50,7 +50,7 @@ const CalendarMonthView = ({
           <Link
             key={toDateOnlyParam(day)}
             href={buildCalendarHref(CALENDAR_VIEW.DAY, day)}
-            className={`flex min-h-20 flex-col gap-1 rounded-lg border border-white/5 p-1 transition-colors hover:border-primary/40 ${
+            className={`flex min-h-20 flex-col gap-1 rounded-lg border border-outline-variant/50 p-1 transition-colors hover:border-primary/40 ${
               isCurrentMonth(day)
                 ? "bg-surface-container-low"
                 : "opacity-40"

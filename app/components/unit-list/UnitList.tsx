@@ -27,7 +27,7 @@ const UnitList = ({
       <div className="flex items-center gap-sm">
         <Link
           href={PATHS.ADMIN.UNITS}
-          className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-primary"
+          className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high text-on-surface-variant hover:text-primary"
         >
           <MaterialIcon
             name={MATERIAL_ICON_NAME.ARROW_BACK}

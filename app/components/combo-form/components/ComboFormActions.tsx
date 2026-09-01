@@ -20,7 +20,7 @@ interface ComboFormActionsProps {
 }
 
 const ACTION_BUTTON_CLASS =
-  "flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/10 px-md font-button text-button uppercase text-on-surface transition-colors hover:border-error/40 hover:text-error disabled:cursor-not-allowed disabled:opacity-50";
+  "flex min-h-12 items-center justify-center gap-2 rounded-lg border border-outline-variant px-md font-button text-button uppercase text-on-surface transition-colors hover:border-error/40 hover:text-error disabled:cursor-not-allowed disabled:opacity-50";
 
 /**
  * US-ADM-022 (criterio de aceptación): a combo that never sold is deleted
@@ -35,14 +35,14 @@ const ComboFormActions = ({
   onReactivate,
   status,
 }: ComboFormActionsProps): JSX.Element => (
-  <div className="flex flex-wrap gap-sm border-t border-white/5 pt-sm">
+  <div className="flex flex-wrap gap-sm border-t border-outline-variant/50 pt-sm">
     {status === CATEGORY_STATUS.INACTIVE ? (
       <Button
         type={BUTTON_TYPES.BUTTON}
         variant={BUTTON.BASE}
         disabled={isBusy}
         onClick={onReactivate}
-        className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/10 px-md font-button text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-outline-variant px-md font-button text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
       >
         <MaterialIcon
           name={MATERIAL_ICON_NAME.CHECK_CIRCLE}

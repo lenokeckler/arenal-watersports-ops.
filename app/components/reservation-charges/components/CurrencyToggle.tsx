@@ -40,7 +40,7 @@ const CurrencyToggle = ({
           className={`${OPTION_CLASS} ${
             currency === value
               ? "border-primary bg-primary/15 text-primary"
-              : "border-white/10 text-on-surface-variant hover:border-primary/40"
+              : "border-outline-variant text-on-surface-variant hover:border-primary/40"
           }`}
         >
           {CURRENCY_LABEL[currency]} {currency}

@@ -41,7 +41,7 @@ const ExtraFormCompatibility = ({
           const isCompatible = compatibleUnitIds.includes(unit.id);
           return (
             <li key={unit.id}>
-              <label className="flex items-center gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+              <label className="flex items-center gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
                 <input
                   type={INPUT_TYPES.CHECKBOX}
                   checked={isCompatible}

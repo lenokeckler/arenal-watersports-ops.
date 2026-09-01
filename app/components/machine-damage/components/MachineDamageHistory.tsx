@@ -14,7 +14,7 @@ interface MachineDamageHistoryProps {
 const NO_REPORTS = 0;
 
 const CARD_CLASS =
-  "flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low p-sm";
+  "flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low p-sm";
 
 /**
  * US-OPE-014: the previous reports of this machine, newest first, so

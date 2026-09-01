@@ -34,7 +34,7 @@ const readDifference = (line: CountLine): number | null => {
 };
 
 const ROW_CLASS =
-  "flex flex-wrap items-center gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm";
+  "flex flex-wrap items-center gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm";
 
 /**
  * One line of a count. `count_line_is_one_shape` guarantees exactly one of
@@ -59,7 +59,7 @@ const InventoryCountLineRow = ({
       )}
 
       {line.confirmedStatus ? (
-        <Badge className="ml-auto border-white/10 text-on-surface-variant">
+        <Badge className="ml-auto border-outline-variant text-on-surface-variant">
           {UNIT_STATUS_LABEL[line.confirmedStatus]}
         </Badge>
       ) : (

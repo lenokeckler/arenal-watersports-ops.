@@ -23,7 +23,7 @@ interface MachineConditionPhotoSlotProps {
 }
 
 const FRAME_CLASS =
-  "flex aspect-square items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-surface-container-low";
+  "flex aspect-square items-center justify-center overflow-hidden rounded-lg border border-outline-variant bg-surface-container-low";
 const ACTION_CLASS =
   "flex min-h-12 cursor-pointer items-center justify-center rounded-lg border border-primary/40 px-sm font-button text-button uppercase text-primary";
 

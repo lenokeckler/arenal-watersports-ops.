@@ -19,7 +19,7 @@ const NO_ROWS = 0;
 const UsageReportSection = ({
   rows,
 }: UsageReportSectionProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {REPORTS_SCREEN.USAGE.TITLE}
     </h2>
@@ -32,7 +32,7 @@ const UsageReportSection = ({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[480px] border-collapse text-left">
           <thead>
-            <tr className="border-b border-white/10">
+            <tr className="border-b border-outline-variant">
               <th className="py-sm font-label-mono text-label-mono uppercase text-on-surface-variant">
                 {REPORTS_SCREEN.USAGE.COLUMN.UNIT}
               </th>
@@ -51,7 +51,7 @@ const UsageReportSection = ({
             {rows.map((unit) => (
               <tr
                 key={unit.id}
-                className="border-b border-white/5 last:border-b-0"
+                className="border-b border-outline-variant/50 last:border-b-0"
               >
                 <td className="py-sm text-on-surface">
                   {unit.code}

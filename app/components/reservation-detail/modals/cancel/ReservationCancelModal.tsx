@@ -24,7 +24,7 @@ interface ReservationCancelModalProps {
 }
 
 const TEXTAREA_CLASS =
-  "w-full resize-none rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full resize-none rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 /** US-RES-021/US-RES-022: one cancel sheet, copy differs by status. */
 const ReservationCancelModal = ({
@@ -112,7 +112,7 @@ const ReservationCancelModal = ({
           variant={BUTTON.BASE}
           disabled={isBusy}
           onClick={onClose}
-          className="flex min-h-12 w-full items-center justify-center rounded-lg border border-white/10 px-md text-button uppercase text-on-surface hover:bg-white/5"
+          className="flex min-h-12 w-full items-center justify-center rounded-lg border border-outline-variant px-md text-button uppercase text-on-surface hover:bg-on-surface/5"
         >
           {RESERVATION_DETAIL_SCREEN.CANCEL.BACK}
         </Button>

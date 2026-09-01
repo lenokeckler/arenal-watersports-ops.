@@ -47,7 +47,7 @@ const AgreedAmountSection = ({
   });
 
   return (
-    <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+    <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
       <h2 className="flex items-center gap-sm font-title-md text-title-md text-on-surface">
         <MaterialIcon
           name={MATERIAL_ICON_NAME.ATTACH_MONEY}

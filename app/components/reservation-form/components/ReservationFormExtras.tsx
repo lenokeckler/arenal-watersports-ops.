@@ -57,7 +57,7 @@ const ReservationFormExtras = ({
         return (
           <div
             key={unitId}
-            className="flex flex-col gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+            className="flex flex-col gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
           >
             <span className="font-body-base text-body-base text-on-surface">
               {unitCode}
@@ -77,7 +77,7 @@ const ReservationFormExtras = ({
                     className={`flex flex-col items-start gap-0.5 rounded-lg border px-sm py-1 text-left font-label-mono text-label-mono transition-colors disabled:opacity-50 ${
                       isSelected
                         ? "border-primary bg-primary/20 text-primary"
-                        : "border-white/10 text-on-surface-variant hover:border-primary/40"
+                        : "border-outline-variant text-on-surface-variant hover:border-primary/40"
                     }`}
                   >
                     <span>{extra.name}</span>

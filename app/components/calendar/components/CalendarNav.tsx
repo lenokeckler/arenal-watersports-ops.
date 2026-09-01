@@ -17,7 +17,7 @@ interface CalendarNavProps {
 }
 
 const NAV_LINK_CLASS =
-  "flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-white/10 px-md text-on-surface-variant transition-colors hover:text-primary";
+  "flex min-h-12 min-w-12 items-center justify-center gap-1 rounded-lg border border-outline-variant px-md text-on-surface-variant transition-colors hover:text-primary";
 
 /** US-RES-001: move the franja backward or forward without losing the view. */
 const CalendarNav = ({

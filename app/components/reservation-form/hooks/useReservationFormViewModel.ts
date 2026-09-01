@@ -27,6 +27,7 @@ import {
   type CategoryTariff,
   type ReservableComboItem,
 } from "@/app/utils/reservas/newReservationData";
+import { filterCategoriesForReservationType } from "@/app/utils/reservas/groupCategories";
 import { useReservationDetailsFields } from "./useReservationDetailsFields";
 import { useReservationEquipmentSelection } from "./useReservationEquipmentSelection";
 import { useReservationAvailability } from "./useReservationAvailability";
@@ -224,18 +225,13 @@ export const useReservationFormViewModel = ({
   const isCustomCombo =
     isCombo && comboSelection.mode === COMBO_MODE.CUSTOM;
 
-  // US-RES-008: renta never takes equipment that only goes out guided;
-  // tour and combo both can.
-  const excludeGuideOnly =
-    details.values.type === RESERVATION_TYPE.RENTAL;
   const visibleCategories = useMemo(
     () =>
-      excludeGuideOnly
-        ? categories.filter(
-            (category) => !category.guideOnly
-          )
-        : categories,
-    [categories, excludeGuideOnly]
+      filterCategoriesForReservationType(
+        categories,
+        details.values.type
+      ),
+    [categories, details.values.type]
   );
   const byQuantityCategories = useMemo(
     () =>

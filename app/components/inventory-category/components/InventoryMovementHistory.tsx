@@ -37,7 +37,7 @@ const InventoryMovementHistory = ({
       movements.map((movement) => (
         <article
           key={movement.id}
-          className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low p-sm"
+          className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low p-sm"
         >
           <span className="font-body-base text-body-base text-on-surface">
             {movement.reason}

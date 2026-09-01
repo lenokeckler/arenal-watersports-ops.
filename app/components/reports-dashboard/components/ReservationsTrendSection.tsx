@@ -31,7 +31,7 @@ const ReservationsTrendSection = ({
   dailyRevenueRange,
   monthlyReservationCounts,
 }: ReservationsTrendSectionProps): JSX.Element => (
-  <section className="flex flex-col gap-md rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-md rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {REPORTS_SCREEN.TREND.TITLE}
     </h2>

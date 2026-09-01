@@ -57,3 +57,4 @@ mcp_stitch/
 # Supabase local
 supabase/.branches
 supabase/.temp
+dev.log

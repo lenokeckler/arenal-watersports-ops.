@@ -31,7 +31,7 @@ interface ReservationCloseEquipmentRowProps {
 }
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 /** US-OPE-009/US-OPE-013: one returning unit's reading and optional damage report. */
 const ReservationCloseEquipmentRow = ({
@@ -44,7 +44,7 @@ const ReservationCloseEquipmentRow = ({
   onUsageChange,
   row,
 }: ReservationCloseEquipmentRowProps): JSX.Element => (
-  <div className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container-high/40 p-md">
+  <div className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container-high/40 p-md">
     {row.showFuel || row.showUsage ? (
       <EquipmentReadingRow
         fuelLabel={RESERVATION_CLOSE_SCREEN.FUEL_LABEL}

@@ -1,4 +1,25 @@
+import {
+  RESERVATION_TYPE,
+  type ReservationType,
+} from "@/app/constants";
 import type { Nullable } from "@/app/types";
+
+/**
+ * US-RES-008: renta never takes equipment that only goes out guided; tour
+ * and combo both can. Shared by every screen that offers the reservable
+ * catalog for picking — the new-reservation form and the dispatch sheet's
+ * equipment-confirmation step (US-OPE-002) — so neither has to reimplement
+ * the rule, and the next one that offers equipment does not get to forget it.
+ */
+export const filterCategoriesForReservationType = <
+  T extends { guideOnly: boolean },
+>(
+  categories: T[],
+  reservationType: ReservationType
+): T[] =>
+  reservationType === RESERVATION_TYPE.RENTAL
+    ? categories.filter((category) => !category.guideOnly)
+    : categories;
 
 export interface CategoryGroup<T> {
   /** Nombre del grupo, o el de la categoria cuando va sola. */

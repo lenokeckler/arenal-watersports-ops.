@@ -20,7 +20,7 @@ interface InventoryCountHistoryProps {
 const NO_COUNTS = 0;
 
 const CARD_CLASS =
-  "flex min-h-14 items-center gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm";
+  "flex min-h-14 items-center gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm";
 
 /**
  * `/operaciones/conteos` (US-OPE-024): every count of the last year with

@@ -38,7 +38,7 @@ interface WorkerDetailActionsProps {
 }
 
 const ACTION_BUTTON_CLASS =
-  "flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/10 px-md font-button text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50";
+  "flex min-h-12 items-center justify-center gap-2 rounded-lg border border-outline-variant px-md font-button text-button uppercase text-on-surface transition-colors hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50";
 
 /**
  * US-ADM-006 through US-ADM-010: block/reactivate, a fresh temporary
@@ -66,7 +66,7 @@ const WorkerDetailActions = ({
   onResetPassword,
   status,
 }: WorkerDetailActionsProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {WORKER_DETAIL_SCREEN.SECTION.ACCOUNT}
     </h2>
@@ -134,7 +134,7 @@ const WorkerDetailActions = ({
           </Button>
         </div>
 
-        <div className="flex flex-col gap-1 border-t border-white/5 pt-sm">
+        <div className="flex flex-col gap-1 border-t border-outline-variant/50 pt-sm">
           <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">
             {WORKER_DETAIL_SCREEN.EXPIRY.LABEL}
           </span>
@@ -148,7 +148,7 @@ const WorkerDetailActions = ({
                 onChange={(event) =>
                   onExpiresAtDraftChange(event.target.value)
                 }
-                className="min-h-12 rounded-lg border border-white/10 bg-surface-container-low px-sm text-on-surface"
+                className="min-h-12 rounded-lg border border-outline-variant bg-surface-container-low px-sm text-on-surface"
               />
               <Button
                 type={BUTTON_TYPES.BUTTON}
@@ -171,7 +171,7 @@ const WorkerDetailActions = ({
         </div>
 
         {canDelete && (
-          <div className="flex flex-col gap-sm border-t border-white/5 pt-sm">
+          <div className="flex flex-col gap-sm border-t border-outline-variant/50 pt-sm">
             {isConfirmingDelete ? (
               <>
                 <p className="font-body-base text-body-base text-error">

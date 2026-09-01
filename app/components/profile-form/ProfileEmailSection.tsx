@@ -18,7 +18,7 @@ import MaterialIcon from "../icons/material-icon/MaterialIcon";
 import type { ProfileEmailSectionProps } from "./models/ProfileEmailSectionProps.interface";
 
 const FIELD_CLASS =
-  "w-full !rounded-lg !border !border-white/10 !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-primary focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-primary/20";
+  "w-full !rounded-lg !border !border-outline-variant !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-primary focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-primary/20";
 const FIELD_ERROR_CLASS =
   "w-full !rounded-lg !border !border-error/50 !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-error focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-error/20";
 
@@ -39,7 +39,7 @@ const ProfileEmailSection = ({
   handleEmailSubmit,
   isSavingEmail,
 }: ProfileEmailSectionProps): JSX.Element => (
-  <section className="flex flex-col gap-sm border-t border-white/10 pt-md">
+  <section className="flex flex-col gap-sm border-t border-outline-variant pt-md">
     <div className="flex items-center gap-2">
       <MaterialIcon
         name={MATERIAL_ICON_NAME.MAIL}

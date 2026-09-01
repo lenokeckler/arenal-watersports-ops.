@@ -10,9 +10,13 @@
  * screen can write `bg-surface`, `text-primary`, `text-headline-lg`, etc.
  * and get the right value without touching configuration.
  *
- * The app has a single, fixed dark theme — it does not follow the
- * operating system's light/dark preference, so there is no
- * `prefers-color-scheme` branch here.
+ * Dark is the default and only theme defined here directly. A second,
+ * light token set lives further down this file, under
+ * `:root[data-theme="light"]` — see the comment there for how it is
+ * activated and why it stays a plain rule instead of another `@theme`
+ * block. The app still does not follow the operating system's light/dark
+ * preference: the choice is an explicit, per-device toggle (`AppDrawer`'s
+ * preferences section), not a `prefers-color-scheme` branch.
  *
  * Fonts: Hanken Grotesk (body/headings), JetBrains Mono (labels) and
  * Material Symbols Outlined (icons) are all self-hosted through `next/font`
@@ -153,6 +157,77 @@
 
   /* Shake, for a rejected-attempt banner (login "Acceso Denegado", etc.) */
   --animate-shake: shake 0.5s ease-in-out;
+}
+
+/**
+ * Light theme — the second token set `docs/decisiones/tema-claro.md`
+ * specifies (its section 1: 47 values, contrast-checked there, not
+ * recalculated here). Activated by `data-theme="light"` on `<html>`,
+ * which `app/utils/theme/theme.ts` and the inline script it builds
+ * (rendered in `app/layout.tsx`, before hydration, so there is no
+ * flash — see that file) are the only two places allowed to set.
+ *
+ * Deliberately a plain, unlayered rule instead of another `@theme` block:
+ * Tailwind v4 emits every `@theme` variable under `@layer theme { :root,
+ * :host { ... } }` (confirmed against this project's own compiled output),
+ * and per the CSS cascade-layers spec, unlayered rules always win over
+ * layered ones regardless of selector specificity — so this overrides the
+ * dark values above unconditionally, in any order, without needing `!
+ * important` or a specificity fight. Same 47 names as the dark `@theme`
+ * block; no component changes class, because every utility already
+ * resolves through `var(--color-*)`.
+ *
+ * Dark stays the default: no attribute (or any value other than
+ * "light") keeps the `@theme` values above in effect.
+ */
+:root[data-theme="light"] {
+  --color-background: #f5f7fb;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-inverse-on-surface: #dae2fd;
+  --color-inverse-primary: #57f1db;
+  --color-inverse-surface: #0b1326;
+  --color-on-background: #0b1326;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #410002;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #00201c;
+  --color-on-primary-fixed: #ffffff;
+  --color-on-primary-fixed-variant: #005047;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #2a1800;
+  --color-on-secondary-fixed: #410006;
+  --color-on-secondary-fixed-variant: #881d24;
+  --color-on-surface: #0b1326;
+  --color-on-surface-variant: #3c4a46;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #001e30;
+  --color-on-tertiary-fixed: #001e2c;
+  --color-on-tertiary-fixed-variant: #004c69;
+  --color-outline: #66857c;
+  --color-outline-variant: #d3e6e0;
+  --color-primary: #006b5f;
+  --color-primary-container: #a6f2e4;
+  --color-primary-fixed: #62fae3;
+  --color-primary-fixed-dim: #3cddc7;
+  --color-secondary: #7a5200;
+  --color-secondary-container: #ffddb3;
+  --color-secondary-fixed: #ffdad8;
+  --color-secondary-fixed-dim: #ffb3b0;
+  --color-surface: #f5f7fb;
+  --color-surface-bright: #f5f7fb;
+  --color-surface-container: #e8ecf4;
+  --color-surface-container-high: #e0e5ef;
+  --color-surface-container-highest: #d8deea;
+  --color-surface-container-low: #eff2f8;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-dim: #d6dbe7;
+  --color-surface-tint: #3cddc7;
+  --color-surface-variant: #d8deea;
+  --color-tertiary: #085d91;
+  --color-tertiary-container: #c7e7ff;
+  --color-tertiary-fixed: #c4e7ff;
+  --color-tertiary-fixed-dim: #7bd0ff;
 }
 
 @keyframes shake {

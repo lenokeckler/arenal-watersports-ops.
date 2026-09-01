@@ -42,7 +42,7 @@ const DamageCausePicker = ({
           className={`${OPTION_CLASS} ${
             cause === selectedCause
               ? "border-primary bg-primary/15 text-primary"
-              : "border-white/10 text-on-surface-variant hover:border-primary/40"
+              : "border-outline-variant text-on-surface-variant hover:border-primary/40"
           }`}
         >
           {DAMAGE_CAUSE_LABEL[cause]}

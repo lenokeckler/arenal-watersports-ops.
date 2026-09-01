@@ -12,7 +12,7 @@ interface ReservationDetailEquipmentProps {
 const ReservationDetailEquipment = ({
   items,
 }: ReservationDetailEquipmentProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {RESERVATION_DETAIL_SCREEN.EQUIPMENT.TITLE}
     </h2>
@@ -26,7 +26,7 @@ const ReservationDetailEquipment = ({
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex items-center justify-between gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+            className="flex items-center justify-between gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
           >
             <span className="font-body-base text-body-base text-on-surface">
               {item.label}

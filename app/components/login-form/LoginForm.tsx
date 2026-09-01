@@ -35,7 +35,7 @@ import { useLoginFormViewModel } from "./hooks/useLoginFormViewModel";
  * string, so only `!important` utilities are guaranteed to win.
  */
 const FIELD_CLASS =
-  "w-full !rounded-lg !border !border-white/10 !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-primary focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-primary/20";
+  "w-full !rounded-lg !border !border-outline-variant !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-primary focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-primary/20";
 const FIELD_ERROR_CLASS =
   "w-full !rounded-lg !border !border-error/50 !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-error focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-error/20";
 
@@ -84,11 +84,11 @@ const LoginForm = (): JSX.Element => {
 
   return (
     <main className="relative z-10 flex w-full max-w-form flex-col gap-lg px-margin-mobile">
-      <div className="flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface-container/70 p-md shadow-xl backdrop-blur-md sm:p-lg">
+      <div className="flex flex-col overflow-hidden rounded-xl border border-outline-variant bg-surface-container/70 p-md shadow-xl backdrop-blur-md sm:p-lg">
         {bannerMessage && <LoginFormBanner message={bannerMessage} />}
 
         <div className="mb-md flex flex-col items-center text-center">
-          <div className="relative mb-sm h-20 w-20 overflow-hidden rounded-full border border-white/10 bg-surface-container-high p-2 shadow-[0_0_20px_rgba(87,241,219,0.1)]">
+          <div className="relative mb-sm h-20 w-20 overflow-hidden rounded-full border border-outline-variant bg-surface-container-high p-2 shadow-[0_0_20px_rgba(87,241,219,0.1)]">
             <Image
               src={IMAGES_PATHS.ARENAL_LOGO}
               alt={IMAGE_ALTS.ARENAL_LOGO}
@@ -171,7 +171,7 @@ const LoginForm = (): JSX.Element => {
           </Button>
         </form>
 
-        <footer className="mt-lg border-t border-white/5 pt-sm text-center">
+        <footer className="mt-lg border-t border-outline-variant/50 pt-sm text-center">
           <Text className="!text-[11px] text-on-surface-variant/50">
             {ACCESS_LOGIN_SCREEN.FOOTER}
           </Text>

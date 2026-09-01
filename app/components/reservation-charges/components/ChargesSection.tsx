@@ -14,7 +14,7 @@ const ChargesSection = ({
   icon,
   title,
 }: ChargesSectionProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="flex items-center gap-2 font-title-md text-title-md text-on-surface">
       <MaterialIcon
         name={icon}

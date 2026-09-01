@@ -29,7 +29,7 @@ const CountSheetUnitRow = ({
   onStatusChange,
   status,
 }: CountSheetUnitRowProps): JSX.Element => (
-  <div className="flex flex-col gap-1 border-t border-white/10 pt-sm">
+  <div className="flex flex-col gap-1 border-t border-outline-variant pt-sm">
     <span className="font-body-base text-body-base text-on-surface">
       {code}
     </span>
@@ -43,7 +43,7 @@ const CountSheetUnitRow = ({
           className={`${OPTION_CLASS} ${
             option === status
               ? "border-primary bg-primary/15 text-primary"
-              : "border-white/10 text-on-surface-variant hover:border-primary/40"
+              : "border-outline-variant text-on-surface-variant hover:border-primary/40"
           }`}
         >
           {UNIT_STATUS_LABEL[option]}
