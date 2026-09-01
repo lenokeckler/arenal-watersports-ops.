@@ -89,6 +89,7 @@ export const fetchUnitCategoryDetail = async (
         id: unit.id ?? "",
         imageAlt: image?.alt ?? category.name,
         imageSrc: image?.src ?? null,
+        imageTreatment: image?.treatment ?? null,
         reservationCode: reservation?.code ?? null,
         reservationId: unit.reservation_id,
         returnsAt: unit.returns_at,

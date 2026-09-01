@@ -12,8 +12,12 @@ import type { BoardProps } from "./models/BoardProps.interface";
  * screen. Presentation only; `useBoardViewModel` owns the realtime
  * subscription (`component-architecture`).
  */
-const Board = ({ initialCategories }: BoardProps): JSX.Element => {
-  const { categories, isEmpty } = useBoardViewModel({ initialCategories });
+const Board = ({
+  initialCategories,
+}: BoardProps): JSX.Element => {
+  const { categories, isEmpty } = useBoardViewModel({
+    initialCategories,
+  });
 
   return (
     <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
@@ -40,9 +44,12 @@ const Board = ({ initialCategories }: BoardProps): JSX.Element => {
             {BOARD_SCREEN.EMPTY_STATE}
           </p>
         ) : (
-          <div className="grid grid-cols-1 gap-md sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-2 gap-sm sm:gap-md xl:grid-cols-3">
             {categories.map((category) => (
-              <BoardCard key={category.id} category={category} />
+              <BoardCard
+                key={category.id}
+                category={category}
+              />
             ))}
           </div>
         )}

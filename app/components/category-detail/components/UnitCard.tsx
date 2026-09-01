@@ -1,6 +1,8 @@
 import type { JSX } from "react";
 import {
   DEFAULT_CATEGORY_ICON,
+  EQUIPMENT_IMAGE_FIT_CLASS,
+  EQUIPMENT_IMAGE_TREATMENT,
   EQUIPMENT_UNIT_OVERDUE_CARD_TINT,
   EQUIPMENT_UNIT_STATUS_CARD_TINT,
   EQUIPMENT_UNIT_STATUS_LABEL,
@@ -16,9 +18,14 @@ import type { UnitCardProps } from "./UnitCardProps.interface";
 
 /**
  * One unit inside a by_unit category (US-TAB-002), restyled from
- * `docs/referencia/stitch/gestion-de-jet-ski--escritorio.html`. The whole
- * card is tinted by state — bold enough to read from across the dock, not
- * just the corner badge — and, when occupied, composes
+ * `docs/referencia/stitch/gestion-de-jet-ski--escritorio.html` and again
+ * from `docs/decisiones/vista_mobile2.png`/`vista_mobile3.png`: a square
+ * tile (the two-column mobile grid needs a shape that tiles cleanly) and
+ * a card tinted boldly enough by state to read from across the dock, not
+ * just the corner badge. The square holds regardless of image treatment —
+ * `Lancha`'s two boats (`BENNINGTON`/`PONTOON`) are real photos, not
+ * cutouts, so `EQUIPMENT_IMAGE_FIT_CLASS` bleeds and crops them into the
+ * square instead of padding them inside it. When occupied, composes
  * `UnitCardOccupiedDetails` for the return countdown and reservation link.
  */
 const UnitCard = ({
@@ -36,18 +43,20 @@ const UnitCard = ({
   const cardTintClass = isOverdue
     ? EQUIPMENT_UNIT_OVERDUE_CARD_TINT
     : EQUIPMENT_UNIT_STATUS_CARD_TINT[status];
+  const imageTreatment =
+    unit.imageTreatment ?? EQUIPMENT_IMAGE_TREATMENT.CUTOUT;
 
   return (
     <div
-      className={`flex flex-col overflow-hidden rounded-xl border backdrop-blur-xl ${cardTintClass}`}
+      className={`flex flex-col overflow-hidden rounded-xl border-2 backdrop-blur-xl ${cardTintClass}`}
     >
-      <div className="relative h-40 bg-surface-container-lowest">
+      <div className="relative aspect-square w-full bg-surface-container-lowest">
         {unit.imageSrc ? (
           <Image
             src={unit.imageSrc}
             alt={unit.imageAlt}
             fill
-            className="object-cover opacity-90"
+            className={`${EQUIPMENT_IMAGE_FIT_CLASS[imageTreatment]} opacity-90`}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">

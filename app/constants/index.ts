@@ -163,6 +163,9 @@ export {
 export {
   CATEGORY_IMAGE_BY_NAME,
   DEFAULT_CATEGORY_ICON,
+  EQUIPMENT_IMAGE_FIT_CLASS,
+  EQUIPMENT_IMAGE_TREATMENT,
+  type EquipmentImageTreatment,
   UNIT_IMAGE_BY_CODE,
 } from "./tablero/EquipmentCategoryImage.constants";
 export {

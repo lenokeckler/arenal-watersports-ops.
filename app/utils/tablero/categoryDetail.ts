@@ -1,6 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
-import { TRACKING_MODE } from "@/app/constants";
+import {
+  TRACKING_MODE,
+  type EquipmentImageTreatment,
+} from "@/app/constants";
 import type { Nullable } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { fetchQuantityCategoryDetail } from "./categoryQuantityDetail";
@@ -17,6 +20,8 @@ export interface CategoryDetailUnit {
   id: string;
   imageAlt: string;
   imageSrc: Nullable<string>;
+  /** Contained cutout vs. bled photo — `null` when there is no image at all. */
+  imageTreatment: Nullable<EquipmentImageTreatment>;
   reservationCode: Nullable<string>;
   reservationId: Nullable<string>;
   returnsAt: Nullable<string>;

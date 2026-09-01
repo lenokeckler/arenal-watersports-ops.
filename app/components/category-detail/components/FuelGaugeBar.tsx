@@ -6,7 +6,7 @@ import {
 import MaterialIcon from "@/app/components/icons/material-icon/MaterialIcon";
 
 const EMPTY_LEVEL = 0;
-const FULL_WIDTH_PERCENT = 100;
+const FIRST_LINE = 1;
 const LOW_FUEL_FRACTION = 0.25;
 const MEDIUM_FUEL_FRACTION = 0.5;
 
@@ -14,6 +14,12 @@ interface FuelGaugeBarProps {
   level: number;
   max: number;
 }
+
+const buildLines = (max: number): number[] =>
+  Array.from(
+    { length: max },
+    (_, index) => index + FIRST_LINE
+  );
 
 /**
  * A quarter of the gauge's own lines or less reads `error`, up to half
@@ -35,9 +41,12 @@ const resolveFuelFillClass = (
 };
 
 /**
- * US-TAB-002: a thin read-only fuel bar for the unit card — glanceable, not
- * editable. `FuelLevelPicker` is the interactive dispatch-time input; this
- * only ever renders `equipment_units.fuel_level`/`fuel_max`.
+ * US-TAB-002: a thin read-only fuel gauge for the unit card — glanceable,
+ * not editable, one line per line the unit's own gauge physically has
+ * (`docs/decisiones/vista_mobile3.png`), same segmented read as the
+ * interactive `FuelLevelPicker` this mirrors. `FuelLevelPicker` is the
+ * dispatch-time input; this only ever renders
+ * `equipment_units.fuel_level`/`fuel_max`.
  */
 const FuelGaugeBar = ({
   level,
@@ -47,8 +56,7 @@ const FuelGaugeBar = ({
     Math.max(level, EMPTY_LEVEL),
     max
   );
-  const widthPercent =
-    (clampedLevel / max) * FULL_WIDTH_PERCENT;
+  const fillClass = resolveFuelFillClass(clampedLevel, max);
 
   return (
     <div className="flex items-center gap-xs">
@@ -56,11 +64,20 @@ const FuelGaugeBar = ({
         name={MATERIAL_ICON_NAME.LOCAL_GAS_STATION}
         className="!text-[16px] text-on-surface-variant"
       />
-      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-container-low">
-        <div
-          className={`h-full transition-all ${resolveFuelFillClass(clampedLevel, max)}`}
-          style={{ width: `${widthPercent}%` }}
-        />
+      <div
+        aria-hidden
+        className="flex flex-1 gap-0.5"
+      >
+        {buildLines(max).map((line) => (
+          <span
+            key={line}
+            className={`h-1.5 flex-1 rounded-sm transition-colors ${
+              line <= clampedLevel
+                ? fillClass
+                : "bg-surface-container-low"
+            }`}
+          />
+        ))}
       </div>
       <span className="font-label-mono text-label-mono text-on-surface-variant">
         {CATEGORY_DETAIL_SCREEN.FUEL_LEVEL(

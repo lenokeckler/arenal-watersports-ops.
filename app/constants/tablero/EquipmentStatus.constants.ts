@@ -76,28 +76,31 @@ export const EQUIPMENT_UNIT_STATUS_BADGE = {
  * US-TAB-002: the same read as `EQUIPMENT_UNIT_STATUS_BADGE`, but bold
  * enough to tint the whole unit card — a screen checked "de reojo" from the
  * dock needs more than a small corner chip. Same tokens, higher opacity and
- * a visible border, never a new color.
+ * a visible border, never a new color. Opacities pushed a step further than
+ * the badge's own (`docs/decisiones/vista_mobile3.png`): a tile has to read
+ * from across the dock, not just up close.
  */
 export const EQUIPMENT_UNIT_STATUS_CARD_TINT = {
   [EQUIPMENT_UNIT_STATUS.AVAILABLE]:
-    "border-primary/40 bg-primary/10",
+    "border-primary/60 bg-primary/20",
   [EQUIPMENT_UNIT_STATUS.DAMAGED]:
-    "border-error/50 bg-error/15",
+    "border-error/70 bg-error/25",
   [EQUIPMENT_UNIT_STATUS.DECOMMISSIONED]:
-    "border-outline-variant bg-surface-variant/60",
+    "border-outline-variant bg-surface-variant/70",
   [EQUIPMENT_UNIT_STATUS.IN_MAINTENANCE]:
-    "border-secondary/50 bg-secondary/15",
+    "border-secondary/70 bg-secondary/25",
   [EQUIPMENT_UNIT_STATUS.IN_REPAIR]:
-    "border-outline-variant bg-surface-variant/60",
+    "border-outline-variant bg-surface-variant/70",
   [EQUIPMENT_UNIT_STATUS.OCCUPIED]:
-    "border-tertiary/50 bg-tertiary/15",
+    "border-tertiary/70 bg-tertiary/25",
 } as const satisfies Record<EquipmentUnitStatus, string>;
 
 /**
  * Overrides `EQUIPMENT_UNIT_STATUS_CARD_TINT.occupied` once the return time
  * has passed. Reuses the exact token the dispatch board already assigned to
  * "overdue" (`DISPATCH_BOARD_SCREEN`/`DispatchBoardCard`) so the same state
- * reads the same color everywhere in the app.
+ * reads the same color everywhere in the app. The boldest tint of the set —
+ * an overdue return is the one state that must win the glance.
  */
 export const EQUIPMENT_UNIT_OVERDUE_CARD_TINT =
-  "border-secondary/60 bg-secondary/15";
+  "border-secondary bg-secondary/30";

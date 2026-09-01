@@ -1,12 +1,14 @@
 import {
   CATEGORY_IMAGE_BY_NAME,
   UNIT_IMAGE_BY_CODE,
+  type EquipmentImageTreatment,
 } from "@/app/constants";
 import type { Nullable } from "@/app/types";
 
 interface EquipmentImage {
   alt: string;
   src: string;
+  treatment: EquipmentImageTreatment;
 }
 
 /**
