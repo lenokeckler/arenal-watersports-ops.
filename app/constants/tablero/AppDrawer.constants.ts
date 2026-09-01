@@ -11,6 +11,7 @@ export const APP_DRAWER_SCREEN = {
   CLOSE_ARIA: "Cerrar menú",
   LOGOUT_CONFIRM: "¿Confirmar cierre de sesión?",
   NAV_ARIA_LABEL: "Navegación secundaria",
+  PREFERENCES_TITLE: "Preferencias",
   SECONDARY_NAV_TITLE: "Más opciones",
   TITLE: "Menú",
 } as const;

@@ -17,7 +17,7 @@ interface AppDrawerHeaderProps {
 const AppDrawerHeader = ({
   onClose,
 }: AppDrawerHeaderProps): JSX.Element => (
-  <div className="flex shrink-0 items-center justify-between border-b border-white/5 px-margin-mobile py-sm">
+  <div className="flex shrink-0 items-center justify-between border-b border-outline-variant/50 px-margin-mobile py-sm">
     <h2 className="flex items-center gap-2 font-title-md text-title-md text-on-surface">
       <MaterialIcon
         name={MATERIAL_ICON_NAME.MENU}
@@ -29,7 +29,7 @@ const AppDrawerHeader = ({
       type="button"
       aria-label={APP_DRAWER_SCREEN.CLOSE_ARIA}
       onClick={onClose}
-      className="rounded-full p-2 text-on-surface-variant hover:bg-white/10"
+      className="rounded-full p-2 text-on-surface-variant hover:bg-on-surface/10"
     >
       <MaterialIcon name={MATERIAL_ICON_NAME.CLOSE} />
     </button>

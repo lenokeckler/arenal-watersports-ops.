@@ -20,7 +20,7 @@ type RefundSectionProps = Pick<
 > & { onSaved: () => void };
 
 const TEXTAREA_CLASS =
-  "w-full resize-none rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full resize-none rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 const TEXTAREA_ROWS = 2;
 
 /**

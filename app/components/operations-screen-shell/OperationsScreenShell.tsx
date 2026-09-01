@@ -13,7 +13,7 @@ interface OperationsScreenShellProps {
 }
 
 const BACK_CLASS =
-  "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-primary";
+  "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high text-on-surface-variant hover:text-primary";
 
 /**
  * The header-plus-container chrome shared by the machine and inventory

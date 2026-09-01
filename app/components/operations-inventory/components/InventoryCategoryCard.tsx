@@ -16,7 +16,7 @@ interface InventoryCategoryCardProps {
 }
 
 const CARD_CLASS =
-  "flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md";
+  "flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md";
 
 /**
  * US-OPE-021: how many there are and in what state, the same way for a
@@ -49,11 +49,11 @@ const InventoryCategoryCard = ({
       <Badge className="border-error/40 text-error">
         {`${OPERATIONS_INVENTORY_SCREEN.CATEGORY.DAMAGED}: ${category.quantityDamaged}`}
       </Badge>
-      <Badge className="border-white/10 text-on-surface-variant">
+      <Badge className="border-outline-variant text-on-surface-variant">
         {`${OPERATIONS_INVENTORY_SCREEN.CATEGORY.IN_REPAIR}: ${category.quantityInRepair}`}
       </Badge>
       {category.trackingMode === TRACKING_MODE.BY_UNIT && (
-        <Badge className="border-white/10 text-on-surface-variant">
+        <Badge className="border-outline-variant text-on-surface-variant">
           {`${OPERATIONS_INVENTORY_SCREEN.CATEGORY.IN_MAINTENANCE}: ${category.quantityInMaintenance}`}
         </Badge>
       )}

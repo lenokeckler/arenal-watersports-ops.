@@ -12,7 +12,7 @@ interface ComboListFiltersProps {
 }
 
 const FIELD_CLASS_NAME =
-  "min-h-12 rounded-lg border border-white/10 bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none";
+  "min-h-12 rounded-lg border border-outline-variant bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none";
 
 /**
  * Native GET-form filter bar (US-ADM-022), same zero-JS pattern as
@@ -23,7 +23,7 @@ const ComboListFilters = ({
 }: ComboListFiltersProps): JSX.Element => (
   <form
     method="get"
-    className="mb-lg flex flex-wrap items-end gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-sm backdrop-blur-md"
+    className="mb-lg flex flex-wrap items-end gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-sm backdrop-blur-md"
   >
     {/* La seccion se conserva al buscar: cada publico es su propia lista. */}
     <input

@@ -75,7 +75,7 @@ const ComboFormPrice = ({
             className={`${AUDIENCE_BUTTON_CLASS} ${
               values.audience === audience
                 ? "border-primary bg-primary/20 text-primary"
-                : "border-white/10 text-on-surface-variant hover:border-primary/40"
+                : "border-outline-variant text-on-surface-variant hover:border-primary/40"
             }`}
           >
             {COMBO_AUDIENCE_LABEL[audience]}

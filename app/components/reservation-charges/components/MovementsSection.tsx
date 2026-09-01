@@ -26,7 +26,7 @@ const MovementLine = ({
   detail,
   title,
 }: MovementLineProps): JSX.Element => (
-  <li className="flex items-start justify-between gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+  <li className="flex items-start justify-between gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
     <div className="flex flex-col">
       <span className="font-body-base text-body-base text-on-surface">
         {title}

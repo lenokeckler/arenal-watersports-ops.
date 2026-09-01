@@ -36,7 +36,7 @@ const DispatchBoardCard = ({
       className={`flex flex-col gap-sm rounded-xl border p-md backdrop-blur-xl ${
         isOverdue
           ? "border-secondary/30 bg-secondary/10"
-          : "border-white/10 bg-surface-container-high/40"
+          : "border-outline-variant bg-surface-container-high/40"
       }`}
     >
       <div className="flex items-start justify-between gap-sm">
@@ -90,7 +90,7 @@ const DispatchBoardCard = ({
         <button
           type="button"
           onClick={() => onAdjust(reservation.id)}
-          className={`${ACTION_BUTTON_CLASS} border-white/10 text-on-surface hover:border-primary hover:text-primary`}
+          className={`${ACTION_BUTTON_CLASS} border-outline-variant text-on-surface hover:border-primary hover:text-primary`}
         >
           {DISPATCH_BOARD_SCREEN.ADJUST.TITLE}
         </button>

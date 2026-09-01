@@ -7,7 +7,7 @@ interface InventoryFiltersProps {
 }
 
 const FIELD_CLASS_NAME =
-  "min-h-12 rounded-lg border border-white/10 bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none";
+  "min-h-12 rounded-lg border border-outline-variant bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none";
 
 /**
  * Same native GET-form approach as `HistoryFilters` — no client
@@ -17,7 +17,7 @@ const FIELD_CLASS_NAME =
 const InventoryFilters = ({ filters }: InventoryFiltersProps): JSX.Element => (
   <form
     method="get"
-    className="mb-lg flex flex-wrap items-end gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-sm backdrop-blur-md"
+    className="mb-lg flex flex-wrap items-end gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-sm backdrop-blur-md"
   >
     <label className="flex flex-1 min-w-48 flex-col gap-1">
       <span className="font-label-mono text-label-mono text-on-surface-variant">

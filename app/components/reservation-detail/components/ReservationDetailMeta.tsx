@@ -33,7 +33,7 @@ const Row = ({ label, value }: RowProps): JSX.Element => (
 const ReservationDetailMeta = ({
   reservation,
 }: ReservationDetailMetaProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {RESERVATION_DETAIL_SCREEN.META.TITLE}
     </h2>
@@ -73,7 +73,7 @@ const ReservationDetailMeta = ({
       />
     )}
 
-    <div className="mt-1 flex flex-col gap-1 border-t border-white/5 pt-sm font-label-mono text-label-mono text-on-surface-variant">
+    <div className="mt-1 flex flex-col gap-1 border-t border-outline-variant/50 pt-sm font-label-mono text-label-mono text-on-surface-variant">
       <span>
         {RESERVATION_DETAIL_SCREEN.META.CREATED_BY(
           reservation.createdByName

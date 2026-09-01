@@ -12,7 +12,7 @@ interface MachineTelemetryCardProps {
 }
 
 const CARD_CLASS =
-  "flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md";
+  "flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md";
 
 const MachineTelemetryValue = ({
   label,

@@ -19,7 +19,7 @@ const RateList = ({ rows }: RateListProps): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
     <header className="mx-auto mb-lg flex max-w-6xl flex-wrap items-center justify-between gap-sm">
       <div className="flex items-center gap-sm">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high">
           <MaterialIcon
             name={MATERIAL_ICON_NAME.ATTACH_MONEY}
             className="!text-[24px] text-primary"

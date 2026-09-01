@@ -63,7 +63,7 @@ const ExpiryAlertList = ({
           className={`${CARD_CLASS} ${
             alert.isExpired
               ? "border-error/40 bg-error/10"
-              : "border-white/10 bg-surface-container-low"
+              : "border-outline-variant bg-surface-container-low"
           }`}
         >
           <MaterialIcon

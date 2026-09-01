@@ -45,7 +45,7 @@ const ChargeKindPicker = ({
           className={`${OPTION_CLASS} ${
             kind === value
               ? "border-primary bg-primary/15 text-primary"
-              : "border-white/10 text-on-surface-variant hover:border-primary/40"
+              : "border-outline-variant text-on-surface-variant hover:border-primary/40"
           }`}
         >
           {CHARGE_KIND_LABEL[kind]}

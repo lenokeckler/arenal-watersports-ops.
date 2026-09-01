@@ -51,7 +51,7 @@ const FuelLevelPicker = ({
           className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-lg border py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
             isSelected
               ? "border-primary bg-primary-container/20"
-              : "border-white/10 bg-surface-container-high hover:bg-surface-variant"
+              : "border-outline-variant bg-surface-container-high hover:bg-surface-variant"
           }`}
         >
           <span className="h-4 w-8 overflow-hidden rounded-sm border border-outline">

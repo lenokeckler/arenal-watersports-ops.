@@ -46,7 +46,7 @@ const SimpleBarChart = ({
       <h3 className="font-title-md text-title-md text-on-surface">
         {title}
       </h3>
-      <div className="flex h-40 items-end gap-1 overflow-x-auto rounded-lg border border-white/10 bg-surface-container-low p-sm">
+      <div className="flex h-40 items-end gap-1 overflow-x-auto rounded-lg border border-outline-variant bg-surface-container-low p-sm">
         {points.map((point) => {
           const heightPercent =
             maxValue > NO_VALUE

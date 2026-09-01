@@ -15,10 +15,10 @@ export const useSpinnerViewModel = ({
 
   if (fullScreen) {
     containerClass =
-      "fixed inset-0 w-full h-full bg-white bg-opacity-80 z-50 flex justify-center items-center";
+      "fixed inset-0 w-full h-full bg-surface/80 backdrop-blur-sm z-50 flex justify-center items-center";
   } else if (centeredInForm) {
     containerClass =
-      "fixed inset-0 w-full h-full bg-white flex justify-center items-center";
+      "fixed inset-0 w-full h-full bg-surface flex justify-center items-center";
   }
 
   const spinnerClass = `${SPINNER_SIZE_CLASSES[size]} animate-spin rounded-full border-4 border-t-transparent border-light-blue`;

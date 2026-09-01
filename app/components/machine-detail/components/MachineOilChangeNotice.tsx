@@ -17,7 +17,7 @@ interface MachineOilChangeNoticeProps {
 const DUE_CLASS =
   "flex items-center gap-2 rounded-lg border border-error/40 bg-error/10 px-sm py-sm font-body-base text-body-base text-error";
 const PENDING_CLASS =
-  "flex items-center gap-2 rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm font-body-base text-body-base text-on-surface-variant";
+  "flex items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm font-body-base text-body-base text-on-surface-variant";
 
 /**
  * US-OPE-012: the notice fires off `unit_service_status.is_oil_change_due`

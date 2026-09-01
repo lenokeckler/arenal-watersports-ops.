@@ -17,7 +17,7 @@ import MaterialIcon from "../icons/material-icon/MaterialIcon";
  * props → JSX only may skip one); this mini takes no props at all.
  */
 const ProfilePasswordSection = (): JSX.Element => (
-  <section className="flex flex-col gap-sm border-t border-white/10 pt-md">
+  <section className="flex flex-col gap-sm border-t border-outline-variant pt-md">
     <div className="flex items-center gap-2">
       <MaterialIcon
         name={MATERIAL_ICON_NAME.LOCK_RESET}

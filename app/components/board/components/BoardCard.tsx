@@ -64,12 +64,24 @@ const BoardCard = ({
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+        {/*
+          Scrim for the tracking-mode badge only: the gradient above fades
+          toward the *top* of the photo (it darkens the bottom edge, for
+          the transition into the panel below), so this corner is
+          otherwise bare photo. The badge's own tint read fine there by
+          accident in dark theme, where `--color-primary` is a bright
+          cyan; in light theme it is a dark teal that disappears against a
+          bright photo (docs/decisiones/tema-claro.md §2.5). `from-background`
+          resolves per theme, so the fix holds in both without touching
+          the badge's color.
+        */}
+        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-background/60 to-transparent" />
         <Badge className="absolute left-sm top-sm border-primary/30 bg-primary/10 text-primary">
           {TRACKING_MODE_LABEL[category.trackingMode]}
         </Badge>
       </div>
 
-      <div className="flex flex-col gap-sm border-t border-white/10 bg-surface-container-high/60 p-md">
+      <div className="flex flex-col gap-sm border-t border-outline-variant bg-surface-container-high/60 p-md">
         <div className="flex items-end justify-between gap-sm">
           <h3 className="font-headline-lg text-headline-lg-mobile text-on-surface">
             {category.name}

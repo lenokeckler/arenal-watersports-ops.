@@ -49,7 +49,7 @@ const WorkModeForm = ({ areas }: WorkModeFormProps): JSX.Element => {
       />
 
       <header className="mt-lg flex w-full max-w-3xl flex-col items-center text-center md:mt-xl">
-        <div className="mb-md flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-surface-container-high shadow-lg">
+        <div className="mb-md flex h-16 w-16 items-center justify-center rounded-2xl border border-outline-variant bg-surface-container-high shadow-lg">
           <MaterialIcon
             name={MATERIAL_ICON_NAME.ANCHOR}
             className="!text-[32px] text-primary"
@@ -91,9 +91,9 @@ const WorkModeForm = ({ areas }: WorkModeFormProps): JSX.Element => {
                 variant={BUTTON.BASE}
                 disabled={isSubmitting}
                 onClick={() => handleSelectArea(area)}
-                className="group flex min-h-48 flex-col items-start rounded-2xl border border-white/5 bg-surface-container/40 p-lg text-left shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-surface-container/70 disabled:cursor-not-allowed disabled:opacity-70"
+                className="group flex min-h-48 flex-col items-start rounded-2xl border border-outline-variant/50 bg-surface-container/40 p-lg text-left shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-surface-container/70 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                <div className="mb-md flex h-16 w-16 items-center justify-center rounded-xl border border-white/5 bg-surface-container-low text-on-surface-variant transition-colors group-hover:text-primary">
+                <div className="mb-md flex h-16 w-16 items-center justify-center rounded-xl border border-outline-variant/50 bg-surface-container-low text-on-surface-variant transition-colors group-hover:text-primary">
                   {isThisAreaSubmitting ? (
                     <Spinner size={SPINNER_SIZE.MEDIUM} />
                   ) : (

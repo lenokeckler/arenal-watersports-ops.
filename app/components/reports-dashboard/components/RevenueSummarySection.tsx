@@ -25,7 +25,7 @@ const RevenueSummarySection = ({
   rows,
   selectedDay,
 }: RevenueSummarySectionProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {REPORTS_SCREEN.REVENUE.TITLE}
     </h2>
@@ -43,7 +43,7 @@ const RevenueSummarySection = ({
           type={INPUT_TYPES.DATE}
           name="dia"
           defaultValue={selectedDay}
-          className="min-h-12 rounded-lg border border-white/10 bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none"
+          className="min-h-12 rounded-lg border border-outline-variant bg-surface-container-low px-sm font-body-base text-body-base text-on-surface focus:border-primary focus:outline-none"
         />
       </label>
       <button
@@ -63,7 +63,7 @@ const RevenueSummarySection = ({
         {rows.map((row) => (
           <div
             key={row.currency}
-            className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low p-sm"
+            className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low p-sm"
           >
             <span className="font-title-md text-title-md text-primary">
               {CURRENCY_LABEL[row.currency]}
@@ -85,7 +85,7 @@ const RevenueSummarySection = ({
                 +{formatAmount(row.retainedAmount)}
               </span>
             </span>
-            <span className="flex justify-between border-t border-white/10 pt-1 font-title-md text-title-md text-on-surface">
+            <span className="flex justify-between border-t border-outline-variant pt-1 font-title-md text-title-md text-on-surface">
               {REPORTS_SCREEN.REVENUE.NET_LABEL}
               <span>{formatAmount(row.netAmount)}</span>
             </span>

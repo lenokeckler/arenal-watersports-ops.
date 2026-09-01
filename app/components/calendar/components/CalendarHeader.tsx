@@ -24,7 +24,7 @@ const CalendarHeader = ({
 }: CalendarHeaderProps): JSX.Element => (
   <header className="mx-auto mb-lg flex max-w-6xl flex-wrap items-center justify-between gap-sm">
     <div className="flex items-center gap-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high">
         <MaterialIcon
           name={MATERIAL_ICON_NAME.CALENDAR_MONTH}
           className="!text-[24px] text-primary"
@@ -44,7 +44,7 @@ const CalendarHeader = ({
       {canCreateExternalGuide && (
         <Link
           href={PATHS.RESERVATIONS.EXTERNAL_GUIDE_NEW}
-          className="flex min-h-12 items-center gap-2 rounded-lg border border-white/10 bg-surface-container-high px-md py-sm font-button text-button uppercase text-on-surface transition-transform duration-200 active:scale-95"
+          className="flex min-h-12 items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-high px-md py-sm font-button text-button uppercase text-on-surface transition-transform duration-200 active:scale-95"
         >
           <MaterialIcon
             name={MATERIAL_ICON_NAME.PERSON_ADD}

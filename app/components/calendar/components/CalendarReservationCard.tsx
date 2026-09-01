@@ -25,7 +25,7 @@ const CalendarReservationCard = ({
 }: CalendarReservationCardProps): JSX.Element => (
   <Link
     href={PATHS.RESERVATIONS.DETAIL_BY_ID(reservation.id)}
-    className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container/60 p-sm transition-colors hover:border-primary/40"
+    className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container/60 p-sm transition-colors hover:border-primary/40"
   >
     <div className="flex items-center justify-between gap-sm">
       <span className="font-label-mono text-label-mono text-primary">

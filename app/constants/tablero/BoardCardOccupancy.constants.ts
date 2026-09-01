@@ -23,7 +23,7 @@ export type BoardCardOccupancy =
 export const BOARD_CARD_OCCUPANCY_CLASS = {
   [BOARD_CARD_OCCUPANCY.FREE]: {
     BAR: "bg-primary",
-    BORDER: "border-white/5",
+    BORDER: "border-outline-variant/50",
   },
   [BOARD_CARD_OCCUPANCY.FULL]: {
     BAR: "bg-error",

@@ -29,7 +29,7 @@ const WorkerDetailMarks = ({
   marks,
   onToggleMark,
 }: WorkerDetailMarksProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {WORKER_DETAIL_SCREEN.MARKS.TITLE}
     </h2>
@@ -41,7 +41,7 @@ const WorkerDetailMarks = ({
         return (
           <label
             key={mark}
-            className="flex items-start gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+            className="flex items-start gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
           >
             <input
               type={INPUT_TYPES.CHECKBOX}

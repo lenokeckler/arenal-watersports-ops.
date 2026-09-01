@@ -55,7 +55,7 @@ const ReservationSplitModal = ({
     >
       <div className="flex flex-col gap-md">
         <div className="grid grid-cols-2 gap-sm">
-          <div className="flex flex-col items-center gap-1 rounded-lg border border-white/10 bg-surface/50 p-sm">
+          <div className="flex flex-col items-center gap-1 rounded-lg border border-outline-variant bg-surface/50 p-sm">
             <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">
               {
                 RESERVATION_DETAIL_SCREEN.SPLIT

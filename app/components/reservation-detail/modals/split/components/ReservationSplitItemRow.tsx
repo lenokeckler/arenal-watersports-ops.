@@ -27,7 +27,7 @@ const ReservationSplitItemRow = ({
   item,
   onMovingQuantityChange,
 }: ReservationSplitItemRowProps): JSX.Element => (
-  <div className="flex items-center justify-between gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+  <div className="flex items-center justify-between gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
     <span className="font-body-base text-body-base text-on-surface">
       {item.label}
     </span>
@@ -46,7 +46,7 @@ const ReservationSplitItemRow = ({
         className={`rounded-full border px-sm py-1 font-label-mono text-label-mono transition-colors disabled:opacity-50 ${
           item.movingQuantity === WHOLE_UNIT
             ? "border-primary bg-primary/20 text-primary"
-            : "border-white/10 text-on-surface-variant hover:border-primary/40"
+            : "border-outline-variant text-on-surface-variant hover:border-primary/40"
         }`}
       >
         {RESERVATION_DETAIL_SCREEN.SPLIT.MOVE_ALL}
@@ -64,7 +64,7 @@ const ReservationSplitItemRow = ({
             Number(event.target.value)
           )
         }
-        className="!w-20 rounded-lg border border-white/10 bg-surface-container-low p-sm text-right text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        className="!w-20 rounded-lg border border-outline-variant bg-surface-container-low p-sm text-right text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       />
     )}
   </div>

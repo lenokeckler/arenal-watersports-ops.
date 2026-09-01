@@ -6,6 +6,7 @@ import { useAppDrawerViewModel } from "./hooks/useAppDrawerViewModel";
 import AppDrawerHeader from "./components/AppDrawerHeader";
 import AppDrawerIdentity from "./components/AppDrawerIdentity";
 import AppDrawerAreaSwitcher from "./components/AppDrawerAreaSwitcher";
+import AppDrawerThemeSwitcher from "./components/AppDrawerThemeSwitcher";
 import AppDrawerNav from "./components/AppDrawerNav";
 import AppDrawerLogoutButton from "./components/AppDrawerLogoutButton";
 
@@ -27,10 +28,12 @@ const AppDrawer = (): JSX.Element | null => {
     handleConfirmLogout,
     handleRequestLogout,
     handleSelectArea,
+    handleSelectTheme,
     isConfirmingLogout,
     isOpen,
     panelRef,
     secondaryNavItems,
+    themeOptions,
     username,
   } = useAppDrawerViewModel();
 
@@ -48,7 +51,7 @@ const AppDrawer = (): JSX.Element | null => {
       />
       <div
         ref={panelRef}
-        className="relative z-10 flex h-full w-[85%] max-w-[22rem] flex-col border-r border-white/10 bg-surface-container-lowest/95 backdrop-blur-xl"
+        className="relative z-10 flex h-full w-[85%] max-w-[22rem] flex-col border-r border-outline-variant bg-surface-container-lowest/95 backdrop-blur-xl"
       >
         <AppDrawerHeader onClose={handleClose} />
         <div className="flex-1 overflow-y-auto px-margin-mobile py-md">
@@ -63,6 +66,10 @@ const AppDrawer = (): JSX.Element | null => {
               onSelect={handleSelectArea}
             />
           )}
+          <AppDrawerThemeSwitcher
+            options={themeOptions}
+            onSelect={handleSelectTheme}
+          />
           <AppDrawerNav
             items={secondaryNavItems}
             onNavigate={handleClose}

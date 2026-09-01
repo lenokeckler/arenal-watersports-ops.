@@ -79,7 +79,7 @@ const WorkerFormSuccess = ({
             .TEMPORARY_PASSWORD_LABEL
         }
       </span>
-      <div className="flex items-center gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-2">
+      <div className="flex items-center gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-2">
         <span className="flex-1 font-label-mono text-title-md tracking-wider text-on-surface">
           {temporaryPassword}
         </span>

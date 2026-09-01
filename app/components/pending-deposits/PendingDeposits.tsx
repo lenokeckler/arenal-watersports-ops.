@@ -20,7 +20,7 @@ const PendingDeposits = ({
 }: PendingDepositsProps): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
     <header className="mx-auto mb-lg flex max-w-3xl items-center gap-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high">
         <MaterialIcon
           name={MATERIAL_ICON_NAME.LOCK}
           className="!text-[24px] text-primary"
@@ -38,7 +38,7 @@ const PendingDeposits = ({
 
     <main className="mx-auto max-w-3xl">
       {deposits.length === NO_DEPOSITS ? (
-        <p className="rounded-xl border border-white/10 bg-surface-container/40 p-md font-body-base text-body-base text-on-surface-variant backdrop-blur-md">
+        <p className="rounded-xl border border-outline-variant bg-surface-container/40 p-md font-body-base text-body-base text-on-surface-variant backdrop-blur-md">
           {PENDING_DEPOSITS_SCREEN.EMPTY_STATE}
         </p>
       ) : (

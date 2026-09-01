@@ -30,7 +30,7 @@ import { usePinRecoveryFormViewModel } from "./hooks/usePinRecoveryFormViewModel
  * three feature folders use it so far.
  */
 const FIELD_CLASS =
-  "w-full !rounded-lg !border !border-white/10 !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-primary focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-primary/20";
+  "w-full !rounded-lg !border !border-outline-variant !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-primary focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-primary/20";
 const FIELD_ERROR_CLASS =
   "w-full !rounded-lg !border !border-error/50 !bg-surface-container/50 !p-sm !text-on-surface placeholder:!text-outline-variant focus:!border-error focus:!shadow-none focus:!outline-none focus:!ring-2 focus:!ring-error/20";
 
@@ -77,7 +77,7 @@ const PinRecoveryForm = (): JSX.Element => {
 
   return (
     <main className="relative z-10 w-full max-w-form px-margin-mobile">
-      <div className="flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface-container/70 p-md shadow-xl backdrop-blur-md sm:p-lg">
+      <div className="flex flex-col overflow-hidden rounded-xl border border-outline-variant bg-surface-container/70 p-md shadow-xl backdrop-blur-md sm:p-lg">
         <PinRecoveryFormHeader
           title={
             isRequestPinStep

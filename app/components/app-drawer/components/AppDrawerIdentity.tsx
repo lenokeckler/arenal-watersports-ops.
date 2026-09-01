@@ -19,7 +19,7 @@ const AppDrawerIdentity = ({
   fullName,
   username,
 }: AppDrawerIdentityProps): JSX.Element => (
-  <div className="mb-md flex flex-col gap-1 border-b border-white/5 pb-md">
+  <div className="mb-md flex flex-col gap-1 border-b border-outline-variant/50 pb-md">
     <Text className="!text-body-base font-semibold text-on-surface">
       {fullName}
     </Text>

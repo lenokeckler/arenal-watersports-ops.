@@ -24,7 +24,7 @@ const AppDrawerAreaSwitcher = ({
   onSelect,
   options,
 }: AppDrawerAreaSwitcherProps): JSX.Element => (
-  <div className="mb-md flex flex-col gap-2 border-b border-white/5 pb-md">
+  <div className="mb-md flex flex-col gap-2 border-b border-outline-variant/50 pb-md">
     <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">
       {APP_DRAWER_SCREEN.AREA_SWITCHER_TITLE}
     </span>

@@ -86,7 +86,7 @@ const ReservationFormCombo = ({
             className={`rounded-lg border px-sm py-1 font-button text-button transition-colors disabled:opacity-50 ${
               mode === option.value
                 ? "border-primary bg-primary/20 text-primary"
-                : "border-white/10 text-on-surface-variant hover:border-primary/40"
+                : "border-outline-variant text-on-surface-variant hover:border-primary/40"
             }`}
           >
             {option.label}
@@ -151,7 +151,7 @@ const ReservationFormCombo = ({
               {selectedCombo.items.map((item) => (
                 <div
                   key={item.categoryId}
-                  className="flex flex-col gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+                  className="flex flex-col gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
                 >
                   <div className="flex items-center justify-between gap-sm">
                     <span className="font-body-base text-body-base text-on-surface">
@@ -202,7 +202,7 @@ const ReservationFormCombo = ({
                             className={`rounded-full border px-sm py-1 font-label-mono text-label-mono transition-colors disabled:opacity-50 ${
                               isSelected
                                 ? "border-primary bg-primary/20 text-primary"
-                                : "border-white/10 text-on-surface-variant hover:border-primary/40"
+                                : "border-outline-variant text-on-surface-variant hover:border-primary/40"
                             }`}
                           >
                             {unit.code}

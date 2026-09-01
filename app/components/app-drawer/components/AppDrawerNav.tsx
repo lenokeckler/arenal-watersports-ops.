@@ -30,7 +30,7 @@ const AppDrawerNav = ({
 }: AppDrawerNavProps): JSX.Element => (
   <nav
     aria-label={APP_DRAWER_SCREEN.NAV_ARIA_LABEL}
-    className="flex flex-col gap-1 border-b border-white/5 pb-md"
+    className="flex flex-col gap-1 border-b border-outline-variant/50 pb-md"
   >
     {items.length > 0 && (
       <span className="font-label-mono text-label-mono uppercase text-on-surface-variant">

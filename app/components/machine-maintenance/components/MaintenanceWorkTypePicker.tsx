@@ -19,7 +19,7 @@ interface MaintenanceWorkTypePickerProps {
 const OPTION_CLASS =
   "min-h-12 rounded-lg border px-sm font-button text-button uppercase transition-colors disabled:opacity-60";
 const FIELD_CLASS =
-  "w-full rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface placeholder:text-outline-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 /**
  * US-OPE-018: the jobs the dock repeats, as one-tap options, plus `Otro`
@@ -47,7 +47,7 @@ const MaintenanceWorkTypePicker = ({
           className={`${OPTION_CLASS} ${
             preset === workType
               ? "border-primary bg-primary/15 text-primary"
-              : "border-white/10 text-on-surface-variant hover:border-primary/40"
+              : "border-outline-variant text-on-surface-variant hover:border-primary/40"
           }`}
         >
           {preset}

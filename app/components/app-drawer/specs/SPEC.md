@@ -16,6 +16,9 @@ controls, and that makes signing out a deliberate, two-tap action.
   more than one enabled area.
 - The secondary navigation items the bottom bar has no room for (per area).
 - A link to `/perfil`, currently unreachable from any screen.
+- A preferences section with the light/dark theme toggle (see
+  `docs/decisiones/tema-claro.md`): two states, persisted to this device
+  only (`localStorage`, never the account).
 - Logout with a two-step, in-panel confirmation (no `window.confirm`).
 - Keyboard accessibility: `Escape` to close, a focus trap while open, and
   focus returned to whatever opened the panel once it closes.
@@ -24,7 +27,9 @@ controls, and that makes signing out a deliberate, two-tap action.
 
 ## Out of scope
 
-- Light/dark theme.
+- The light/dark **palette** itself (the 47 tokens, contrast, which values
+  change per theme) — that is `docs/decisiones/tema-claro.md`'s scope;
+  this spec only owns the toggle UI and its persistence.
 - Any visual redesign of screens beyond removing the old floating pill.
 - Changing which screens exist in `BOTTOM_NAV.ITEMS`, only where each one
   renders (bar vs. panel).
@@ -57,6 +62,11 @@ controls, and that makes signing out a deliberate, two-tap action.
 - Selecting the already-active area is a no-op (matches the old switcher).
 - Navigating away through a secondary nav link or the profile link closes
   the drawer, so it never sits open over the next screen.
+- Selecting the already-active theme is a no-op (matches the area
+  switcher's own rule).
+- A `localStorage` write failure while saving the theme does not break the
+  toggle: the theme still applies for the current session, it just will
+  not survive a reload (see `app/utils/theme/theme.ts`).
 
 ## Constraints
 
@@ -68,7 +78,15 @@ controls, and that makes signing out a deliberate, two-tap action.
   `/perfil` — no duplicate copy.
 - Redux slice for `isOpen` only; identity and area data still come from the
   existing `workArea` slice plus a client-side fetch, same shape as the
-  deleted `WorkAreaSwitcher`.
+  deleted `WorkAreaSwitcher`. The theme preference is plain local state
+  (`useThemePreference`), not Redux — nothing outside this toggle needs the
+  current theme in React, every screen already resolves color through CSS
+  custom properties.
+- The theme's own DOM/`localStorage` plumbing
+  (`app/utils/theme/theme.ts`, the inline pre-hydration script in
+  `app/layout.tsx`, the `[data-theme="light"]` token block in
+  `app/globals.css`) lives outside this feature folder, since
+  `app/layout.tsx` needs it before this panel ever mounts.
 - Skills that apply: `component-architecture`, `component-standards`,
   `constants-standards`, `redux-store-architecture`, `code-style-standards`.
 
@@ -76,11 +94,16 @@ controls, and that makes signing out a deliberate, two-tap action.
 
 - [ ] `BottomNav`'s "Menú" tab opens `AppDrawer`; no screen's own
       top-right action button sits under a global control anymore.
-- [ ] Identity, area switcher (when applicable), secondary nav, profile
-      link and logout render in that order.
+- [ ] Identity, area switcher (when applicable), preferences (theme),
+      secondary nav, profile link and logout render in that order.
 - [ ] Logout requires two taps; a native confirm dialog never appears.
 - [ ] `Escape` closes the drawer; `Tab` does not leave it while open; focus
       returns to the "Menú" button after closing.
 - [ ] `/perfil` is reachable from the drawer.
+- [ ] The preferences section shows both theme states, with the active one
+      visually marked; selecting the other switches the whole app's
+      colors immediately, with no full reload.
+- [ ] Reloading the app (any screen, not just this drawer) shows the
+      previously chosen theme with no flash of the other one.
 - [ ] `app/components/work-area-switcher/` no longer exists and nothing
       imports it.

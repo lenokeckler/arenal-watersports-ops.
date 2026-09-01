@@ -34,7 +34,7 @@ const InventoryUnitCard = ({
   onStatusChange,
   unit,
 }: InventoryUnitCardProps): JSX.Element => (
-  <article className="flex flex-col gap-sm rounded-lg border border-white/10 bg-surface-container-low p-sm">
+  <article className="flex flex-col gap-sm rounded-lg border border-outline-variant bg-surface-container-low p-sm">
     <Link
       href={PATHS.OPERATIONS.MACHINE_DETAIL(unit.id)}
       className="flex items-center gap-sm"
@@ -58,7 +58,7 @@ const InventoryUnitCard = ({
           className={`${OPTION_CLASS} ${
             status === unit.status
               ? "border-primary bg-primary/15 text-primary"
-              : "border-white/10 text-on-surface-variant hover:border-primary/40"
+              : "border-outline-variant text-on-surface-variant hover:border-primary/40"
           }`}
         >
           {UNIT_STATUS_LABEL[status]}

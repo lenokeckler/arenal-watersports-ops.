@@ -11,7 +11,7 @@ interface ReservationDetailGuidesProps {
 const ReservationDetailGuides = ({
   guideNames,
 }: ReservationDetailGuidesProps): JSX.Element => (
-  <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+  <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
     <h2 className="font-title-md text-title-md text-on-surface">
       {RESERVATION_DETAIL_SCREEN.GUIDES.TITLE}
     </h2>
@@ -25,7 +25,7 @@ const ReservationDetailGuides = ({
         {guideNames.map((guideName) => (
           <li
             key={guideName}
-            className="rounded-full border border-white/10 bg-surface-container-low px-sm py-1 font-body-base text-body-base text-on-surface"
+            className="rounded-full border border-outline-variant bg-surface-container-low px-sm py-1 font-body-base text-body-base text-on-surface"
           >
             {guideName}
           </li>

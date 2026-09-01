@@ -57,6 +57,14 @@ const UnitCard = ({
             />
           </div>
         )}
+        {/*
+          Scrim for the status badge, same fix and reasoning as
+          `BoardCard`'s tracking-mode badge: without it, the badge tint
+          sits on bare photo, unreadable in light theme
+          (docs/decisiones/tema-claro.md §2.5). `from-background` resolves
+          per theme, so this holds in both.
+        */}
+        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-background/60 to-transparent" />
         <UnitCardStatusBadge
           isOverdue={isOverdue}
           status={status}

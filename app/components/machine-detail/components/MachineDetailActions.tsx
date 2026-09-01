@@ -22,7 +22,7 @@ interface MachineDetailActionsProps {
 }
 
 const LINK_CLASS =
-  "flex min-h-14 items-center gap-2 rounded-lg border border-white/10 bg-surface-container-low px-md font-button text-button uppercase text-on-surface";
+  "flex min-h-14 items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-low px-md font-button text-button uppercase text-on-surface";
 const STATUS_BUTTON_CLASS =
   "flex min-h-14 w-full items-center justify-center gap-2 rounded-lg px-md font-button text-button uppercase shadow-md disabled:cursor-not-allowed disabled:opacity-60";
 

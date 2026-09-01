@@ -30,11 +30,11 @@ const ActionSheet = ({
       onClick={onClose}
       className="absolute inset-0 bg-surface/70 backdrop-blur-sm"
     />
-    <div className="relative z-10 flex max-h-[90vh] flex-col rounded-t-3xl border-t border-white/10 bg-surface-container-lowest/95 backdrop-blur-xl">
+    <div className="relative z-10 flex max-h-[90vh] flex-col rounded-t-3xl border-t border-outline-variant bg-surface-container-lowest/95 backdrop-blur-xl">
       <div className="flex w-full justify-center pb-2 pt-sm">
         <div className="h-1.5 w-12 rounded-full bg-on-surface-variant/30" />
       </div>
-      <div className="flex shrink-0 items-center justify-between border-b border-white/5 px-margin-mobile pb-sm">
+      <div className="flex shrink-0 items-center justify-between border-b border-outline-variant/50 px-margin-mobile pb-sm">
         <h2 className="flex items-center gap-2 font-title-md text-title-md text-on-surface">
           <MaterialIcon
             name={icon}
@@ -45,7 +45,7 @@ const ActionSheet = ({
         <button
           type="button"
           onClick={onClose}
-          className="rounded-full p-2 text-on-surface-variant hover:bg-white/10"
+          className="rounded-full p-2 text-on-surface-variant hover:bg-on-surface/10"
         >
           <MaterialIcon name={MATERIAL_ICON_NAME.CLOSE} />
         </button>

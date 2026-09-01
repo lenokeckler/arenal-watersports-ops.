@@ -55,7 +55,7 @@ const UnitForm = (props: UnitFormProps): JSX.Element => {
 
   return (
     <form
-      className="flex flex-col gap-md rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md"
+      className="flex flex-col gap-md rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md"
       onSubmit={handleSubmit}
       noValidate
     >

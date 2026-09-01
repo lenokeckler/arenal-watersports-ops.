@@ -22,7 +22,7 @@ interface PendingDepositRowProps {
 const PendingDepositRow = ({
   deposit,
 }: PendingDepositRowProps): JSX.Element => (
-  <li className="flex items-center justify-between gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+  <li className="flex items-center justify-between gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
     <div className="flex flex-col">
       <span className="font-body-base text-body-base text-on-surface">
         {deposit.customerName}
@@ -40,7 +40,7 @@ const PendingDepositRow = ({
         href={PATHS.RESERVATIONS.CHARGES_BY_ID(
           deposit.reservationId
         )}
-        className="flex min-h-12 items-center gap-1 rounded-lg border border-white/10 px-sm font-button text-button uppercase text-on-surface hover:border-primary/40 hover:text-primary"
+        className="flex min-h-12 items-center gap-1 rounded-lg border border-outline-variant px-sm font-button text-button uppercase text-on-surface hover:border-primary/40 hover:text-primary"
       >
         {PENDING_DEPOSITS_SCREEN.RESOLVE}
         <MaterialIcon

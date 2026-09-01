@@ -13,7 +13,7 @@ const HINT_CLASS =
   "font-label-mono text-label-mono text-on-surface-variant";
 
 const INPUT_CLASS =
-  "w-full rounded-lg border border-white/10 bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "w-full rounded-lg border border-outline-variant bg-surface-container-low p-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 /**
  * US-OPE-003/US-OPE-009: one motorized/fuel-consuming unit's fuel and/or
@@ -28,7 +28,7 @@ const EquipmentReadingRow = ({
   reading,
   usageLabel,
 }: EquipmentReadingRowProps): JSX.Element => (
-  <div className="flex flex-col gap-sm rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+  <div className="flex flex-col gap-sm rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
     <span className="font-body-base text-body-base text-on-surface">
       {reading.unitCode}
     </span>

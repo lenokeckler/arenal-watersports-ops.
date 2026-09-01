@@ -20,10 +20,10 @@ const DepositHistoryList = ({
     {deposits.map((deposit) => (
       <li
         key={deposit.id}
-        className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm"
+        className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm"
       >
         <div className="flex items-center justify-between gap-sm">
-          <Badge className="border-white/10 bg-surface-container-high text-on-surface-variant">
+          <Badge className="border-outline-variant bg-surface-container-high text-on-surface-variant">
             {DEPOSIT_STATUS_LABEL[deposit.status]}
           </Badge>
           <span className="font-label-mono text-label-mono text-primary">

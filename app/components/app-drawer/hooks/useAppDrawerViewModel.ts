@@ -17,7 +17,9 @@ import { getBottomNavItemsForArea } from "@/app/utils/tablero/bottomNavItems";
 import { useAppDrawerIdentity } from "./useAppDrawerIdentity";
 import { useLogoutConfirmation } from "./useLogoutConfirmation";
 import { useDrawerFocusTrap } from "./useDrawerFocusTrap";
+import { useThemePreference } from "./useThemePreference";
 import { buildAreaOptions } from "../utils/areaOptions";
+import { buildThemeOptions } from "../utils/themeOptions";
 import type { AppDrawerViewModel } from "../models/AppDrawerViewModel.interface";
 
 /**
@@ -70,6 +72,8 @@ export const useAppDrawerViewModel =
       isOpen,
       onClose: handleClose,
     });
+    const { handleSelectTheme, theme } =
+      useThemePreference();
 
     const secondaryNavItems = getBottomNavItemsForArea(
       activeArea,
@@ -90,10 +94,12 @@ export const useAppDrawerViewModel =
       handleConfirmLogout,
       handleRequestLogout,
       handleSelectArea,
+      handleSelectTheme,
       isConfirmingLogout,
       isOpen,
       panelRef,
       secondaryNavItems,
+      themeOptions: buildThemeOptions(theme),
       username,
     };
   };

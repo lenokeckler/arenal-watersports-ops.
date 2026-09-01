@@ -20,7 +20,7 @@ const NO_ROWS = 0;
 const PriceList = ({ priceList }: PriceListProps): JSX.Element => (
   <div className="min-h-screen bg-background px-margin-mobile pb-24 pt-margin-mobile text-on-surface md:px-margin-desktop md:pt-margin-desktop">
     <header className="mx-auto mb-lg flex max-w-4xl items-center gap-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high">
         <MaterialIcon
           name={MATERIAL_ICON_NAME.ATTACH_MONEY}
           className="!text-[24px] text-primary"
@@ -46,7 +46,7 @@ const PriceList = ({ priceList }: PriceListProps): JSX.Element => (
             {PRICE_LIST_SCREEN.TARIFFS_EMPTY}
           </p>
         ) : (
-          <ul className="divide-y divide-white/5 rounded-xl border border-white/10 bg-surface-container/40">
+          <ul className="divide-y divide-outline-variant/50 rounded-xl border border-outline-variant bg-surface-container/40">
             {priceList.tariffs.map((tariff, index) => (
               <li
                 key={`${tariff.categoryName}-${tariff.type}-${index}`}
@@ -77,7 +77,7 @@ const PriceList = ({ priceList }: PriceListProps): JSX.Element => (
             {PRICE_LIST_SCREEN.EXTRAS_EMPTY}
           </p>
         ) : (
-          <ul className="divide-y divide-white/5 rounded-xl border border-white/10 bg-surface-container/40">
+          <ul className="divide-y divide-outline-variant/50 rounded-xl border border-outline-variant bg-surface-container/40">
             {priceList.extras.map((extra) => (
               <li
                 key={extra.name}
@@ -103,7 +103,7 @@ const PriceList = ({ priceList }: PriceListProps): JSX.Element => (
             {PRICE_LIST_SCREEN.COMBOS_EMPTY}
           </p>
         ) : (
-          <ul className="divide-y divide-white/5 rounded-xl border border-white/10 bg-surface-container/40">
+          <ul className="divide-y divide-outline-variant/50 rounded-xl border border-outline-variant bg-surface-container/40">
             {priceList.combos.map((combo) => (
               <li
                 key={combo.name}

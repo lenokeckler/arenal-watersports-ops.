@@ -46,7 +46,7 @@ const MachineCorrection = ({
       subtitle={UNIT_CORRECTION_SCREEN.SUBTITLE}
       title={`${UNIT_CORRECTION_SCREEN.TITLE} · ${machine.code}`}
     >
-      <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-surface-container/40 p-md backdrop-blur-md">
+      <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-container/40 p-md backdrop-blur-md">
         {machine.consumesFuel && (
           <MachineCorrectionField
             currentValue={

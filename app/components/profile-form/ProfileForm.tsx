@@ -27,7 +27,7 @@ const ProfileForm = ({ worker }: ProfileFormProps): JSX.Element => {
 
   return (
     <main className="relative z-10 w-full max-w-form">
-      <div className="flex flex-col gap-md overflow-hidden rounded-xl border border-white/10 bg-surface-container/70 p-md shadow-xl backdrop-blur-md sm:p-lg">
+      <div className="flex flex-col gap-md overflow-hidden rounded-xl border border-outline-variant bg-surface-container/70 p-md shadow-xl backdrop-blur-md sm:p-lg">
         <ProfileFormHeader
           areaLabel={WORK_AREA_LABEL[worker.baseRole]}
           fullName={worker.fullName}

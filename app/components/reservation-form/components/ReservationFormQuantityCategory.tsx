@@ -36,7 +36,7 @@ const ReservationFormQuantityCategory = ({
     quantity > (availability?.free ?? 0);
 
   return (
-    <div className="flex flex-col gap-1 rounded-lg border border-white/10 bg-surface-container-low px-sm py-sm">
+    <div className="flex flex-col gap-1 rounded-lg border border-outline-variant bg-surface-container-low px-sm py-sm">
       <div className="flex items-center justify-between gap-sm">
         <span className="font-body-base text-body-base text-on-surface">
           {category.name}

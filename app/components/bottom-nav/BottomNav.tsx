@@ -35,7 +35,7 @@ const BottomNav = (): JSX.Element | null => {
   return (
     <nav
       aria-label={BOTTOM_NAV.ARIA_LABEL}
-      className="fixed inset-x-0 bottom-0 z-30 flex border-t border-white/10 bg-surface-container/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl"
+      className="fixed inset-x-0 bottom-0 z-30 flex border-t border-outline-variant bg-surface-container/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl"
     >
       {items.map((item) => (
         <Link

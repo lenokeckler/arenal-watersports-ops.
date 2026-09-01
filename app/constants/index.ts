@@ -361,3 +361,11 @@ export { OPERATIONS_INVENTORY_SCREEN } from "./operaciones/OperationsInventorySc
 export { INVENTORY_COUNT_SCREEN } from "./operaciones/InventoryCountScreen.constants";
 export { INVENTORY_ALERTS_SCREEN } from "./operaciones/InventoryAlertsScreen.constants";
 export { OPERATIONS_ERROR } from "./operaciones/OperationsError.constants";
+export {
+  DEFAULT_THEME,
+  THEME,
+  THEME_ATTRIBUTE,
+  THEME_OPTION,
+  THEME_STORAGE_KEY,
+  type Theme,
+} from "./theme/Theme.constants";

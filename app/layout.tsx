@@ -9,6 +9,7 @@ import { ReduxProvider } from "@/app/providers";
 import WorkdaySessionProvider from "@/app/components/session/WorkdaySessionProvider";
 import AppDrawer from "@/app/components/app-drawer/AppDrawer";
 import BottomNav from "@/app/components/bottom-nav/BottomNav";
+import { buildThemeInitScript } from "@/app/utils/theme/theme";
 
 /**
  * Design-system fonts, self-hosted through `next/font` rather than a
@@ -74,13 +75,31 @@ export const viewport: Viewport = {
  * shared shell yet for the modules that will build the rest of the app.
  * Both render nothing/no-op when there is no active session, so mounting
  * them above the public access screens as well is harmless.
+ *
+ * The inline `<script>` in `<head>` (`buildThemeInitScript`) runs before
+ * React hydrates and sets `[data-theme="light"]` on `<html>` when that is
+ * the device's saved preference (`docs/decisiones/tema-claro.md`) — without
+ * it, the first paint would always show the dark default and then flash to
+ * light a moment later for anyone who chose light. The server can never
+ * know that preference (it lives in `localStorage`), so the attribute the
+ * script adds will always differ from the server-rendered `<html>` at
+ * hydration time — a deliberate, expected mismatch, which is exactly what
+ * `suppressHydrationWarning` exists for (React only checks it one level
+ * deep, so it only silences this one element, not the rest of the tree).
  */
 const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>): React.JSX.Element => (
-  <html lang="es">
+  <html lang="es" suppressHydrationWarning>
+    <head>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: buildThemeInitScript(),
+        }}
+      />
+    </head>
     <body
       className={`${hankenGrotesk.variable} ${jetbrainsMono.variable} ${materialSymbolsOutlined.variable} bg-background text-on-background antialiased`}
     >

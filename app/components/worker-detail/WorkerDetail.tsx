@@ -59,7 +59,7 @@ const WorkerDetail = ({
       <header className="mx-auto mb-lg flex max-w-3xl items-center gap-sm">
         <Link
           href={PATHS.ADMIN.WORKERS}
-          className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-primary"
+          className="flex h-12 w-12 items-center justify-center rounded-xl border border-outline-variant bg-surface-container-high text-on-surface-variant hover:text-primary"
         >
           <MaterialIcon
             name={MATERIAL_ICON_NAME.ARROW_BACK}
@@ -73,7 +73,7 @@ const WorkerDetail = ({
             <span className="font-label-mono text-label-mono text-on-surface-variant">
               @{worker.username}
             </span>
-            <Badge className="border-white/10 bg-surface-container-high text-on-surface-variant">
+            <Badge className="border-outline-variant bg-surface-container-high text-on-surface-variant">
               {WORK_AREA_LABEL[worker.baseRole]}
             </Badge>
             <Badge
@@ -125,7 +125,7 @@ const WorkerDetail = ({
         />
 
         {isAdminAccount ? (
-          <p className="rounded-xl border border-white/10 bg-surface-container/40 p-md font-body-base text-body-base text-on-surface-variant">
+          <p className="rounded-xl border border-outline-variant bg-surface-container/40 p-md font-body-base text-body-base text-on-surface-variant">
             {WORKER_DETAIL_SCREEN.ADMIN_PROTECTED_NOTE}
           </p>
         ) : (

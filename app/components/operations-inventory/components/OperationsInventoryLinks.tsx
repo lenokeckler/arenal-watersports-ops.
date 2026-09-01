@@ -15,7 +15,7 @@ interface OperationsInventoryLinksProps {
 const NO_ALERTS = 0;
 
 const LINK_CLASS =
-  "flex min-h-14 items-center gap-2 rounded-lg border border-white/10 bg-surface-container-low px-md font-button text-button uppercase text-on-surface";
+  "flex min-h-14 items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-low px-md font-button text-button uppercase text-on-surface";
 
 const SECONDARY_LINKS: readonly {
   href: string;

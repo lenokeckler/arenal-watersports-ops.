@@ -25,7 +25,7 @@ const AppDrawerLogoutButton = ({
   onConfirm,
   onRequest,
 }: AppDrawerLogoutButtonProps): JSX.Element => (
-  <div className="shrink-0 border-t border-white/5 p-margin-mobile">
+  <div className="shrink-0 border-t border-outline-variant/50 p-margin-mobile">
     <Button
       type={BUTTON_TYPES.BUTTON}
       variant={BUTTON.BASE}
