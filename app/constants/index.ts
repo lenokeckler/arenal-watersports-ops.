@@ -141,6 +141,7 @@ export {
 } from "./acceso/PasswordRecoveryScreen.constants";
 export { EMAIL_CONFIG } from "./email/Email.constants";
 export { WORK_MODE_SCREEN } from "./acceso/WorkModeScreen.constants";
+export { APP_DRAWER_SCREEN } from "./tablero/AppDrawer.constants";
 export {
   EQUIPMENT_UNIT_STATUS,
   EQUIPMENT_UNIT_STATUS_BADGE,
@@ -179,7 +180,9 @@ export { CATEGORY_DETAIL_SCREEN } from "./tablero/CategoryDetailScreen.constants
 export {
   BOTTOM_NAV,
   BOTTOM_NAV_ITEM_ID,
+  BOTTOM_NAV_SECTION,
   type BottomNavItemId,
+  type BottomNavSection,
 } from "./tablero/BottomNav.constants";
 export { PAGINATION_CONTROL } from "./tablero/PaginationControl.constants";
 export { HISTORY_SCREEN } from "./tablero/HistoryScreen.constants";

@@ -44,6 +44,7 @@ export const MATERIAL_ICON_NAME = {
   LOGIN: "login",
   LOGOUT: "logout",
   MAIL: "mail",
+  MENU: "menu",
   NOTIFICATIONS: "notifications",
   OIL_BARREL: "oil_barrel",
   PAYMENTS: "payments",

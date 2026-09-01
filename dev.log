@@ -1,0 +1,14 @@
+
+> arenal-watersports-ops@0.1.0 dev
+> next dev --turbopack
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.24.72.194:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 4.1s
+○ Compiling /acceso/ingreso ...
+ GET /acceso/ingreso 200 in 7.9s (compile: 7.2s, proxy.ts: 183ms, render: 517ms)
+ GET /api/acceso/jornada 200 in 335ms (compile: 300ms, proxy.ts: 10ms, render: 25ms)

@@ -12,7 +12,7 @@ interface GlobalErrorPageProps {
 /**
  * Next.js App Router convention: the only boundary reached when the root
  * layout itself fails (`app/layout.tsx` — `ReduxProvider`,
- * `WorkdaySessionProvider`, `WorkAreaSwitcher`, `BottomNav`). It replaces
+ * `WorkdaySessionProvider`, `AppDrawer`, `BottomNav`). It replaces
  * the root layout entirely while active, so — per Next.js's own rule for
  * this file — it renders its own `<html>`/`<body>` and imports
  * `globals.css` directly instead of relying on the layout that just

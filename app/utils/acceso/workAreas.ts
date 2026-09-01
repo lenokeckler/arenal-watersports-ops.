@@ -18,7 +18,7 @@ export interface WorkerAreaState {
  * Reads which areas a worker has enabled and which one they used last
  * (US-ACC-011, section 8 of the access module design). Shared between the
  * work-mode page (a Server Component, session-scoped client) and the
- * global `WorkAreaSwitcher` (a Client Component, browser client) so the
+ * global `AppDrawer` (a Client Component, browser client) so the
  * "more than one area" rule is computed the same way in both places.
  * RLS already lets a worker read their own `workers` and `worker_areas`
  * rows (`workers_select`, `worker_areas_select`), so no service role is
