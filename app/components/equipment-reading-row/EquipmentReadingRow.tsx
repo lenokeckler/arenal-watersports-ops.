@@ -1,12 +1,13 @@
 import type { JSX } from "react";
 import {
+  FUEL_LEVEL_NUMBERS,
   INPUT_TYPES,
   RESERVATION_CLOSE_SCREEN,
   RESERVATION_NUMBERS,
   USAGE_METRIC_LABEL,
 } from "@/app/constants";
+import FuelLevelPicker from "@/app/components/fuel-level-picker/FuelLevelPicker";
 import { parseReadingValue } from "@/app/utils/reservas/equipmentReadingFields";
-import FuelLevelPicker from "./components/FuelLevelPicker";
 import type { EquipmentReadingRowProps } from "./models/EquipmentReadingRowProps.interface";
 
 const HINT_CLASS =
@@ -40,18 +41,19 @@ const EquipmentReadingRow = ({
           </span>
           <FuelLevelPicker
             isDisabled={isDisabled}
+            max={reading.fuelMax}
             onSelect={(level) =>
               onFuelChange(reading.itemId, String(level))
             }
             selectedLevel={parseReadingValue(
-              reading.fuelPercent
+              reading.fuelLevel
             )}
           />
           <input
             type={INPUT_TYPES.NUMBER}
-            min={RESERVATION_NUMBERS.FUEL_PERCENT_MIN}
-            max={RESERVATION_NUMBERS.FUEL_PERCENT_MAX}
-            value={reading.fuelPercent}
+            min={FUEL_LEVEL_NUMBERS.MIN}
+            max={reading.fuelMax}
+            value={reading.fuelLevel}
             disabled={isDisabled}
             onChange={(event) =>
               onFuelChange(

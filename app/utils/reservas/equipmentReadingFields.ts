@@ -1,5 +1,8 @@
 import type { Nullable } from "@/app/types";
-import type { UsageMetric } from "@/app/constants";
+import {
+  FUEL_LEVEL_NUMBERS,
+  type UsageMetric,
+} from "@/app/constants";
 import type { ReservationEquipmentItem } from "./reservationEquipmentItems";
 
 export interface EquipmentReadingFieldState {
@@ -12,7 +15,9 @@ export interface EquipmentReadingFieldState {
    */
   departureFuel: Nullable<number>;
   departureUsage: Nullable<number>;
-  fuelPercent: string;
+  fuelLevel: string;
+  /** Cuantas lineas tiene el medidor de esta unidad — el tope de `fuelLevel`. */
+  fuelMax: number;
   itemId: string;
   showFuel: boolean;
   showUsage: boolean;
@@ -40,7 +45,9 @@ const buildReadingField = (
 ): EquipmentReadingFieldState => ({
   departureFuel: item.fuelOut,
   departureUsage: item.usageOut,
-  fuelPercent: EMPTY_READING,
+  fuelLevel: EMPTY_READING,
+  fuelMax:
+    item.unitFuelMax ?? FUEL_LEVEL_NUMBERS.DEFAULT_MAX,
   itemId: item.id,
   showFuel: item.consumesFuel,
   showUsage: item.hasMotor,

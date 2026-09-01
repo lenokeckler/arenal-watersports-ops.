@@ -43,7 +43,7 @@ const buildSupabaseMock = (): {
 };
 
 describe("dispatchReservation", () => {
-  it("mirrors the departure reading onto the unit's current_fuel and usage_total", async () => {
+  it("mirrors the departure reading onto the unit's fuel_level and usage_total", async () => {
     const { client, updatesByTable } = buildSupabaseMock();
 
     await dispatchReservation(
@@ -51,7 +51,7 @@ describe("dispatchReservation", () => {
       "reservation-1",
       [
         {
-          fuelPercent: 75,
+          fuelLevel: 3,
           itemId: "item-1",
           unitId: "unit-1",
           usageReading: 12.5,
@@ -62,14 +62,14 @@ describe("dispatchReservation", () => {
 
     expect(updatesByTable.equipment_units).toEqual([
       {
-        current_fuel: 75,
+        fuel_level: 3,
         updated_by: "worker-1",
         usage_total: 12.5,
       },
     ]);
   });
 
-  it("omits current_fuel and usage_total from the unit patch when the reading is blank", async () => {
+  it("omits fuel_level and usage_total from the unit patch when the reading is blank", async () => {
     const { client, updatesByTable } = buildSupabaseMock();
 
     await dispatchReservation(
@@ -77,7 +77,7 @@ describe("dispatchReservation", () => {
       "reservation-1",
       [
         {
-          fuelPercent: null,
+          fuelLevel: null,
           itemId: "item-1",
           unitId: "unit-1",
           usageReading: null,
@@ -99,7 +99,7 @@ describe("dispatchReservation", () => {
       "reservation-1",
       [
         {
-          fuelPercent: 50,
+          fuelLevel: 2,
           itemId: "item-1",
           unitId: "unit-1",
           usageReading: 10,
@@ -110,7 +110,7 @@ describe("dispatchReservation", () => {
 
     expect(updatesByTable.reservation_items).toEqual([
       {
-        fuel_out: 50,
+        fuel_out: 2,
         updated_by: "worker-1",
         usage_out: 10,
       },
@@ -125,13 +125,13 @@ describe("dispatchReservation", () => {
       "reservation-1",
       [
         {
-          fuelPercent: 100,
+          fuelLevel: 4,
           itemId: "item-1",
           unitId: "unit-1",
           usageReading: null,
         },
         {
-          fuelPercent: null,
+          fuelLevel: null,
           itemId: "item-2",
           unitId: "unit-2",
           usageReading: 5,
@@ -142,7 +142,7 @@ describe("dispatchReservation", () => {
 
     expect(updatesByTable.equipment_units).toHaveLength(2);
     expect(updatesByTable.equipment_units).toContainEqual({
-      current_fuel: 100,
+      fuel_level: 4,
       updated_by: "worker-1",
     });
     expect(updatesByTable.equipment_units).toContainEqual({

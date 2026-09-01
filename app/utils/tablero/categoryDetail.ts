@@ -1,6 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
-import { TRACKING_MODE } from "@/app/constants";
+import {
+  TRACKING_MODE,
+  type EquipmentImageTreatment,
+} from "@/app/constants";
 import type { Nullable } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { fetchQuantityCategoryDetail } from "./categoryQuantityDetail";
@@ -8,13 +11,17 @@ import { fetchUnitCategoryDetail } from "./categoryUnitDetail";
 
 export interface CategoryDetailUnit {
   code: string;
-  /** Departure fuel reading, 0–100. Only populated for `consumes_fuel` categories. */
-  currentFuel: Nullable<number>;
   customerName: Nullable<string>;
   effectiveStatus: string;
+  /** Current fuel line, 0..fuelMax. Only populated for `consumes_fuel` categories. */
+  fuelLevel: Nullable<number>;
+  /** How many lines the gauge has. Only populated for `consumes_fuel` categories. */
+  fuelMax: Nullable<number>;
   id: string;
   imageAlt: string;
   imageSrc: Nullable<string>;
+  /** Contained cutout vs. bled photo — `null` when there is no image at all. */
+  imageTreatment: Nullable<EquipmentImageTreatment>;
   reservationCode: Nullable<string>;
   reservationId: Nullable<string>;
   returnsAt: Nullable<string>;

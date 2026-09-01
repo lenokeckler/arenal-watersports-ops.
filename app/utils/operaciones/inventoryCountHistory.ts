@@ -18,9 +18,13 @@ import {
 export const fetchInventoryCounts = async (
   supabase: SupabaseClient<Database>
 ): Promise<InventoryCountSummary[]> => {
+  // `getUTC*`/`setUTC*`, not the local equivalents: this runs on the
+  // server, and the local getters/setters would resolve against the
+  // runtime's own zone (UTC in production) instead of a fixed instant,
+  // making the window's exact boundary depend on where the code executes.
   const oldest = new Date();
-  oldest.setFullYear(
-    oldest.getFullYear() - RETENTION.COUNT_HISTORY_YEARS
+  oldest.setUTCFullYear(
+    oldest.getUTCFullYear() - RETENTION.COUNT_HISTORY_YEARS
   );
 
   const { data, error } = await supabase

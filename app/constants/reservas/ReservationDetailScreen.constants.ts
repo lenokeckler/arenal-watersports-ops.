@@ -57,8 +57,6 @@ export const RESERVATION_DETAIL_SCREEN = {
       `Creada por ${fullName}`,
     DISPATCHED_AT: "Salió",
     DURATION: "Duración",
-    DURATION_VALUE: (minutes: number): string =>
-      `${minutes} min`,
     PEOPLE_COUNT: "Personas",
     TITLE: "Detalle de la salida",
     UPDATED_BY: (fullName: string): string =>
@@ -66,7 +64,7 @@ export const RESERVATION_DETAIL_SCREEN = {
   },
   NOT_FOUND: "Esta reserva ya no existe.",
   POSTPONE: {
-    CLOSING_FUEL_LABEL: "Combustible al regresar (%)",
+    CLOSING_FUEL_LABEL: "Combustible al regresar",
     CLOSING_TITLE: "Equipo que sí se usó",
     CLOSING_USAGE_LABEL: "Lectura al regresar",
     DATE_LABEL: "Nueva fecha",

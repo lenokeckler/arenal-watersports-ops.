@@ -435,7 +435,7 @@ select throws_ok(
 );
 
 with u as (
-     update equipment_units set current_fuel = 42
+     update equipment_units set fuel_level = 2
      where id = 'bbbbbbbb-0000-0000-0000-000000000001'
      returning 1
 )
@@ -452,7 +452,7 @@ select lives_ok(
 );
 
 with u as (
-     update equipment_units set current_fuel = 80
+     update equipment_units set fuel_level = 4
      where id = 'bbbbbbbb-0000-0000-0000-000000000001'
      returning 1
 )

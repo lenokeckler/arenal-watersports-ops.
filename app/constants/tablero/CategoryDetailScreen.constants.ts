@@ -13,7 +13,8 @@ export const CATEGORY_DETAIL_SCREEN = {
   FREE_IN_MINUTES: (minutes: number): string =>
     `Libre en ${minutes} min`,
   FUEL_LABEL: "Combustible",
-  FUEL_PERCENT: (percent: number): string => `${percent}%`,
+  FUEL_LEVEL: (level: number, max: number): string =>
+    `${level}/${max}`,
   IN_REPAIR: "En reparación",
   IN_USE_NOW: "En uso ahora",
   NOT_FOUND: "Esta categoría no existe o no es reservable.",

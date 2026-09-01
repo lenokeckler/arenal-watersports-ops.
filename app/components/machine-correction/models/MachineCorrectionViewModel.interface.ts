@@ -2,7 +2,8 @@ import type { Nullable } from "@/app/types";
 import type { UnitStatus } from "@/app/constants";
 
 export interface MachineCorrectionFormValues {
-  currentFuel: string;
+  fuelLevel: string;
+  fuelMax: string;
   impactCount: string;
   status: Nullable<UnitStatus>;
   usageTotal: string;

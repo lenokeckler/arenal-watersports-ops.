@@ -99,27 +99,50 @@ const UnitForm = (props: UnitFormProps): JSX.Element => {
       />
 
       {consumesFuel && (
-        <FormField
-          id={FIELD_IDS.CURRENT_FUEL}
-          name={FIELD_IDS.CURRENT_FUEL}
-          label={UNIT_FORM_SCREEN.CURRENT_FUEL_LABEL}
-          type={INPUT_TYPES.NUMBER}
-          value={values.currentFuel}
-          onChange={(event) =>
-            handleFieldChange(
-              "currentFuel",
-              event.target.value
-            )
-          }
-          error={errors.currentFuel ?? undefined}
-          showErrorText
-          disabled={isBusy || isDecommissioned}
-          classNameField={
-            errors.currentFuel
-              ? UNIT_FIELD_ERROR_CLASS
-              : UNIT_FIELD_CLASS
-          }
-        />
+        <>
+          <FormField
+            id={FIELD_IDS.FUEL_LEVEL}
+            name={FIELD_IDS.FUEL_LEVEL}
+            label={UNIT_FORM_SCREEN.FUEL_LEVEL_LABEL}
+            type={INPUT_TYPES.NUMBER}
+            value={values.fuelLevel}
+            onChange={(event) =>
+              handleFieldChange(
+                "fuelLevel",
+                event.target.value
+              )
+            }
+            error={errors.fuelLevel ?? undefined}
+            showErrorText
+            disabled={isBusy || isDecommissioned}
+            classNameField={
+              errors.fuelLevel
+                ? UNIT_FIELD_ERROR_CLASS
+                : UNIT_FIELD_CLASS
+            }
+          />
+          <FormField
+            id={FIELD_IDS.FUEL_MAX}
+            name={FIELD_IDS.FUEL_MAX}
+            label={UNIT_FORM_SCREEN.FUEL_MAX_LABEL}
+            type={INPUT_TYPES.NUMBER}
+            value={values.fuelMax}
+            onChange={(event) =>
+              handleFieldChange(
+                "fuelMax",
+                event.target.value
+              )
+            }
+            error={errors.fuelMax ?? undefined}
+            showErrorText
+            disabled={isBusy || isDecommissioned}
+            classNameField={
+              errors.fuelMax
+                ? UNIT_FIELD_ERROR_CLASS
+                : UNIT_FIELD_CLASS
+            }
+          />
+        </>
       )}
 
       {hasMotor && (

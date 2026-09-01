@@ -5,6 +5,7 @@ export { default as Button } from "./button/Button";
 export { default as Pagination } from "./pagination/Pagination";
 export { default as FieldFactory } from "./field-factory/FieldFactory";
 export { default as FormField } from "./form-field/FormField";
+export { default as FuelLevelPicker } from "./fuel-level-picker/FuelLevelPicker";
 export { default as Icon } from "./icons/icon/Icon";
 export { default as Image } from "./image/Image";
 export { default as InlineText } from "./text/InlineText";

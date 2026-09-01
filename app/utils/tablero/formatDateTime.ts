@@ -1,14 +1,21 @@
+import { TIME } from "@/app/constants";
+
 const LOCALE = "es-CR";
 
+// Pinned to the company's own zone — the server (Vercel's Node runtime)
+// renders in UTC, so formatting without an explicit zone showed a 9 a.m.
+// Costa Rica reservation as 3 p.m.
 const TIME_FORMAT: Intl.DateTimeFormatOptions = {
   hour: "2-digit",
   minute: "2-digit",
+  timeZone: TIME.CR.TIME_ZONE,
 };
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
+  timeZone: TIME.CR.TIME_ZONE,
 };
 
 /** "14:35" from an ISO timestamp — used for a unit's return time. */

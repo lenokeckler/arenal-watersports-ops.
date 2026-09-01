@@ -163,6 +163,9 @@ export {
 export {
   CATEGORY_IMAGE_BY_NAME,
   DEFAULT_CATEGORY_ICON,
+  EQUIPMENT_IMAGE_FIT_CLASS,
+  EQUIPMENT_IMAGE_TREATMENT,
+  type EquipmentImageTreatment,
   UNIT_IMAGE_BY_CODE,
 } from "./tablero/EquipmentCategoryImage.constants";
 export {
@@ -282,18 +285,21 @@ export {
   type CalendarView,
 } from "./reservas/CalendarView.constants";
 export {
+  DURATION_PRESET,
+  DURATION_PRESET_LABEL,
+  DURATION_PRESET_ORDER,
+  type DurationPreset,
+} from "./reservas/DurationPreset.constants";
+export { DURATION_FIELD_SCREEN } from "@/app/components/duration-field/constants/DurationFieldScreen.constants";
+export {
   CALENDAR_SCREEN,
   WEEKDAYS_LABEL_MONO,
 } from "./reservas/CalendarScreen.constants";
 export { RESERVATION_DETAIL_SCREEN } from "./reservas/ReservationDetailScreen.constants";
 export { NEW_RESERVATION_SCREEN } from "./reservas/NewReservationScreen.constants";
 export { RESERVATION_NUMBERS } from "./reservas/ReservationNumbers.constants";
-export {
-  FUEL_LEVEL_PRESET,
-  FUEL_LEVEL_PRESET_LABEL,
-  FUEL_LEVEL_PRESET_ORDER,
-  type FuelLevelPreset,
-} from "./reservas/FuelLevel.constants";
+export { FUEL_LEVEL_NUMBERS } from "./reservas/FuelLevel.constants";
+export { FUEL_LEVEL_PICKER_SCREEN } from "@/app/components/fuel-level-picker/constants/FuelLevelPickerScreen.constants";
 export {
   COMBO_MODE,
   type ComboMode,

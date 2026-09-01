@@ -26,7 +26,7 @@ export const NEW_RESERVATION_SCREEN = {
     CUSTOMER_NAME_LABEL: "Nombre de la reserva",
     CUSTOMER_NAME_PLACEHOLDER: "Ej. Familia Rodríguez",
     DATE_LABEL: "Fecha",
-    DURATION_LABEL: "Duración (minutos)",
+    DURATION_LABEL: "Duración",
     OUT_OF_HOURS_HINT:
       "El horario habitual es de 9 a 5, pero se puede agendar cualquier hora.",
     PEOPLE_COUNT_LABEL: "Cantidad de personas",

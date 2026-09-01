@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import {
+  FUEL_LEVEL_NUMBERS,
   INPUT_TYPES,
   RESERVATION_DETAIL_SCREEN,
   RESERVATION_NUMBERS,
@@ -39,12 +40,15 @@ const ReservationPostponeClosingRow = ({
           </span>
           <input
             type={INPUT_TYPES.NUMBER}
-            min={RESERVATION_NUMBERS.FUEL_PERCENT_MIN}
-            max={RESERVATION_NUMBERS.FUEL_PERCENT_MAX}
-            value={closing.fuelPercent}
+            min={FUEL_LEVEL_NUMBERS.MIN}
+            max={closing.fuelMax}
+            value={closing.fuelLevel}
             disabled={isBusy}
             onChange={(event) =>
-              onFuelChange(closing.itemId, event.target.value)
+              onFuelChange(
+                closing.itemId,
+                event.target.value
+              )
             }
             className={INPUT_CLASS}
           />

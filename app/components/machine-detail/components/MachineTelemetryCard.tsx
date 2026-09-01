@@ -50,9 +50,9 @@ const MachineTelemetryCard = ({
         <MachineTelemetryValue
           label={MACHINE_DETAIL_SCREEN.TELEMETRY.FUEL}
           value={
-            machine.currentFuel === null
+            machine.fuelLevel === null
               ? STRING.N_A
-              : `${machine.currentFuel}%`
+              : `${machine.fuelLevel}/${machine.fuelMax}`
           }
         />
       )}

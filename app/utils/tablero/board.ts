@@ -1,6 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/app/types";
-import { TRACKING_MODE } from "@/app/constants";
+import {
+  TRACKING_MODE,
+  type EquipmentImageTreatment,
+} from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { resolveEquipmentImage } from "./equipmentImage";
 import { groupBoardCards } from "./boardCardGrouping";
@@ -18,6 +21,8 @@ export interface BoardCategory {
   id: string;
   imageAlt: string;
   imageSrc: string | null;
+  /** Contained cutout vs. bled photo — `null` when there is no image at all. */
+  imageTreatment: EquipmentImageTreatment | null;
   /** How many units are physically out right now — never derived from `free`. */
   inUse: number;
   name: string;
@@ -82,6 +87,7 @@ export const fetchBoardCategories = async (
       id: category.id,
       imageAlt: image?.alt ?? category.name,
       imageSrc: image?.src ?? null,
+      imageTreatment: image?.treatment ?? null,
       inUse: counts?.inUse ?? 0,
       name: category.name,
       total: counts?.total ?? 0,

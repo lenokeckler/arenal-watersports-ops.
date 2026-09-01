@@ -1,5 +1,6 @@
 import type { Nullable } from "@/app/types";
 import {
+  FUEL_LEVEL_NUMBERS,
   OPERATIONS_NUMBERS,
   type DamageCause,
   type UsageMetric,
@@ -15,7 +16,9 @@ export interface ReservationCloseEquipmentRow {
   damageCause: DamageCause | "";
   damageDescription: string;
   damageImpactDelta: string;
-  fuelPercent: string;
+  fuelLevel: string;
+  /** Cuantas lineas tiene el medidor de esta unidad — el tope de `fuelLevel`. */
+  fuelMax: number;
   impactCount: number;
   isReportingDamage: boolean;
   itemId: string;
@@ -56,7 +59,9 @@ export const buildReservationCloseRows = (
       damageImpactDelta: String(
         OPERATIONS_NUMBERS.IMPACT_DELTA_MIN
       ),
-      fuelPercent: EMPTY_READING,
+      fuelLevel: EMPTY_READING,
+      fuelMax:
+        item.unitFuelMax ?? FUEL_LEVEL_NUMBERS.DEFAULT_MAX,
       impactCount: item.impactCount,
       isReportingDamage: false,
       itemId: item.id,

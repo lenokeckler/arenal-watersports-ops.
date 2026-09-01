@@ -12,7 +12,8 @@ export const UNIT_CORRECTION_SCREEN = {
   FORM: {
     CURRENT_VALUE: (value: string): string =>
       `Ahora: ${value}`,
-    FUEL_LABEL: "Gasolina (% del tanque)",
+    FUEL_LABEL: "Gasolina (líneas)",
+    FUEL_MAX_LABEL: "Líneas máx",
     IMPACTS_LABEL: "Golpes acumulados",
     KEEP_STATUS: "Dejarlo como está",
     STATUS_LABEL: "Estado",

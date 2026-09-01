@@ -17,6 +17,7 @@ const buildCategory = (
   id: "category-1",
   imageAlt: "Kayak",
   imageSrc: null,
+  imageTreatment: null,
   inUse: 0,
   name: "Kayak individual",
   total: 0,

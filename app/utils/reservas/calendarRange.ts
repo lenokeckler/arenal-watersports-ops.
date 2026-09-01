@@ -1,5 +1,6 @@
 import {
   CALENDAR_VIEW,
+  TIME,
   type CalendarView,
 } from "@/app/constants";
 
@@ -10,56 +11,83 @@ const SUNDAY = 0;
 const MONDAY = 1;
 const DAYS_FROM_SUNDAY_TO_MONDAY = 6;
 
+const COSTA_RICA_OFFSET_MS =
+  TIME.CR.HOURS_OFFSET *
+  TIME.UNITS.MINUTES_IN_HOUR *
+  TIME.UNITS.SECONDS_IN_MINUTE *
+  TIME.UNITS.MILLISECONDS_IN_SECOND;
+
+/**
+ * Shifts a real instant into "Costa Rica wall clock, read through UTC
+ * getters" — every `getUTC*`/`setUTC*` call on the result reports Costa
+ * Rica's own date and time, never the host's. The calendar and the
+ * dispatch board both resolve "today"/"this week" on the server, where
+ * the Node runtime is UTC in production (Vercel); without this shift,
+ * `startOfDay` and friends would silently treat UTC as Costa Rica, which
+ * is exactly what showed a 9 a.m. reservation as 3 p.m. and, between
+ * 6 p.m. and midnight Costa Rica time, made the dispatch board start
+ * showing tomorrow's reservations instead of today's. Same fixed -6h
+ * shift `isWithinWorkday` already relies on — Costa Rica has never
+ * observed daylight saving time, so a constant offset is exact, not an
+ * approximation.
+ */
+const toCostaRicaWallClock = (date: Date): Date =>
+  new Date(date.getTime() - COSTA_RICA_OFFSET_MS);
+
+/** Reverses `toCostaRicaWallClock` back to the real instant it represents. */
+const fromCostaRicaWallClock = (wallClock: Date): Date =>
+  new Date(wallClock.getTime() + COSTA_RICA_OFFSET_MS);
+
 const startOfDay = (date: Date): Date => {
-  const result = new Date(date);
-  result.setHours(0, 0, 0, 0);
-  return result;
+  const wallClock = toCostaRicaWallClock(date);
+  wallClock.setUTCHours(0, 0, 0, 0);
+  return fromCostaRicaWallClock(wallClock);
 };
 
 const addDays = (date: Date, days: number): Date => {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
+  const wallClock = toCostaRicaWallClock(date);
+  wallClock.setUTCDate(wallClock.getUTCDate() + days);
+  return fromCostaRicaWallClock(wallClock);
 };
 
 const addMonths = (date: Date, months: number): Date => {
-  const result = new Date(date);
-  result.setMonth(result.getMonth() + months);
-  return result;
+  const wallClock = toCostaRicaWallClock(date);
+  wallClock.setUTCMonth(wallClock.getUTCMonth() + months);
+  return fromCostaRicaWallClock(wallClock);
 };
 
 const addYears = (date: Date, years: number): Date => {
-  const result = new Date(date);
-  result.setFullYear(result.getFullYear() + years);
-  return result;
+  const wallClock = toCostaRicaWallClock(date);
+  wallClock.setUTCFullYear(
+    wallClock.getUTCFullYear() + years
+  );
+  return fromCostaRicaWallClock(wallClock);
 };
 
 /** Monday-first week, to match the "acomodar el fin de semana" reading. */
 const startOfWeek = (date: Date): Date => {
+  const weekday = toCostaRicaWallClock(date).getUTCDay();
   const daysFromMonday =
-    date.getDay() === SUNDAY
+    weekday === SUNDAY
       ? DAYS_FROM_SUNDAY_TO_MONDAY
-      : date.getDay() - MONDAY;
+      : weekday - MONDAY;
   return startOfDay(addDays(date, -daysFromMonday));
 };
 
-const startOfMonth = (date: Date): Date =>
-  startOfDay(
-    new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      FIRST_DAY_OF_MONTH
-    )
-  );
+const startOfMonth = (date: Date): Date => {
+  const wallClock = toCostaRicaWallClock(date);
+  wallClock.setUTCDate(FIRST_DAY_OF_MONTH);
+  return startOfDay(fromCostaRicaWallClock(wallClock));
+};
 
-const startOfYear = (date: Date): Date =>
-  startOfDay(
-    new Date(
-      date.getFullYear(),
-      FIRST_MONTH_INDEX,
-      FIRST_DAY_OF_MONTH
-    )
+const startOfYear = (date: Date): Date => {
+  const wallClock = toCostaRicaWallClock(date);
+  wallClock.setUTCMonth(
+    FIRST_MONTH_INDEX,
+    FIRST_DAY_OF_MONTH
   );
+  return startOfDay(fromCostaRicaWallClock(wallClock));
+};
 
 export interface CalendarRange {
   endsAt: Date;
@@ -138,7 +166,7 @@ export const buildMonthGridDays = (
 
   while (
     cursor.getTime() <= lastDayOfMonth.getTime() ||
-    cursor.getDay() !== MONDAY
+    toCostaRicaWallClock(cursor).getUTCDay() !== MONDAY
   ) {
     days.push(cursor);
     cursor = addDays(cursor, 1);
@@ -158,22 +186,28 @@ export const buildYearMonths = (
 };
 
 export const toDateOnlyParam = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(
+  const wallClock = toCostaRicaWallClock(date);
+  const year = wallClock.getUTCFullYear();
+  const month = String(
+    wallClock.getUTCMonth() + 1
+  ).padStart(2, "0");
+  const day = String(wallClock.getUTCDate()).padStart(
     2,
     "0"
   );
-  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
-/** "14:35" (24h, local time) — the shape `<input type="time">` expects. */
+/** "14:35" (24h, Costa Rica time) — the shape `<input type="time">` expects. */
 export const toTimeOnlyParam = (date: Date): string => {
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(
+  const wallClock = toCostaRicaWallClock(date);
+  const hours = String(wallClock.getUTCHours()).padStart(
     2,
     "0"
   );
+  const minutes = String(
+    wallClock.getUTCMinutes()
+  ).padStart(2, "0");
   return `${hours}:${minutes}`;
 };
 
@@ -182,6 +216,14 @@ export const toTimeOnlyParam = (date: Date): string => {
  * reservation form (`useReservationDetailsFields`) and the postpone modal
  * (US-RES-020), the two places a worker types a date and a time and needs
  * the franja they resolve to.
+ *
+ * Deliberately not shifted through `toCostaRicaWallClock`: this only ever
+ * runs in the browser, where `new Date(...)` already reads the date/time
+ * as the worker's own local clock — Costa Rica's, since every worker is
+ * physically there — and `toISOString()` stores that correctly as UTC.
+ * The bug this file fixes is in reading dates back for display and in
+ * resolving day/week/month/year windows on the server, not in how a
+ * franja gets typed in and saved.
  */
 export const computeStartsAtIso = (
   date: string,
@@ -196,14 +238,23 @@ export const computeStartsAtIso = (
     : parsed.toISOString();
 };
 
+/**
+ * The inverse of `toDateOnlyParam`: a `?date=2026-08-02`-shaped param,
+ * read as a Costa Rica calendar day regardless of which zone the server
+ * happens to be running in — the same day `/reservas/calendario` shows
+ * when a worker clicks "Hoy" from that same zone.
+ */
 export const parseDateOnlyParam = (
   value: string | undefined
 ): Date => {
   if (!value) {
     return startOfDay(new Date());
   }
-  const parsed = new Date(`${value}T00:00:00`);
-  return Number.isNaN(parsed.getTime())
+  const [year, month, day] = value.split("-").map(Number);
+  const wallClock = new Date(
+    Date.UTC(year, month - 1, day)
+  );
+  return Number.isNaN(wallClock.getTime())
     ? startOfDay(new Date())
-    : parsed;
+    : fromCostaRicaWallClock(wallClock);
 };

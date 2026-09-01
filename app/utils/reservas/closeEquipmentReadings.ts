@@ -3,7 +3,7 @@ import type { Database, Nullable } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 
 export interface UnitClosingReading {
-  fuelPercent: Nullable<number>;
+  fuelLevel: Nullable<number>;
   itemId: string;
   unitId: string;
   usageReading: Nullable<number>;
@@ -17,7 +17,7 @@ const closeReservationItem = async (
   const { error } = await supabase
     .from("reservation_items")
     .update({
-      fuel_in: reading.fuelPercent,
+      fuel_in: reading.fuelLevel,
       updated_by: workerId,
       usage_in: reading.usageReading,
     })
@@ -34,12 +34,12 @@ const closeEquipmentUnit = async (
   workerId: string
 ): Promise<void> => {
   const patch: {
-    current_fuel?: number;
+    fuel_level?: number;
     updated_by: string;
     usage_total?: number;
   } = { updated_by: workerId };
-  if (reading.fuelPercent !== null) {
-    patch.current_fuel = reading.fuelPercent;
+  if (reading.fuelLevel !== null) {
+    patch.fuel_level = reading.fuelLevel;
   }
   if (reading.usageReading !== null) {
     patch.usage_total = reading.usageReading;

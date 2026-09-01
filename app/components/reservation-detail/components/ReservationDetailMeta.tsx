@@ -4,6 +4,7 @@ import {
   formatShortDate,
   formatShortTime,
 } from "@/app/utils/tablero/formatDateTime";
+import { formatDurationLabel } from "@/app/utils/reservas/durationLabel";
 import type { ReservationDetail } from "@/app/utils/reservas/reservationDetail";
 
 interface ReservationDetailMetaProps {
@@ -54,7 +55,7 @@ const ReservationDetailMeta = ({
     )}
     <Row
       label={RESERVATION_DETAIL_SCREEN.META.DURATION}
-      value={RESERVATION_DETAIL_SCREEN.META.DURATION_VALUE(
+      value={formatDurationLabel(
         reservation.durationMinutes
       )}
     />

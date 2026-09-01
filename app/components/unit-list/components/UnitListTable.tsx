@@ -22,9 +22,12 @@ interface UnitListTableProps {
 const NO_ROWS = 0;
 
 const formatFuel = (
-  currentFuel: Nullable<number>
+  fuelLevel: Nullable<number>,
+  fuelMax: number
 ): string =>
-  currentFuel === null ? STRING.N_A : `${currentFuel}%`;
+  fuelLevel === null
+    ? STRING.N_A
+    : `${fuelLevel}/${fuelMax}`;
 
 const formatNumber = (value: Nullable<number>): string =>
   value === null ? STRING.N_A : String(value);
@@ -60,7 +63,7 @@ const UnitListTable = ({
               {UNIT_LIST_SCREEN.COLUMN.STATUS}
             </th>
             <th className="px-md py-sm font-label-mono text-label-mono uppercase text-on-surface-variant">
-              {UNIT_LIST_SCREEN.COLUMN.CURRENT_FUEL}
+              {UNIT_LIST_SCREEN.COLUMN.FUEL_LEVEL}
             </th>
             {hasMotor && (
               <>
@@ -107,7 +110,7 @@ const UnitListTable = ({
                 </Badge>
               </td>
               <td className="px-md py-sm text-on-surface-variant">
-                {formatFuel(unit.currentFuel)}
+                {formatFuel(unit.fuelLevel, unit.fuelMax)}
               </td>
               {hasMotor && (
                 <>

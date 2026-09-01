@@ -77,7 +77,7 @@ export const useDispatchReadingsStepViewModel = ({
     setRows((current) =>
       mapReading(current, itemId, (reading) => ({
         ...reading,
-        fuelPercent: value,
+        fuelLevel: value,
       }))
     );
 
@@ -101,9 +101,7 @@ export const useDispatchReadingsStepViewModel = ({
       supabase,
       reservationId,
       rows.filter(hasReading).map((row) => ({
-        fuelPercent: parseReadingValue(
-          row.reading.fuelPercent
-        ),
+        fuelLevel: parseReadingValue(row.reading.fuelLevel),
         itemId: row.itemId,
         unitId: row.reading.unitId,
         usageReading: parseReadingValue(

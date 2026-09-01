@@ -25,7 +25,7 @@ export const DISPATCH_SCREEN = {
       "El equipo de este combo no se cambia aquí.",
     TITLE: "Confirma el equipo que sale",
   },
-  FUEL_LABEL: "Gasolina inicial (%)",
+  FUEL_LABEL: "Gasolina inicial",
   GUIDES_EMPTY: "Sin guía asignado",
   MODAL_TITLE: "Despachar reserva",
   /** Una linea por cantidad sin unidad propia — kayaks, paddleboards, etc. */

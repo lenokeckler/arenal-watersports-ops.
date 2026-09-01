@@ -22,7 +22,7 @@ export const UNIT_LIST_SCREEN = {
   ADD_BUTTON: "Nueva unidad",
   COLUMN: {
     CODE: "Código",
-    CURRENT_FUEL: "Gasolina",
+    FUEL_LEVEL: "Gasolina",
     NEXT_OIL_CHANGE: "Próximo cambio de aceite",
     STATUS: "Estado",
     USAGE_TOTAL: "Uso acumulado",
