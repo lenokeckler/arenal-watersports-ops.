@@ -1,6 +1,6 @@
 # Estado actual — retomar desde aquí
 
-Última actualización: 2026-09-01.
+Última actualización: 2026-09-01 (segunda ronda).
 
 Este archivo existe para que el trabajo se pueda retomar mañana, o desde otra
 máquina, o por otra persona, sin depender de que nadie recuerde nada. Si algo
@@ -161,31 +161,106 @@ pasan los cinco. 68 rutas en el build.
 
 ## Dónde se quedó el trabajo
 
-### Lo que salió de usar la aplicación de verdad
+### Estado del despliegue — LEER PRIMERO
 
-Con la aplicación ya desplegada, el dueño la revisó y pidió siete cambios. Todos están hechos y
-verificados en el navegador, no solo compilando. Lo interesante es que **casi nada era una regla
-nueva**: eran historias ya escritas que se habían implementado a medias.
+La aplicación está publicada en **https://arenal-watersports-ops.vercel.app** y se despliega sola
+desde `main`. La base en la nube es `arenal-watersports-ops` (ref `vzqbwlvheickxscrwvpw`).
 
-- **El botón de cerrar sesión vivía en una píldora flotante arriba a la derecha, a `z-40`**, encima
-  del botón "Agregar" que pintan siete pantallas en esa misma esquina. Fallar por un centímetro
-  cerraba la sesión sin preguntar nada. Ahora hay un panel lateral con la identidad, el selector de
-  área con su nombre escrito, el perfil y un cierre de sesión que pregunta una vez.
-- **`/perfil` era inalcanzable**: nada en la interfaz enlazaba ahí, y como es donde se cambia la
-  contraseña propia, ningún trabajador podía cambiarla sin escribir la URL de memoria.
-- **La hoja de despacho salía vacía para kayaks y paddleboards**, porque filtraba a lo que tuviera
-  motor o gasolina. El operador no veía ni qué estaba entregando.
-- **No se podía cambiar el equipo al despachar.** Pasa todos los días: el cliente reservó paddleboard,
-  pide kayak por radio, y el muelle le da otra cosa. Ahora se confirma el equipo antes de marcar la
-  reserva como despachada, mientras sigue en `scheduled`, así ninguna policy ni guarda de estado tuvo
-  que moverse.
-- **La gasolina volvió a los cuartos que pedía la maqueta** (`docs/referencia/stitch/gasolina-y-horas-al-despachar--movil.html`),
-  conservando el campo numérico para valores exactos.
-- **El despacho no escribía la gasolina de la unidad**, solo la de la reserva: durante toda la salida
-  la ficha de la máquina mostraba el nivel del cierre anterior.
-- **El tablero no decía qué estaba en el agua**, que es justo la pregunta que el WhatsApp existía para
-  contestar. Y las categorías por cantidad no tenían ninguna noción de "en uso ahora": tres kayaks en
-  el lago y el tablero seguía ofreciendo nueve.
+**Migraciones aplicadas a producción:** las 33 originales y `20260828002200_fuel_lines.sql`.
+
+**PENDIENTE DE APLICAR — el dueño tiene que correrlas en el editor SQL del panel:**
+
+- `20260828002250_units_are_interchangeable.sql`
+- `20260828002300_availability_by_unit.sql`
+
+Van **juntas y en ese orden**: la segunda depende de la columna que agrega la primera. Sin ellas, el
+código desplegado no encuentra ni la columna ni la firma nueva de `category_availability`, y las
+pantallas de reservas y del tablero fallan. Confirmar antes de dar por bueno el despliegue.
+
+La forma de aplicar una migración a producción es el **editor SQL del panel**, no la CLI: ver la
+sección de despliegue más abajo, donde están las tres trampas de transporte que ya costaron tiempo.
+
+### La lección de proceso más cara de la sesión
+
+**Nunca correr dos agentes implementadores sobre la misma copia de trabajo.** Se hizo, y el segundo
+sobrescribió los archivos que el primero había conectado. El resultado fue lo peor posible:
+`typecheck`, `lint`, `vitest` y `build` **todos en verde**, con la función de despacho desde el
+tablero completamente ausente de la pantalla. Código que compila y que nadie llama.
+
+No lo detectó ninguna verificación automática. Lo encontró el dueño intentando usarlo.
+
+Corolario: **que compile no prueba que exista**. Cuando un agente reporta una función nueva de
+interfaz, hay que abrirla en el navegador antes de darla por hecha.
+
+### Lo que salió de probar la aplicación en un teléfono
+
+Casi nada era una regla nueva: eran historias ya escritas, implementadas a medias, o decisiones mías
+equivocadas.
+
+- **Las horas salían corridas seis horas en producción.** Ningún formateo fijaba zona horaria, así que
+  usaba la del proceso: en una laptop de Costa Rica se ve bien, en Vercel corre en UTC. Peor que la
+  presentación era que el calendario y la lista de despacho construían "hoy" con métodos locales, así
+  que **desde las 19:00 el muelle dejaba de ver las salidas de hoy**. Todo se calcula ahora en hora de
+  Costa Rica sin importar el reloj del host, y los tests fijan `TZ=UTC` a propósito.
+- **La duración se pedía en minutos crudos.** Las rentas se venden por hora; "190 minutos" no es una
+  unidad que nadie use acá. Botones de 30m, 1h, 1.5h, 2h, 3h, con escape numérico.
+- **La gasolina era un porcentaje.** Ningún medidor habla en porcentajes: tienen rayas. Ahora es nivel
+  sobre un máximo por unidad — cuadraciclos 6, jet skis y lanchas 4.
+- **El tablero se veía cargadísimo en el teléfono**: fotos enormes, dos categorías por pantalla. Dos
+  columnas, el número de libres como pieza dominante, y el tratamiento de imagen declarado por
+  categoría (recorte contenido o foto a sangre) en vez de decidido por el componente.
+- **El modo de trabajo no aislaba.** El calendario decidía con las áreas de la cuenta, no con el modo
+  activo, así que alguien de operaciones con permiso de reservas podía crear reservas desde el modo
+  operaciones. Regla que quedó: **el modo restringe, nunca otorga**.
+- **"Hoy" en el calendario parecía una etiqueta** y era un enlace, y aparecía incluso estando en hoy.
+- **La vista del calendario no se recordaba** entre visitas.
+- **Rompí el tema oscuro** al subir las opacidades de los tintes para que se leyeran en claro: las
+  clases eran las mismas para ambos. Ahora el tinte es un token de color con su propia alfa por
+  paleta, así que una sola clase da el resultado correcto en los dos temas.
+
+### El cambio de modelo: se reserva la categoría, no la unidad
+
+Es el cambio de mayor alcance de la sesión, y viene del dueño:
+
+> "en reservaciones no se aparta un jet ski, solo menciona que viene un jet ski. No cuál."
+
+Al agendar nadie sabe cuál jet ski estará libre, cargado y sin golpes en tres horas. Esa decisión es
+del muelle.
+
+**La regla no es cómo se inventaría una categoría sino si sus unidades son intercambiables** — dos
+preguntas distintas que hasta ahora tenían la misma respuesta. Un jet ski se lleva uno por uno y sigue
+siendo cualquier jet ski; una lancha se lleva una por una **y es una lancha concreta**, porque solo la
+Bennington arrastra y el wakeboard y el tubing dependen de eso. De ahí
+`equipment_categories.units_are_interchangeable`.
+
+`category_availability` tuvo que aprender a contar unidades: leía filas de stock, que una categoría
+por unidad no tiene, y ahora conviven las dos formas en la misma categoría — una reserva con dos jet
+skis por cantidad y otra ya despachada con JET-01 y JET-03. Contar solo una habría ofrecido equipo ya
+comprometido.
+
+**US-RES-007 decía lo contrario** ("se registran las unidades concretas, con su código"). El dueño
+corrigió la regla desde el negocio y la historia se actualizó.
+
+### Lo que falta
+
+1. **Las horas reales de entrada y salida.** Palabras del dueño: *"para los tours y rentas se anota la
+   hora de entrada y salida porque a veces no llegan a las 9 en punto sino a las 9:30, entonces pueden
+   ir 1h o 30 minutos del tiempo restante por falta de disponibilidad"*. Falta que el muelle pueda
+   **recortar la salida al despachar**, no solo después. Existe US-OPE-006 para ajustar la duración en
+   curso, y `dispatched_at` ya se guarda.
+2. **Las horas de motor no distinguen "nunca medido" de "medido en cero"**: `usage_total` es
+   `not null default 0`, así que una máquina recién comprada y una que marca cero son idénticas en la
+   columna. La gasolina sí lo distingue porque su columna admite nulo. Necesita migración.
+3. **El "hoy" de los reportes se calcula en UTC** (`app/administracion/reportes/page.tsx`,
+   `app/reservas/ingresos/page.tsx`), para coincidir con las vistas SQL. Cerca de la medianoche puede
+   correrse un día. Arreglarlo bien exige migrar esas vistas.
+4. **Brecha menor conocida:** si Reservas edita una reserva agendada cuya categoría intercambiable ya
+   tiene unidades concretas asignadas —solo alcanzable abandonando un despacho a medias— el contador
+   muestra cero aunque las unidades sigan comprometidas. No corrompe nada; es lo que se ve.
+5. **La vista móvil real sigue sin verificarse por el agente.** El navegador de la herramienta no
+   aplica el cambio de tamaño al área de renderizado. Lo prueba el dueño en su teléfono.
+6. **El contraste del tema claro al sol** no está comprobado: WCAG no modela reflejo de pantalla. Por
+   eso la paleta apunta a 6:1 y 7:1 en vez del mínimo de 4.5:1.
 
 ### Tres errores del mismo tipo, que solo aparecen usando la aplicación
 
@@ -202,7 +277,7 @@ La regla que quedó: **una unidad despachada nunca cuenta como libre, aunque su 
 `libres + en uso` nunca supera el total. `category_availability` **no se tocó**: el formulario de
 reservas pregunta "¿puedo agendar a las 3?", y ahí razonar por ventana sí es lo correcto.
 
-### La regla de guía, aplicada en tres lugares
+#### La regla de guía, aplicada en tres lugares
 
 `US-RES-008` dice que una renta nunca lleva equipo que solo sale con guía. Estaba aplicada solo en el
 formulario de nueva reserva. El paso de sustitución del despacho la ignoraba (defecto nuevo) y el
@@ -210,7 +285,7 @@ modal de edición también (defecto anterior). Ahora los tres usan
 `filterCategoriesForReservationType`, para que la próxima pantalla que ofrezca equipo la herede en vez
 de olvidarla.
 
-### El tema claro
+#### El tema claro
 
 Ver `docs/decisiones/tema-claro.md`. Lo caro no fue la paleta: `border-white/10` y `/5` aparecían
 **313 veces en 178 archivos** y son el borde por defecto de toda tarjeta, panel y modal. Blanco puro
