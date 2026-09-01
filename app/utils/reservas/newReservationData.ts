@@ -20,6 +20,14 @@ export interface ReservableCategory {
   id: string;
   name: string;
   trackingMode: TrackingMode;
+  /**
+   * US-RES-007: si a Reservas le importa cual unidad sale (falso, la
+   * lancha) o solo cuantas (verdadero, jet skis y cuadraciclos incluidos,
+   * aunque se lleven por unidad puertas adentro). Independiente de
+   * `trackingMode` — decide el picker de `ReservationFormEquipment`, no la
+   * forma en que se cuenta el inventario.
+   */
+  unitsAreInterchangeable: boolean;
 }
 
 export interface CandidateUnit {
@@ -40,7 +48,7 @@ export const fetchReservableCategories = async (
   const { data, error } = await supabase
     .from("equipment_categories")
     .select(
-      "id, name, tracking_mode, guide_only, group_name"
+      "id, name, tracking_mode, guide_only, group_name, units_are_interchangeable"
     )
     .eq("is_reservable", true)
     .eq("status", CATEGORY_STATUS.ACTIVE)
@@ -56,6 +64,8 @@ export const fetchReservableCategories = async (
     name: category.name,
     groupName: category.group_name,
     trackingMode: category.tracking_mode,
+    unitsAreInterchangeable:
+      category.units_are_interchangeable,
   }));
 };
 

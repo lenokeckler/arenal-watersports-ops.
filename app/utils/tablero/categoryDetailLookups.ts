@@ -77,3 +77,38 @@ export const fetchFuelByUnitId = async (
   }
   return fuelByUnitId;
 };
+
+/** `equipment_units.usage_total` for one unit. */
+export interface UnitUsageReading {
+  usageTotal: number;
+}
+
+/**
+ * `equipment_units.usage_total` per unit — only ever called for a
+ * `has_motor` category, from `unitIds` already scoped to that category.
+ */
+export const fetchUsageByUnitId = async (
+  supabase: SupabaseClient<Database>,
+  unitIds: string[]
+): Promise<Map<string, UnitUsageReading>> => {
+  const usageByUnitId = new Map<string, UnitUsageReading>();
+  if (unitIds.length === 0) {
+    return usageByUnitId;
+  }
+
+  const { data: usageReadings, error } = await supabase
+    .from("equipment_units")
+    .select("id, usage_total")
+    .in("id", unitIds);
+  throwIfSupabaseError(
+    error,
+    "categoryDetailLookups.fetchUsageByUnitId"
+  );
+
+  for (const unit of usageReadings ?? []) {
+    usageByUnitId.set(unit.id, {
+      usageTotal: unit.usage_total,
+    });
+  }
+  return usageByUnitId;
+};

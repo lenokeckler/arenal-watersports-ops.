@@ -1,19 +1,24 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/app/types";
+import type { Database, Nullable } from "@/app/types";
+import { type UsageMetric } from "@/app/constants";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
 import { resolveEquipmentImage } from "./equipmentImage";
 import {
   fetchFuelByUnitId,
   fetchReservationsById,
+  fetchUsageByUnitId,
   type UnitFuelReading,
+  type UnitUsageReading,
 } from "./categoryDetailLookups";
 import type { CategoryDetail } from "./categoryDetail";
 
 interface UnitCategoryRow {
   consumes_fuel: boolean;
+  has_motor: boolean;
   id: string;
   name: string;
   tracking_mode: Database["public"]["Enums"]["tracking_mode"];
+  usage_metric: Nullable<UsageMetric>;
 }
 
 const DECOMMISSIONED = "decommissioned";
@@ -53,13 +58,18 @@ export const fetchUnitCategoryDetail = async (
     .map((unit) => unit.id)
     .filter((unitId): unitId is string => Boolean(unitId));
 
-  const [reservationsById, fuelByUnitId] =
+  const [reservationsById, fuelByUnitId, usageByUnitId] =
     await Promise.all([
       fetchReservationsById(supabase, reservationIds),
       category.consumes_fuel
         ? fetchFuelByUnitId(supabase, unitIds)
         : Promise.resolve(
             new Map<string, UnitFuelReading>()
+          ),
+      category.has_motor
+        ? fetchUsageByUnitId(supabase, unitIds)
+        : Promise.resolve(
+            new Map<string, UnitUsageReading>()
           ),
     ]);
 
@@ -79,6 +89,9 @@ export const fetchUnitCategoryDetail = async (
       const fuelReading = unit.id
         ? fuelByUnitId.get(unit.id)
         : undefined;
+      const usageReading = unit.id
+        ? usageByUnitId.get(unit.id)
+        : undefined;
 
       return {
         code: unit.code ?? "",
@@ -93,6 +106,10 @@ export const fetchUnitCategoryDetail = async (
         reservationCode: reservation?.code ?? null,
         reservationId: unit.reservation_id,
         returnsAt: unit.returns_at,
+        usageMetric: category.has_motor
+          ? category.usage_metric
+          : null,
+        usageTotal: usageReading?.usageTotal ?? null,
       };
     }),
   };

@@ -3,6 +3,7 @@ import type { Database } from "@/app/types";
 import {
   TRACKING_MODE,
   type EquipmentImageTreatment,
+  type UsageMetric,
 } from "@/app/constants";
 import type { Nullable } from "@/app/types";
 import { throwIfSupabaseError } from "@/app/utils/supabase-error/SupabaseError";
@@ -25,6 +26,10 @@ export interface CategoryDetailUnit {
   reservationCode: Nullable<string>;
   reservationId: Nullable<string>;
   returnsAt: Nullable<string>;
+  /** Engine hours or kilometers, whichever the category tracks. `null` when the category has no motor. */
+  usageMetric: Nullable<UsageMetric>;
+  /** Reading in `usageMetric`'s unit. Only populated for `has_motor` categories. */
+  usageTotal: Nullable<number>;
 }
 
 export interface CategoryDetailStock {
@@ -57,7 +62,7 @@ export const fetchCategoryDetail = async (
     await supabase
       .from("equipment_categories")
       .select(
-        "id, name, tracking_mode, is_reservable, consumes_fuel"
+        "id, name, tracking_mode, is_reservable, consumes_fuel, has_motor, usage_metric"
       )
       .eq("id", categoryId)
       .maybeSingle();

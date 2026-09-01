@@ -29,6 +29,14 @@ interface ReservationFormEquipmentProps {
   ) => void;
   onToggleUnit: (unitId: string) => void;
   quantities: Record<string, number>;
+  /**
+   * US-OPE-002: how many units a by-unit category still owes, keyed by
+   * category id — only set by the dispatch equipment step, when a
+   * quantity-booked category (a jet ski agendada as "2") needs exactly
+   * that many concrete units picked before it can go out. Undefined for
+   * every other caller, which never caps or counts a unit selection.
+   */
+  requiredUnitQuantities?: Record<string, number>;
   selectedUnitIds: string[];
   unitConflicts: Record<string, UnitConflict[]>;
 }
@@ -44,6 +52,7 @@ const ReservationFormEquipment = ({
   onQuantityChange,
   onToggleUnit,
   quantities,
+  requiredUnitQuantities,
   selectedUnitIds,
   unitConflicts,
 }: ReservationFormEquipmentProps): JSX.Element => (
@@ -107,6 +116,9 @@ const ReservationFormEquipment = ({
         category={category}
         isBusy={isBusy}
         onToggleUnit={onToggleUnit}
+        requiredQuantity={
+          requiredUnitQuantities?.[category.id]
+        }
         selectedUnitIds={selectedUnitIds}
         unitConflicts={unitConflicts}
       />

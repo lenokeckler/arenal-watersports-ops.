@@ -14,6 +14,7 @@ const kayak: ReservableCategory = {
   id: "kayak",
   name: "Kayak",
   trackingMode: TRACKING_MODE.BY_QUANTITY,
+  unitsAreInterchangeable: true,
 };
 
 const lancha: ReservableCategory = {
@@ -22,6 +23,16 @@ const lancha: ReservableCategory = {
   id: "lancha",
   name: "Lancha",
   trackingMode: TRACKING_MODE.BY_UNIT,
+  unitsAreInterchangeable: false,
+};
+
+const jetSki: ReservableCategory = {
+  groupName: null,
+  guideOnly: false,
+  id: "jet-ski",
+  name: "Jet Ski",
+  trackingMode: TRACKING_MODE.BY_UNIT,
+  unitsAreInterchangeable: true,
 };
 
 /**
@@ -88,6 +99,58 @@ describe("useReservationFormEquipmentCatalog composed with filterCategoriesForRe
 
     expect(result.current.byUnitCategories).toEqual([
       lancha,
+    ]);
+  });
+});
+
+/**
+ * The business rule behind this split: at booking time, nobody knows which
+ * physical jet ski will be free hours from now, so an interchangeable
+ * `by_unit` category (jet ski, cuadraciclo) reads as a quantity to Reservas
+ * even though it is tracked by unit in inventory — only the lancha, never
+ * interchangeable, still asks for a specific unit.
+ */
+describe("useReservationFormEquipmentCatalog default split (Reservas)", () => {
+  it("treats an interchangeable by-unit category as a quantity category", () => {
+    const { result } = renderHook(() =>
+      useReservationFormEquipmentCatalog(
+        [kayak, lancha, jetSki],
+        []
+      )
+    );
+
+    expect(result.current.byQuantityCategories).toEqual([
+      kayak,
+      jetSki,
+    ]);
+    expect(result.current.byUnitCategories).toEqual([
+      lancha,
+    ]);
+  });
+});
+
+/**
+ * US-OPE-002: at dispatch, fuel, hours and damage are tracked per machine,
+ * so every `by_unit` category needs concrete units regardless of whether
+ * Reservas treats it as interchangeable — `requireUnitAssignment` opts a
+ * caller (the dispatch equipment step) back into the tracking-mode split.
+ */
+describe("useReservationFormEquipmentCatalog with requireUnitAssignment (dispatch)", () => {
+  it("treats every by-unit category as needing concrete units", () => {
+    const { result } = renderHook(() =>
+      useReservationFormEquipmentCatalog(
+        [kayak, lancha, jetSki],
+        [],
+        true
+      )
+    );
+
+    expect(result.current.byQuantityCategories).toEqual([
+      kayak,
+    ]);
+    expect(result.current.byUnitCategories).toEqual([
+      lancha,
+      jetSki,
     ]);
   });
 });

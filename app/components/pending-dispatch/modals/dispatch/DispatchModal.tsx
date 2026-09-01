@@ -14,9 +14,17 @@ import DispatchModalForm from "./DispatchModalForm";
 interface DispatchModalProps {
   onClose: () => void;
   onDispatched: () => void;
+  /**
+   * US-OPE-002 (tablero entry): units already tapped on `CategoryDetail`
+   * before opening this sheet from the board — absent when opened from
+   * `/operaciones/despacho`'s plain list, where nothing is pre-selected.
+   */
+  preselectedUnitIds?: string[];
   reservationId: string;
   workerId: string;
 }
+
+const NO_PRESELECTED_UNITS: string[] = [];
 
 /**
  * US-OPE-002/US-OPE-003: gates on `useDispatchModalCatalogViewModel` before
@@ -27,6 +35,7 @@ interface DispatchModalProps {
 const DispatchModal = ({
   onClose,
   onDispatched,
+  preselectedUnitIds = NO_PRESELECTED_UNITS,
   reservationId,
   workerId,
 }: DispatchModalProps): JSX.Element => {
@@ -47,6 +56,7 @@ const DispatchModal = ({
         <DispatchModalForm
           catalog={catalog}
           onDispatched={onDispatched}
+          preselectedUnitIds={preselectedUnitIds}
           reservationId={reservationId}
           workerId={workerId}
         />

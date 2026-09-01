@@ -21,6 +21,7 @@ interface DispatchModalEquipmentStepProps {
   isCombo: boolean;
   onConfirmed: (items: ReservationEquipmentItem[]) => void;
   originalItems: ReservationEquipmentItem[];
+  preselectedUnitIds: string[];
   reservationEndsAt: string;
   reservationId: string;
   reservationStartsAt: string;
@@ -47,6 +48,7 @@ const DispatchModalEquipmentStep = (
     handleToggleUnit,
     isBusy,
     quantities,
+    requiredUnitQuantities,
     selectedUnitIds,
     unitConflicts,
   } = useDispatchEquipmentStepViewModel(props);
@@ -73,6 +75,7 @@ const DispatchModalEquipmentStep = (
           onQuantityChange={handleQuantityChange}
           onToggleUnit={handleToggleUnit}
           quantities={quantities}
+          requiredUnitQuantities={requiredUnitQuantities}
           selectedUnitIds={selectedUnitIds}
           unitConflicts={unitConflicts}
         />

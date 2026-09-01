@@ -211,6 +211,7 @@ export {
 export {
   USAGE_METRIC,
   USAGE_METRIC_LABEL,
+  USAGE_METRIC_SUFFIX,
   type UsageMetric,
 } from "./administracion/UsageMetric.constants";
 export {

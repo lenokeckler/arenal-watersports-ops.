@@ -8,6 +8,7 @@ import DispatchModalReadingsStep from "./components/DispatchModalReadingsStep";
 interface DispatchModalFormProps {
   catalog: DispatchEquipmentCatalog;
   onDispatched: () => void;
+  preselectedUnitIds: string[];
   reservationId: string;
   workerId: string;
 }
@@ -22,6 +23,7 @@ interface DispatchModalFormProps {
 const DispatchModalForm = ({
   catalog,
   onDispatched,
+  preselectedUnitIds,
   reservationId,
   workerId,
 }: DispatchModalFormProps): JSX.Element => {
@@ -35,6 +37,7 @@ const DispatchModalForm = ({
       isCombo={catalog.isCombo}
       onConfirmed={handleEquipmentConfirmed}
       originalItems={catalog.originalItems}
+      preselectedUnitIds={preselectedUnitIds}
       reservationEndsAt={catalog.endsAt}
       reservationId={reservationId}
       reservationStartsAt={catalog.startsAt}

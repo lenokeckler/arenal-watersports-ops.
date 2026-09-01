@@ -1,3 +1,8 @@
+import {
+  USAGE_METRIC_SUFFIX,
+  type UsageMetric,
+} from "../administracion/UsageMetric.constants";
+
 /**
  * Text for `/tablero/categoria/[categoryId]` (US-TAB-002), restyled from
  * `docs/referencia/stitch/gestion-de-jet-ski--escritorio.html` (by_unit)
@@ -30,10 +35,16 @@ export const CATEGORY_DETAIL_SCREEN = {
   QUANTITY_AVAILABLE: "Disponibles",
   RESERVATION_LINK: "Ver reserva",
   RETURNS_AT: "Regresa a las",
+  SELECT_UNIT: (code: string): string =>
+    `Seleccionar ${code}`,
   SELECTED_UNITS_COUNT: (count: number): string =>
     count === 1
       ? "1 unidad seleccionada"
       : `${count} unidades seleccionadas`,
   TOTAL: "Total",
   UNIT_CODE: "Código",
+  USAGE_READING: (
+    metric: UsageMetric,
+    total: number
+  ): string => `${total} ${USAGE_METRIC_SUFFIX[metric]}`,
 } as const;

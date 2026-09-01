@@ -1095,17 +1095,19 @@ El horario habitual es de nueve a cinco, pero hay días con horas extra y salida
 **Historia de usuario**
 
 Como la persona de reservas,
-necesito asociar a la reserva los equipos concretos que va a ocupar,
-con la finalidad de que esas unidades queden comprometidas y no se le prometan a otro cliente.
+necesito comprometer el equipo que va a salir en la reserva,
+con la finalidad de que esa disponibilidad quede apartada y no se le prometa a otro cliente.
 
 **Descripción**
 
-No basta con decir que la salida lleva dos kayaks: se registran las unidades concretas, con su código. Cada equipo asociado baja de la disponibilidad para esa franja horaria. Asociar el equipo no es despacharlo: la unidad sigue en tierra hasta que operaciones la saque.
+No basta con decir que la salida lleva dos kayaks: la cantidad comprometida baja de la disponibilidad para esa franja horaria. Para el equipo que se cuenta por cantidad — jet skis y cuadraciclos incluidos, aunque por dentro se lleven por unidad — Reservas compromete cuántas unidades van, no cuáles: al agendar con horas de anticipación nadie sabe todavía cuál jet ski va a estar libre, cargado y sin golpes a esa hora, y esa decisión es del muelle. Es operaciones quien la toma al despachar, convirtiendo la cantidad comprometida en las unidades concretas que salen. La excepción es la lancha: no es intercambiable (solo la Bennington arrastra, y el wakeboard y el tubing solo se piden con ella), así que ahí Reservas sí elige la unidad concreta desde que agenda. Comprometer el equipo no es despacharlo: la unidad sigue en tierra hasta que operaciones la saque.
 
 **Criterios de aceptación**
 
-- Cada equipo asociado baja de la disponibilidad.
-- Se registran los recursos comprometidos con su unidad, no solo con su categoría.
+- Cada equipo comprometido baja de la disponibilidad para esa franja horaria.
+- El equipo que se cuenta por cantidad (jet skis, cuadraciclos, kayaks, tablas) se compromete por cantidad, no por unidad concreta: cuál máquina sale lo decide operaciones al despachar.
+- La lancha, que no es intercambiable, se compromete por unidad concreta desde que Reservas agenda.
+- Comprometer el equipo no es despacharlo: la unidad sigue en tierra hasta que operaciones la saque.
 
 ### EP-RES-03 — Tipo de reserva: renta, tour y combo
 

@@ -49,16 +49,23 @@ on conflict do nothing;
 
 -- ---------------- Categorias ----------------
 -- Identificadas una por una: llevan motor, gasolina, uso, golpes y fotos.
+-- El jet ski y el cuadraciclo se agendan por cantidad -- a nadie le consta,
+-- tres horas antes, cual maquina va a estar libre y sin golpes -- asi que
+-- units_are_interchangeable va en verdadero y es operaciones quien asigna
+-- la unidad real al despachar. La lancha es la excepcion: la Bennington es
+-- la unica que arrastra, y el wakeboard y el tubing solo se piden con ella
+-- (ver extra_compatibility mas abajo), asi que Reservas sigue eligiendo
+-- cual lancha sale.
 insert into equipment_categories
-  (name, tracking_mode, is_reservable, has_motor, usage_metric, consumes_fuel,
-   has_condition_photos, guide_only, default_duration_minutes,
-   deposit_usd, deposit_crc, created_by, updated_by)
+  (name, tracking_mode, units_are_interchangeable, is_reservable, has_motor,
+   usage_metric, consumes_fuel, has_condition_photos, guide_only,
+   default_duration_minutes, deposit_usd, deposit_crc, created_by, updated_by)
 values
-  ('Jet Ski',     'by_unit', true, true, 'engine_hours', true, true, false, 60,
+  ('Jet Ski',     'by_unit', true,  true, true, 'engine_hours', true, true, false, 60,
    200, 100000, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Lancha',      'by_unit', true, true, 'engine_hours', true, true, true,  60,
+  ('Lancha',      'by_unit', false, true, true, 'engine_hours', true, true, true,  60,
    200, 100000, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'),
-  ('Cuadraciclo', 'by_unit', true, true, 'kilometers',   true, true, true,  60,
+  ('Cuadraciclo', 'by_unit', true,  true, true, 'kilometers',   true, true, true,  60,
    200, 100000, '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001');
 
 -- Llevadas por cantidad y reservables: no tienen historia propia por pieza.
@@ -109,8 +116,12 @@ select c.id, 'JET-0' || n,
 from equipment_categories c, generate_series(1, 4) n
 where c.name = 'Jet Ski';
 
-insert into equipment_units (category_id, code, created_by, updated_by)
-select c.id, 'CUAD-0' || n,
+-- Los cuadraciclos llevan seis rayas en su medidor, no las cuatro por
+-- omision de `fuel_max` (equipment_units.fuel_max default 4): dato real de
+-- la empresa. El resto de categorias se queda en el default hasta que se
+-- ajuste desde Equipos, que es donde se corrige por unidad real.
+insert into equipment_units (category_id, code, fuel_max, created_by, updated_by)
+select c.id, 'CUAD-0' || n, 6,
        '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001'
 from equipment_categories c, generate_series(1, 8) n
 where c.name = 'Cuadraciclo';

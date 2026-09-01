@@ -7,10 +7,10 @@ interface OperationsMachinesCategoryProps {
 }
 
 /**
- * One category section of the "Equipos" list (US-OPE-020) — a heading plus
- * its units. One column on mobile: each unit card already carries a fuel
- * gauge, a usage reading and up to two badges, too dense to also halve its
- * width the way the board's own image tiles do.
+ * One category section of the "Equipos" grid (US-OPE-020) — a heading plus
+ * its units. Two columns on mobile already, same as `/tablero`'s own
+ * category detail: an image card reads at a glance, so it does not need
+ * the full row width a text-only card did.
  */
 const OperationsMachinesCategory = ({
   category,
@@ -20,7 +20,7 @@ const OperationsMachinesCategory = ({
       {category.categoryName}
     </h2>
 
-    <div className="grid grid-cols-1 gap-sm md:grid-cols-2">
+    <div className="grid grid-cols-2 gap-sm sm:gap-md lg:grid-cols-3 xl:grid-cols-4">
       {category.units.map((unit) => (
         <OperationsMachinesUnitCard
           key={unit.id}
